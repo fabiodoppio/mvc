@@ -38,7 +38,7 @@ class Template {
 
     private static function include_files(string $file) {
         if (!file_exists(App::get("DIR_ROOT").App::get("DIR_VIEWS").'/'.$file))
-            throw new Exception("Template '".$file."' not found.", 404);
+            throw new Exception("Template '".$file."' not found.");
 
         $template = file_get_contents(App::get("DIR_ROOT").App::get("DIR_VIEWS").'/'.$file);
 		preg_match_all('/{% ?(include) ?\'?(.*?)\'? ?%}/i', $template, $matches, PREG_SET_ORDER);
