@@ -19,6 +19,10 @@ function ajax_send(data) {
             $.each(res.html, function(target, value) {
                 $(target).html(value);
             }); 
+        if (res.remove) 
+            $.each(res.remove, function(target, value) {
+                $(target).remove();
+            }); 
 	}).always(function() {
         window.setTimeout(function() {
             cooldown = false;

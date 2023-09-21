@@ -10,6 +10,10 @@ class Ajax {
         @self::$output["html"][$target] = $html;
     }
 
+    public static function remove(string $target) {
+        @self::$output["remove"][$target] = true;
+    }
+
     public static function redirect(string $url) {
         @self::$output["redirect"] = $url;
     }
