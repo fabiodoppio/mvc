@@ -2,36 +2,43 @@
 
 namespace Classes\Controllers;
 
-use \Classes\Auth as Auth;
-use \Classes\Ajax as Ajax;
-use \Classes\Fairplay as Fairplay;
-use \Classes\Request as Request;
+use \Classes\Ajax      as Ajax;
+use \Classes\App       as App;
+use \Classes\Auth      as Auth;
+use \Classes\Database  as Database;
+use \Classes\Email     as Email;
+use \Classes\Exception as Exception;
+use \Classes\Fairplay  as Fairplay;
+use \Classes\Models    as Model;
+use \Classes\Request   as Request;
+use \Classes\Template  as Template;
+
 
 class AccountController extends Controller {
 
     public function beforeAction() {
-        $this->account = \Classes\Auth::get_current_account();
-        \Classes\Auth::verify_client_token(\Classes\Request::get("client"));
+        $this->account = Auth::get_current_account();
+        Auth::verify_client_token(Request::get("client"));
 
         if (time() < strtotime($this->account->get("lastaction")) + 2)
-            throw new \Classes\Exception("Zu viele Anfragen in kurzer Zeit");
+            throw new Exception("Zu viele Anfragen in kurzer Zeit");
 
         $this->account->set("lastaction", date("Y-m-d H:i:s", time()));
 
-        if (!\Classes\App::get("APP_ONLINE") && $this->account->get("role") != \Classes\Models\Role::ADMINISTRATOR)
-            throw new \Classes\Exception("Server offline");
+        if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Role::ADMINISTRATOR)
+            throw new Exception("Server offline");
 
-        if ($this->account->get("role") < \Classes\Models\Role::GUEST)
-            throw new \Classes\Exception("Dein Account wurde gesperrt oder deaktiviert.");
+        if ($this->account->get("role") < Model\Role::GUEST)
+            throw new Exception("Dein Account wurde gesperrt oder deaktiviert.");
     }
 
     public function afterAction() {
-        \Classes\Ajax::push();
+        Ajax::push();
     }
 
     public function loginAction() {
-        if (!\Classes\App::get("APP_LOGIN"))
-            throw new \Classes\Exception("Login zurzeit nicht möglich.");
+        if (!App::get("APP_LOGIN"))
+            throw new Exception("Login zurzeit nicht möglich.");
 
         Auth::set_current_account(
             Fairplay::string(Request::get("credential")), 
@@ -42,8 +49,8 @@ class AccountController extends Controller {
     }
 
     public function signupAction() {
-        if (!\Classes\App::get("APP_SIGNUP"))
-            throw new \Classes\Exception("Registrierung zurzeit nicht möglich.");
+        if (!App::get("APP_SIGNUP"))
+            throw new Exception("Registrierung zurzeit nicht möglich.");
 
         Auth::set_new_account(
             Fairplay::string(Request::get("username")), 
@@ -55,34 +62,34 @@ class AccountController extends Controller {
 
     public function recoveryAction() {
         $credential = Fairplay::string(Request::get("credential"));
-        if (empty($account = \Classes\Database::select("app_accounts", "email LIKE '".$credential."' OR username = '".$credential."'")))
-            throw new \Classes\Exception("Es gibt keinen Account mit diesem Benutzernamen oder dieser E-Mail Adresse.");
+        if (empty($account = Database::select("app_accounts", "email LIKE '".$credential."' OR username = '".$credential."'")))
+            throw new Exception("Es gibt keinen Account mit diesem Benutzernamen oder dieser E-Mail Adresse.");
 
-        $account = new \Classes\Models\Account($account[0]["id"]);
+        $account = new Model\Account($account[0]["id"]);
 
         switch(Request::get("requestParts")[2]??"") {
             case "request":
                 $code = Auth::get_confirmcode($credential);
-                $link = \Classes\App::get("APP_URL")."/recovery?code=".str_replace('=', '', base64_encode($credential."/".$code));
+                $link = App::get("APP_URL")."/recovery?code=".str_replace('=', '', base64_encode($credential."/".$code));
 
-                \Classes\Email::send("Account wiederherstellen | ".\Classes\App::get("APP_NAME"), $account->get("email"), \Classes\Template::get("email/recovery.tpl", [
+                Email::send("Account wiederherstellen | ".App::get("APP_NAME"), $account->get("email"), Template::get("email/recovery.tpl", [
                     "username" => $account->get("username"),
-                    "app_name" => \Classes\App::get("APP_NAME"),
+                    "app_name" => App::get("APP_NAME"),
                     "code" => $code,
                     "link" => $link
                 ]));
 
-                Ajax::redirect(\Classes\App::get("APP_URL")."/recovery?code=".str_replace('=', '', base64_encode($credential)));
+                Ajax::redirect(App::get("APP_URL")."/recovery?code=".str_replace('=', '', base64_encode($credential)));
                 break;
             case "submit":
                 Auth::verify_confirmcode($credential, Fairplay::string(str_replace(' ', '', Request::get("code"))));
-                if ($account->get("role") < \Classes\Models\Role::GUEST)
-                    throw new \Classes\Exception("Dein Account kann nicht wiederhergestellt werden.");
+                if ($account->get("role") < Model\Role::GUEST)
+                    throw new Exception("Dein Account kann nicht wiederhergestellt werden.");
             
                 $account->set("password", password_hash(Fairplay::password(Request::get("pw1"), Request::get("pw2")), PASSWORD_DEFAULT));
-                $account->set("role", ($account->get("role") == \Classes\Models\Role::DEACTIVATED) ? \Classes\Models\Role::USER : $account->get("role"));
+                $account->set("role", ($account->get("role") == Model\Role::DEACTIVATED) ? Model\Role::USER : $account->get("role"));
 
-                \Classes\Ajax::add('.main-content form', '<div class="success">Dein Account wurde erfolgreich wiederhergstellt. Du kannst dich nun wie gewohnt anmelden.</div>');
+                Ajax::add('.main-content form', '<div class="success">Dein Account wurde erfolgreich wiederhergstellt. Du kannst dich nun wie gewohnt anmelden.</div>');
                 break;
         }
     }

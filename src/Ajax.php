@@ -2,6 +2,7 @@
 
 namespace Classes;
 
+
 class Ajax {
 
     protected static $output = [];

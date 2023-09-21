@@ -2,6 +2,7 @@
 
 namespace Classes;
 
+
 class Request 
 {
     public static function get(string $input) {

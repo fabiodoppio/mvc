@@ -2,6 +2,7 @@
 
 namespace Classes;
 
+
 class Email {
 
 	public static function send(string $subject, string $recipient, string $template, ?string $attachment = null, ?string $attachment_name = null) {

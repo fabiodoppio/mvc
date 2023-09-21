@@ -2,6 +2,7 @@
 
 namespace Classes;
 
+
 class Exception extends \Exception {
 
     public function process() {

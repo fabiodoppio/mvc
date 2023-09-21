@@ -2,6 +2,7 @@
 
 namespace Classes\Models;
 
+
 class Role extends Model {
     
     protected $table = "app_roles";

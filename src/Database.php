@@ -2,6 +2,7 @@
 
 namespace Classes;
 
+
 class Database
 { 
     public static $insert_id = 0; 

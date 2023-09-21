@@ -2,6 +2,9 @@
 
 namespace Classes;
 
+use \Classes\Models as Model;
+
+
 class Auth {
 
     private static $token;
@@ -28,15 +31,15 @@ class Auth {
 
     public static function get_current_account() {
         if (!isset($_COOKIE["account"]))
-            return new \Classes\Models\Guest();
+            return new Model\Guest();
 
         if (empty($cookie = explode('$', $_COOKIE["account"])))
             throw new Exception("Unerlaubter Zugriff", 403);
 
-        if (empty($account = \Classes\Database::select("app_accounts", "id = '".$cookie[1]."'")))
+        if (empty($account = Database::select("app_accounts", "id = '".$cookie[1]."'")))
             throw new Exception("Unerlaubter Zugriff", 403);
 
-        $account = new Models\Account($account[0]["id"]);
+        $account = new Model\Account($account[0]["id"]);
         $hash = hash_hmac('sha256', $account->get("id").$account->get("token"), hash_hmac('md5', $account->get("id").$account->get("token"), App::get("SALT_COOKIE")));
 
         if (!hash_equals($cookie[0], $hash))
@@ -49,7 +52,7 @@ class Auth {
         if (empty($account = Database::select("app_accounts", "email LIKE '".$credential."' OR username = '".$credential."'")))
             throw new Exception("Es gibt keinen Account mit diesem Benutzernamen oder dieser E-Mail Adresse.");
 
-        $account = new Models\Account($account[0]["id"]);
+        $account = new Model\Account($account[0]["id"]);
 
         if ($account->get_suspicions("set_current_account", 10) > 3)
             throw new Exception("Du hast das Passwort zu oft falsch eingegeben. Bitte warte 10 Minuten und versuche es dann erneut.");
@@ -59,7 +62,7 @@ class Auth {
             throw new Exception("Du hast ein falsches Passwort eingegeben.");
         }
 
-        if ($account->get("role") < Models\Role::GUEST)
+        if ($account->get("role") < Model\Role::GUEST)
             throw new Exception("Dein Account wurde gesperrt oder deaktiviert.");
 
         self::set_cookie($account->get("id"), $account->get("token"), ($stay)?time()+(60*60*24*30):0);
@@ -72,7 +75,7 @@ class Auth {
         if (!empty(Database::select("app_accounts", "email LIKE '".$email."'")[0]))
             throw new Exception("E-Mail Adresse schon vergeben.");
 
-        Database::insert("app_accounts", "email, username, password, token, role", "'".strtolower($email)."', '".$username."', '".password_hash($password, PASSWORD_DEFAULT)."', '".self::get_instance_token()."', '".Models\Role::USER."'");
+        Database::insert("app_accounts", "email, username, password, token, role", "'".strtolower($email)."', '".$username."', '".password_hash($password, PASSWORD_DEFAULT)."', '".self::get_instance_token()."', '".Model\Role::USER."'");
 
         self::set_cookie(Database::$insert_id, self::get_instance_token());
     }
@@ -91,7 +94,7 @@ class Auth {
         if (empty($account = Database::select("app_accounts", "email LIKE '".$credential."' OR username = '".$credential."'")))
             throw new Exception("Es gibt keinen Account mit diesem Benutzernamen oder dieser E-Mail Adresse.");
 
-        $account = new Models\Account($account[0]["id"]);
+        $account = new Model\Account($account[0]["id"]);
 
         if ($account->get_suspicions("get_confirmcode", 60) > 3)
             throw new Exception("Du hast zu oft versucht einen Bestätigungscode anzufordern. Bitte warte 60 Minuten und versuche es dann erneut.");
@@ -107,7 +110,7 @@ class Auth {
         if (empty($account = Database::select("app_accounts", "email LIKE '".$credential."' OR username = '".$credential."'"))) 
             throw new Exception("Es gibt keinen Account mit diesem Benutzernamen oder dieser E-Mail Adresse.");
 
-        $account = new Models\Account($account[0]["id"]);
+        $account = new Model\Account($account[0]["id"]);
 
         $hash = hash_hmac('sha256', date("dmYH").$account->get("id").$account->get("token"), hash_hmac('md5', date("dmYH").$account->get("id").$account->get("token"), App::get("SALT_TOKEN")));
         $code = strtoupper(substr($hash,0,3)."-".substr($hash,29,3)."-".substr($hash, -3));

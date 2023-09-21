@@ -2,6 +2,7 @@
 
 namespace Classes;
 
+
 class App {
 
     protected static $APP_URL;
@@ -52,7 +53,7 @@ class App {
             session_start();
             date_default_timezone_set('Europe/Berlin');
 
-            if (\Classes\App::get("APP_DEBUG")) {
+            if (App::get("APP_DEBUG")) {
 		    ini_set('display_errors', 1);
 		    ini_set('display_startup_errors', 1);
 		    error_reporting(E_ALL);

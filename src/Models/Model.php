@@ -2,6 +2,10 @@
 
 namespace Classes\Models;
 
+use \Classes\Database  as Database;
+use \Classes\Exception as Exception;
+
+
 abstract class Model {
 
     protected $data;
@@ -11,8 +15,8 @@ abstract class Model {
 
     public function __construct($value) {
         $this->objectID = $value;
-        if (empty($this->data = \Classes\Database::select($this->table, $this->primaryKey." = '".$this->objectID."'")))
-            throw new \Classes\Exception("Model '".get_class($this).":".$this->objectID."' not found.");
+        if (empty($this->data = Database::select($this->table, $this->primaryKey." = '".$this->objectID."'")))
+            throw new Exception("Model '".get_class($this).":".$this->objectID."' not found.");
     }
     
     public function get($key, $row = 0) {
@@ -21,7 +25,7 @@ abstract class Model {
     
     public function set($key, $value) {
         $this->data[0][$key] = $value;
-        \Classes\Database::update($this->table, $key." = '".$value."'", $this->primaryKey." = '".$this->objectID."'");
+        Database::update($this->table, $key." = '".$value."'", $this->primaryKey." = '".$this->objectID."'");
     }
     
     public function length() {

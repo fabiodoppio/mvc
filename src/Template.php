@@ -2,6 +2,7 @@
 
 namespace Classes;
 
+
 class Template {
 
     public static function get(string $file, ?array $vars = []) {

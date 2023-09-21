@@ -2,6 +2,9 @@
 
 namespace Classes\Models;
 
+use \Classes\Auth as Auth;
+
+
 class Guest extends Account {
 
     public function __construct() {
@@ -11,8 +14,8 @@ class Guest extends Account {
                 "email" => null,
                 "username" => null,
                 "password" => null,
-                "token" => \Classes\Auth::get_instance_token(),
-                "role" => \Classes\Models\Role::GUEST,
+                "token" => Auth::get_instance_token(),
+                "role" => Role::GUEST,
                 "lastaction" => date('Y-m-d H:i:s', time()),
                 "registered" => date('Y-m-d H:i:s', time())
             ];

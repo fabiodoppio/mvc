@@ -2,6 +2,7 @@
 
 namespace Classes;
 
+
 class Fairplay 
 {
     public static function username(string $val) {
