@@ -24,7 +24,11 @@ class Exception extends \Exception {
                 exit;
                 break;
             default:
+                http_response_code(400);
+                Ajax::response($this->getMessage());
                 Ajax::add(".response", '<div class="error">'.$this->getMessage().'</div>');
+                exit;
+                break;
         }
     }
 

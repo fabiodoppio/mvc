@@ -32,10 +32,6 @@ class AccountController extends Controller {
             throw new Exception("Dein Account wurde gesperrt oder deaktiviert.");
     }
 
-    public function afterAction() {
-        Ajax::push();
-    }
-
     public function loginAction() {
         if (!App::get("APP_LOGIN"))
             throw new Exception("Login zurzeit nicht möglich.");

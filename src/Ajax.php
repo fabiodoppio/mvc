@@ -19,6 +19,10 @@ class Ajax {
         @self::$output["redirect"] = $url;
     }
 
+    public static function response(string $text) {
+        @self::$output["response"] = $text;
+    }
+
     public static function push() {
         if (!empty(self::$output))
             echo json_encode(self::$output, JSON_HEX_QUOT | JSON_HEX_TAG);

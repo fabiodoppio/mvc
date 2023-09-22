@@ -2,6 +2,8 @@
 
 namespace Classes\Controllers;
 
+use \Classes\Ajax as Ajax;
+
 
 abstract class Controller {
 
@@ -12,7 +14,7 @@ abstract class Controller {
     }
 
     public function afterAction() {
-        return;
+        Ajax::push();
     }
 
 } 
