@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="de">
     <head>
-        <base href="{{App::get('APP_URL')}}">
+        <base href="{{App::get('APP_URL')}}/">
 		<meta charset="UTF-8"/>
         <meta http-equiv="Cache-Control" content="no-cache"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, shrink-to-fit=yes"/>
@@ -20,10 +20,10 @@
         <meta property="og:site_name" content="{{App::get('APP_NAME')}}"/>
         <meta property="og:image" content=""/>
         <title>{{$title}}</title>
-        <link rel="icon" type="image/png" href="{{App::get('DIR_MEDIA')}}/favicon.png"/>
+        <link rel="icon" type="image/png" href="{{App::get('APP_URL')}}{{App::get('DIR_MEDIA')}}/favicon.png"/>
         <link rel="canonical" href="{{$canonical}}"/>
-        <link rel="stylesheet" href="{{App::get('DIR_STYLES')}}/general.css"/>
-        <script src="{{App::get('DIR_VENDOR')}}/components/jquery/jquery.min.js"></script>
-        <script src="{{App::get('DIR_SCRIPTS')}}/ajax.js"></script>
+        <link rel="stylesheet" href="{{App::get('APP_URL')}}{{App::get('DIR_STYLES')}}/general.css"/>
+        <script src="{{App::get('APP_URL')}}{{App::get('DIR_VENDOR')}}/components/jquery/jquery.min.js"></script>
+        <script src="{{App::get('APP_URL')}}{{App::get('DIR_SCRIPTS')}}/ajax.js"></script>
 	</head>
     <body data-client="{{$client}}">

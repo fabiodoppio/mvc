@@ -2,6 +2,8 @@
 
 namespace Classes;
 
+use \Classes\App as App;
+
 
 class Exception extends \Exception {
 
@@ -10,17 +12,17 @@ class Exception extends \Exception {
             case 403:
                 Auth::unset_cookie();
                 http_response_code(403);
-                header("Location: /login");
+                header("Location: ".App::get("APP_URL")."/login");
                 exit;
                 break;
             case 404:
                 http_response_code(404);
-                header("Location: /404");
+                header("Location: ".App::get("APP_URL")."/404");
                 exit;
                 break;
             case 405:
                 http_response_code(405);
-                header("Location: /account");
+                header("Location: ".App::get("APP_URL")."/account");
                 exit;
                 break;
             default:
