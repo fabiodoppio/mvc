@@ -23,7 +23,7 @@ class UserController extends AccountController {
 
     public function logoutAction() {
         Auth::unset_cookie();
-        Ajax::redirect("/");
+        Ajax::redirect(App::get("APP_URL")."/");
     }
 
     public function verifyAction() {

@@ -10,7 +10,7 @@
                         <input type="text" name="credential" placeholder="Benutzername eingeben" autocomplete="off" required/></label><br>
                         <label for="pw">Passwort <span class="required" title="Pflichtfeld">*</span><br>
                         <input type="password" name="pw" placeholder="Passwort eingeben" autocomplete="off" required/></label><br>
-                        <a href="/recovery" title="Account wiederherstellen">Passwort vergessen?</a><br><br>
+                        <a href="{{App::get('APP_URL')}}/recovery" title="Account wiederherstellen">Passwort vergessen?</a><br><br>
                         <label for="stay"><input type="checkbox" name="stay" id="stay" value="1">Angemeldet bleiben</label><br><br>
                         <div class="response"></div>
                         <button>Anmelden</button>

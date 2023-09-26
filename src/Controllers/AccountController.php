@@ -41,7 +41,7 @@ class AccountController extends Controller {
             Fairplay::string(Request::get("pw")),
             Fairplay::boolean(Request::isset("stay") ? Request::get("stay") : false));
 
-        Ajax::redirect("/account");
+        Ajax::redirect(App::get("APP_URL")."/account");
     }
 
     public function signupAction() {
@@ -53,7 +53,7 @@ class AccountController extends Controller {
             Fairplay::email(Request::get("email")),
             Fairplay::password(Request::get("pw1"), Request::get("pw2")));
 
-        Ajax::redirect("/account/verify");
+        Ajax::redirect(App::get("APP_URL")."/account/verify");
     }
 
     public function recoveryAction() {
