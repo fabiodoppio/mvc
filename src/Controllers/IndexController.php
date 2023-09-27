@@ -26,8 +26,11 @@ class IndexController extends Controller {
     }
 
     public function loginAction() {
+        if (!App::get("APP_LOGIN"))
+            throw new Exception("Login zurzeit nicht möglich.", 404);
+
         if ($this->account->get("role") > Model\Role::GUEST)
-            throw new Exception("", 405);
+            throw new Exception("Dein Account hat nicht die erforderlichen Rechte.", 405);
 
         echo Template::get(
             "login.tpl", [
@@ -46,8 +49,11 @@ class IndexController extends Controller {
     }
 
     public function signupAction() {
+        if (!App::get("APP_SIGNUP"))
+            throw new Exception("Registrierung zurzeit nicht möglich.", 404);
+
         if ($this->account->get("role") > Model\Role::GUEST)
-            throw new Exception("", 405);
+            throw new Exception("Dein Account hat nicht die erforderlichen Rechte.", 405);
 
         echo Template::get(
             "signup.tpl", [
@@ -61,7 +67,7 @@ class IndexController extends Controller {
 
     public function recoveryAction() {
         if ($this->account->get("role") > Model\Role::GUEST)
-            throw new Exception("", 405);
+            throw new Exception("Dein Account hat nicht die erforderlichen Rechte.", 405);
 
         $base = (Request::isset("code")) ? base64_decode(Fairplay::string(Request::get("code"))) : "";
         $parts = explode('/',$base);
