@@ -3,6 +3,7 @@
 namespace Classes\Controllers;
 
 use \Classes\App       as App;
+use \Classes\Ajax      as Ajax;
 use \Classes\Auth      as Auth;
 use \Classes\Exception as Exception;
 use \Classes\Fairplay  as Fairplay;
@@ -38,6 +39,12 @@ class IndexController extends Controller {
                 "canonical" => App::get("APP_URL")."/login",
                 "client" => Auth::get_client_token()
         ]);
+    }
+
+    public function logoutAction() {
+        Auth::unset_cookie();
+        header("Location: ".App::get("APP_URL")."/");
+        exit();
     }
 
     public function signupAction() {
