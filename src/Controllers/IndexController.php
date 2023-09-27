@@ -26,8 +26,6 @@ class IndexController extends Controller {
     }
 
     public function loginAction() {
-        $this->account = Auth::get_current_account();
-
         if ($this->account->get("role") > Model\Role::GUEST)
             throw new Exception("", 405);
 
@@ -48,8 +46,6 @@ class IndexController extends Controller {
     }
 
     public function signupAction() {
-        $this->account = Auth::get_current_account();
-
         if ($this->account->get("role") > Model\Role::GUEST)
             throw new Exception("", 405);
 
@@ -64,8 +60,6 @@ class IndexController extends Controller {
     }
 
     public function recoveryAction() {
-        $this->account = Auth::get_current_account();
-
         if ($this->account->get("role") > Model\Role::GUEST)
             throw new Exception("", 405);
 
@@ -87,8 +81,6 @@ class IndexController extends Controller {
     }
 
     public function accountAction() {
-        $this->account = Auth::get_current_account();
-
         if ($this->account->get("role") < Model\Role::USER)
             throw new Exception("Dein Account hat nicht die erforderlichen Rechte.", 403);
         

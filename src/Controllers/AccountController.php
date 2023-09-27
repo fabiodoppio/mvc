@@ -17,7 +17,6 @@ use \Classes\Template  as Template;
 class AccountController extends Controller {
 
     public function beforeAction() {
-        $this->account = Auth::get_current_account();
         Auth::verify_client_token(Request::get("client"));
 
         if (time() < strtotime($this->account->get("lastaction")) + 2)
