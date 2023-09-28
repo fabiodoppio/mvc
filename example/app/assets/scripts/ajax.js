@@ -10,7 +10,7 @@ function ajax_send(data) {
         cache:false,
         contentType:false,
         processData:false,
-		url:window.location.orgin,
+		url:window.location,
 		data:data,
 	}).done(function(res) {
         if (res.redirect) 
