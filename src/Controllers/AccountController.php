@@ -120,6 +120,7 @@ class AccountController extends Controller {
             
                 $account->set("password", password_hash(Fairplay::password(Request::get("pw1"), Request::get("pw2")), PASSWORD_DEFAULT));
                 $account->set("role", ($account->get("role") == Model\Role::DEACTIVATED) ? Model\Role::USER : $account->get("role"));
+                $account->set("token", Auth::get_instance_token());
 
                 Ajax::add('.main-content form', '<div class="success">Dein Account wurde erfolgreich wiederhergstellt. Du kannst dich nun wie gewohnt anmelden.</div>');
                 break;
