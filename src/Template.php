@@ -40,7 +40,10 @@ class Template {
     }
 
     /**
-     * Clear the template cache by deleting cached files.
+     * Cache a template file or retrieve it from the cache.
+     *
+     * @param   string  $file   The name of the template file to cache.
+     * @return  string          The path to the cached template file.
      */
     private static function cache_file(string $file) { 
         $cache = App::get("DIR_ROOT").App::get("DIR_CACHE").'/_'.hash_hmac('sha256', $file, hash_hmac('md5', $file, App::get("SALT_CACHE"))).'.php';
@@ -57,10 +60,7 @@ class Template {
     }
 
     /**
-     * Cache a template file or retrieve it from the cache.
-     *
-     * @param   string  $file   The name of the template file to cache.
-     * @return  string          The path to the cached template file.
+     * Clear the template cache by deleting cached files.
      */
     public static function clear_cache() {
         foreach(glob(App::get("DIR_ROOT").App::get("DIR_CACHE").'/*') as $file)
