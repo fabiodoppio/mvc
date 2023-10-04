@@ -1,6 +1,25 @@
 # mvc
 Model View Controller (MVC) design pattern for simple web applications.
 
+### Features
+
+- **Default Pages for Home, Login, Signup, Recovery, Verification, Account and 404-Errors:** Supports simple customizations through template files (.tpl) similar to Smarty.
+
+- **Caching-Engine:** Pages are automatically cached for improved performance, reducing server load by serving cached content when appropriate.
+
+- **User Roles:** Supports the implementation of user roles, define and manage different access levels and permissions for users.
+
+- **Account Recovery:** Users can recover their accounts through a user-friendly recovery process, they can regain access to their accounts in case of forgotten passwords or other issues.
+
+- **Account Verification:**  Includes a built-in function to verify Accounts via E-Mail, enhancing security and trustworthiness in user registration.
+
+- **File Uploads:** Users can easily upload files through a secure and user-friendly interface, supporting various file formats and sizes.
+
+- **Security Mechanisms:** The package implements modern security measures to protect against potential attacks. This includes cooldown periods for repeated incorrect or unauthorized inputs and the verification of action tokens to prevent malicious actions.
+
+- **More Features soon..**
+
+
 Installation
 ============
 
