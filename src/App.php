@@ -1,10 +1,29 @@
 <?php
 
+/**
+ * mvc
+ * Model View Controller (MVC) design pattern for simple web applications.
+ *
+ * @see     https://github.com/fabiodoppio/mvc
+ *
+ * @author  Fabio Doppio (Developer) <hallo@fabiodoppio.de>
+ * @license https://opensource.org/license/mit/ MIT License
+ */
+
+
 namespace Classes;
 
-
+/**
+ * App Class
+ *
+ * The App class serves as the configuration manager for the web application. It provides
+ * settings and constants related to the application's behavior, such as database connection,
+ * directory paths, mail settings, and more. It also initializes the application based on
+ * the provided configuration.
+ */
 class App {
 
+    // Application default settings and constants
     protected static $APP_URL;
     protected static $APP_NAME;
     protected static $APP_AUTHOR        = "";
@@ -43,7 +62,11 @@ class App {
     protected static $MAIL_USERNAME;
     protected static $MAIL_PASSWORD;
 
-
+    /**
+     * Initialize the application based on the provided configuration.
+     *
+     * @param   array   $config     An associative array containing application configuration settings.
+     */
     public static function init(array $config) {
         try {
             foreach ($config as $key => $value)
@@ -54,10 +77,10 @@ class App {
             date_default_timezone_set('Europe/Berlin');
 
             if (App::get("APP_DEBUG")) {
-		    ini_set('display_errors', 1);
-		    ini_set('display_startup_errors', 1);
-		    error_reporting(E_ALL);
-   	    }
+                ini_set('display_errors', 1);
+                ini_set('display_startup_errors', 1);
+                error_reporting(E_ALL);
+   	        }
 
             $_REQUEST["request"]       = @$_REQUEST["request"] ?: "index/home";
             $_REQUEST["requestParts"]  = explode('/', $_REQUEST["request"]);
@@ -86,6 +109,13 @@ class App {
         $controller->afterAction();
     }
 
+    /**
+     * Get the value of a configuration key.
+     *
+     * @param   string  $key    The configuration key to retrieve the value for.
+     * @return  mixed           The value associated with the key.
+     * @throws                  Exception If the specified key is not a valid configuration key.
+     */
     public static function get($key) {
         if (!property_exists(__CLASS__, $key) || !isset(self::$$key))
             throw new Exception("Die Variable ".$key." wurde nicht konfiguriert.");

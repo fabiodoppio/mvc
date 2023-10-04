@@ -1,12 +1,31 @@
 <?php
 
+/**
+ * mvc
+ * Model View Controller (MVC) design pattern for simple web applications.
+ *
+ * @see     https://github.com/fabiodoppio/mvc
+ *
+ * @author  Fabio Doppio (Developer) <hallo@fabiodoppio.de>
+ * @license https://opensource.org/license/mit/ MIT License
+ */
+
+
 namespace Classes;
 
 use \Classes\App as App;
 
-
+/**
+ * Exception Class
+ *
+ * The Exception class extends the standard PHP Exception class and provides 
+ * custom exception handling for different HTTP response codes and error messages.
+ */
 class Exception extends \Exception {
 
+    /**
+     * Process the exception by handling different HTTP response codes and error messages.
+     */
     public function process() {
         switch($this->getCode()) {
             case 403:

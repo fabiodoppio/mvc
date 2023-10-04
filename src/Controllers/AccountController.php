@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * mvc
+ * Model View Controller (MVC) design pattern for simple web applications.
+ *
+ * @see     https://github.com/fabiodoppio/mvc
+ *
+ * @author  Fabio Doppio (Developer) <hallo@fabiodoppio.de>
+ * @license https://opensource.org/license/mit/ MIT License
+ */
+
+
 namespace Classes\Controllers;
 
 use \Classes\Ajax      as Ajax;
@@ -13,10 +24,21 @@ use \Classes\Models    as Model;
 use \Classes\Request   as Request;
 use \Classes\Template  as Template;
 
-
+/**
+ * AccountController Class
+ *
+ * The AccountController class handles user account-related actions, such as login, signup, and account recovery.
+ */
 class AccountController extends Controller {
 
+    /**
+     * Executes before performing any action in the controller.
+     * It performs necessary checks, such as verifying the client token, user activity rate, server status, and user role.
+     *
+     * @throws Exception If any of the checks fail.
+     */
     public function beforeAction() {
+        self::beforeAction();
         Auth::verify_client_token(Request::get("client"));
 
         if (time() < strtotime($this->account->get("lastaction")) + 2)
@@ -31,6 +53,11 @@ class AccountController extends Controller {
             throw new Exception("Dein Account wurde gesperrt oder deaktiviert.");
     }
 
+    /**
+     * Handles user login attempts.
+     *
+     * @throws Exception If login is not allowed, or if there are issues with the login credentials.
+     */
     public function loginAction() {
         if (!App::get("APP_LOGIN"))
             throw new Exception("Login zurzeit nicht möglich.");
@@ -43,6 +70,11 @@ class AccountController extends Controller {
         Ajax::redirect(App::get("APP_URL")."/account");
     }
 
+    /**
+     * Handles user registration/signup.
+     *
+     * @throws Exception If signup is not allowed or if there are issues with the registration data.
+     */
     public function signupAction() {
         if (!App::get("APP_SIGNUP"))
             throw new Exception("Registrierung zurzeit nicht möglich.");
@@ -55,6 +87,11 @@ class AccountController extends Controller {
         Ajax::redirect(App::get("APP_URL")."/account/verify");
     }
 
+    /**
+     * Handles account recovery requests, including sending recovery emails and setting new passwords.
+     *
+     * @throws Exception If there are issues with the recovery process.
+     */
     public function recoveryAction() {
         $credential = Fairplay::string(Request::get("credential"));
         if (empty($account = Database::select("app_accounts", "email LIKE '".$credential."' OR username = '".$credential."'")))

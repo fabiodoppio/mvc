@@ -1,10 +1,36 @@
 <?php
 
+/**
+ * mvc
+ * Model View Controller (MVC) design pattern for simple web applications.
+ *
+ * @see     https://github.com/fabiodoppio/mvc
+ *
+ * @author  Fabio Doppio (Developer) <hallo@fabiodoppio.de>
+ * @license https://opensource.org/license/mit/ MIT License
+ */
+
+
 namespace Classes;
 
-
+/**
+ * Email Class
+ *
+ * The Email class provides functionality for sending emails using the PHPMailer library.
+ * It supports sending HTML emails with optional attachments.
+ */
 class Email {
 
+    /**
+     * Send an email with the specified subject, recipient, HTML template, and optional attachment.
+     *
+     * @param   string          $subject The subject of the email.
+     * @param   string          $recipient The recipient's email address.
+     * @param   string          $template The HTML content of the email.
+     * @param   string|null     $attachment (Optional) The attachment content as a string.
+     * @param   string|null     $attachment_name (Optional) The name of the attachment file.
+     * @throws                  Exception If the email sending process fails.
+     */
 	public static function send(string $subject, string $recipient, string $template, ?string $attachment = null, ?string $attachment_name = null) {
         $mail = new \PHPMailer\PHPMailer\PHPMailer();
         

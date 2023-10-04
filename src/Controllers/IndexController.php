@@ -1,9 +1,19 @@
 <?php
 
+/**
+ * mvc
+ * Model View Controller (MVC) design pattern for simple web applications.
+ *
+ * @see     https://github.com/fabiodoppio/mvc
+ *
+ * @author  Fabio Doppio (Developer) <hallo@fabiodoppio.de>
+ * @license https://opensource.org/license/mit/ MIT License
+ */
+
+
 namespace Classes\Controllers;
 
 use \Classes\App       as App;
-use \Classes\Ajax      as Ajax;
 use \Classes\Auth      as Auth;
 use \Classes\Exception as Exception;
 use \Classes\Fairplay  as Fairplay;
@@ -11,9 +21,17 @@ use \Classes\Models    as Model;
 use \Classes\Request   as Request;
 use \Classes\Template  as Template;
 
-
+/**
+ * IndexController Class
+ *
+ * This controller class handles actions related to the website's index, including the home-, login-, logout-, signup-,
+ * recovery-, account- and error- page.
+ */
 class IndexController extends Controller {
 
+    /**
+     * Displaying the website's home page.
+     */
     public function homeAction() {
         echo Template::get(
             "home.tpl", [
@@ -25,6 +43,9 @@ class IndexController extends Controller {
         ]);
     }
 
+    /**
+     * Displaying the website's login page.
+     */
     public function loginAction() {
         if (!App::get("APP_LOGIN"))
             throw new Exception("Login zurzeit nicht möglich.", 404);
@@ -42,12 +63,18 @@ class IndexController extends Controller {
         ]);
     }
 
+    /**
+     * Displaying the website's logout page.
+     */
     public function logoutAction() {
         Auth::unset_cookie();
         header("Location: ".App::get("APP_URL")."/");
         exit();
     }
 
+    /**
+     * Displaying the website's signup page.
+     */
     public function signupAction() {
         if (!App::get("APP_SIGNUP"))
             throw new Exception("Registrierung zurzeit nicht möglich.", 404);
@@ -65,6 +92,9 @@ class IndexController extends Controller {
         ]);
     }
 
+    /**
+     * Displaying the website's recovery page (lost password).
+     */
     public function recoveryAction() {
         if ($this->account->get("role") > Model\Role::GUEST)
             throw new Exception("Dein Account hat nicht die erforderlichen Rechte.", 405);
@@ -86,6 +116,9 @@ class IndexController extends Controller {
         ]);
     }
 
+    /**
+     * Displaying the website's account page.
+     */
     public function accountAction() {
         if ($this->account->get("role") < Model\Role::USER)
             throw new Exception("Dein Account hat nicht die erforderlichen Rechte.", 403);
@@ -126,6 +159,9 @@ class IndexController extends Controller {
         }
     }
 
+    /**
+     * Displaying the website's error page (404).
+     */
     public function notFoundAction() {
         echo Template::get(
             "404.tpl", [
