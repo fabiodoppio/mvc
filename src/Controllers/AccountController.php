@@ -38,7 +38,7 @@ class AccountController extends Controller {
      * @throws Exception If any of the checks fail.
      */
     public function beforeAction() {
-        self::beforeAction();
+        parent::beforeAction();
         Auth::verify_client_token(Request::get("client"));
 
         if (time() < strtotime($this->account->get("lastaction")) + 2)
