@@ -38,9 +38,7 @@ msgid "There is no account with this username or email address."
 msgstr "Es gibt keinen Account mit diesem Benutzername oder dieser E-Mail Adresse."
 
 #: src/Auth.php:96
-msgid ""
-"You have entered the password incorrectly too many times. Please wait 10 "
-"minutes and try again."
+msgid "You have entered the password incorrectly too many times. Please wait 10 minutes and try again."
 msgstr "Du hast das Passwort zu oft falsch eingegeben. Bitte warte 10 Minuten und versuche es dann erneut."
 
 #: src/Auth.php:100
@@ -61,9 +59,7 @@ msgid "Your entered email address is already taken."
 msgstr "Diese E-Mail Adresse ist bereits vergeben."
 
 #: src/Auth.php:163
-msgid ""
-"You have tried to request a verification code too many times. Please wait 60 "
-"minutes and try again."
+msgid "You have tried to request a verification code too many times. Please wait 60 minutes and try again."
 msgstr "Du hast zu oft versucht, einen Bestätigungscode anzufordern. Bitte warte 60 Minuten und versuche es dann erneut."
 
 #: src/Auth.php:189
