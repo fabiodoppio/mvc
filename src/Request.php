@@ -29,7 +29,7 @@ class Request {
      */
     public static function get(string $input) {
         if (!isset($_REQUEST[$input]))
-            throw new Exception("Input ".$input." not found.");
+            throw new Exception(sprintf(_("Input %s not found."), $input));
         
         return $_REQUEST[$input];
     }

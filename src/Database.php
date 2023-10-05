@@ -28,11 +28,11 @@ class Database {
      * Establish a connection to the MySQL database using the application's configuration.
      *
      * @return 	\mysqli|false 	A MySQLi object representing the database connection or false if the connection fails.
-     * @throws 					Exception If the database connection fails.
+     * @throws 				Exception If the database connection fails.
      */
 	public static function connect() { 
 		if (!($mysqli = @mysqli_connect(App::get("DB_HOST") , App::get("DB_USERNAME"), App::get("DB_PASSWORD"), App::get("DB_DATABASE"))))
-			throw new Exception("Verbindung zur MySQL-Datenbank fehlgeschlagen.");
+			throw new Exception(_("Connection to MySQL database failed."));
 
 		return $mysqli;
 	}
@@ -41,7 +41,7 @@ class Database {
      * Execute an SQL query on the database.
      *
      * @param 	string 	$sql 	The SQL query to execute.
-     * @throws 					Exception If the query execution fails.
+     * @throws 				Exception If the query execution fails.
      */
 	public static function operate(string $sql) {
 		$mysqli = self::connect();
@@ -57,9 +57,9 @@ class Database {
      * Execute a SELECT query on the database and retrieve results.
      *
      * @param 	string 		$table 		The name of the database table.
-     * @param 	string 		$filter 	The WHERE clause filter for the query.
-     * @return 	array|null 				An array of query results or null if no results are found.
-     * @throws 							Exception If the query execution fails.
+     * @param 	string 		$filter 	     The WHERE clause filter for the query.
+     * @return array|null 			     An array of query results or null if no results are found.
+     * @throws 						Exception If the query execution fails.
      */
 	public static function select(string $table, string $filter) {
 		$sql = "SELECT * FROM ".$table." WHERE ".$filter;
@@ -80,7 +80,7 @@ class Database {
 	/**
      * Execute an UPDATE query on the database.
      *
-     * @param 	string 	$table 		The name of the database table.
+     * @param 	string 	$table 	The name of the database table.
      * @param 	string 	$values 	The SET clause for the UPDATE query.
      * @param 	string 	$filter 	The WHERE clause filter for the query.
      */
@@ -91,7 +91,7 @@ class Database {
 	/**
      * Execute an INSERT query on the database.
      *
-     * @param 	string 	$table 		The name of the database table.
+     * @param 	string 	$table 	The name of the database table.
      * @param 	string 	$columns 	The column names for the INSERT query.
      * @param 	string 	$values 	The values to insert into the table.
      */

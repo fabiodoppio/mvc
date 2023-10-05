@@ -36,13 +36,13 @@ class Upload {
      */
     public function __construct(array $file, string $prefix = "") {
         if ($file['error'] !== 0)
-            throw new Exception("Beim Upload ist ein Problem aufgetreten.");
+            throw new Exception(_("There was a problem uploading your file."));
         
         if (!in_array(mime_content_type($file['tmp_name']), App::get("APP_UPLOAD_TYPES")))
-            throw new Exception("Du hast einen nicht erlaubten Dateitypen ausgewählt.");
+            throw new Exception(_("Your file type is not allowed."));
 
         if ($file["size"] > App::get("APP_UPLOAD_SIZE"))
-            throw new Exception("Deine Datei überschreitet die maximal erlaubte Dateigröße von ".(App::get("APP_UPLOAD_SIZE")/1000)." KB.");
+            throw new Exception(sprintf(_("Your file exceeds the maximum allowed file size of %s KB."), (App::get("APP_UPLOAD_SIZE")/1000)));
 
         $filename = $prefix."_".bin2hex(random_bytes(9));
         $ext  = pathinfo($file['name'], PATHINFO_EXTENSION);

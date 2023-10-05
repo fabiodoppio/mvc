@@ -35,7 +35,7 @@ class IndexController extends Controller {
     public function homeAction() {
         echo Template::get(
             "home.tpl", [
-                "title" => "Startseite | ".App::get("APP_NAME"),
+                "title" => sprintf(_("Homepage | %s"), App::get("APP_NAME")),
                 "description" => App::get("APP_DESCRIPTION"),
                 "robots" => "index, follow",
                 "canonical" => App::get("APP_URL"),
@@ -48,14 +48,14 @@ class IndexController extends Controller {
      */
     public function loginAction() {
         if (!App::get("APP_LOGIN"))
-            throw new Exception("Login zurzeit nicht möglich.", 404);
+            throw new Exception(_("Signup not possible at the moment."), 404);
 
         if ($this->account->get("role") > Model\Role::GUEST)
-            throw new Exception("Dein Account hat nicht die erforderlichen Rechte.", 405);
+            throw new Exception(_("Your account does not have the required role."), 405);
 
         echo Template::get(
             "login.tpl", [
-                "title" => "Anmelden | ".App::get("APP_NAME"),
+                "title" => sprintf(_("Login | %s"), App::get("APP_NAME")),
                 "description" => App::get("APP_DESCRIPTION"),
                 "robots" => "noindex, nofollow",
                 "canonical" => App::get("APP_URL")."/login",
@@ -77,14 +77,14 @@ class IndexController extends Controller {
      */
     public function signupAction() {
         if (!App::get("APP_SIGNUP"))
-            throw new Exception("Registrierung zurzeit nicht möglich.", 404);
+            throw new Exception(_("Signup not possible at the moment."), 404);
 
         if ($this->account->get("role") > Model\Role::GUEST)
-            throw new Exception("Dein Account hat nicht die erforderlichen Rechte.", 405);
+            throw new Exception(_("Your account does not have the required role."), 405);
 
         echo Template::get(
             "signup.tpl", [
-                "title" => "Registrieren | ".App::get("APP_NAME"),
+                "title" => sprintf(_("Signup | %s"), App::get("APP_NAME")),
                 "description" => App::get("APP_DESCRIPTION"),
                 "robots" => "noindex, nofollow",
                 "canonical" => App::get("APP_URL")."/signup",
@@ -97,7 +97,7 @@ class IndexController extends Controller {
      */
     public function recoveryAction() {
         if ($this->account->get("role") > Model\Role::GUEST)
-            throw new Exception("Dein Account hat nicht die erforderlichen Rechte.", 405);
+            throw new Exception(_("Your account does not have the required role."), 405);
 
         $base = (Request::isset("code")) ? base64_decode(Fairplay::string(Request::get("code"))) : "";
         $parts = explode('/',$base);
@@ -106,7 +106,7 @@ class IndexController extends Controller {
 
         echo Template::get(
             "recovery.tpl", [
-                "title" => "Account wiederherstellen | ".App::get("APP_NAME"),
+                "title" => sprintf(_("Account recovery | %s"), App::get("APP_NAME")),
                 "description" => App::get("APP_DESCRIPTION"),
                 "robots" => "noindex, nofollow",
                 "canonical" => App::get("APP_URL")."/recovery",
@@ -121,13 +121,13 @@ class IndexController extends Controller {
      */
     public function accountAction() {
         if ($this->account->get("role") < Model\Role::USER)
-            throw new Exception("Dein Account hat nicht die erforderlichen Rechte.", 403);
+            throw new Exception(_("Your account does not have the required role."), 403);
         
         switch(Request::get("requestParts")[2]??"") {
             case "":
                 echo Template::get(
                     "account.tpl", [
-                        "title" => "Mein Account | ".App::get("APP_NAME"),
+                        "title" => sprintf(_("My Account | %s"), App::get("APP_NAME")),
                         "description" => App::get("APP_DESCRIPTION"),
                         "robots" => "noindex, nofollow",
                         "canonical" => App::get("APP_URL")."/account",
@@ -145,7 +145,7 @@ class IndexController extends Controller {
 
                 echo Template::get(
                     "verify.tpl", [
-                        "title" => "E-Mail Adresse verifizieren | ".App::get("APP_NAME"),
+                        "title" => sprintf(_("Email address verification | %s"), App::get("APP_NAME")),
                         "description" => App::get("APP_DESCRIPTION"),
                         "robots" => "noindex, nofollow",
                         "canonical" => App::get("APP_URL")."/verify",
@@ -155,7 +155,7 @@ class IndexController extends Controller {
                 ]);
             break;
             default:
-                throw new Exception("Seite nicht gefunden.", 404);
+                throw new Exception(_("Page not found."), 404);
         }
     }
 
@@ -165,7 +165,7 @@ class IndexController extends Controller {
     public function notFoundAction() {
         echo Template::get(
             "404.tpl", [
-                "title" => "404 - Seite nicht gefunden | ".App::get("APP_NAME"),
+                "title" => sprintf(_("404 - Page not found | %s"), App::get("APP_NAME")),
                 "description" => App::get("APP_DESCRIPTION"),
                 "robots" => "noindex, nofollow",
                 "canonical" => App::get("APP_URL")."/404",

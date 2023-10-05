@@ -28,6 +28,7 @@ class App {
     protected static $APP_NAME;
     protected static $APP_AUTHOR        = "";
     protected static $APP_DESCRIPTION   = "";
+    protected static $APP_LANGUAGE      = "de_DE";
     protected static $APP_VERSION       = "";
     protected static $APP_ONLINE        = true;
     protected static $APP_DEBUG         = true;
@@ -51,6 +52,7 @@ class App {
     protected static $DIR_FONTS         = "/app/assets/fonts";   
     protected static $DIR_SCRIPTS       = "/app/assets/scripts";
     protected static $DIR_STYLES        = "/app/assets/styles";
+    protected static $DIR_LOCALE        = "/app/locale"; 
     protected static $DIR_VENDOR        = "/app/vendor";
     protected static $DIR_VIEWS         = "/app/views";
     protected static $DIR_CACHE         = "/app/cache";
@@ -75,6 +77,11 @@ class App {
             
             session_start();
             date_default_timezone_set('Europe/Berlin');
+            
+            putenv('LC_ALL='.App::get("APP_LANGUAGE"));
+            setlocale(LC_ALL, App::get("APP_LANGUAGE"));
+            bindtextdomain("app", App::get("DIR_ROOT").App::get("DIR_LOCALE"));
+            textdomain("app");
 
             if (App::get("APP_DEBUG")) {
                 ini_set('display_errors', 1);
@@ -92,12 +99,12 @@ class App {
             $actionMethodName          = $actionName."Action";
 
             if (!class_exists($controllerClassName))
-                throw new Exception("Controller '".$controllerName."' not found.", 404);
+                throw new Exception(sprintf(_("Controller %s not found."), $controllerName), 404);
         
             $controller = new $controllerClassName();
             
             if (!method_exists($controller, $actionMethodName))
-                throw new Exception("Method '".$actionName."' not found.", 404);
+                throw new Exception(sprintf(_("Method %s not found."), $actionName), 404);
             
             $controller->beforeAction();
             $controller->$actionMethodName();
@@ -118,7 +125,7 @@ class App {
      */
     public static function get($key) {
         if (!property_exists(__CLASS__, $key) || !isset(self::$$key))
-            throw new Exception("Die Variable ".$key." wurde nicht konfiguriert.");
+            throw new Exception(sprintf(_("Variable %s not found."), $key));
 
         return self::$$key;
     }

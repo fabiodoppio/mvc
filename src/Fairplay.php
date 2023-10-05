@@ -30,14 +30,14 @@ class Fairplay {
      */
     public static function username(string $val) {
         if (strlen($val) > 18 || strlen($val) < 3)
-            throw new Exception("Dein Benutzername muss zwischen 3 und 18 Zeichen lang sein.");
+            throw new Exception(_("Your username must be between 3 and 18 characters long."));
         elseif (preg_match('/[^A-Za-z0-9]+/', $val, $res))
-            throw new Exception("Dein Benutzername darf keine Sonderzeichen enthalten.");
+            throw new Exception(_("Your username cannot contain any special characters."));
         
         $check = preg_replace("/[^A-Za-z0-9üÜöÖäÄ]/", "", strtolower($val));
         foreach(Database::select("app_badwords", "id >= 1") as $badword)
             if  (strstr($check, strtolower($badword["badword"])) !== false)
-                throw new Exception("Dein Benutzername ist nicht erlaubt.");
+                throw new Exception(_("Your username is not allowed."));
 
         return $val;
     }
@@ -52,9 +52,9 @@ class Fairplay {
      */
     public static function password(string $val, ?string $val2 = null) {
         if ($val != ($val2??$val))
-            throw new Exception("Deine Passwörter stimmen nicht überein.");
+            throw new Exception(_("Your passwords don't match."));
         elseif (strlen($val) < 8)
-            throw new Exception("Dein Password muss mindestens 8 Zeichen lang sein.");
+            throw new Exception(_("Your password must be at least 8 characters long."));
         return $val;
     }
 
@@ -68,7 +68,7 @@ class Fairplay {
     public static function email(string $val) {
         $val = filter_var($val, FILTER_VALIDATE_EMAIL);
 		if ($val === false) 
-            throw new Exception("Du hast eine ungültige E-Mail Adresse eingegeben.");
+            throw new Exception(_("You have entered an invalid email address."));
         return $val;
     }
     
@@ -82,7 +82,7 @@ class Fairplay {
 	public static function integer(string $val) {
 		$val = filter_var($val, FILTER_VALIDATE_INT);
 		if ($val === false) 
-            throw new Exception("Du hast eine ungültige Zahl eingegeben.");
+            throw new Exception(_("You entered an invalid integer."));
 		return $val;
 	}
     
@@ -95,7 +95,7 @@ class Fairplay {
      */
     public static function number(string $val) {
         if(!is_numeric($val))
-            throw new Exception("Du hast eine ungültige Zahl eingegeben.");
+            throw new Exception(_("You entered an invalid number."));
         return $val;
     }
     
@@ -108,7 +108,7 @@ class Fairplay {
      */
 	public static function string(string $val) {
 		if (!is_string($val))
-            throw new Exception("Du hast eine ungültige Zeichenkette eingegeben.");
+            throw new Exception(_("You entered an invalid string."));
 		return $val;
 	}
 
@@ -122,7 +122,7 @@ class Fairplay {
 	public static function boolean(string $val) {
 		$val = filter_var($val, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         if ($val === null)
-            throw new Exception("Du hast einen ungültigen Wahrheitswert eingegeben.");
+            throw new Exception(_("You entered an invalid boolean."));
 		return $val;
 	}
 
@@ -136,7 +136,7 @@ class Fairplay {
 	public static function url(string $val) {
 		$val = filter_var($val, FILTER_VALIDATE_URL);
 		if ($val === false)
-            throw new Exception("Du hast eine ungültige URL eingegeben.");
+            throw new Exception(_("You entered an invalid url."));
         return $val;
 	}
     

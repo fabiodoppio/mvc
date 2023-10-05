@@ -52,7 +52,7 @@ class Email {
         if ($attachment && $attachment_name)
             $mail->addStringAttachment($attachment, $attachment_name);
         if(!$mail->send())
-           throw new Exception("E-Mail konnte nicht versendet werden.");
+           throw new Exception(_("Email could not be sent."));
 	}
 
 }
