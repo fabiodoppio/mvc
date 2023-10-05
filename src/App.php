@@ -28,7 +28,7 @@ class App {
     protected static $APP_NAME;
     protected static $APP_AUTHOR        = "";
     protected static $APP_DESCRIPTION   = "";
-    protected static $APP_LANGUAGE      = "de_DE";
+    protected static $APP_LANGUAGE      = "";
     protected static $APP_VERSION       = "";
     protected static $APP_ONLINE        = true;
     protected static $APP_DEBUG         = true;
