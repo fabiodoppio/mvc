@@ -1,0 +1,233 @@
+# mvc
+# Model View Controller (MVC) design pattern for simple web applications.
+# This file is distributed under the same license as the package (MIT License).
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2023-10-05 12:11+0200\n"
+"PO-Revision-Date: 2023-10-05 12:11+0200\n"
+"Last-Translator: Fabio Doppio <hallo@fabiodoppio.de>\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/App.php:102
+#, php-format
+msgid "Controller %s not found."
+msgstr "Controller %s nicht gefunden."
+
+#: src/App.php:107
+#, php-format
+msgid "Method %s not found."
+msgstr "Methode %s nicht gefunden."
+
+#: src/App.php:128
+#, php-format
+msgid "Variable %s not found."
+msgstr "Variable %s nicht gefunden."
+
+#: src/Auth.php:67 src/Auth.php:70 src/Auth.php:76
+msgid "Unauthorized Access."
+msgstr "Unerlaubter Zugriff."
+
+#: src/Auth.php:91 src/Auth.php:158 src/Auth.php:181
+#: src/Controllers/AccountController.php:98
+msgid "There is no account with this username or email address."
+msgstr "Es gibt keinen Account mit diesem Benutzername oder dieser E-Mail Adresse."
+
+#: src/Auth.php:96
+msgid ""
+"You have entered the password incorrectly too many times. Please wait 10 "
+"minutes and try again."
+msgstr "Du hast das Passwort zu oft falsch eingegeben. Bitte warte 10 Minuten und versuche es dann erneut."
+
+#: src/Auth.php:100
+msgid "You entered an incorrect password."
+msgstr "Du hast ein falsches Passwort eingegeben."
+
+#: src/Auth.php:104
+#: src/Controllers/AccountController.php:53
+msgid "Your account has been suspended or deactivated."
+msgstr "Dein Account wurde gesperrt oder deaktiviert."
+
+#: src/Auth.php:119
+msgid "Your entered username is already taken."
+msgstr "Dieser Benutzername ist bereits vergeben."
+
+#: src/Auth.php:122
+msgid "Your entered email address is already taken."
+msgstr "Diese E-Mail Adresse ist bereits vergeben."
+
+#: src/Auth.php:163
+msgid ""
+"You have tried to request a verification code too many times. Please wait 60 "
+"minutes and try again."
+msgstr "Du hast zu oft versucht, einen Bestätigungscode anzufordern. Bitte warte 60 Minuten und versuche es dann erneut."
+
+#: src/Auth.php:189
+msgid "Your verification code is invalid."
+msgstr "Dein Bestätigungscode ist ungültig."
+
+#: src/Auth.php:210
+msgid "Illegal activity detected."
+msgstr "Illegale Aktivität festgestellt."
+
+#: src/Database.php:35
+msgid "Connection to MySQL database failed."
+msgstr "Verbindung zur MySQL-Datenbank fehlgeschlagen."
+
+#: src/Email.php:55
+msgid "Email could not be sent."
+msgstr "E-Mail konnte nicht versendet werden."
+
+#: src/Fairplay.php:33
+msgid "Your username must be between 3 and 18 characters long."
+msgstr "Dein Benutzername muss zwischen 3 und 18 Zeichen lang sein."
+
+#: src/Fairplay.php:35
+msgid "Your username cannot contain any special characters."
+msgstr "Dein Benutzername darf keine Sonderzeichen enthalten."
+
+#: src/Fairplay.php:40
+msgid "Your username is not allowed."
+msgstr "Dieser Benutzername ist nicht erlaubt."
+
+#: src/Fairplay.php:55
+msgid "Your passwords don't match."
+msgstr "Deine Passwörter stimmen nicht überein."
+
+#: src/Fairplay.php:57
+msgid "Your password must be at least 8 characters long."
+msgstr "Dein Passwort muss mindestens 8 Zeichen lang sein."
+
+#: src/Fairplay.php:71
+msgid "You have entered an invalid email address."
+msgstr "Du hast eine ungültige E-Mail Adresse eingegeben."
+
+#: src/Fairplay.php:85
+msgid "You entered an invalid integer."
+msgstr "Du hast eine ungültige Zahl eingegeben."
+
+#: src/Fairplay.php:98
+msgid "You entered an invalid number."
+msgstr "Du hast eine ungültige Nummer eingegeben."
+
+#: src/Fairplay.php:111
+msgid "You entered an invalid string."
+msgstr "Du hast eine ungültige Zeichenkette eingegeben."
+
+#: src/Fairplay.php:125
+msgid "You entered an invalid boolean."
+msgstr "Du hast einen ungültigen Wahrheitswert eingegeben."
+
+#: src/Fairplay.php:139
+msgid "You entered an invalid url."
+msgstr "Du hast eine ungültige URL eingegeben."
+
+#: src/Request.php:32
+#, php-format
+msgid "Input %s not found."
+msgstr "Eingabe %s nicht gefunden."
+
+#: src/Template.php:79
+#, php-format
+msgid "Template %s not found."
+msgstr "Template %s nicht gefunden."
+
+#: src/Upload.php:39
+msgid "There was a problem uploading your file."
+msgstr "Es gab ein Problem mit dem Upload deiner Datei."
+
+#: src/Upload.php:42
+msgid "Your file type is not allowed."
+msgstr "Dieser Dateityp ist nicht erlaubt."
+
+#: src/Upload.php:45
+#, php-format
+msgid "Your file exceeds the maximum allowed file size of %s KB."
+msgstr "Deine Datei überschreitet die erlaubte Dateigröße von %s KB."
+
+#: src/Controllers/AccountController.php:45
+msgid "Too many requests in a short time."
+msgstr "Zu viele Anfragen in kurzer Zeit."
+
+#: src/Controllers/AccountController.php:50
+msgid "Server currently offline."
+msgstr "Server offline."
+
+#: src/Controllers/AccountController.php:63
+msgid "Login not possible at the moment."
+msgstr "Anmelden zurzeit nicht möglich."
+
+#: src/Controllers/AccountController.php:80
+#: src/Controllers/IndexController.php:51
+#: src/Controllers/IndexController.php:80
+msgid "Signup not possible at the moment."
+msgstr "Registrieren zurzeit nicht möglich."
+
+#: src/Controllers/AccountController.php:107
+#: src/Controllers/IndexController.php:109
+#, php-format
+msgid "Account recovery | %s"
+msgstr "Account wiederherstellen | %s"
+
+#: src/Controllers/AccountController.php:119
+msgid "Your account cannot be restored."
+msgstr "Dein Account kann nicht wiederhergestellt werden."
+
+#: src/Controllers/AccountController.php:125
+msgid "Your account has been successfully restored. You can now log in as usual."
+msgstr "Dein Account wurde erfolgreich wiederhergestellt. Du kannst dich nun wie gewohnt anmelden."
+
+#: src/Controllers/IndexController.php:38
+#, php-format
+msgid "Homepage | %s"
+msgstr "Startseite | %s"
+
+#: src/Controllers/IndexController.php:54
+#: src/Controllers/IndexController.php:83
+#: src/Controllers/IndexController.php:100
+#: src/Controllers/IndexController.php:124
+#: src/Controllers/UserController.php:39
+msgid "Your account does not have the required role."
+msgstr "Dein Account hat nicht die erforderlichen Rechte."
+
+#: src/Controllers/IndexController.php:58
+#, php-format
+msgid "Login | %s"
+msgstr "Anmelden | %s"
+
+#: src/Controllers/IndexController.php:87
+#, php-format
+msgid "Signup | %s"
+msgstr "Registrieren | %s"
+
+#: src/Controllers/IndexController.php:130
+#, php-format
+msgid "My Account | %s"
+msgstr "Mein Account | %s"
+
+#: src/Controllers/IndexController.php:148
+#: src/Controllers/UserController.php:60
+#, php-format
+msgid "Email address verification | %s"
+msgstr "E-Mail Adresse verifizieren | %s"
+
+#: src/Controllers/IndexController.php:158
+msgid "Page not found."
+msgstr "Seite nicht gefunden."
+
+#: src/Controllers/IndexController.php:168
+#, php-format
+msgid "404 - Page not found | %s"
+msgstr "404 - Seite nicht gefunden | %s"
+
+#: src/Controllers/UserController.php:73
+msgid "Your email address has been successfully verified."
+msgstr "Deine E-Mail Adresse wurde erfolgreich verifiziert."
+
+#: src/Models/Model.php:65
+msgid "Model %1$s:%2$s not found."
+msgstr "Model %1$s:%2$s nicht gefunden."
