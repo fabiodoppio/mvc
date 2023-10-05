@@ -13,7 +13,7 @@
 
 namespace MVC;
 
-use \MVC\Models as Model;
+use MVC\Models as Model;
 
 /**
  * Auth Class

@@ -13,7 +13,7 @@
 
 namespace MVC\Models;
 
-use \MVC\Auth as Auth;
+use MVC\Auth as Auth;
 
 /**
  * Guest Class

@@ -13,8 +13,8 @@
 
 namespace MVC\Models;
 
-use \MVC\Database  as Database;
-use \MVC\Exception as Exception;
+use MVC\Database  as Database;
+use MVC\Exception as Exception;
 
 /**
  * Model Class (Abstract)

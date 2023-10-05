@@ -13,15 +13,15 @@
 
 namespace MVC\Controllers;
 
-use \MVC\Ajax      as Ajax;
-use \MVC\App       as App;
-use \MVC\Auth      as Auth;
-use \MVC\Email     as Email;
-use \MVC\Exception as Exception;
-use \MVC\Fairplay  as Fairplay;
-use \MVC\Models    as Model;
-use \MVC\Request   as Request;
-use \MVC\Template  as Template;
+use MVC\Ajax      as Ajax;
+use MVC\App       as App;
+use MVC\Auth      as Auth;
+use MVC\Email     as Email;
+use MVC\Exception as Exception;
+use MVC\Fairplay  as Fairplay;
+use MVC\Models    as Model;
+use MVC\Request   as Request;
+use MVC\Template  as Template;
 
 /**
  * UserController Class

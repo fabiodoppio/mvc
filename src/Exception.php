@@ -13,7 +13,7 @@
 
 namespace MVC;
 
-use \MVC\App as App;
+use MVC\App as App;
 
 /**
  * Exception Class

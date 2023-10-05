@@ -93,7 +93,7 @@ class App {
             $_REQUEST["requestParts"]  = explode('/', $_REQUEST["request"]);
 
             $controllerName            = $_REQUEST["requestParts"][0] ?: "index";
-            $controllerClassName       = '\\MVC\\Controllers\\'.ucfirst($controllerName).'Controller';
+            $controllerClassName       = '\MVC\\Controllers\\'.ucfirst($controllerName).'Controller';
 
             $actionName                = $_REQUEST["requestParts"][1] ?: "home";
             $actionMethodName          = $actionName."Action";
