@@ -11,9 +11,9 @@
  */
 
 
-namespace Classes;
+namespace MVC;
 
-use \Classes\Models as Model;
+use \MVC\Models as Model;
 
 /**
  * Auth Class

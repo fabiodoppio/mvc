@@ -11,9 +11,9 @@
  */
 
 
-namespace Classes\Models;
+namespace MVC\Models;
 
-use \Classes\Database as Database;
+use \MVC\Database as Database;
 
 /**
  * Account Class

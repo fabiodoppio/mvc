@@ -1,4 +1,4 @@
-{% use \Classes\App as App; %}
+{% use \MVC\App as App; %}
 <!-- Copyright (C) {{date('Y')}} {{App::get('APP_NAME')}} - All Rights Reserved. -->
 
 <!DOCTYPE html>

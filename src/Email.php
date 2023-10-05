@@ -11,7 +11,7 @@
  */
 
 
-namespace Classes;
+namespace MVC;
 
 /**
  * Email Class

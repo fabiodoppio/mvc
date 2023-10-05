@@ -11,15 +11,15 @@
  */
 
 
-namespace Classes\Controllers;
+namespace MVC\Controllers;
 
-use \Classes\App       as App;
-use \Classes\Auth      as Auth;
-use \Classes\Exception as Exception;
-use \Classes\Fairplay  as Fairplay;
-use \Classes\Models    as Model;
-use \Classes\Request   as Request;
-use \Classes\Template  as Template;
+use \MVC\App       as App;
+use \MVC\Auth      as Auth;
+use \MVC\Exception as Exception;
+use \MVC\Fairplay  as Fairplay;
+use \MVC\Models    as Model;
+use \MVC\Request   as Request;
+use \MVC\Template  as Template;
 
 /**
  * IndexController Class

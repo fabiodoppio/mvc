@@ -11,7 +11,7 @@
  */
 
 
-namespace Classes\Models;
+namespace MVC\Models;
 
 /**
  * Role Class

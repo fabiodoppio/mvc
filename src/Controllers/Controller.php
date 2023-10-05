@@ -11,10 +11,10 @@
  */
 
 
-namespace Classes\Controllers;
+namespace MVC\Controllers;
 
-use \Classes\Ajax as Ajax;
-use \Classes\Auth as Auth;
+use \MVC\Ajax as Ajax;
+use \MVC\Auth as Auth;
 
 /**
  * Controller Class (Abstract)

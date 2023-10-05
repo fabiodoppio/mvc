@@ -11,9 +11,9 @@
  */
 
 
-namespace Classes;
+namespace MVC;
 
-use \Classes\App as App;
+use \MVC\App as App;
 
 /**
  * Exception Class

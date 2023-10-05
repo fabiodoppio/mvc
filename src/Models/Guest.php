@@ -11,9 +11,9 @@
  */
 
 
-namespace Classes\Models;
+namespace MVC\Models;
 
-use \Classes\Auth as Auth;
+use \MVC\Auth as Auth;
 
 /**
  * Guest Class
