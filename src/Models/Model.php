@@ -62,7 +62,7 @@ abstract class Model {
     public function __construct($value) {
         $this->objectID = $value;
         if (empty($this->data = Database::select($this->table, $this->primaryKey." = '".$this->objectID."'")))
-            throw new Exception(sprintf(_("Model %1$s:%2$s not found."), get_class($this), $this->objectID));
+            throw new Exception(sprintf(_("Model %1\$s:%2\$s not found."), get_class($this), $this->objectID));
     }
     
     /**
