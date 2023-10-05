@@ -2,7 +2,7 @@
 
 require_once __DIR__.'/app/vendor/autoload.php';
 
-\MVC\App::init([
+MVC\App::init([
     "APP_URL"           => "https://",
     "APP_NAME"          => "",
     #"APP_AUTHOR"       => "",
