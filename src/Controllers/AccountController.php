@@ -80,7 +80,7 @@ class AccountController extends Controller {
             throw new Exception(_("Signup not possible at the moment."));
 
         Auth::set_new_account(
-            Fairplay::string(Request::get("username")), 
+            Fairplay::username(Request::get("username")), 
             Fairplay::email(Request::get("email")),
             Fairplay::password(Request::get("pw1"), Request::get("pw2")));
 
