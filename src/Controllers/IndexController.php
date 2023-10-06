@@ -168,8 +168,8 @@ class IndexController extends Controller {
             throw new Exception(_("Your account does not have the required role."), 403);
 
         $accounts = array();
-        foreach (Database::select("app_accounts", "id > 0") as $row => $user)
-            $accounts[] = new Model\Account($user[$row]['id']);
+        foreach (Database::select("app_accounts", "id > 0") as $user)
+            $accounts[] = new Model\Account($user['id']);
 
         echo Template::get(
                 "admin.tpl", [
