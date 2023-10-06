@@ -39,6 +39,38 @@ class Account extends Model {
     protected $primaryKey = "app_accounts.id";
 
     /**
+     * Retrieves metadata associated with the user account based on the given name.
+     *
+     * @param   string          $name   The name of the metadata to retrieve.
+     * @return  string|null             The value of the metadata if found, or null if not found.
+     */
+    public function get_meta(string $name) {
+        foreach(Database::select("app_accounts_meta", "id = '".$this->get("id")."'") as $meta)
+            if ($meta["name"] == $name)
+                return $meta["value"];
+
+        return null;
+    }
+
+    /**
+     * Sets or updates metadata associated with the user account based on the given name and value.
+     * If the metadata with the provided name already exists, its value is updated. If the provided
+     * value is null, the metadata is deleted. If the metadata does not exist, a new entry is created.
+     *
+     * @param   string  $name   The name of the metadata.
+     * @param   string  $value  The value to set for the metadata. Use null to delete the metadata.
+     */
+    public function set_meta(string $name, string $value) {
+        if ($this->get_meta($name))
+            if ($value == null)
+                Database::delete("app_accounts_meta", "id = '".$this->get("id")."' AND name = '".$name."'");
+            else
+                Database::update("app_accounts_meta", "value = '".$value."'", "id = '".$this->get("id")."' AND name = '".$name."'");
+        else
+            Database::insert("app_accounts_meta", "id, name, value", "'".$this->get("id")."', '".$name."', '".$value."'");
+    }
+
+    /**
      * Set a user account as suspicious in the watchlist.
      *
      * @param   string  $request    The suspicious request or activity to record.

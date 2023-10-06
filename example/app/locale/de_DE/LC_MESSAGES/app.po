@@ -220,9 +220,26 @@ msgstr "Seite nicht gefunden."
 msgid "404 - Page not found | %s"
 msgstr "404 - Seite nicht gefunden | %s"
 
+#: src/Controllers/IndexController.php:176
+#, php-format
+msgid "Backend | %s"
+msgstr "Backend | %s"
+
 #: src/Controllers/UserController.php:73
 msgid "Your email address has been successfully verified."
 msgstr "Deine E-Mail Adresse wurde erfolgreich verifiziert."
+
+#: src/Controllers/AdminController.php:51
+msgid "Changes saved successfully."
+msgstr "Deine Änderungen wurden erfolgreich gespeichert."
+
+#: src/Controllers/AdminController.php:55
+msgid "You can not delete yourself."
+msgstr "Du kannst dich nicht selbst löschen."
+
+#: src/Controllers/AdminController.php:59
+msgid "User deleted successfully."
+msgstr "Der Account wurde erfolgreich gelöscht."
 
 #: src/Models/Model.php:65
 msgid "Model %1$s:%2$s not found."

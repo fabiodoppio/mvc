@@ -15,6 +15,7 @@ namespace MVC\Controllers;
 
 use MVC\App       as App;
 use MVC\Auth      as Auth;
+use MVC\Database  as Database;
 use MVC\Exception as Exception;
 use MVC\Fairplay  as Fairplay;
 use MVC\Models    as Model;
@@ -160,16 +161,24 @@ class IndexController extends Controller {
     }
 
     /**
-     * Displaying the website's error page (404).
+     * Displaying the website's admin page.
      */
-    public function notFoundAction() {
+    public function adminAction() {
+        if ($this->account->get("role") < Model\Role::ADMINISTRATOR)
+            throw new Exception(_("Your account does not have the required role."), 403);
+
+        $accounts = array();
+        foreach (Database::select("app_accounts", "id > 0") as $row => $user)
+            $accounts[] = new Model\Account($user[$row]['id']);
+
         echo Template::get(
-            "404.tpl", [
-                "title" => sprintf(_("404 - Page not found | %s"), App::get("APP_NAME")),
-                "description" => App::get("APP_DESCRIPTION"),
-                "robots" => "noindex, nofollow",
-                "canonical" => App::get("APP_URL")."/404",
-                "client" => Auth::get_client_token()
+                "admin.tpl", [
+                    "title" => sprintf(_("Backend | %s"), App::get("APP_NAME")),
+                    "description" => App::get("APP_DESCRIPTION"),
+                    "robots" => "noindex, nofollow",
+                    "canonical" => App::get("APP_URL")."/admin",
+                    "client" => Auth::get_client_token(),
+                    "accounts" => $accounts
         ]);
     }
 

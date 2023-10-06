@@ -127,6 +127,34 @@ class Auth {
     }
 
     /**
+     * Update a user account with the provided username, email, and password.
+     *
+     * @param   int     $id         The user account's ID.
+     * @param   string  $username   The username for the new account.
+     * @param   string  $email      The email address for the new account.
+     * @param   string  $password   The password for the new account.
+     * @throws                      Exception If the username or email is already taken.
+     */
+    public static function update_account(int $id, string $username, string $email, string $password) {
+        if (!empty(Database::select("app_accounts", "username LIKE '".$username."'")[0]))
+            throw new Exception(_("Your entered username is already taken."));
+
+        if (!empty(Database::select("app_accounts", "email LIKE '".$email."'")[0]))
+            throw new Exception(_("Your entered email address is already taken."));
+
+        Database::update("app_accounts", "email = '".strtolower($email)."', username = '".$username."', password = '".password_hash($password, PASSWORD_DEFAULT)."'", "id = '".$id."'");
+    }
+
+    /**
+     * Delete a user account.
+     * 
+     * @param   int     $id     The user account's ID.
+     */
+    public static function delete_account(int $id) {
+        Database::delete("app_accounts", "id = '".$id."'");
+    }
+
+    /**
      * Set a user account's authentication cookie.
      *
      * @param   int         $id         The user account's ID.
