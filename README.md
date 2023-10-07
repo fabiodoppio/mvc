@@ -29,7 +29,7 @@ Official installation method is via composer and its packagist package [fabiodop
 $ composer require fabiodoppio/mvc
 ```
 
-..or just copy everything from the _example_ directory and run:
+..or just copy the _example_ directory and run:
 ```
 $ composer update
 ```
@@ -65,7 +65,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO"; START TRANSACTION; SET time_zone = "+00:
 Usage
 =====
 
-The simplest usage to create an App would be as follows:
+The simplest usage to create an App would be as follows in your _index.php_:
 
 ```php
 <?php
