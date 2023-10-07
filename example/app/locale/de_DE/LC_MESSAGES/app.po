@@ -51,10 +51,12 @@ msgid "Your account has been suspended or deactivated."
 msgstr "Dein Account wurde gesperrt oder deaktiviert."
 
 #: src/Auth.php:119
+#: src/Controllers/AdminController.php:51
 msgid "Your entered username is already taken."
 msgstr "Dieser Benutzername ist bereits vergeben."
 
 #: src/Auth.php:122
+#: src/Controllers/AdminController.php:59
 msgid "Your entered email address is already taken."
 msgstr "Diese E-Mail Adresse ist bereits vergeben."
 
@@ -229,15 +231,19 @@ msgstr "Backend | %s"
 msgid "Your email address has been successfully verified."
 msgstr "Deine E-Mail Adresse wurde erfolgreich verifiziert."
 
-#: src/Controllers/AdminController.php:51
+#: src/Controllers/AdminController.php:76
 msgid "Changes saved successfully."
 msgstr "Deine Änderungen wurden erfolgreich gespeichert."
 
-#: src/Controllers/AdminController.php:55
+#: src/Controllers/AdminController.php:80
 msgid "You can not delete yourself."
 msgstr "Du kannst dich nicht selbst löschen."
 
-#: src/Controllers/AdminController.php:59
+#: src/Controllers/AdminController.php:67
+msgid "You can not change your own role."
+msgstr "Du kannst nicht deine eigene Role ändern."
+
+#: src/Controllers/AdminController.php:83
 msgid "User deleted successfully."
 msgstr "Der Account wurde erfolgreich gelöscht."
 
