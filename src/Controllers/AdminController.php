@@ -14,7 +14,6 @@
 namespace MVC\Controllers;
 
 use MVC\Ajax      as Ajax;
-use MVC\Auth      as Auth;
 use MVC\Database  as Database;
 use MVC\Exception as Exception;
 use MVC\Fairplay  as Fairplay;
