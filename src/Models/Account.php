@@ -39,35 +39,40 @@ class Account extends Model {
     protected $primaryKey = "app_accounts.id";
 
     /**
-     * Retrieves metadata associated with the user account based on the given name.
+     * Constructor method for the Model class extended by retrieving metadata associated with the user account.
      *
-     * @param   string          $name   The name of the metadata to retrieve.
-     * @return  string|null             The value of the metadata if found, or null if not found.
+     * @param   mixed   $value      The object ID or primary key value for the model.
+     * @throws                      Exception If the account cannot be found in the database.
      */
-    public function get_meta(string $name) {
+    public function __construct($value) {
+        parent::__construct($value);
         foreach(Database::select("app_accounts_meta", "id = '".$this->get("id")."'") as $meta)
-            if ($meta["name"] == $name)
-                return $meta["value"];
-
-        return null;
+            $this->data[0][$meta["name"]] = $meta["value"];
     }
 
     /**
-     * Sets or updates metadata associated with the user account based on the given name and value.
-     * If the metadata with the provided name already exists, its value is updated. If the provided
-     * value is null, the metadata is deleted. If the metadata does not exist, a new entry is created.
+     * Set a value in the model's data and update the corresponding database record. 
+     * If the column key does not exist, it sets or updates the metadata associated with the user account 
+     * based on the given name and value. If the metadata with the provided name already exists, its value 
+     * is updated. If the provided value is null, the metadata is deleted. If the metadata does not exist, 
+     * a new entry is created.
      *
-     * @param   string  $name   The name of the metadata.
-     * @param   string  $value  The value to set for the metadata. Use null to delete the metadata.
+     * @param   string  $key    The key to set the value for.
+     * @param   mixed   $value  The value to set.
      */
-    public function set_meta(string $name, string $value) {
-        if ($this->get_meta($name))
-            if ($value == null)
-                Database::delete("app_accounts_meta", "id = '".$this->get("id")."' AND name = '".$name."'");
+    public function set($key, $value) {
+        if (!empty(Database::select($this->table, "COLUMN_NAME = '".$key."'")))
+            Database::update($this->table, $key." = '".$value."'", $this->primaryKey." = '".$this->objectID."'");
+        else 
+            if ($this->get($key))
+                if ($value == null)
+                    Database::delete("app_accounts_meta", "id = '".$this->get("id")."' AND name = '".$key."'");
+                else
+                    Database::update("app_accounts_meta", "value = '".$value."'", "id = '".$this->get("id")."' AND name = '".$key."'");
             else
-                Database::update("app_accounts_meta", "value = '".$value."'", "id = '".$this->get("id")."' AND name = '".$name."'");
-        else
-            Database::insert("app_accounts_meta", "id, name, value", "'".$this->get("id")."', '".$name."', '".$value."'");
+                Database::insert("app_accounts_meta", "id, name, value", "'".$this->get("id")."', '".$key."', '".$value."'");
+
+        $this->data[0][$key] = $value;
     }
 
     /**
