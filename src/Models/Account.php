@@ -61,7 +61,7 @@ class Account extends Model {
      * @param   mixed   $value  The value to set.
      */
     public function set($key, $value) {
-        if (Database::operate("SHOW COLUMNS FROM ".$this->table." LIKE '".$key."'")['num_rows'] > 0)
+        if (!empty(Database::operate("SHOW COLUMNS FROM ".$this->table." LIKE '".$key."'")))
             Database::update($this->table, $key." = '".$value."'", $this->primaryKey." = '".$this->objectID."'");
         else 
             if ($this->get($key))
