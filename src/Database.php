@@ -40,9 +40,9 @@ class Database {
 	/**
      * Execute an SQL query on the database.
      *
-     * @param 	string 	$sql 	The SQL query to execute.
-     * @return mixed               The SQL query result, false if failed.
-     * @throws 				Exception If the query execution fails.
+     * @param 	string 	     $sql 	The SQL query to execute.
+     * @return array|null 	          An array of query results or null if no results are found.
+     * @throws 				     Exception If the query execution fails.
      */
 	public static function operate(string $sql) {
 	     $mysqli = self::connect();
@@ -51,9 +51,14 @@ class Database {
         
           $result = mysqli_query($mysqli, $sql);
           self::$insert_id = $mysqli->insert_id;
-          mysqli_close($mysqli); 
 
-          return $result;
+          $rows = [];
+          if (is_object($result))
+               while ($row = mysqli_fetch_assoc($result))
+                    $rows[] = $row;
+          
+          mysqli_close($mysqli); 
+          return $rows ?? null;
 	}
 	
 	/**
@@ -61,23 +66,10 @@ class Database {
      *
      * @param 	string 		$table 		The name of the database table.
      * @param 	string 		$filter 	     The WHERE clause filter for the query.
-     * @return array|null 			     An array of query results or null if no results are found.
-     * @throws 						Exception If the query execution fails.
+     * @return array|null 	               An array of query results or null if no results are found.
      */
 	public static function select(string $table, string $filter) {
-		$sql = "SELECT * FROM ".$table." WHERE ".$filter;
-		
-		$mysqli = self::connect();
-		mysqli_set_charset($mysqli, "UTF8");
-		mysqli_real_escape_string($mysqli, $sql);
-		 
-		$result = mysqli_query($mysqli, $sql);
-		$rows = [];
-		while ($row = mysqli_fetch_assoc($result))
-			$rows[] = $row;
-		
-		mysqli_close($mysqli);
-		return $rows ?? null;
+          return self::operate("SELECT * FROM ".$table." WHERE ".$filter);
 	}
 	
 	/**
