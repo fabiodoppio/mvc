@@ -41,16 +41,19 @@ class Database {
      * Execute an SQL query on the database.
      *
      * @param 	string 	$sql 	The SQL query to execute.
+     * @return mixed               The SQL query result, false if failed.
      * @throws 				Exception If the query execution fails.
      */
 	public static function operate(string $sql) {
-		$mysqli = self::connect();
-        mysqli_set_charset($mysqli, "UTF8");
-        mysqli_real_escape_string($mysqli, $sql);
+	     $mysqli = self::connect();
+          mysqli_set_charset($mysqli, "UTF8");
+          mysqli_real_escape_string($mysqli, $sql);
         
-        mysqli_query($mysqli, $sql);
-        self::$insert_id = $mysqli->insert_id;
-        mysqli_close($mysqli); 
+          $result = mysqli_query($mysqli, $sql);
+          self::$insert_id = $mysqli->insert_id;
+          mysqli_close($mysqli); 
+
+          return $result;
 	}
 	
 	/**
