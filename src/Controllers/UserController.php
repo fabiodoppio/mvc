@@ -40,14 +40,6 @@ class UserController extends AccountController {
     }
 
     /**
-     * Handles the logout action for the user, logging them out and redirecting to the home page.
-     */
-    public function logoutAction() {
-        Auth::unset_cookie();
-        Ajax::redirect(App::get("APP_URL")."/");
-    }
-
-    /**
      * Handles the email verification action for the user, including sending a verification email and processing the
      * verification code submission.
      */

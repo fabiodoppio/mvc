@@ -71,6 +71,14 @@ class AccountController extends Controller {
     }
 
     /**
+     * Handles the logout action for the user, logging them out and redirecting to the home page.
+     */
+    public function logoutAction() {
+        Auth::unset_cookie();
+        Ajax::redirect(App::get("APP_URL")."/");
+    }
+
+    /**
      * Handles user registration/signup.
      *
      * @throws Exception If signup is not allowed or if there are issues with the registration data.
