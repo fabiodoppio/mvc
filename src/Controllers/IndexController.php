@@ -40,7 +40,6 @@ class IndexController extends Controller {
                 "description" => App::get("APP_DESCRIPTION"),
                 "robots" => "index, follow",
                 "canonical" => App::get("APP_URL"),
-                "client" => Auth::get_client_token(),
                 "account" => $this->account
         ]);
     }
@@ -61,7 +60,6 @@ class IndexController extends Controller {
                 "description" => App::get("APP_DESCRIPTION"),
                 "robots" => "noindex, nofollow",
                 "canonical" => App::get("APP_URL")."/login",
-                "client" => Auth::get_client_token(),
                 "account" => $this->account
         ]);
     }
@@ -91,7 +89,6 @@ class IndexController extends Controller {
                 "description" => App::get("APP_DESCRIPTION"),
                 "robots" => "noindex, nofollow",
                 "canonical" => App::get("APP_URL")."/signup",
-                "client" => Auth::get_client_token(),
                 "account" => $this->account
         ]);
     }
@@ -114,7 +111,6 @@ class IndexController extends Controller {
                 "description" => App::get("APP_DESCRIPTION"),
                 "robots" => "noindex, nofollow",
                 "canonical" => App::get("APP_URL")."/recovery",
-                "client" => Auth::get_client_token(),
                 "credential" => $credential,
                 "code" => $code,
                 "account" => $this->account
@@ -136,7 +132,6 @@ class IndexController extends Controller {
                         "description" => App::get("APP_DESCRIPTION"),
                         "robots" => "noindex, nofollow",
                         "canonical" => App::get("APP_URL")."/account",
-                        "client" => Auth::get_client_token(),
                         "account" => $this->account
                 ]);
             break;
@@ -155,7 +150,6 @@ class IndexController extends Controller {
                         "description" => App::get("APP_DESCRIPTION"),
                         "robots" => "noindex, nofollow",
                         "canonical" => App::get("APP_URL")."/verify",
-                        "client" => Auth::get_client_token(),
                         "email" => $email,
                         "code" => $code,
                         "account" => $this->account
@@ -183,7 +177,6 @@ class IndexController extends Controller {
                     "description" => App::get("APP_DESCRIPTION"),
                     "robots" => "noindex, nofollow",
                     "canonical" => App::get("APP_URL")."/admin",
-                    "client" => Auth::get_client_token(),
                     "accounts" => $accounts,
                     "account" => $this->account
         ]);

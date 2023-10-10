@@ -26,4 +26,4 @@
         <script src="{{App::get('APP_URL')}}{{App::get('DIR_VENDOR')}}/components/jquery/jquery.min.js"></script>
         <script src="{{App::get('APP_URL')}}{{App::get('DIR_SCRIPTS')}}/ajax.js"></script>
 	</head>
-    <body data-client="{{$client}}">
+    <body data-client="{{Auth::get_client_token()}}">
