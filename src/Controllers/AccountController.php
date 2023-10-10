@@ -79,6 +79,16 @@ class AccountController extends Controller {
     }
 
     /**
+     * Handles the global logout action for the user, change the user's token and set a new cookie.
+     */
+    public function glogoutAction() {
+        $this->account->set("token", Auth::get_instance_token());
+        Auth::set_cookie($this->account->get("id"), Auth::get_instance_token(), 0);
+    
+        Ajax::add(".response", '<div class="success">'._("Sessions successfully logged out.").'</div>');
+    }
+
+    /**
      * Handles user registration/signup.
      *
      * @throws Exception If signup is not allowed or if there are issues with the registration data.
