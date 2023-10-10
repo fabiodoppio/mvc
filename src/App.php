@@ -78,7 +78,7 @@ class App {
             session_start();
             date_default_timezone_set('Europe/Berlin');
 
-            putenv('LANGUAGE=App::get("APP_LANGUAGE")');
+            putenv('LANGUAGE='.App::get("APP_LANGUAGE"));
             putenv('LC_ALL='.App::get("APP_LANGUAGE"));
             setlocale(LC_ALL, App::get("APP_LANGUAGE"));
             bindtextdomain("app", App::get("DIR_ROOT").App::get("DIR_LOCALE"));
