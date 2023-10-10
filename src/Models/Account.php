@@ -64,8 +64,8 @@ class Account extends Model {
         if (!empty(Database::operate("SHOW COLUMNS FROM ".$this->table." LIKE '".$key."'")))
             Database::update($this->table, $key." = '".$value."'", $this->primaryKey." = '".$this->objectID."'");
         else 
-            if ($this->get($key))
-                if ($value == null)
+            if ($this->get($key) !== null)
+                if ($value === null)
                     Database::delete("app_accounts_meta", "id = '".$this->get("id")."' AND name = '".$key."'");
                 else
                     Database::update("app_accounts_meta", "value = '".$value."'", "id = '".$this->get("id")."' AND name = '".$key."'");
