@@ -182,6 +182,20 @@ class IndexController extends Controller {
         ]);
     }
 
+    /**
+     * Displaying the website's error page (404).
+     */
+    public function notFoundAction() {
+        echo Template::get(
+            "404.tpl", [
+                "title" => sprintf(_("404 - Page not found | %s"), App::get("APP_NAME")),
+                "description" => App::get("APP_DESCRIPTION"),
+                "robots" => "noindex, nofollow",
+                "canonical" => App::get("APP_URL")."/404",
+                "account" => $this->account
+        ]);
+    }
+
 }
 
 ?>
