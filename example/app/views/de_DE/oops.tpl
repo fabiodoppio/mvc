@@ -1,5 +1,4 @@
 {% include header.tpl %}
-{% http_response_code(404); %}
 
     <main class="error">
         <section class="section">
