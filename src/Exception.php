@@ -36,7 +36,7 @@ class Exception extends \Exception {
                 break;
             case 404:
                 http_response_code(404);
-                header("Location: ".App::get("APP_URL")."/404");
+                header("Location: ".App::get("APP_URL")."/oops");
                 exit;
                 break;
             case 405:

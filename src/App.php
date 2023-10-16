@@ -75,7 +75,7 @@ class App {
                 if (property_exists(__CLASS__, $key))
                     self::$$key = $value;
 
-            foreach(Database::select("app_config", "id > 0") as $config)
+            foreach(Database::select("app_config", "name IS NOT NULL") as $config)
                 if (property_exists(__CLASS__, $config["name"]))
                     self::$$config["name"] = $config["value"];
             
