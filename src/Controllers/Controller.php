@@ -33,6 +33,7 @@ abstract class Controller {
      * It sets the $account property to the user account associated with the current session.
      */
     public function beforeAction() {
+        session_start();
         $this->account = Auth::get_current_account();
     }
 

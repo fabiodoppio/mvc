@@ -117,8 +117,8 @@ class AccountController extends Controller {
 
         $account = new Model\Account($account[0]["id"]);
 
-        switch(Request::get("requestParts")[2]??"") {
-            case "request":
+        switch(Request::get("request")) {
+            case "recovery/request":
                 $code = Auth::get_confirmcode($credential);
                 $link = App::get("APP_URL")."/recovery?code=".str_replace('=', '', base64_encode($credential."/".$code));
 
@@ -131,7 +131,7 @@ class AccountController extends Controller {
 
                 Ajax::redirect(App::get("APP_URL")."/recovery?code=".str_replace('=', '', base64_encode($credential)));
                 break;
-            case "submit":
+            case "recovery/submit":
                 Auth::verify_confirmcode($credential, Fairplay::string(str_replace(' ', '', Request::get("code"))));
                 if ($account->get("role") < Model\Role::DEACTIVATED)
                     throw new Exception(_("Your account cannot be restored."));

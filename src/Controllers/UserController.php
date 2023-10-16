@@ -44,8 +44,8 @@ class UserController extends AccountController {
      * verification code submission.
      */
     public function verifyAction() {
-        switch(Request::get("requestParts")[2]??"") {
-            case "request":
+        switch(Request::get("request")) {
+            case "verify/request":
                 $code = Auth::get_confirmcode($this->account->get("email"));
                 $link = App::get("APP_URL")."/account/verify?code=".str_replace('=', '', base64_encode($this->account->get("email")."/".$code));
 
@@ -58,7 +58,7 @@ class UserController extends AccountController {
 
                 Ajax::redirect(App::get("APP_URL")."/account/verify?code=".str_replace('=', '', base64_encode($this->account->get("email"))));
                 break;
-            case "submit":
+            case "verify/submit":
                 Auth::verify_confirmcode($this->account->get("email"), Fairplay::string(str_replace(' ', '', Request::get("code"))));
                 $this->account->set("role", ($this->account->get("role") == Model\Role::USER) ? Model\Role::VERIFIED : $this->account->get("role"));
 

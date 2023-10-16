@@ -74,10 +74,11 @@ class App {
             foreach ($config as $key => $value)
                 if (property_exists(__CLASS__, $key))
                     self::$$key = $value;
-            
-            session_start();
-            date_default_timezone_set('Europe/Berlin');
 
+            foreach(Database::select("app_config", "id > 0") as $config)
+                if (property_exists(__CLASS__, $config["name"]))
+                    self::$$config["name"] = $config["value"];
+            
             putenv('LANGUAGE='.App::get("APP_LANGUAGE"));
             putenv('LC_ALL='.App::get("APP_LANGUAGE"));
             setlocale(LC_ALL, App::get("APP_LANGUAGE"));
@@ -90,23 +91,27 @@ class App {
                 error_reporting(E_ALL);
    	        }
 
-            $_REQUEST["request"]       = @$_REQUEST["request"] ?: "index/home";
+            $_REQUEST["request"]       = @$_REQUEST["request"] ?: strtok($_SERVER["REQUEST_URI"], '?');
             $_REQUEST["requestParts"]  = explode('/', $_REQUEST["request"]);
 
-            $controllerName            = $_REQUEST["requestParts"][0] ?: "index";
+            $controllerName            = @$_REQUEST["requestParts"][0] ?: "index";
             $controllerClassName       = '\MVC\\Controllers\\'.ucfirst($controllerName).'Controller';
 
-            $actionName                = $_REQUEST["requestParts"][1] ?: "home";
+            $actionName                = @$_REQUEST["requestParts"][1] ?: "home";
             $actionMethodName          = $actionName."Action";
 
             if (!class_exists($controllerClassName))
-                throw new Exception(sprintf(_("Controller %s not found."), $controllerName), 404);
-        
+                throw new Exception(sprintf(_("Controller %s not found."), $controllerName));
+            
             $controller = new $controllerClassName();
-            
+                
+            if ($controllerClassName = '\MVC\\Controllers\\IndexController')
+                if (!method_exists($controller, $actionMethodName))
+                    $actionMethodName = "customAction";
+
             if (!method_exists($controller, $actionMethodName))
-                throw new Exception(sprintf(_("Method %s not found."), $actionName), 404);
-            
+                throw new Exception(sprintf(_("Method %s not found."), $actionName));
+                
             $controller->beforeAction();
             $controller->$actionMethodName();
         }
@@ -129,6 +134,29 @@ class App {
             throw new Exception(sprintf(_("Variable %s not found."), $key));
 
         return self::$$key;
+    }
+
+    /**
+     * Update the app's custom config database record. 
+     * If the column key does not exist, it sets or updates the custom config based on the 
+     * given name and value. If the custom config with the provided name already exists, its 
+     * value is updated. If the provided value is null, the custom config is deleted. If the 
+     * custom config does not exist, a new entry is created.
+     *
+     * @param   string  $key    The key to set the value for.
+     * @param   mixed   $value  The value to set.
+     */
+    public static function set($key, $value) {
+        if (!property_exists(__CLASS__, $key) || !isset(self::$$key))
+            throw new Exception(sprintf(_("Variable %s not found."), $key));
+
+        if (!empty(Database::select("app_config", "id > 0")))
+            if ($value === null)
+                Database::delete("app_config", "name = '".$key."'");
+            else
+                Database::update("app_config", "value = '".$value."'", "name = '".$key."'");
+        else
+            Database::insert("app_config", "name, value", "'".$key."', '".$value."'");
     }
 
 }

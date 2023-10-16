@@ -1,15 +1,10 @@
 <IfModule mod_rewrite.c>
     RewriteEngine on
     RewriteBase /
-
-    RewriteRule ^404$ index.php?request=index/notFound [NC,L]
-    RewriteRule ^account\/([a-zA-Z0-9]+)\/?$ index.php?request=index/account/$1 [NC,QSA,L]
-    RewriteRule ^(?!home)([a-zA-Z0-9]+)\/?$ index.php?request=index/$1 [NC,QSA,L]
     
-    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^index\.php$ - [L]
+    RewriteRule ^(.*)/$ /$1 [R=301,L]
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^(.*)$ https://%{HTTP_HOST} [R=301,NC,L]
-
-    ErrorDocument 403 https://%{HTTP_HOST}/404
-    ErrorDocument 404 https://%{HTTP_HOST}/404
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ /index.php [NC,QSA,L]
 </IfModule>

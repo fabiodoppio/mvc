@@ -40,8 +40,8 @@ class AdminController extends AccountController {
      * This method Handles user-related actions such as editing and deleting user accounts.
      */
     public function userAction() {
-        switch(Request::get("requestParts")[2]??"") {
-            case "edit":
+        switch(Request::get("request")) {
+            case "user/edit":
                 $account = new Model\Account(Fairplay::integer(Request::get("id")));
 
                 if (Request::isset("username")) 
@@ -72,9 +72,14 @@ class AdminController extends AccountController {
                     if (Fairplay::password(Request::get("pw1"), Request::get("pw2")) != "")
                         $account->set("password", password_hash(Request::get("pw1"), PASSWORD_DEFAULT));
 
+                if (Request::isset("meta_name") && Request::isset("meta_value"))
+                    if (is_array(Request::get("meta_name")) && is_array(Request::get("meta_value")))
+                        for($i = 0; $i < count(Request::get("meta_name")); $i++)
+                            $account->set(Request::get("meta_name")[$i], Request::get("meta_value")[$i]);
+
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
-            case "delete":
+            case "user/delete":
                 if ($this->account->get("id") == Fairplay::integer(Request::get("id")))
                     throw new Exception(_("You can not delete yourself."));
 
