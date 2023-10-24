@@ -26,7 +26,7 @@ class App {
     // Application default settings and constants
     protected static $APP_URL;
     protected static $APP_NAME;
-    protected static $APP_TITLE;
+    protected static $APP_TITLE         = "";
     protected static $APP_AUTHOR        = "";
     protected static $APP_DESCRIPTION   = "";
     protected static $APP_LANGUAGE      = "";

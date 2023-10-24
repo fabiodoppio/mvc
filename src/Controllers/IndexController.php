@@ -46,7 +46,7 @@ class IndexController extends Controller {
                 ]);
                 break;
             default:
-                throw new Exception(_("Page not found."), 404);
+                $this->customAction();
         }
     }
 
@@ -72,7 +72,7 @@ class IndexController extends Controller {
                 ]);
                 break;
             default:
-                throw new Exception(_("Page not found."), 404);
+                $this->customAction();
         }
     }
 
@@ -96,7 +96,7 @@ class IndexController extends Controller {
                 ]);
                 break;
             default:
-                throw new Exception(_("Page not found."), 404);
+                $this->customAction();
         }
     }
 
@@ -122,7 +122,7 @@ class IndexController extends Controller {
                 ]);
                 break;
             default:
-                throw new Exception(_("Page not found."), 404);
+                $this->customAction();
         }
     }
 
@@ -152,7 +152,7 @@ class IndexController extends Controller {
                 ]);
                 break;
             default:
-                throw new Exception(_("Page not found."), 404);
+                $this->customAction();
         }
     }
 
@@ -195,7 +195,7 @@ class IndexController extends Controller {
                 ]);
                 break;
             default:
-                throw new Exception(_("Page not found."), 404);
+                $this->customAction();
         }
     }
 
@@ -263,7 +263,7 @@ class IndexController extends Controller {
                     ]);
                     break;
             default:
-                throw new Exception(_("Page not found."), 404);
+                $this->customAction();
         }
     }
 
@@ -283,7 +283,7 @@ class IndexController extends Controller {
                 ]);
                 break;
             default:
-                throw new Exception(_("Page not found."), 404);
+                $this->customAction();
         }
     }
 
@@ -302,7 +302,7 @@ class IndexController extends Controller {
         echo Template::get(
             $page->get("template"), [
                 "title" => sprintf(_($page->get("title")." | %s"), App::get("APP_NAME")),
-                "description" => $page->get("description"),
+                "description" => $page->get("description") ?: App::get("APP_DESCRIPTION"),
                 "robots" => $page->get("robots"),
                 "canonical" => App::get("APP_URL").$page->get("slug"),
                 "account" => $this->account
