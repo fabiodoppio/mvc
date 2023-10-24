@@ -26,6 +26,7 @@ class App {
     // Application default settings and constants
     protected static $APP_URL;
     protected static $APP_NAME;
+    protected static $APP_TITLE;
     protected static $APP_AUTHOR        = "";
     protected static $APP_DESCRIPTION   = "";
     protected static $APP_LANGUAGE      = "";
@@ -71,13 +72,13 @@ class App {
      */
     public static function init(array $config) {
         try {
-            foreach ($config as $key => $value)
-                if (property_exists(__CLASS__, $key))
-                    self::$$key = $value;
-
             foreach(Database::select("app_config", "name IS NOT NULL") as $config)
                 if (property_exists(__CLASS__, $config["name"]))
                     self::$$config["name"] = $config["value"];
+
+            foreach ($config as $key => $value)
+                if (property_exists(__CLASS__, $key))
+                    self::$$key = $value;
             
             putenv('LANGUAGE='.App::get("APP_LANGUAGE"));
             putenv('LC_ALL='.App::get("APP_LANGUAGE"));

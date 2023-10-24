@@ -30,12 +30,12 @@ class Fairplay {
      */
     public static function username(string $val) {
         if (strlen($val) > 18 || strlen($val) < 3)
-            throw new Exception(_("Your username must be between 3 and 18 characters long."));
+            throw new Exception(sprintf(_("Your username must be between %1\$s and %2\$s characters long."), 2, 18));
         elseif (preg_match('/[^A-Za-z0-9]+/', $val, $res))
             throw new Exception(_("Your username cannot contain any special characters."));
         
         $check = preg_replace("/[^A-Za-z0-9üÜöÖäÄ]/", "", strtolower($val));
-        foreach(Database::select("app_badwords", "id >= 1") as $badword)
+        foreach(Database::select("app_badwords", "id IS NOT NULL") as $badword)
             if  (strstr($check, strtolower($badword["badword"])) !== false)
                 throw new Exception(_("Your username is not allowed."));
 
@@ -52,9 +52,9 @@ class Fairplay {
      */
     public static function password(string $val, ?string $val2 = null) {
         if ($val != ($val2??$val))
-            throw new Exception(_("Your passwords don't match."));
+            throw new Exception(_("Your passwords do not match."));
         elseif (strlen($val) < 8)
-            throw new Exception(_("Your password must be at least 8 characters long."));
+            throw new Exception(sprintf(_("Your password must be at least %s characters long."), 8));
         return $val;
     }
 
@@ -139,6 +139,25 @@ class Fairplay {
             throw new Exception(_("You entered an invalid url."));
         return $val;
 	}
+
+    /**
+     * Validate a short message.
+     *
+     * @param   string  $val    The message to validate.
+     * @return  string          The validated message if it is valid.
+     * @throws                  Exception If the message is invalid.
+     */
+    public static function message(string $val) {
+        if (strlen($val) > 2 || strlen($val) < 250)
+            throw new Exception(sprintf(_("Your message must be between %1\$s and %2\$s characters long."), 2, 250));
+        
+        $check = preg_replace("/[^A-Za-z0-9üÜöÖäÄ]/", "", strtolower($val));
+        foreach(Database::select("app_badwords", "id IS NOT NULL") as $badword)
+            if  (strstr($check, strtolower($badword["badword"])) !== false)
+                throw new Exception(_("Your message is not allowed."));
+
+        return $val;
+    }
     
 }
 

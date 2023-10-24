@@ -44,6 +44,11 @@ class Exception extends \Exception {
                 header("Location: ".App::get("APP_URL")."/account");
                 exit;
                 break;
+            case 406:
+                http_response_code(406);
+                header("Location: ".App::get("APP_URL")."/account/verify");
+                exit;
+                break;
             default:
                 Ajax::add(".response", '<div class="error">'.$this->getMessage().'</div>');
         }

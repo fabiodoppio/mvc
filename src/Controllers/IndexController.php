@@ -38,7 +38,7 @@ class IndexController extends Controller {
             case "/":
                 echo Template::get(
                     "home.tpl", [
-                        "title" => sprintf(_("Homepage | %s"), App::get("APP_NAME")),
+                        "title" => App::get("APP_TITLE") ?: sprintf(_("Homepage | %s"), App::get("APP_NAME")),
                         "description" => App::get("APP_DESCRIPTION"),
                         "robots" => "index, follow",
                         "canonical" => App::get("APP_URL"),
@@ -80,11 +80,20 @@ class IndexController extends Controller {
      * Displaying the website's logout page.
      */
     public function logoutAction() {
+        if ($this->account->get("role") < Model\Role::USER)
+            throw new Exception(_("Your account does not have the required role."), 403);
+
         switch(Request::get("request")) {
             case "/logout":
                 Auth::unset_cookie();
-                header("Location: ".App::get("APP_URL")."/");
-                exit();
+                echo Template::get(
+                    "logout.tpl", [
+                        "title" => sprintf(_("Logout | %s"), App::get("APP_NAME")),
+                        "description" => App::get("APP_DESCRIPTION"),
+                        "robots" => "noindex, nofollow",
+                        "canonical" => App::get("APP_URL")."/logout",
+                        "account" => $this->account
+                ]);
                 break;
             default:
                 throw new Exception(_("Page not found."), 404);
@@ -157,7 +166,7 @@ class IndexController extends Controller {
         switch(Request::get("request")) {
             case "/account":
                 echo Template::get(
-                    "account.tpl", [
+                    "account/account.tpl", [
                         "title" => sprintf(_("My Account | %s"), App::get("APP_NAME")),
                         "description" => App::get("APP_DESCRIPTION"),
                         "robots" => "noindex, nofollow",
@@ -167,7 +176,7 @@ class IndexController extends Controller {
                 break;
             case "/account/verify":
                 if ($this->account->get("role") > Model\Role::USER)
-                    throw new Exception("", 405);
+                    throw new Exception(_("Your account does not have the required role."), 405);
 
                 $base = (Request::isset("code")) ? base64_decode(Fairplay::string(Request::get("code"))) : "";
                 $parts = explode('/',$base);
@@ -175,11 +184,11 @@ class IndexController extends Controller {
                 $code = $parts[1]??"";
 
                 echo Template::get(
-                    "verify.tpl", [
+                    "account/verify.tpl", [
                         "title" => sprintf(_("Email address verification | %s"), App::get("APP_NAME")),
                         "description" => App::get("APP_DESCRIPTION"),
                         "robots" => "noindex, nofollow",
-                        "canonical" => App::get("APP_URL")."/verify",
+                        "canonical" => App::get("APP_URL")."/account/verify",
                         "email" => $email,
                         "code" => $code,
                         "account" => $this->account
@@ -198,21 +207,61 @@ class IndexController extends Controller {
             throw new Exception(_("Your account does not have the required role."), 403);
         
         switch(Request::get("request")) {
-            case "/admin/users":
-                $accounts = array();
-                foreach (Database::select("app_accounts", "id > 0") as $user)
-                $accounts[] = new Model\Account($user['id']);
-        
+            case "/admin":
                 echo Template::get(
-                        "admin.tpl", [
+                        "admin/admin.tpl", [
                             "title" => sprintf(_("Backend | %s"), App::get("APP_NAME")),
                             "description" => App::get("APP_DESCRIPTION"),
                             "robots" => "noindex, nofollow",
                             "canonical" => App::get("APP_URL")."/admin",
+                            "account" => $this->account
+                ]);
+                break;
+            case "/admin/pages":
+                $pages = array();
+                foreach (Database::select("app_pages", "slug IS NOT NULL") as $page)
+                    $pages[] = new Model\Page($page['slug']);
+        
+                echo Template::get(
+                        "admin/pages.tpl", [
+                            "title" => sprintf(_("Pages | %s"), App::get("APP_NAME")),
+                            "description" => App::get("APP_DESCRIPTION"),
+                            "robots" => "noindex, nofollow",
+                            "canonical" => App::get("APP_URL")."/admin/pages",
+                            "pages" => $pages,
+                            "account" => $this->account
+                ]);
+                break;
+            case "/admin/users":
+                $accounts = array();
+                foreach (Database::select("app_accounts", "id IS NOT NULL") as $user)
+                    $accounts[] = new Model\Account($user['id']);
+        
+                echo Template::get(
+                        "admin/users.tpl", [
+                            "title" => sprintf(_("Users | %s"), App::get("APP_NAME")),
+                            "description" => App::get("APP_DESCRIPTION"),
+                            "robots" => "noindex, nofollow",
+                            "canonical" => App::get("APP_URL")."/admin/users",
                             "accounts" => $accounts,
                             "account" => $this->account
                 ]);
                 break;
+            case "/admin/roles":
+                    $roles = array();
+                    foreach (Database::select("app_roles", "id IS NOT NULL") as $role)
+                        $roles[] = new Model\Role($role['id']);
+            
+                    echo Template::get(
+                            "admin/roles.tpl", [
+                                "title" => sprintf(_("Roles | %s"), App::get("APP_NAME")),
+                                "description" => App::get("APP_DESCRIPTION"),
+                                "robots" => "noindex, nofollow",
+                                "canonical" => App::get("APP_URL")."/admin/roles",
+                                "roles" => $roles,
+                                "account" => $this->account
+                    ]);
+                    break;
             default:
                 throw new Exception(_("Page not found."), 404);
         }
@@ -244,8 +293,11 @@ class IndexController extends Controller {
     public function customAction() {
         $page = new Model\Page(Request::get("request"));
 
+        if ($this->account->get("role") < Model\Role::VERIFIED && $page->get("role") == Model\Role::VERIFIED)
+            throw new Exception(_("Your account does not have the required role."), 406); 
+
         if ($this->account->get("role") < $page->get("role"))
-            throw new Exception(_("Your account does not have the required role."), 405);
+            throw new Exception(_("Your account does not have the required role."), 403);
 
         echo Template::get(
             $page->get("template"), [

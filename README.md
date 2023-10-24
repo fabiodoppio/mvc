@@ -74,6 +74,7 @@ require_once __DIR__.'/vendor/autoload.php';
 MVC\App::init([
     "APP_URL"           => "https://",
     "APP_NAME"          => "",
+    #"APP_TITLE"        => "",
     #"APP_AUTHOR"       => "",
     #"APP_DESCRIPTION"  => "",
     #"APP_LANGUAGE"     => "de_DE",

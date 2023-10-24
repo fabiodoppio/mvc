@@ -59,33 +59,54 @@ class AccountController extends Controller {
      * @throws Exception If login is not allowed, or if there are issues with the login credentials.
      */
     public function loginAction() {
-        if (!App::get("APP_LOGIN"))
-            throw new Exception(_("Login not possible at the moment."));
+        switch(Request::get("request")) {
+            case "account/login":
+                if (!App::get("APP_LOGIN"))
+                    throw new Exception(_("Login not possible at the moment."));
 
-        Auth::set_current_account(
-            Fairplay::string(Request::get("credential")), 
-            Fairplay::string(Request::get("pw")),
-            Fairplay::boolean(Request::isset("stay") ? Request::get("stay") : false));
+                Auth::set_current_account(
+                    Fairplay::string(Request::get("credential")), 
+                    Fairplay::string(Request::get("pw")),
+                    Fairplay::boolean(Request::isset("stay") ? Request::get("stay") : false));
 
-        Ajax::redirect(App::get("APP_URL")."/account");
+                $this->account = Auth::get_current_account();
+                if ($this->account->get("role") < Model\Role::VERIFIED)
+                    Ajax::redirect(App::get("APP_URL")."/account/verify");
+                else 
+                    Ajax::redirect(App::get("APP_URL")."/account");
+                break;
+            default: 
+                throw new Exception(sprintf(_("Method %s not found."), Request::get("request")));
+        }
     }
 
     /**
      * Handles the logout action for the user, logging them out and redirecting to the home page.
      */
     public function logoutAction() {
-        Auth::unset_cookie();
-        Ajax::redirect(App::get("APP_URL")."/");
+        switch(Request::get("request")) {
+            case "account/logout":
+                Auth::unset_cookie();
+                Ajax::redirect(App::get("APP_URL")."/");
+                break;
+            default: 
+                throw new Exception(sprintf(_("Method %s not found."), Request::get("request")));
+        }
     }
 
     /**
      * Handles the global logout action for the user, change the user's token and set a new cookie.
      */
     public function glogoutAction() {
-        $this->account->set("token", Auth::get_instance_token());
-        Auth::set_cookie($this->account->get("id"), Auth::get_instance_token(), 0);
-    
-        Ajax::add(".response", '<div class="success">'._("Sessions successfully logged out.").'</div>');
+        switch(Request::get("request")) {
+            case "account/glogout":
+                $this->account->set("token", Auth::get_instance_token());
+                Auth::set_cookie($this->account->get("id"), Auth::get_instance_token(), 0);
+                Ajax::add(".response", '<div class="success">'._("Sessions successfully logged out.").'</div>');
+                break;
+            default: 
+                throw new Exception(sprintf(_("Method %s not found."), Request::get("request")));
+        }   
     }
 
     /**
@@ -97,12 +118,18 @@ class AccountController extends Controller {
         if (!App::get("APP_SIGNUP"))
             throw new Exception(_("Signup not possible at the moment."));
 
-        Auth::set_new_account(
-            Fairplay::username(Request::get("username")), 
-            Fairplay::email(Request::get("email")),
-            Fairplay::password(Request::get("pw1"), Request::get("pw2")));
+        switch(Request::get("signup")) {
+            case "account/signup":
+                Auth::set_new_account(
+                    Fairplay::username(Request::get("username")), 
+                    Fairplay::email(Request::get("email")),
+                    Fairplay::password(Request::get("pw1"), Request::get("pw2")));
 
-        Ajax::redirect(App::get("APP_URL")."/account/verify");
+                Ajax::redirect(App::get("APP_URL")."/account/verify");
+                break;
+            default: 
+                throw new Exception(sprintf(_("Method %s not found."), Request::get("request")));
+        }
     }
 
     /**
@@ -118,7 +145,7 @@ class AccountController extends Controller {
         $account = new Model\Account($account[0]["id"]);
 
         switch(Request::get("request")) {
-            case "recovery/request":
+            case "account/recovery/request":
                 $code = Auth::get_confirmcode($credential);
                 $link = App::get("APP_URL")."/recovery?code=".str_replace('=', '', base64_encode($credential."/".$code));
 
@@ -131,7 +158,7 @@ class AccountController extends Controller {
 
                 Ajax::redirect(App::get("APP_URL")."/recovery?code=".str_replace('=', '', base64_encode($credential)));
                 break;
-            case "recovery/submit":
+            case "account/recovery/submit":
                 Auth::verify_confirmcode($credential, Fairplay::string(str_replace(' ', '', Request::get("code"))));
                 if ($account->get("role") < Model\Role::DEACTIVATED)
                     throw new Exception(_("Your account cannot be restored."));
@@ -142,6 +169,8 @@ class AccountController extends Controller {
 
                 Ajax::add('.main-content form', '<div class="success">'._("Your account has been successfully restored. You can now log in as usual.").'</div>');
                 break;
+            default: 
+                throw new Exception(sprintf(_("Method %s not found."), Request::get("request")));
         }
     }
 
