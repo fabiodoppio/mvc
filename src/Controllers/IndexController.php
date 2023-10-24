@@ -57,7 +57,7 @@ class IndexController extends Controller {
         if (!App::get("APP_LOGIN"))
             throw new Exception(_("Signup not possible at the moment."), 404);
 
-        if ($this->account->get("role") > Model\Role::GUEST)
+        if ($this->account->get("role") > Model\Account::GUEST)
             throw new Exception(_("Your account does not have the required role."), 405);
 
         switch(Request::get("request")) {
@@ -80,7 +80,7 @@ class IndexController extends Controller {
      * Displaying the website's logout page.
      */
     public function logoutAction() {
-        if ($this->account->get("role") < Model\Role::USER)
+        if ($this->account->get("role") < Model\Account::USER)
             throw new Exception(_("Your account does not have the required role."), 403);
 
         switch(Request::get("request")) {
@@ -107,7 +107,7 @@ class IndexController extends Controller {
         if (!App::get("APP_SIGNUP"))
             throw new Exception(_("Signup not possible at the moment."), 404);
 
-        if ($this->account->get("role") > Model\Role::GUEST)
+        if ($this->account->get("role") > Model\Account::GUEST)
             throw new Exception(_("Your account does not have the required role."), 405);
 
         switch(Request::get("request")) {
@@ -130,7 +130,7 @@ class IndexController extends Controller {
      * Displaying the website's recovery page (lost password).
      */
     public function recoveryAction() {
-        if ($this->account->get("role") > Model\Role::GUEST)
+        if ($this->account->get("role") > Model\Account::GUEST)
             throw new Exception(_("Your account does not have the required role."), 405);
 
         switch(Request::get("request")) {
@@ -160,7 +160,7 @@ class IndexController extends Controller {
      * Displaying the website's account page.
      */
     public function accountAction() {
-        if ($this->account->get("role") < Model\Role::USER)
+        if ($this->account->get("role") < Model\Account::USER)
             throw new Exception(_("Your account does not have the required role."), 403);
         
         switch(Request::get("request")) {
@@ -175,7 +175,7 @@ class IndexController extends Controller {
                 ]);
                 break;
             case "/account/verify":
-                if ($this->account->get("role") > Model\Role::USER)
+                if ($this->account->get("role") > Model\Account::USER)
                     throw new Exception(_("Your account does not have the required role."), 405);
 
                 $base = (Request::isset("code")) ? base64_decode(Fairplay::string(Request::get("code"))) : "";
@@ -203,7 +203,7 @@ class IndexController extends Controller {
      * Displaying the website's admin page.
      */
     public function adminAction() {
-        if ($this->account->get("role") < Model\Role::ADMINISTRATOR)
+        if ($this->account->get("role") < Model\Account::ADMINISTRATOR)
             throw new Exception(_("Your account does not have the required role."), 403);
         
         switch(Request::get("request")) {
@@ -247,21 +247,6 @@ class IndexController extends Controller {
                             "account" => $this->account
                 ]);
                 break;
-            case "/admin/roles":
-                    $roles = array();
-                    foreach (Database::select("app_roles", "id IS NOT NULL") as $role)
-                        $roles[] = new Model\Role($role['id']);
-            
-                    echo Template::get(
-                            "admin/roles.tpl", [
-                                "title" => sprintf(_("Roles | %s"), App::get("APP_NAME")),
-                                "description" => App::get("APP_DESCRIPTION"),
-                                "robots" => "noindex, nofollow",
-                                "canonical" => App::get("APP_URL")."/admin/roles",
-                                "roles" => $roles,
-                                "account" => $this->account
-                    ]);
-                    break;
             default:
                 $this->customAction();
         }
@@ -293,7 +278,7 @@ class IndexController extends Controller {
     public function customAction() {
         $page = new Model\Page(Request::get("request"));
 
-        if ($this->account->get("role") < Model\Role::VERIFIED && $page->get("role") == Model\Role::VERIFIED)
+        if ($this->account->get("role") < Model\Account::VERIFIED && $page->get("role") == Model\Account::VERIFIED)
             throw new Exception(_("Your account does not have the required role."), 406); 
 
         if ($this->account->get("role") < $page->get("role"))

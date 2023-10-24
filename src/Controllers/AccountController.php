@@ -46,10 +46,10 @@ class AccountController extends Controller {
 
         $this->account->set("lastaction", date("Y-m-d H:i:s", time()));
 
-        if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Role::ADMINISTRATOR)
+        if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
             throw new Exception(_("Server currently offline."));
 
-        if ($this->account->get("role") < Model\Role::GUEST)
+        if ($this->account->get("role") < Model\Account::GUEST)
             throw new Exception(_("Your account has been suspended or deactivated."));
     }
 
@@ -70,13 +70,13 @@ class AccountController extends Controller {
                     Fairplay::boolean(Request::isset("stay") ? Request::get("stay") : false));
 
                 $this->account = Auth::get_current_account();
-                if ($this->account->get("role") < Model\Role::VERIFIED)
+                if ($this->account->get("role") < Model\Account::VERIFIED)
                     Ajax::redirect(App::get("APP_URL")."/account/verify");
                 else 
                     Ajax::redirect(App::get("APP_URL")."/account");
                 break;
             default: 
-                throw new Exception(sprintf(_("Method %s not found."), Request::get("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::get("request")));
         }
     }
 
@@ -90,7 +90,7 @@ class AccountController extends Controller {
                 Ajax::redirect(App::get("APP_URL")."/");
                 break;
             default: 
-                throw new Exception(sprintf(_("Method %s not found."), Request::get("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::get("request")));
         }
     }
 
@@ -105,7 +105,7 @@ class AccountController extends Controller {
                 Ajax::add(".response", '<div class="success">'._("Sessions successfully logged out.").'</div>');
                 break;
             default: 
-                throw new Exception(sprintf(_("Method %s not found."), Request::get("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::get("request")));
         }   
     }
 
@@ -128,7 +128,7 @@ class AccountController extends Controller {
                 Ajax::redirect(App::get("APP_URL")."/account/verify");
                 break;
             default: 
-                throw new Exception(sprintf(_("Method %s not found."), Request::get("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::get("request")));
         }
     }
 
@@ -160,17 +160,17 @@ class AccountController extends Controller {
                 break;
             case "account/recovery/submit":
                 Auth::verify_confirmcode($credential, Fairplay::string(str_replace(' ', '', Request::get("code"))));
-                if ($account->get("role") < Model\Role::DEACTIVATED)
+                if ($account->get("role") < Model\Account::DEACTIVATED)
                     throw new Exception(_("Your account cannot be restored."));
             
                 $account->set("password", password_hash(Fairplay::password(Request::get("pw1"), Request::get("pw2")), PASSWORD_DEFAULT));
-                $account->set("role", ($account->get("role") == Model\Role::DEACTIVATED) ? Model\Role::USER : $account->get("role"));
+                $account->set("role", ($account->get("role") == Model\Account::DEACTIVATED) ? Model\Account::USER : $account->get("role"));
                 $account->set("token", Auth::get_instance_token());
 
                 Ajax::add('.main-content form', '<div class="success">'._("Your account has been successfully restored. You can now log in as usual.").'</div>');
                 break;
             default: 
-                throw new Exception(sprintf(_("Method %s not found."), Request::get("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::get("request")));
         }
     }
 

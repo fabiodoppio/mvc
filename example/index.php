@@ -42,7 +42,9 @@ MVC\App::init([
     #"MAIL_HOST"         => "",
     #"MAIL_SENDER"       => "",
     #"MAIL_USERNAME"     => "",
-    #"MAIL_PASSWORD"     => ""
+    #"MAIL_PASSWORD"     => "",
+
+    #"META_PROTECTED"    => ""
 ]);
 
 ?>

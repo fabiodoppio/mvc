@@ -34,7 +34,7 @@ class AdminController extends AccountController {
      */
     public function beforeAction() {
         parent::beforeAction();
-        if ($this->account->get("role") < Model\Role::ADMINISTRATOR)
+        if ($this->account->get("role") < Model\Account::ADMINISTRATOR)
             throw new Exception(_("Your account does not have the required role."));
     }
 
@@ -71,10 +71,13 @@ class AdminController extends AccountController {
                 if (Request::isset("signup"))
                     App::set("APP_SIGNUP", Fairplay::boolean(Request::get("signup")));
 
+                if (Request::isset("protected"))
+                    App::set("META_PROTECTED", json_encode(Fairplay::string(Request::get("protected"))));
+
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
             default: 
-                throw new Exception(sprintf(_("Method %s not found."), Request::get("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::get("request")));
         }
     }
 
@@ -87,20 +90,27 @@ class AdminController extends AccountController {
                 if (!empty(Database::select("app_pages", "slug LIKE '".Request::get("slug")."'")[0]))
                     throw new Exception(_("Your entered slug is already used."));
 
-                $role = new Model\Role(Request::get("role"));
-                Database::insert("app_pages", "slug, title, description, robots, template, role", "'".Fairplay::string(Request::get("slug"))."', '".Fairplay::string(Request::get("title"))."', '".Fairplay::string(Request::get("description"))."', '".Fairplay::string(Request::get("robots"))."', '".Fairplay::string(Request::get("template"))."', '".$role->get("id")."'");
+                Database::insert("app_pages", "slug, title, description, robots, template, role", "'".Fairplay::string(Request::get("slug"))."', '".Fairplay::string(Request::get("title"))."', '".Fairplay::string(Request::get("description"))."', '".Fairplay::string(Request::get("robots"))."', '".Fairplay::string(Request::get("template"))."', '".Fairplay::integer(Request::get("role"))."'");
 
                 Ajax::add('.response', '<div class="success">'._("Page added successfully.").'</div>');
                 break;
             case "admin/page/edit":
                 $page = new Model\Page(Request::get("slug"));
-                $role = new Model\Role(Request::get("role"));
+    
+                if (Request::isset("title"))
+                    $page->set("title", Fairplay::string(Request::get("title")));
 
-                $page->set("title", Fairplay::string(Request::get("title")));
-                $page->set("description", Fairplay::string(Request::get("description")));
-                $page->set("robots", Fairplay::string(Request::get("robots")));
-                $page->set("template", Fairplay::string(Request::get("template")));
-                $page->set("role", $role->get("id"));
+                if (Request::isset("description"))
+                    $page->set("description", Fairplay::string(Request::get("description")));
+
+                if (Request::isset("robots"))
+                    $page->set("robots", Fairplay::string(Request::get("robots")));
+
+                if (Request::isset("template"))
+                    $page->set("template", Fairplay::string(Request::get("template")));
+                
+                if (Request::isset("role"))
+                    $page->set("role", Fairplay::integer(Request::get("role")));
 
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
@@ -109,7 +119,7 @@ class AdminController extends AccountController {
                 Ajax::add('.response', '<div class="success">'._("Page deleted successfully.").'</div>');
                 break;
             default: 
-                throw new Exception(sprintf(_("Method %s not found."), Request::get("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::get("request")));
         }
     }
 
@@ -126,30 +136,26 @@ class AdminController extends AccountController {
             case "admin/user/edit":
                 $account = new Model\Account(Fairplay::integer(Request::get("id")));
 
-                if (Request::isset("username")) 
-                    if ($account->get("username") != Fairplay::username(Request::get("username"))) {
-                        if (!empty(Database::select("app_accounts", "username LIKE '".Request::get("username")."'")[0]))
-                            throw new Exception(_("Your entered username is already taken."));
+                if (Request::isset("username")) {
+                    if (!empty(Database::select("app_accounts", "username LIKE '".Fairplay::username(Request::get("username"))."'")[0]))
+                        throw new Exception(_("Your entered username is already taken."));
 
-                        $account->set("username", Request::get("username"));
-                    }
+                    $account->set("username", Request::get("username"));
+                }
 
-                if (Request::isset("email")) 
-                    if ($account->get("email") != Fairplay::email(Request::get("email"))) {
-                        if (!empty(Database::select("app_accounts", "email LIKE '".Request::get("email")."'")[0]))
-                            throw new Exception(_("Your entered email address is already taken."));
+                if (Request::isset("email")) {
+                    if (!empty(Database::select("app_accounts", "email LIKE '".Fairplay::email(Request::get("email"))."'")[0]))
+                        throw new Exception(_("Your entered email address is already taken."));
     
-                        $account->set("email", strtolower(Request::get("email")));
-                    }
+                    $account->set("email", strtolower(Request::get("email")));
+                }
 
-                if (Request::isset("role"))
-                    if ($account->get("role") != Fairplay::integer(Request::get("role"))) {
-                        if ($account->get("id") == $this->account->get("id"))
-                            throw new Exception(_("You can not change your own role."));
+                if (Request::isset("role")) {
+                    if ($account->get("id") == $this->account->get("id"))
+                        throw new Exception(_("You can not change your own role."));
                         
-                        $role = new Model\Role(Request::get("id"));
-                        $account->set("role", $role->get("id"));
-                    }
+                    $account->set("role", Fairplay::integer(Request::get("role")));
+                }
 
                 if (Request::isset("pw1") && Request::isset("pw2"))
                     if (Fairplay::password(Request::get("pw1"), Request::get("pw2")) != "")
@@ -158,7 +164,7 @@ class AdminController extends AccountController {
                 if (Request::isset("meta_name") && Request::isset("meta_value"))
                     if (is_array(Request::get("meta_name")) && is_array(Request::get("meta_value")))
                         for($i = 0; $i < count(Request::get("meta_name")); $i++)
-                            $account->set(Request::get("meta_name")[$i], Request::get("meta_value")[$i]);
+                            $account->set(Fairplay::string(Request::get("meta_name")[$i]), Fairplay::string(Request::get("meta_value")[$i]));
 
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
@@ -170,37 +176,7 @@ class AdminController extends AccountController {
                 Ajax::add('.response', '<div class="success">'._("User deleted successfully.").'</div>');
                 break;
             default: 
-                throw new Exception(sprintf(_("Method %s not found."), Request::get("request")));
-        }
-    }
-
-    /**
-     * This method Handles role-related actions such as adding, editing and deleting user roles.
-     */
-    public function roleAction() {
-        switch(Request::get("request")) {
-            case "admin/role/add":
-                Database::insert("app_roles", "name", "'".Fairplay::string(Request::get("name"))."'");
-                Ajax::add('.response', '<div class="success">'._("Role added successfully.").'</div>');
-                break;
-            case "admin/role/edit":
-                if (Request::get("id") <= Model\Role::ADMINISTRATOR)
-                    throw new Exception(_("You can not edit this role."));
-
-                $role = new Model\Role(Request::get("id"));
-                $role->set("name", Fairplay::string(Request::get("name")));
-                Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
-                break;
-            case "admin/role/delete":
-                if (Request::get("id") <= Model\Role::ADMINISTRATOR)
-                    throw new Exception(_("You can not delete this role."));
-
-                $role = new Model\Role(Request::get("id"));
-                Database::delete("app_roles", "id = '".$role->get("id")."'");
-                Ajax::add('.response', '<div class="success">'._("Role deleted successfully.").'</div>');
-                break;
-            default: 
-                throw new Exception(sprintf(_("Method %s not found."), Request::get("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::get("request")));
         }
     }
 

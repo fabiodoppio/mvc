@@ -36,7 +36,7 @@ class UserController extends AccountController {
      */
     public function beforeAction() {
         parent::beforeAction();
-        if ($this->account->get("role") < Model\Role::USER)
+        if ($this->account->get("role") < Model\Account::USER)
             throw new Exception(_("Your account does not have the required role."));
     }
 
@@ -61,12 +61,12 @@ class UserController extends AccountController {
                 break;
             case "user/verify/submit":
                 Auth::verify_confirmcode($this->account->get("email"), Fairplay::string(str_replace(' ', '', Request::get("code"))));
-                $this->account->set("role", ($this->account->get("role") == Model\Role::USER) ? Model\Role::VERIFIED : $this->account->get("role"));
+                $this->account->set("role", ($this->account->get("role") == Model\Account::USER) ? Model\Account::VERIFIED : $this->account->get("role"));
 
                 Ajax::add('.main-content form', '<div class="success">'._("Your email address has been successfully verified.").'</div>');
                 break;
             default: 
-                throw new Exception(sprintf(_("Method %s not found."), Request::get("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::get("request")));
         }
     }
 
@@ -76,13 +76,26 @@ class UserController extends AccountController {
     public function editAction() {
         switch(Request::get("request")) {
             case "user/edit":
-                if (Request::isset("email")) 
-                    if ($this->account->get("email") != Fairplay::email(Request::get("email"))) {
-                        if (!empty(Database::select("app_accounts", "email LIKE '".Request::get("email")."'")[0]))
-                            throw new Exception(_("Your entered email address is already taken."));
+                if (Request::isset("username")) {
+                    if (in_array("username", json_decode(App::get("META_PROTECTED"))))
+                        throw new Exception(_("You are not allowed to edit your username."));
 
-                        $this->account->set("email", strtolower(Request::get("email")));
-                    }
+                    if (!empty(Database::select("app_accounts", "username LIKE '".Fairplay::username(Request::get("username"))."'")[0]))
+                        throw new Exception(_("Your entered username is already taken."));
+
+                    $this->account->set("username", Request::get("username"));
+                }
+
+                if (Request::isset("email")) {
+                    if (in_array("email", json_decode(App::get("META_PROTECTED"))))
+                        throw new Exception(_("You are not allowed to edit your email address."));
+
+                    if (!empty(Database::select("app_accounts", "email LIKE '".Fairplay::email(Request::get("email"))."'")[0]))
+                        throw new Exception(_("Your entered email address is already taken."));
+
+                    $this->account->set("email", strtolower(Request::get("email")));
+                    $this->account->set("role", ($this->account->get("role") == Model\Account::VERIFIED) ? Model\Account::USER : $this->account->get("role"));
+                }
 
                 if (Request::isset("pw") && Request::isset("pw1") && Request::isset("pw2")) {
                     if (!password_verify(Request::get("pw"), $this->account->get("password"))) 
@@ -91,11 +104,20 @@ class UserController extends AccountController {
                     if (Fairplay::password(Request::get("pw1"), Request::get("pw2")) != "")
                         $this->account->set("password", password_hash(Request::get("pw1"), PASSWORD_DEFAULT));
                 }
+
+                if (Request::isset("meta_name") && Request::isset("meta_value"))
+                    if (is_array(Request::get("meta_name")) && is_array(Request::get("meta_value")))
+                        for($i = 0; $i < count(Request::get("meta_name")); $i++) {
+                            if (in_array(Request::get("meta_name")[$i], json_decode(App::get("META_PROTECTED"))))
+                                throw new Exception(sprintf(_("You are not allowed to edit %s."), Request::get("meta_name")[$i]));
+
+                            $this->account->set(Fairplay::string(Request::get("meta_name")[$i]), Fairplay::string(Request::get("meta_value")[$i]));
+                        }
         
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
             default: 
-                throw new Exception(sprintf(_("Method %s not found."), Request::get("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::get("request")));
         }
     }
 

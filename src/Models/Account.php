@@ -39,6 +39,41 @@ class Account extends Model {
     protected $primaryKey = "app_accounts.id";
 
     /**
+     * Constant representing blocked user role.
+     */
+    public const BLOCKED = 1;
+
+    /**
+     * Constant representing deactivated user role.
+     */
+    public const DEACTIVATED = 2;
+
+    /**
+     * Constant representing the guest user role.
+     */
+    public const GUEST = 3;
+
+    /**
+     * Constant representing the default user role.
+     */
+    public const USER = 4;
+
+    /**
+     * Constant representing the verified user role.
+     */
+    public const VERIFIED = 5;
+
+    /**
+     * Constant representing the moderator role.
+     */
+    public const MODERATOR = 6;
+
+    /**
+     * Constant representing the administrator role.
+     */
+    public const ADMINISTRATOR = 7;
+
+    /**
      * Constructor method for the Model class extended by retrieving metadata associated with the user account.
      *
      * @param   mixed   $value      The object ID or primary key value for the model.

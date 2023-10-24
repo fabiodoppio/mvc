@@ -100,7 +100,7 @@ class Auth {
             throw new Exception(_("You entered an incorrect password."));
         }
 
-        if ($account->get("role") < Model\Role::GUEST)
+        if ($account->get("role") < Model\Account::GUEST)
             throw new Exception(_("Your account has been suspended or deactivated."));
 
         self::set_cookie($account->get("id"), $account->get("token"), ($stay)?time()+(60*60*24*30):0);
@@ -121,7 +121,7 @@ class Auth {
         if (!empty(Database::select("app_accounts", "email LIKE '".$email."'")[0]))
             throw new Exception(_("Your entered email address is already taken."));
 
-        Database::insert("app_accounts", "email, username, password, token, role", "'".strtolower($email)."', '".$username."', '".password_hash($password, PASSWORD_DEFAULT)."', '".self::get_instance_token()."', '".Model\Role::USER."'");
+        Database::insert("app_accounts", "email, username, password, token, role", "'".strtolower($email)."', '".$username."', '".password_hash($password, PASSWORD_DEFAULT)."', '".self::get_instance_token()."', '".Model\Account::USER."'");
 
         self::set_cookie(Database::$insert_id, self::get_instance_token());
     }

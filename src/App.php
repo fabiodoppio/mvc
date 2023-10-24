@@ -65,6 +65,8 @@ class App {
     protected static $MAIL_USERNAME;
     protected static $MAIL_PASSWORD;
 
+    protected static $META_PROTECTED    = "[\"username\"]";
+
     /**
      * Initialize the application based on the provided configuration.
      *
@@ -111,7 +113,7 @@ class App {
                     $actionMethodName = "customAction";
 
             if (!method_exists($controller, $actionMethodName))
-                throw new Exception(sprintf(_("Method %s not found."), $actionName));
+                throw new Exception(sprintf(_("Action %s not found."), $actionName));
                 
             $controller->beforeAction();
             $controller->$actionMethodName();

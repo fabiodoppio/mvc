@@ -20,7 +20,7 @@ msgstr "Controller %s nicht gefunden."
 
 #: src/App.php:107
 #, php-format
-msgid "Method %s not found."
+msgid "Action %s not found."
 msgstr "Methode %s nicht gefunden."
 
 #: src/App.php:128

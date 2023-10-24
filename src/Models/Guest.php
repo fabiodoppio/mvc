@@ -39,7 +39,7 @@ class Guest extends Account {
                 "username" => null,
                 "password" => null,
                 "token" => Auth::get_instance_token(),
-                "role" => Role::GUEST,
+                "role" => Account::GUEST,
                 "lastaction" => date('Y-m-d H:i:s', time()),
                 "registered" => date('Y-m-d H:i:s', time())
             ];
