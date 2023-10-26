@@ -24,6 +24,7 @@ namespace MVC;
 class App {
 
     // Application default settings and constants
+    protected static $APP_CONFIG;
     protected static $APP_URL;
     protected static $APP_NAME;
     protected static $APP_TITLE         = "";
@@ -78,9 +79,8 @@ class App {
                 if (property_exists(__CLASS__, $key))
                     self::$$key = $value;
                 
-            foreach(Database::select("app_config", "name IS NOT NULL") as $config)
-                if (property_exists(__CLASS__, $config["name"]))
-                    self::$$config["name"] = $config["value"];
+            foreach (Database::select("app_config", "name IS NOT NULL") as $config)
+                self::$APP_CONFIG = [$config["name"] => $config["value"]];
             
             putenv('LANGUAGE='.App::get("APP_LANGUAGE"));
             putenv('LC_ALL='.App::get("APP_LANGUAGE"));
@@ -133,10 +133,10 @@ class App {
      * @throws                  Exception If the specified key is not a valid configuration key.
      */
     public static function get($key) {
-        if (!property_exists(__CLASS__, $key) || !isset(self::$$key))
+        if ((!property_exists(__CLASS__, $key) || !isset(self::$$key)) && !isset(self::$APP_CONFIG[$key]))
             throw new Exception(sprintf(_("Variable %s not found."), $key));
 
-        return self::$$key;
+        return self::$APP_CONFIG[$key] ?? self::$$key;
     }
 
     /**
@@ -150,10 +150,7 @@ class App {
      * @param   mixed   $value  The value to set.
      */
     public static function set($key, $value) {
-        if (!property_exists(__CLASS__, $key) || !isset(self::$$key))
-            throw new Exception(sprintf(_("Variable %s not found."), $key));
-
-        if (!empty(Database::select("app_config", "id > 0")))
+        if (!empty(Database::select("app_config", "id IS NOT NULL")))
             if ($value === null)
                 Database::delete("app_config", "name = '".$key."'");
             else

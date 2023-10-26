@@ -44,35 +44,10 @@ class AdminController extends AccountController {
     public function appAction() {
         switch(Request::get("request")) {
             case "admin/app/edit":
-                if (Request::isset("name"))
-                    App::set("APP_NAME", Fairplay::string(Request::get("name")));
-
-                if (Request::isset("title"))
-                    App::set("APP_TITLE", Fairplay::string(Request::get("title")));
-
-                if (Request::isset("author"))
-                    App::set("APP_AUTHOR", Fairplay::string(Request::get("author")));
-
-                if (Request::isset("description"))
-                    App::set("APP_DESCRIPTION", Fairplay::string(Request::get("description")));
-
-                if (Request::isset("language"))
-                    App::set("APP_LANGUAGE", Fairplay::string(Request::get("language")));
-
-                if (Request::isset("version"))
-                    App::set("APP_VERSION", Fairplay::string(Request::get("version")));
-
-                if (Request::isset("online"))
-                    App::set("APP_ONLINE", Fairplay::boolean(Request::get("online")));
-
-                if (Request::isset("login"))
-                    App::set("APP_LOGIN", Fairplay::boolean(Request::get("login")));
-
-                if (Request::isset("signup"))
-                    App::set("APP_SIGNUP", Fairplay::boolean(Request::get("signup")));
-
-                if (Request::isset("protected"))
-                    App::set("META_PROTECTED", json_encode(Fairplay::string(Request::get("protected"))));
+                if (Request::isset("config_name") && Request::isset("config_value"))
+                    if (is_array(Request::get("config_name")) && is_array(Request::get("config_value")))
+                        for($i = 0; $i < count(Request::get("config_name")); $i++)
+                            App::set(Fairplay::string(Request::get("config_name")[$i]), Fairplay::string(Request::get("config_value")[$i]));
 
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
