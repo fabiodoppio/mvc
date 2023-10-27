@@ -35,9 +35,10 @@ class Ajax {
      * @param   string  $target     The target identifier where the HTML content will be added.
      * @param   string  $html       The HTML content to be added to the target.
      */
-    public static function add(string $target, string $html = "") {
-        @self::$output["html"][$target] = $html;
+    public static function add(string $target, string $html = "", ?string $option = "html") {
+        @self::$output[$option][$target] = $html;
     }
+
 
     /**
      * Mark a specific target for removal in the AJAX response.
