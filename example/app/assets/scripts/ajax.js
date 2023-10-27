@@ -19,6 +19,14 @@ function ajax_send(data) {
             $.each(res.html, function(target, value) {
                 $(target).html(value);
             }); 
+        if (res.prepend) 
+            $.each(res.prepend, function(target, value) {
+                $(target).prepend(value);
+            }); 
+        if (res.append) 
+            $.each(res.append, function(target, value) {
+                $(target).append(value);
+            }); 
         if (res.remove) 
             $.each(res.remove, function(target, value) {
                 $(target).remove();
