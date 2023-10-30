@@ -60,6 +60,8 @@ class IndexController extends Controller {
         if ($this->account->get("role") > Model\Account::GUEST)
             throw new Exception(_("Your account does not have the required role."), 405);
 
+        $redirect = (Request::isset("redirect")) ? urldecode(Fairplay::string(Request::get("redirect"))) : "";
+
         switch(Request::get("request")) {
             case "/login":
                 echo Template::get(
@@ -68,7 +70,8 @@ class IndexController extends Controller {
                         "description" => App::get("APP_DESCRIPTION"),
                         "robots" => "noindex, nofollow",
                         "canonical" => App::get("APP_URL")."/login",
-                        "account" => $this->account
+                        "account" => $this->account,
+                        "redirect" => $redirect
                 ]);
                 break;
             default:
@@ -183,6 +186,8 @@ class IndexController extends Controller {
                 $email = $parts[0]??"";
                 $code = $parts[1]??"";
 
+                $redirect = (Request::isset("redirect")) ? urldecode(Fairplay::string(Request::get("redirect"))) : "";
+
                 echo Template::get(
                     "account/verify.tpl", [
                         "title" => sprintf(_("Email address verification | %s"), App::get("APP_NAME")),
@@ -191,6 +196,7 @@ class IndexController extends Controller {
                         "canonical" => App::get("APP_URL")."/account/verify",
                         "email" => $email,
                         "code" => $code,
+                        "redirect" => $redirect,
                         "account" => $this->account
                 ]);
                 break;

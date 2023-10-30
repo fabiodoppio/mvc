@@ -31,7 +31,7 @@ class Exception extends \Exception {
             case 403:
                 Auth::unset_cookie();
                 http_response_code(403);
-                header("Location: ".App::get("APP_URL")."/login");
+                header("Location: ".App::get("APP_URL")."/login?redirect=".urlencode(Request::get("request")));
                 exit;
                 break;
             case 404:
@@ -46,7 +46,7 @@ class Exception extends \Exception {
                 break;
             case 406:
                 http_response_code(406);
-                header("Location: ".App::get("APP_URL")."/account/verify");
+                header("Location: ".App::get("APP_URL")."/account/verify?redirect=".urlencode(Request::get("request")));
                 exit;
                 break;
             default:
