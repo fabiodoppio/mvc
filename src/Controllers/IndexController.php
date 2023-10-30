@@ -89,6 +89,7 @@ class IndexController extends Controller {
         switch(Request::get("request")) {
             case "/logout":
                 Auth::unset_cookie();
+                $this->account = Auth::get_current_account();
                 echo Template::get(
                     "logout.tpl", [
                         "title" => sprintf(_("Logout | %s"), App::get("APP_NAME")),
