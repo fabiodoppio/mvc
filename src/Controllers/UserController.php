@@ -49,7 +49,7 @@ class UserController extends AccountController {
             case "user/verify/request":
                 $code = Auth::get_confirmcode($this->account->get("email"));
                 $link = App::get("APP_URL")."/account/verify?code=".str_replace('=', '', base64_encode($this->account->get("email")."/".$code));
-                $redirect = (Request::isset("redirect")) ? "&redirect=".urldecode(Request::get("redirect")) : "";
+                $redirect = (Request::isset("redirect")) ? "&redirect=".urlencode(Request::get("redirect")) : "";
 
                 Email::send(sprintf(_("Email address verification | %s"), App::get("APP_NAME")), $this->account->get("email"), Template::get("email/verify.tpl", [
                     "username" => $this->account->get("username"),

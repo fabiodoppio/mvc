@@ -14,6 +14,7 @@
                         <label for="stay"><input type="checkbox" name="stay" id="stay" value="1">Angemeldet bleiben</label><br><br>
                         {% if (Request::isset("redirect")): %}
                             <input type="hidden" name="redirect" value="{{Request::get('redirect')}}"/>
+                        {% endif; %}
                         <div class="response"></div>
                         <button>Anmelden</button>
                     </form>

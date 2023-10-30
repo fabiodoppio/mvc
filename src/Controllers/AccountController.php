@@ -69,17 +69,10 @@ class AccountController extends Controller {
                     Fairplay::string(Request::get("pw")),
                     Fairplay::boolean(Request::isset("stay") ? Request::get("stay") : false));
 
-                $this->account = Auth::get_current_account();
-                if ($this->account->get("role") < Model\Account::VERIFIED)
-                    if (Request::isset("redirect"))
-                        Ajax::redirect(App::get("APP_URL")."/account/verify?redirect=".urlencode(Fairplay::string(Request::get("redirect"))));
-                    else 
-                        Ajax::redirect(App::get("APP_URL")."/account/verify");
+                if (Request::isset("redirect"))
+                    Ajax::redirect(App::get("APP_URL").Fairplay::string(Request::get("redirect"))); 
                 else 
-                    if (Request::isset("redirect"))
-                        Ajax::redirect(App::get("APP_URL").Fairplay::string(Request::get("redirect"))); 
-                    else 
-                        Ajax::redirect(App::get("APP_URL")."/account");
+                    Ajax::redirect(App::get("APP_URL")."/account");
                 break;
             default: 
                 throw new Exception(sprintf(_("Action %s not found."), Request::get("request")));

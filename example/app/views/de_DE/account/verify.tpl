@@ -14,6 +14,7 @@
                             <input type="text" name="code" value="{{$code}}" placeholder="Bestätigungscode eingeben" required/></label><br><br>
                             {% if (Request::isset("redirect")): %}
                                 <input type="hidden" name="redirect" value="{{Request::get('redirect')}}"/>
+                            {% endif; %}
                             <div class="response"></div>
                             <button>E-Mail Adresse verifizieren</button>
                         </form>
@@ -23,6 +24,7 @@
                             <br><br>
                             {% if (Request::isset("redirect")): %}
                                 <input type="hidden" name="redirect" value="{{Request::get('redirect')}}"/>
+                            {% endif; %}
                             <div class="response"></div>
                             <button>Bestätigungscode anfordern</button>
                         </form>
