@@ -143,6 +143,7 @@ class Auth {
      * Unset the user's authentication cookie.
      */
     public static function unset_cookie() {
+        unset($_COOKIE["account"]);
         setcookie("account", "", -1, "/", $_SERVER['SERVER_NAME'], 1);
     }
 
