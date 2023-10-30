@@ -12,9 +12,7 @@
                             {% endif; %}
                             <label for="code">Bestätigungscode <span class="required" title="Pflichtfeld">*</span><br>
                             <input type="text" name="code" value="{{$code}}" placeholder="Bestätigungscode eingeben" required/></label><br><br>
-                            {% if (Request::isset("redirect")): %}
-                                <input type="hidden" name="redirect" value="{{Request::get('redirect')}}"/>
-                            {% endif; %}
+                            <input type="hidden" name="redirect" value="{{$redirect}}"/>
                             <div class="response"></div>
                             <button>E-Mail Adresse verifizieren</button>
                         </form>
@@ -22,9 +20,7 @@
                         <form data-request="user/verify/request">
                             <div class="warning">Wir senden dir einen <b>Bestätigungscode</b> zum Verifizieren an die hinterlegte <b>E-Mail Adresse</b>.</div><br>
                             <br><br>
-                            {% if (Request::isset("redirect")): %}
-                                <input type="hidden" name="redirect" value="{{Request::get('redirect')}}"/>
-                            {% endif; %}
+                            <input type="hidden" name="redirect" value="{{$redirect}}"/>
                             <div class="response"></div>
                             <button>Bestätigungscode anfordern</button>
                         </form>
