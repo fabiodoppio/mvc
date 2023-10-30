@@ -31,7 +31,8 @@ class Exception extends \Exception {
             case 403:
                 Auth::unset_cookie();
                 http_response_code(403);
-                header("Location: ".App::get("APP_URL")."/login?redirect=".urlencode(Request::get("request")));
+                $redirect = (Request::isset("redirect")) ? Fairplay::string(Request::get("redirect")) : Request::get("request");
+                header("Location: ".App::get("APP_URL")."/login?redirect=".urlencode($redirect));
                 exit;
                 break;
             case 404:
@@ -46,7 +47,8 @@ class Exception extends \Exception {
                 break;
             case 406:
                 http_response_code(406);
-                header("Location: ".App::get("APP_URL")."/account/verify?redirect=".urlencode(Request::get("request")));
+                $redirect = (Request::isset("redirect")) ? Fairplay::string(Request::get("redirect")) : Request::get("request");
+                header("Location: ".App::get("APP_URL")."/account/verify?redirect=".urlencode($redirect));
                 exit;
                 break;
             default:
