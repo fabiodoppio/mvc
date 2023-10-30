@@ -12,7 +12,9 @@
                         <input type="password" name="pw" placeholder="Passwort eingeben" autocomplete="off" required/></label><br>
                         <a href="{{App::get('APP_URL')}}/recovery" title="Account wiederherstellen">Passwort vergessen?</a><br><br>
                         <label for="stay"><input type="checkbox" name="stay" id="stay" value="1">Angemeldet bleiben</label><br><br>
-                        <input type="hidden" name="redirect" value="{{$redirect}}"/>
+                        {% if (Request::isset("redirect")): %}
+                            <input type="hidden" name="redirect" value="{{$redirect}}"/>
+                        {% endif; %}
                         <div class="response"></div>
                         <button>Anmelden</button>
                     </form>
