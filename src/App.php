@@ -80,7 +80,7 @@ class App {
                     self::$$key = $value;
                 
             foreach (Database::select("app_config", "name IS NOT NULL") as $config)
-                self::$APP_CONFIG = [$config["name"] => $config["value"]];
+                self::$APP_CONFIG[$config["name"]] = $config["value"];
             
             putenv('LANGUAGE='.App::get("APP_LANGUAGE"));
             putenv('LC_ALL='.App::get("APP_LANGUAGE"));
@@ -150,8 +150,8 @@ class App {
      * @param   mixed   $value  The value to set.
      */
     public static function set($key, $value) {
-        if (!empty(Database::select("app_config", "name LIKE '".$key."'")))
-            if ($value === null)
+        if (!empty(Database::select("app_config", "name = '".$key."'")))
+            if ($value === null || $value === "")
                 Database::delete("app_config", "name = '".$key."'");
             else
                 Database::update("app_config", "value = '".$value."'", "name = '".$key."'");
