@@ -36,6 +36,10 @@ class UserController extends AccountController {
      */
     public function beforeAction() {
         parent::beforeAction();
+
+        if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
+            throw new Exception(_("App currently offline. Please try again later."));
+
         if ($this->account->get("role") < Model\Account::USER)
             throw new Exception(_("Your account does not have the required role."));
     }
@@ -49,7 +53,7 @@ class UserController extends AccountController {
             case "user/verify/request":
                 $code = Auth::get_confirmcode($this->account->get("email"));
                 $link = App::get("APP_URL")."/account/verify?code=".str_replace('=', '', base64_encode($this->account->get("email")."/".$code));
-                $redirect = (Request::isset("redirect")) ? "&redirect=".urlencode(Request::get("redirect")) : "";
+                $redirect = (Request::isset("redirect")) ? "&redirect=".urlencode(Fairplay::string(Request::get("redirect"))) : "";
 
                 Email::send(sprintf(_("Email address verification | %s"), App::get("APP_NAME")), $this->account->get("email"), Template::get("email/verify.tpl", [
                     "username" => $this->account->get("username"),

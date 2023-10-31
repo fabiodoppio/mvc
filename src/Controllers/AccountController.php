@@ -46,10 +46,6 @@ class AccountController extends Controller {
 
         $this->account->set("lastaction", date("Y-m-d H:i:s", time()));
 
-        if (!Request::isset("redirect") || (Request::isset("redirect") && Request::get("redirect") != "/admin"))
-            if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
-                throw new Exception(_("App currently offline. Please try again later."));
-
         if ($this->account->get("role") < Model\Account::GUEST)
             throw new Exception(_("Your account has been suspended or deactivated."));
     }
@@ -62,16 +58,18 @@ class AccountController extends Controller {
     public function loginAction() {
         switch(Request::get("request")) {
             case "account/login":
-                if (!App::get("APP_LOGIN") && (Request::isset("redirect") && Request::get("redirect") != "/admin"))
-                    throw new Exception(_("Login not possible at the moment."));
+                $redirect = (Request::isset("redirect")) ? Fairplay::string(Request::get("redirect")) : "";
+
+                if ((!App::get("APP_LOGIN") || !App::get("APP_ONLINE")) && $redirect != "/admin")
+                        throw new Exception(_("Login not possible at the moment."));
 
                 Auth::set_current_account(
                     Fairplay::string(Request::get("credential")), 
                     Fairplay::string(Request::get("pw")),
                     Fairplay::boolean(Request::isset("stay") ? Request::get("stay") : false));
 
-                if (Request::isset("redirect"))
-                    Ajax::redirect(App::get("APP_URL").Fairplay::string(Request::get("redirect"))); 
+                if ($redirect != "")
+                    Ajax::redirect(App::get("APP_URL").$redirect);
                 else 
                     Ajax::redirect(App::get("APP_URL")."/account");
                 break;
@@ -115,7 +113,7 @@ class AccountController extends Controller {
      * @throws Exception If signup is not allowed or if there are issues with the registration data.
      */
     public function signupAction() {
-        if (!App::get("APP_SIGNUP"))
+        if (!App::get("APP_SIGNUP") || !App::get("APP_ONLINE"))
             throw new Exception(_("Signup not possible at the moment."));
 
         switch(Request::get("signup")) {

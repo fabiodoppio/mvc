@@ -60,7 +60,7 @@ class IndexController extends Controller {
         $redirect = (Request::isset("redirect")) ? urldecode(Fairplay::string(Request::get("redirect"))) : "";
 
         if (!App::get("APP_LOGIN") && ($redirect != "/admin"))
-            throw new Exception(_("Signup not possible at the moment."), 404);
+            throw new Exception(_("Login not possible at the moment."), 404);
 
         if ($this->account->get("role") > Model\Account::GUEST)
             throw new Exception(_("Your account does not have the required role."), 405);
