@@ -87,7 +87,7 @@ class IndexController extends Controller {
      */
     public function logoutAction() {
         if ($this->account->get("role") < Model\Account::USER)
-            throw new Exception(_("Your account does not have the required role."), 403);
+            throw new Exception(_("Page not found."), 404);
 
         switch(Request::get("request")) {
             case "/logout":
