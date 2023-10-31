@@ -44,10 +44,68 @@ class AdminController extends AccountController {
     public function appAction() {
         switch(Request::get("request")) {
             case "admin/app/edit":
+                if (Request::isset("APP_URL"))
+                    App::set("APP_URL", Fairplay::string(Request::get("APP_URL")));
+
+                if (Request::isset("APP_NAME"))
+                    App::set("APP_NAME", Fairplay::string(Request::get("APP_NAME")));
+
+                if (Request::isset("APP_TITLE"))
+                    App::set("APP_TITLE", Fairplay::string(Request::get("APP_TITLE")));
+
+                if (Request::isset("APP_AUTHOR"))
+                    App::set("APP_AUTHOR", Fairplay::string(Request::get("APP_AUTHOR")));
+                
+                if (Request::isset("APP_LANGUAGE"))
+                    App::set("APP_AUTHOR", Fairplay::string(Request::get("APP_LANGUAGE")));
+
+                if (Request::isset("APP_DESCRIPTION"))
+                    App::set("APP_DESCRIPTION", Fairplay::string(Request::get("APP_DESCRIPTION")));
+
+                if (Request::isset("APP_VERSION"))
+                    App::set("APP_VERSION", Fairplay::string(Request::get("APP_VERSION")));
+
+                if (Request::isset("APP_ONLINE"))
+                    App::set("APP_ONLINE", Fairplay::boolean(Request::get("APP_ONLINE")));
+                
+                if (Request::isset("APP_LOGIN"))
+                    App::set("APP_LOGIN", Fairplay::boolean(Request::get("APP_LOGIN")));
+
+                if (Request::isset("APP_SIGNUP"))
+                    App::set("APP_SIGNUP", Fairplay::boolean(Request::get("APP_SIGNUP")));
+
+                if (Request::isset("META_PROTECTED"))
+                    App::set("META_PROTECTED", json_encode(array_map('trim', explode(',', Fairplay::string(Request::get("APP_SIGNUP"))))));
+
                 if (Request::isset("config_name") && Request::isset("config_value"))
                     if (is_array(Request::get("config_name")) && is_array(Request::get("config_value")))
                         for($i = 0; $i < count(Request::get("config_name")); $i++)
                             App::set(Fairplay::string(Request::get("config_name")[$i]), Fairplay::string(Request::get("config_value")[$i]));
+
+                Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
+                break;
+            default: 
+                throw new Exception(sprintf(_("Action %s not found."), Request::get("request")));
+        }
+    }
+
+    /**
+     * This method Handles mail-related actions such as editing the mail server.
+     */
+    public function mailAction() {
+        switch(Request::get("request")) {
+            case "admin/mail/edit":
+                if (Request::isset("MAIL_HOST"))
+                    App::set("MAIL_HOST", Fairplay::string(Request::get("MAIL_HOST")));
+
+                if (Request::isset("MAIL_SENDER"))
+                    App::set("MAIL_SENDER", Fairplay::email(Request::get("MAIL_SENDER")));
+
+                if (Request::isset("MAIL_USERNAME"))
+                    App::set("MAIL_USERNAME", Fairplay::string(Request::get("MAIL_USERNAME")));
+
+                if (Request::isset("MAIL_PASSWORD"))
+                    App::set("MAIL_PASSWORD", base64_encode(Fairplay::string(Request::get("MAIL_PASSWORD"))));
 
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;

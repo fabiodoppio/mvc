@@ -41,7 +41,7 @@ class Email {
         $mail->Host       = App::get("MAIL_HOST");
         $mail->SMTPAuth   = true;
         $mail->Username   = App::get("MAIL_USERNAME");
-        $mail->Password   = App::get("MAIL_PASSWORD");
+        $mail->Password   = base64_decode(App::get("MAIL_PASSWORD"));
         $mail->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
         $mail->setFrom(App::get("MAIL_SENDER"), App::get("APP_NAME"));

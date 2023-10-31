@@ -50,6 +50,10 @@ class Exception extends \Exception {
                 $redirect = (Request::isset("redirect")) ? Fairplay::string(Request::get("redirect")) : Request::get("request");
                 header("Location: ".App::get("APP_URL")."/account/verify?redirect=".urlencode($redirect));
                 exit;
+            case 407:
+                http_response_code(407);
+                header("Location: ".App::get("APP_URL")."/maintenance");
+                exit;
                 break;
             default:
                 Ajax::add(".response", '<div class="error">'.$this->getMessage().'</div>');

@@ -34,6 +34,9 @@ class IndexController extends Controller {
      * Displaying the website's home page.
      */
     public function homeAction() {
+        if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
+            throw new Exception(_("App currently offline.", 407));
+
         switch(Request::get("request")) {
             case "/":
                 echo Template::get(
@@ -164,6 +167,9 @@ class IndexController extends Controller {
      * Displaying the website's account page.
      */
     public function accountAction() {
+        if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
+            throw new Exception(_("App currently offline.", 407));
+
         if ($this->account->get("role") < Model\Account::USER)
             throw new Exception(_("Your account does not have the required role."), 403);
         
@@ -212,18 +218,43 @@ class IndexController extends Controller {
     public function adminAction() {
         if ($this->account->get("role") < Model\Account::ADMINISTRATOR)
             throw new Exception(_("Your account does not have the required role."), 403);
+
+        $p = (Request::isset("p")) ? urldecode(Fairplay::string(Request::get("p"))) : "1";
         
         switch(Request::get("request")) {
             case "/admin":
                 echo Template::get(
                         "admin/admin.tpl", [
-                            "title" => sprintf(_("Backend | %s"), App::get("APP_NAME")),
+                            "title" => sprintf(_("Administration | %s"), App::get("APP_NAME")),
                             "description" => App::get("APP_DESCRIPTION"),
                             "robots" => "noindex, nofollow",
                             "canonical" => App::get("APP_URL")."/admin",
-                            "account" => $this->account
+                            "account" => $this->account,
+                            "p" => $p
                 ]);
                 break;
+            case "/admin/app":
+                echo Template::get(
+                        "admin/app.tpl", [
+                            "title" => sprintf(_("App | %s"), App::get("APP_NAME")),
+                            "description" => App::get("APP_DESCRIPTION"),
+                            "robots" => "noindex, nofollow",
+                            "canonical" => App::get("APP_URL")."/admin/app",
+                            "account" => $this->account,
+                            "p" => $p
+                ]);
+                break;
+                case "/admin/mail":
+                    echo Template::get(
+                            "admin/mail.tpl", [
+                                "title" => sprintf(_("Mail | %s"), App::get("APP_NAME")),
+                                "description" => App::get("APP_DESCRIPTION"),
+                                "robots" => "noindex, nofollow",
+                                "canonical" => App::get("APP_URL")."/admin/mail",
+                                "account" => $this->account,
+                                "p" => $p
+                    ]);
+                    break;
             case "/admin/pages":
                 $pages = array();
                 foreach (Database::select("app_pages", "slug IS NOT NULL") as $page)
@@ -236,7 +267,8 @@ class IndexController extends Controller {
                             "robots" => "noindex, nofollow",
                             "canonical" => App::get("APP_URL")."/admin/pages",
                             "pages" => $pages,
-                            "account" => $this->account
+                            "account" => $this->account,
+                            "p" => $p
                 ]);
                 break;
             case "/admin/users":
@@ -251,7 +283,8 @@ class IndexController extends Controller {
                             "robots" => "noindex, nofollow",
                             "canonical" => App::get("APP_URL")."/admin/users",
                             "accounts" => $accounts,
-                            "account" => $this->account
+                            "account" => $this->account,
+                            "p" => $p
                 ]);
                 break;
             default:
@@ -280,10 +313,37 @@ class IndexController extends Controller {
     }
 
     /**
+     * Displaying the website's maintenance page.
+     */
+    public function maintenanceAction() {
+        if (App::get("APP_ONLINE"))
+            throw new Exception(_("Your account does not have the required role.", 404));
+            
+        switch(Request::get("request")) {
+            case "/maintenance":
+                echo Template::get(
+                    "maintenance.tpl", [
+                        "title" => sprintf(_("Maintenance | %s"), App::get("APP_NAME")),
+                        "description" => App::get("APP_DESCRIPTION"),
+                        "robots" => "noindex, nofollow",
+                        "canonical" => App::get("APP_URL")."/maintenance",
+                        "account" => $this->account
+                ]);
+                break;
+            default:
+                $this->customAction();
+        }
+    }
+
+    /**
      * Displaying the website's custom page from database.
      */
     public function customAction() {
+        if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
+            throw new Exception(_("App currently offline.", 407));
+
         $page = new Model\Page(Request::get("request"));
+        $p = (Request::isset("p")) ? urldecode(Fairplay::string(Request::get("p"))) : "1";
 
         if ($this->account->get("role") < Model\Account::VERIFIED && $page->get("role") == Model\Account::VERIFIED)
             throw new Exception(_("Your account does not have the required role."), 406); 
@@ -297,7 +357,8 @@ class IndexController extends Controller {
                 "description" => $page->get("description") ?: App::get("APP_DESCRIPTION"),
                 "robots" => $page->get("robots"),
                 "canonical" => App::get("APP_URL").$page->get("slug"),
-                "account" => $this->account
+                "account" => $this->account,
+                "p" => $p
         ]);
     }
 
