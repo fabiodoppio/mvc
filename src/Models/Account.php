@@ -105,7 +105,8 @@ class Account extends Model {
                 else
                     Database::update("app_accounts_meta", "value = '".$value."'", "id = '".$this->get("id")."' AND name = '".$key."'");
             else
-                Database::insert("app_accounts_meta", "id, name, value", "'".$this->get("id")."', '".$key."', '".$value."'");
+                if ($value !== null && $value != "")
+                    Database::insert("app_accounts_meta", "id, name, value", "'".$this->get("id")."', '".$key."', '".$value."'");
 
         $this->data[0][$key] = $value;
     }

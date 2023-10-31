@@ -156,7 +156,8 @@ class App {
             else
                 Database::update("app_config", "value = '".$value."'", "name = '".$key."'");
         else
-            Database::insert("app_config", "name, value", "'".$key."', '".$value."'");
+            if ($value !== null && $value != "")
+                Database::insert("app_config", "name, value", "'".$key."', '".$value."'");
     }
 
 }
