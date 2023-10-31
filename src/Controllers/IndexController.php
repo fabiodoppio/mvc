@@ -35,7 +35,7 @@ class IndexController extends Controller {
      */
     public function homeAction() {
         if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
-            throw new Exception(_("App currently offline.", 407));
+            throw new Exception(_("App currently offline."), 407);
 
         switch(Request::get("request")) {
             case "/":
@@ -168,7 +168,7 @@ class IndexController extends Controller {
      */
     public function accountAction() {
         if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
-            throw new Exception(_("App currently offline.", 407));
+            throw new Exception(_("App currently offline."), 407);
 
         if ($this->account->get("role") < Model\Account::USER)
             throw new Exception(_("Your account does not have the required role."), 403);
@@ -317,7 +317,7 @@ class IndexController extends Controller {
      */
     public function maintenanceAction() {
         if (App::get("APP_ONLINE"))
-            throw new Exception(_("Your account does not have the required role.", 404));
+            throw new Exception(_("Page not found."), 404);
             
         switch(Request::get("request")) {
             case "/maintenance":
@@ -340,7 +340,7 @@ class IndexController extends Controller {
      */
     public function customAction() {
         if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
-            throw new Exception(_("App currently offline.", 407));
+            throw new Exception(_("App currently offline."), 407);
 
         $page = new Model\Page(Request::get("request"));
         $p = (Request::isset("p")) ? urldecode(Fairplay::string(Request::get("p"))) : "1";
