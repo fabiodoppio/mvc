@@ -150,7 +150,7 @@ class App {
      * @param   mixed   $value  The value to set.
      */
     public static function set($key, $value) {
-        if (!empty(Database::select("app_config", "name IS NOT NULL")))
+        if (!empty(Database::select("app_config", "name LIKE '".$key."'")))
             if ($value === null)
                 Database::delete("app_config", "name = '".$key."'");
             else
