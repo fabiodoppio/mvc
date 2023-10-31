@@ -257,7 +257,7 @@ class IndexController extends Controller {
                     break;
             case "/admin/pages":
                 $pages = array();
-                foreach (Database::select("app_pages", "slug IS NOT NULL") as $page)
+                foreach (Database::select("app_pages", "slug IS NOT NULL LIMIT ".(($p-1)*20).",20") as $page)
                     $pages[] = new Model\Page($page['slug']);
         
                 echo Template::get(
@@ -273,7 +273,7 @@ class IndexController extends Controller {
                 break;
             case "/admin/users":
                 $accounts = array();
-                foreach (Database::select("app_accounts", "id IS NOT NULL") as $user)
+                foreach (Database::select("app_accounts", "id IS NOT NULL LIMIT ".(($p-1)*20).",20") as $user)
                     $accounts[] = new Model\Account($user['id']);
         
                 echo Template::get(
@@ -343,7 +343,6 @@ class IndexController extends Controller {
             throw new Exception(_("App currently offline. Please try again later."), 407);
 
         $page = new Model\Page(Request::get("request"));
-        $p = (Request::isset("p")) ? urldecode(Fairplay::string(Request::get("p"))) : "1";
 
         if ($this->account->get("role") < Model\Account::VERIFIED && $page->get("role") == Model\Account::VERIFIED)
             throw new Exception(_("Your account does not have the required role."), 406); 
@@ -357,8 +356,7 @@ class IndexController extends Controller {
                 "description" => $page->get("description") ?: App::get("APP_DESCRIPTION"),
                 "robots" => $page->get("robots"),
                 "canonical" => App::get("APP_URL").$page->get("slug"),
-                "account" => $this->account,
-                "p" => $p
+                "account" => $this->account
         ]);
     }
 
