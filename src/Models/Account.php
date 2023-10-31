@@ -100,7 +100,7 @@ class Account extends Model {
             Database::update($this->table, $key." = '".$value."'", $this->primaryKey." = '".$this->objectID."'");
         else 
             if ($this->get($key) !== null)
-                if ($value === null || $value === "")
+                if ($value === null || $value == "")
                     Database::delete("app_accounts_meta", "id = '".$this->get("id")."' AND name = '".$key."'");
                 else
                     Database::update("app_accounts_meta", "value = '".$value."'", "id = '".$this->get("id")."' AND name = '".$key."'");

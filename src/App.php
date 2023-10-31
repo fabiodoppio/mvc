@@ -151,7 +151,7 @@ class App {
      */
     public static function set($key, $value) {
         if (!empty(Database::select("app_config", "name = '".$key."'")))
-            if ($value === null || $value === "")
+            if ($value === null || $value == "")
                 Database::delete("app_config", "name = '".$key."'");
             else
                 Database::update("app_config", "value = '".$value."'", "name = '".$key."'");
