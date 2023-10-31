@@ -46,9 +46,8 @@ class AccountController extends Controller {
 
         $this->account->set("lastaction", date("Y-m-d H:i:s", time()));
 
-        if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
-            if (Request::isset("redirect") && Request::get("redirect") != "/admin")
-                throw new Exception(_("App currently offline. Please try again later."));
+        if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Account::ADMINISTRATOR && (Request::isset("redirect") && Request::get("redirect") != "/admin"))
+            throw new Exception(_("App currently offline. Please try again later."));
 
         if ($this->account->get("role") < Model\Account::GUEST)
             throw new Exception(_("Your account has been suspended or deactivated."));
