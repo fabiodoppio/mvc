@@ -148,7 +148,7 @@ class AdminController extends AccountController {
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
             case "admin/page/delete":
-                Database::delete("app_pages", "slug = '".Fairplay::string(Request::get("slug"))."'");
+                Database::delete("app_pages", "slug = '".Fairplay::string(Request::get("value"))."'");
                 Ajax::add('.response', '<div class="success">'._("Page deleted successfully.").'</div>');
                 break;
             default: 
@@ -202,10 +202,10 @@ class AdminController extends AccountController {
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
             case "admin/user/delete":
-                if ($this->account->get("id") == Fairplay::integer(Request::get("id")))
+                if ($this->account->get("id") == Fairplay::integer(Request::get("value")))
                     throw new Exception(_("You can not delete yourself."));
 
-                Database::delete("app_accounts", "id = '".Request::get("id")."'");
+                Database::delete("app_accounts", "id = '".Request::get("value")."'");
                 Ajax::add('.response', '<div class="success">'._("User deleted successfully.").'</div>');
                 break;
             default: 
