@@ -57,7 +57,7 @@ class AdminController extends AccountController {
                     App::set("APP_AUTHOR", Fairplay::string(Request::get("APP_AUTHOR")));
                 
                 if (Request::isset("APP_LANGUAGE"))
-                    App::set("APP_AUTHOR", Fairplay::string(Request::get("APP_LANGUAGE")));
+                    App::set("APP_LANGUAGE", Fairplay::string(Request::get("APP_LANGUAGE")));
 
                 if (Request::isset("APP_DESCRIPTION"))
                     App::set("APP_DESCRIPTION", Fairplay::string(Request::get("APP_DESCRIPTION")));
@@ -75,7 +75,7 @@ class AdminController extends AccountController {
                     App::set("APP_SIGNUP", Fairplay::boolean(Request::get("APP_SIGNUP")));
 
                 if (Request::isset("META_PROTECTED"))
-                    App::set("META_PROTECTED", json_encode(array_map('trim', explode(',', Fairplay::string(Request::get("APP_SIGNUP"))))));
+                    App::set("META_PROTECTED", json_encode(array_map('trim', explode(',', Fairplay::string(Request::get("META_PROTECTED"))))));
 
                 if (Request::isset("config_name") && Request::isset("config_value"))
                     if (is_array(Request::get("config_name")) && is_array(Request::get("config_value")))
