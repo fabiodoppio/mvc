@@ -54,13 +54,13 @@ class IndexController extends Controller {
      * Displaying the website's login page.
      */
     public function loginAction() {
-        if (!App::get("APP_LOGIN"))
+        $redirect = (Request::isset("redirect")) ? urldecode(Fairplay::string(Request::get("redirect"))) : "";
+
+        if (!App::get("APP_LOGIN") && ($redirect != "/admin"))
             throw new Exception(_("Signup not possible at the moment."), 404);
 
         if ($this->account->get("role") > Model\Account::GUEST)
             throw new Exception(_("Your account does not have the required role."), 405);
-
-        $redirect = (Request::isset("redirect")) ? urldecode(Fairplay::string(Request::get("redirect"))) : "";
 
         switch(Request::get("request")) {
             case "/login":

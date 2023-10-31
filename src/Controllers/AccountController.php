@@ -61,7 +61,7 @@ class AccountController extends Controller {
     public function loginAction() {
         switch(Request::get("request")) {
             case "account/login":
-                if (!App::get("APP_LOGIN"))
+                if (!App::get("APP_LOGIN") && (Request::isset("redirect") && Request::get("redirect") != "/admin"))
                     throw new Exception(_("Login not possible at the moment."));
 
                 Auth::set_current_account(
