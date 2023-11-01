@@ -126,7 +126,7 @@ class AdminController extends AccountController {
 
                 Database::insert("app_pages", "slug, title, description, robots, template, role", "'".Fairplay::string(Request::get("slug"))."', '".Fairplay::string(Request::get("title"))."', '".Fairplay::string(Request::get("description"))."', '".Fairplay::string(Request::get("robots"))."', '".Fairplay::string(Request::get("template"))."', '".Fairplay::integer(Request::get("role"))."'");
 
-                Ajax::add('.response', '<div class="success">'._("Page added successfully.").'</div>');
+                Ajax::redirect(App::get("APP_URL")."/admin/pages");
                 break;
             case "admin/page/edit":
                 $page = new Model\Page(Request::get("slug"));
@@ -152,6 +152,17 @@ class AdminController extends AccountController {
                 Database::delete("app_pages", "slug = '".Fairplay::string(Request::get("value"))."'");
                 Ajax::add('.response', '<div class="success">'._("Page deleted successfully.").'</div>');
                 break;
+            case "admin/page/page":
+                $items = array();
+                foreach (Database::select("app_pages", "slug IS NOT NULL") as $page)
+                    $items[] = new Model\Page($page['slug']);
+
+                $pages = ceil(count($items)/20);
+                $page = Fairplay::integer(Request::get("value"));
+                $items = array_slice($items, ($page-1)*20, 20);
+                
+                Ajax::add('.pages', Template::get("admin/elements/PageList.tpl", ["items" => $items, "page"=> $page, "pages" => $pages]));
+                break;
             default: 
                 throw new Exception(sprintf(_("Action %s not found."), Request::get("request")));
         }
@@ -160,14 +171,25 @@ class AdminController extends AccountController {
     /**
      * This method Handles user-related actions such as editing and deleting user accounts.
      */
-    public function userAction() {
+    public function accountAction() {
         switch(Request::get("request")) {
-            case "admin/user/logout":
+            case "admin/account/add":
+                if (!empty(Database::select("app_accounts", "username LIKE '".Request::get("username")."'")[0]))
+                    throw new Exception(_("Your entered username is already taken."));
+    
+                if (!empty(Database::select("app_accounts", "email LIKE '".Request::get("email")."'")[0]))
+                    throw new Exception(_("Your entered email address is already taken."));
+    
+                Database::insert("app_accounts", "email, username, password, token, role", "'".strtolower(Fairplay::email(Request::get("email")))."', '".Fairplay::username(Request::get("username"))."', '".password_hash(Fairplay::password(Request::get("pw1"), Request::get("pw2")), PASSWORD_DEFAULT)."', '".Auth::get_instance_token()."', '".Fairplay::integer(Request::get("role"))."'");
+
+                Ajax::redirect(App::get("APP_URL")."/admin/accounts");
+                break;
+            case "admin/account/logout":
                 $account = new Model\Account(Fairplay::integer(Request::get("value")));
                 $account->set("token", Auth::get_instance_token());
                 Ajax::add('.response', '<div class="success">'._("User successfully logged out.").'</div>');
                 break;
-            case "admin/user/edit":
+            case "admin/account/edit":
                 $account = new Model\Account(Fairplay::integer(Request::get("id")));
 
                 if (Request::isset("username")) {
@@ -206,23 +228,23 @@ class AdminController extends AccountController {
 
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
-            case "admin/user/delete":
+            case "admin/account/delete":
                 if ($this->account->get("id") == Fairplay::integer(Request::get("value")))
                     throw new Exception(_("You can not delete yourself."));
 
                 Database::delete("app_accounts", "id = '".Request::get("value")."'");
                 Ajax::add('.response', '<div class="success">'._("User deleted successfully.").'</div>');
                 break;
-            case "admin/user/page":
-                $accounts = array();
-                foreach (Database::select("app_accounts", "id IS NOT NULL") as $user)
-                    $accounts[] = new Model\Account($user['id']);
+            case "admin/account/page":
+                $items = array();
+                foreach (Database::select("app_accounts", "id IS NOT NULL") as $account)
+                    $items[] = new Model\Account($account['id']);
 
-                $pages = ceil(count($accounts)/20);
+                $pages = ceil(count($items)/20);
                 $page = Fairplay::integer(Request::get("value"));
-                $accounts = array_slice($accounts, ($page - 1) * 20, 20);
+                $items = array_slice($items, ($page-1)*20, 20);
                 
-                Ajax::add('.accounts', Template::get("admin/AccountList.tpl", ["accounts" => $accounts, "page"=> $page, "pages" => $pages]));
+                Ajax::add('.accounts', Template::get("admin/elements/AccountList.tpl", ["items" => $items, "page"=> $page, "pages" => $pages]));
                 break;
             default: 
                 throw new Exception(sprintf(_("Action %s not found."), Request::get("request")));

@@ -218,8 +218,6 @@ class IndexController extends Controller {
     public function adminAction() {
         if ($this->account->get("role") < Model\Account::ADMINISTRATOR)
             throw new Exception(_("Your account does not have the required role."), 403);
-
-        $p = (Request::isset("p")) ? urldecode(Fairplay::string(Request::get("p"))) : "1";
         
         switch(Request::get("request")) {
             case "/admin":
@@ -229,8 +227,7 @@ class IndexController extends Controller {
                             "description" => App::get("APP_DESCRIPTION"),
                             "robots" => "noindex, nofollow",
                             "canonical" => App::get("APP_URL")."/admin",
-                            "account" => $this->account,
-                            "p" => $p
+                            "account" => $this->account
                 ]);
                 break;
             case "/admin/app":
@@ -240,8 +237,7 @@ class IndexController extends Controller {
                             "description" => App::get("APP_DESCRIPTION"),
                             "robots" => "noindex, nofollow",
                             "canonical" => App::get("APP_URL")."/admin/app",
-                            "account" => $this->account,
-                            "p" => $p
+                            "account" => $this->account
                 ]);
                 break;
                 case "/admin/mail":
@@ -251,14 +247,16 @@ class IndexController extends Controller {
                                 "description" => App::get("APP_DESCRIPTION"),
                                 "robots" => "noindex, nofollow",
                                 "canonical" => App::get("APP_URL")."/admin/mail",
-                                "account" => $this->account,
-                                "p" => $p
+                                "account" => $this->account
                     ]);
                     break;
             case "/admin/pages":
-                $pages = array();
-                foreach (Database::select("app_pages", "slug IS NOT NULL LIMIT ".(($p-1)*20).",20") as $page)
-                    $pages[] = new Model\Page($page['slug']);
+                $items = array();
+                foreach (Database::select("app_pages", "slug IS NOT NULL LIMIT") as $page)
+                    $items[] = new Model\Page($page['slug']);
+
+                $pages = ceil(count($items)/20);
+                $items = array_slice($items, 0, 20);
         
                 echo Template::get(
                         "admin/pages.tpl", [
@@ -266,26 +264,27 @@ class IndexController extends Controller {
                             "description" => App::get("APP_DESCRIPTION"),
                             "robots" => "noindex, nofollow",
                             "canonical" => App::get("APP_URL")."/admin/pages",
+                            "items" => $items,
+                            "page" => 1,
                             "pages" => $pages,
-                            "account" => $this->account,
-                            "p" => $p
+                            "account" => $this->account
                 ]);
                 break;
-            case "/admin/users":
-                $accounts = array();
-                foreach (Database::select("app_accounts", "id IS NOT NULL") as $user)
-                    $accounts[] = new Model\Account($user['id']);
+            case "/admin/accounts":
+                $items = array();
+                foreach (Database::select("app_accounts", "id IS NOT NULL") as $account)
+                    $items[] = new Model\Account($account['id']);
 
-                $pages = ceil(count($accounts)/20);
-                $accounts = array_slice($accounts, 0, 20);
+                $pages = ceil(count($items)/20);
+                $items = array_slice($items, 0, 20);
 
                 echo Template::get(
-                        "admin/users.tpl", [
-                            "title" => sprintf(_("Users | %s"), App::get("APP_NAME")),
+                        "admin/accounts.tpl", [
+                            "title" => sprintf(_("Accounts | %s"), App::get("APP_NAME")),
                             "description" => App::get("APP_DESCRIPTION"),
                             "robots" => "noindex, nofollow",
-                            "canonical" => App::get("APP_URL")."/admin/users",
-                            "accounts" => $accounts,
+                            "canonical" => App::get("APP_URL")."/admin/accounts",
+                            "items" => $items,
                             "page" => 1,
                             "pages" => $pages,
                             "account" => $this->account

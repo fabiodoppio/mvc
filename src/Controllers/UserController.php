@@ -85,32 +85,38 @@ class UserController extends AccountController {
         switch(Request::get("request")) {
             case "user/edit":
                 if (Request::isset("username")) {
-                    if (in_array("username", json_decode(App::get("META_PROTECTED"))))
-                        throw new Exception(_("You are not allowed to edit your username."));
+                    if ($this->account->get("username") != Request::get("username")) {
+                        if (in_array("username", json_decode(App::get("META_PROTECTED"))))
+                            throw new Exception(_("You are not allowed to edit your username."));
 
-                    if (!empty(Database::select("app_accounts", "username LIKE '".Fairplay::username(Request::get("username"))."'")[0]))
-                        throw new Exception(_("Your entered username is already taken."));
+                        if (!empty(Database::select("app_accounts", "username LIKE '".Fairplay::username(Request::get("username"))."'")[0]))
+                            throw new Exception(_("Your entered username is already taken."));
 
-                    $this->account->set("username", Request::get("username"));
+                        $this->account->set("username", Request::get("username"));
+                    }
                 }
 
                 if (Request::isset("email")) {
-                    if (in_array("email", json_decode(App::get("META_PROTECTED"))))
-                        throw new Exception(_("You are not allowed to edit your email address."));
+                    if ($this->account->get("email") != Request::get("email")) {
+                        if (in_array("email", json_decode(App::get("META_PROTECTED"))))
+                            throw new Exception(_("You are not allowed to edit your email address."));
 
-                    if (!empty(Database::select("app_accounts", "email LIKE '".Fairplay::email(Request::get("email"))."'")[0]))
-                        throw new Exception(_("Your entered email address is already taken."));
+                        if (!empty(Database::select("app_accounts", "email LIKE '".Fairplay::email(Request::get("email"))."'")[0]))
+                            throw new Exception(_("Your entered email address is already taken."));
 
-                    $this->account->set("email", strtolower(Request::get("email")));
-                    $this->account->set("role", ($this->account->get("role") == Model\Account::VERIFIED) ? Model\Account::USER : $this->account->get("role"));
+                        $this->account->set("email", strtolower(Request::get("email")));
+                        $this->account->set("role", ($this->account->get("role") == Model\Account::VERIFIED) ? Model\Account::USER : $this->account->get("role"));
+                    }
                 }
 
                 if (Request::isset("pw") && Request::isset("pw1") && Request::isset("pw2")) {
-                    if (!password_verify(Request::get("pw"), $this->account->get("password"))) 
-                        throw new Exception(_("Your current password does not match."));
-            
-                    if (Fairplay::password(Request::get("pw1"), Request::get("pw2")) != "")
-                        $this->account->set("password", password_hash(Request::get("pw1"), PASSWORD_DEFAULT));
+                    if (Request::get("pw1") != "" || Request::get("pw2") != "" || Request::get("pw3") != "") {
+                        if (!password_verify(Request::get("pw"), $this->account->get("password"))) 
+                            throw new Exception(_("Your current password does not match."));
+                
+                        if (Fairplay::password(Request::get("pw1"), Request::get("pw2")) != "")
+                            $this->account->set("password", password_hash(Request::get("pw1"), PASSWORD_DEFAULT));
+                    }
                 }
 
                 if (Request::isset("meta_name") && Request::isset("meta_value"))
