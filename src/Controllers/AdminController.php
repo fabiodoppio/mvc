@@ -195,8 +195,9 @@ class AdminController extends AccountController {
                 }
 
                 if (Request::isset("pw1") && Request::isset("pw2"))
-                    if (Fairplay::password(Request::get("pw1"), Request::get("pw2")) != "")
-                        $account->set("password", password_hash(Request::get("pw1"), PASSWORD_DEFAULT));
+                    if (Request::get("pw1") != "" || Request::get("pw2") != "")
+                        if (Fairplay::password(Request::get("pw1"), Request::get("pw2")) != "")
+                            $account->set("password", password_hash(Request::get("pw1"), PASSWORD_DEFAULT));
 
                 if (Request::isset("meta_name") && Request::isset("meta_value"))
                     if (is_array(Request::get("meta_name")) && is_array(Request::get("meta_value")))
@@ -217,9 +218,9 @@ class AdminController extends AccountController {
                 foreach (Database::select("app_accounts", "id IS NOT NULL") as $user)
                     $accounts[] = new Model\Account($user['id']);
 
-                $pages = ceil(count($accounts)/1);
+                $pages = ceil(count($accounts)/20);
                 $page = Fairplay::integer(Request::get("value"));
-                $accounts = array_slice($accounts, ($page - 1) * 1, 1);
+                $accounts = array_slice($accounts, ($page - 1) * 20, 20);
                 
                 Ajax::add('.accounts', Template::get("admin/AccountList.tpl", ["accounts" => $accounts, "page"=> $page, "pages" => $pages]));
                 break;

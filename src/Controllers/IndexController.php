@@ -276,8 +276,8 @@ class IndexController extends Controller {
                 foreach (Database::select("app_accounts", "id IS NOT NULL") as $user)
                     $accounts[] = new Model\Account($user['id']);
 
-                $pages = ceil(count($accounts)/1);
-                $accounts = array_slice($accounts, 0, 1);
+                $pages = ceil(count($accounts)/20);
+                $accounts = array_slice($accounts, 0, 20);
 
                 echo Template::get(
                         "admin/users.tpl", [
