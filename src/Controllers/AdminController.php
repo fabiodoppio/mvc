@@ -213,13 +213,12 @@ class AdminController extends AccountController {
                 Ajax::add('.response', '<div class="success">'._("User deleted successfully.").'</div>');
                 break;
             case "admin/user/page":
-                $page = Fairplay::integer(Request::get("value"));
-
                 $accounts = array();
-                foreach (Database::select("app_accounts", "id IS NOT NULL LIMIT ".(($page-1)*1).",1") as $user)
+                foreach (Database::select("app_accounts", "id IS NOT NULL") as $user)
                     $accounts[] = new Model\Account($user['id']);
 
-                $pages = ceil(Database::operate("SELECT (*) FROM app_accounts")/1);
+                $pages = ceil(count($accounts)/1);
+                $page = Fairplay::integer(Request::get("value"));
                 
                 Ajax::add('.accounts', Template::get("admin/AccountList.tpl", ["accounts" => $accounts, "page"=> $page, "pages" => $pages]));
                 break;
