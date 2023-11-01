@@ -21,6 +21,7 @@ use MVC\Exception as Exception;
 use MVC\Fairplay  as Fairplay;
 use MVC\Models    as Model;
 use MVC\Request   as Request;
+use MVC\Template  as Template;
 
 /**
  * AdminController Class
@@ -210,6 +211,17 @@ class AdminController extends AccountController {
 
                 Database::delete("app_accounts", "id = '".Request::get("value")."'");
                 Ajax::add('.response', '<div class="success">'._("User deleted successfully.").'</div>');
+                break;
+            case "admin/user/page":
+                $accounts = array();
+                foreach (Database::select("app_accounts", "id IS NOT NULL") as $user)
+                    $accounts[] = new Model\Account($user['id']);
+
+                $pages = ceil(count($accounts)/20);
+                $page = Fairplay::integer(Request::get("value"));
+                array_slice($accounts, ($page - 1) * 20, 20);
+                
+                Ajax::add('.accounts', Template::get("admin/AccountList.tpl", ["accounts" => $accounts, "page"=> $page, "pages" => $pages]));
                 break;
             default: 
                 throw new Exception(sprintf(_("Action %s not found."), Request::get("request")));
