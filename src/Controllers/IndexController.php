@@ -277,7 +277,7 @@ class IndexController extends Controller {
                     $accounts[] = new Model\Account($user['id']);
 
                 $pages = ceil(count($accounts)/1);
-                $accounts = array_slice($accounts, 0, 1);
+                $acc = array_slice($accounts, 0, 1);
 
                 echo Template::get(
                         "admin/users.tpl", [
@@ -285,7 +285,7 @@ class IndexController extends Controller {
                             "description" => App::get("APP_DESCRIPTION"),
                             "robots" => "noindex, nofollow",
                             "canonical" => App::get("APP_URL")."/admin/users",
-                            "accounts" => $accounts,
+                            "accounts" => $acc,
                             "page" => 1,
                             "pages" => $pages,
                             "account" => $this->account
