@@ -162,7 +162,7 @@ class AdminController extends AccountController {
     public function userAction() {
         switch(Request::get("request")) {
             case "admin/user/logout":
-                $account = new Model\Account(Fairplay::integer(Request::get("id")));
+                $account = new Model\Account(Fairplay::integer(Request::get("value")));
                 $account->set("token", Auth::get_instance_token());
                 Ajax::add('.response', '<div class="success">'._("User successfully logged out.").'</div>');
                 break;
@@ -170,22 +170,25 @@ class AdminController extends AccountController {
                 $account = new Model\Account(Fairplay::integer(Request::get("id")));
 
                 if (Request::isset("username")) {
-                    if (!empty(Database::select("app_accounts", "username LIKE '".Fairplay::username(Request::get("username"))."'")[0]))
-                        throw new Exception(_("Your entered username is already taken."));
+                    if ($account->get("username") != Request::get("username"))
+                        if (!empty(Database::select("app_accounts", "username LIKE '".Fairplay::username(Request::get("username"))."'")[0]))
+                            throw new Exception(_("Your entered username is already taken."));
 
                     $account->set("username", Request::get("username"));
                 }
 
                 if (Request::isset("email")) {
-                    if (!empty(Database::select("app_accounts", "email LIKE '".Fairplay::email(Request::get("email"))."'")[0]))
-                        throw new Exception(_("Your entered email address is already taken."));
+                    if ($account->get("email") != Request::get("email"))
+                        if (!empty(Database::select("app_accounts", "email LIKE '".Fairplay::email(Request::get("email"))."'")[0]))
+                            throw new Exception(_("Your entered email address is already taken."));
     
                     $account->set("email", strtolower(Request::get("email")));
                 }
 
                 if (Request::isset("role")) {
-                    if ($account->get("id") == $this->account->get("id"))
-                        throw new Exception(_("You can not change your own role."));
+                    if ($account->get("role") != Request::get("role"))
+                        if ($account->get("id") == $this->account->get("id"))
+                            throw new Exception(_("You can not change your own role."));
                         
                     $account->set("role", Fairplay::integer(Request::get("role")));
                 }
