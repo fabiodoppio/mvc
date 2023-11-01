@@ -219,7 +219,7 @@ class AdminController extends AccountController {
 
                 $pages = ceil(count($accounts)/1);
                 $page = Fairplay::integer(Request::get("value"));
-                array_slice($accounts, ($page - 1) * 1, 1);
+                $accounts = array_slice($accounts, ($page - 1) * 1, 1);
                 
                 Ajax::add('.accounts', Template::get("admin/AccountList.tpl", ["accounts" => $accounts, "page"=> $page, "pages" => $pages]));
                 break;

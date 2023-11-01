@@ -277,7 +277,7 @@ class IndexController extends Controller {
                     $accounts[] = new Model\Account($user['id']);
 
                 $pages = ceil(count($accounts)/1);
-                array_slice($accounts, 0, 1);
+                $accounts = array_slice($accounts, 0, 1);
 
                 echo Template::get(
                         "admin/users.tpl", [
