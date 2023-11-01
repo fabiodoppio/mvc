@@ -217,9 +217,9 @@ class AdminController extends AccountController {
                 foreach (Database::select("app_accounts", "id IS NOT NULL") as $user)
                     $accounts[] = new Model\Account($user['id']);
 
-                $pages = ceil(count($accounts)/20);
+                $pages = ceil(count($accounts)/1);
                 $page = Fairplay::integer(Request::get("value"));
-                array_slice($accounts, ($page - 1) * 20, 20);
+                array_slice($accounts, ($page - 1) * 1, 1);
                 
                 Ajax::add('.accounts', Template::get("admin/AccountList.tpl", ["accounts" => $accounts, "page"=> $page, "pages" => $pages]));
                 break;
