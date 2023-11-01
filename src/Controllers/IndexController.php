@@ -273,11 +273,10 @@ class IndexController extends Controller {
                 break;
             case "/admin/users":
                 $accounts = array();
-                foreach (Database::select("app_accounts", "id IS NOT NULL") as $user)
+                foreach (Database::select("app_accounts", "id IS NOT NULL LIMIT 1") as $user)
                     $accounts[] = new Model\Account($user['id']);
 
-                $pages = ceil(count($accounts)/1);
-                $acc = array_slice($accounts, 0, 1);
+                $pages = ceil(Database::operate("SELECT (*) FROM app_accounts")/1);
 
                 echo Template::get(
                         "admin/users.tpl", [
@@ -285,7 +284,7 @@ class IndexController extends Controller {
                             "description" => App::get("APP_DESCRIPTION"),
                             "robots" => "noindex, nofollow",
                             "canonical" => App::get("APP_URL")."/admin/users",
-                            "accounts" => $acc,
+                            "accounts" => $accounts,
                             "page" => 1,
                             "pages" => $pages,
                             "account" => $this->account
