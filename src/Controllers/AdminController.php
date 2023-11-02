@@ -129,12 +129,12 @@ class AdminController extends AccountController {
             case "admin/page/edit":
                 $page = new Model\Page(Request::get("slug"));
     
-                if (Request::isset("title") && Request::get("title")  != $page->get("title")) {
+                if (Request::isset("title") && Request::get("title") != $page->get("title")) {
                     $page->set("title", Fairplay::string(Request::get("title")));
                     Ajax::add('.list-item[data-id="'.Request::get("slug").'"] .title', Request::get("title"));
                 }
                      
-                if (Request::isset("slug") && Request::get("slug")  != $page->get("slug")) {
+                if (Request::isset("slug") && Request::get("slug") != $page->get("slug")) {
                     if (!empty(Database::select("app_pages", "slug LIKE '".Request::get("slug")."'")[0]))
                         throw new Exception(_("Your entered slug is already used."));
 
@@ -142,16 +142,16 @@ class AdminController extends AccountController {
                     Ajax::add('.list-item[data-id="'.Request::get("slug").'"] .slug', "slug:".Request::get("slug"));
                 }
 
-                if (Request::isset("description") && Request::get("description")  != $page->get("description"))
+                if (Request::isset("description") && Request::get("description") != $page->get("description"))
                     $page->set("description", Fairplay::string(Request::get("description")));
 
-                if (Request::isset("robots") && Request::get("robots")  != $page->get("robots"))
+                if (Request::isset("robots") && Request::get("robots") != $page->get("robots"))
                     $page->set("robots", Fairplay::string(Request::get("robots")));
 
-                if (Request::isset("template") && Request::get("template")  != $page->get("template"))
+                if (Request::isset("template") && Request::get("template") != $page->get("template"))
                     $page->set("template", Fairplay::string(Request::get("template")));
                 
-                if (Request::isset("role") && Request::get("role")  != $page->get("role"))
+                if (Request::isset("role") && Request::get("role") != $page->get("role"))
                     $page->set("role", Fairplay::integer(Request::get("role")));
 
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
