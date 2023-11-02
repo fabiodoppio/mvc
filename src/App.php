@@ -69,7 +69,7 @@ class App {
 
     protected static $META_EDITABLE     = "[\"email\",\"password\"]";
 
-    protected static $CRON_KEY          = "MS8dh2WY1V";
+    protected static $CRON_KEY          = "TVM4ZGgyV1kxVg";
 
     /**
      * Initialize the application based on the provided configuration.
