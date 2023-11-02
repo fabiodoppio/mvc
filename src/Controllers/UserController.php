@@ -86,7 +86,7 @@ class UserController extends AccountController {
             case "user/edit":
                 if (Request::isset("username")) {
                     if ($this->account->get("username") != Request::get("username")) {
-                        if (in_array("username", json_decode(App::get("META_PROTECTED"))))
+                        if (!in_array("username", json_decode(App::get("META_EDITABLE"))))
                             throw new Exception(_("You are not allowed to edit your username."));
 
                         if (!empty(Database::select("app_accounts", "username LIKE '".Fairplay::username(Request::get("username"))."'")[0]))
@@ -98,7 +98,7 @@ class UserController extends AccountController {
 
                 if (Request::isset("email")) {
                     if ($this->account->get("email") != Request::get("email")) {
-                        if (in_array("email", json_decode(App::get("META_PROTECTED"))))
+                        if (!in_array("email", json_decode(App::get("META_EDITABLE"))))
                             throw new Exception(_("You are not allowed to edit your email address."));
 
                         if (!empty(Database::select("app_accounts", "email LIKE '".Fairplay::email(Request::get("email"))."'")[0]))
@@ -122,7 +122,7 @@ class UserController extends AccountController {
                 if (Request::isset("meta_name") && Request::isset("meta_value"))
                     if (is_array(Request::get("meta_name")) && is_array(Request::get("meta_value")))
                         for($i = 0; $i < count(Request::get("meta_name")); $i++) {
-                            if (in_array(Request::get("meta_name")[$i], json_decode(App::get("META_PROTECTED"))))
+                            if (!in_array(Request::get("meta_name")[$i], json_decode(App::get("META_EDITABLE"))))
                                 throw new Exception(sprintf(_("You are not allowed to edit %s."), Request::get("meta_name")[$i]));
 
                             $this->account->set(Fairplay::string(Request::get("meta_name")[$i]), Fairplay::string(Request::get("meta_value")[$i]));

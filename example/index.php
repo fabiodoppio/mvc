@@ -5,7 +5,6 @@ require_once __DIR__.'/app/vendor/autoload.php';
 MVC\App::init([
     "APP_URL"           => "https://",
     "APP_NAME"          => "My App",
-    "APP_LANGUAGE"      => "de_DE.utf8",
 
     "SALT_COOKIE"       => "",
     "SALT_TOKEN"        => "",
