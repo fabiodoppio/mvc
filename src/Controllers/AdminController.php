@@ -131,7 +131,7 @@ class AdminController extends AccountController {
     
                 if (Request::isset("title") && Request::get("title") != $page->get("title")) {
                     $page->set("title", Fairplay::string(Request::get("title")));
-                    Ajax::add('.list-item[data-id="'.Request::get("slug").'"] .title', Request::get("title"));
+                    Ajax::add('.list-item[data-id="'.Request::get("id").'"] .title', Request::get("title"));
                 }
                      
                 if (Request::isset("slug") && Request::get("slug") != $page->get("slug")) {
