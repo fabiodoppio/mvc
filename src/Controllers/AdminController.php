@@ -45,37 +45,37 @@ class AdminController extends AccountController {
     public function appAction() {
         switch(Request::get("request")) {
             case "admin/app/edit":
-                if (Request::isset("APP_URL"))
+                if (Request::isset("APP_URL") && Request::get("APP_URL") != App::get("APP_URL"))
                     App::set("APP_URL", Fairplay::string(Request::get("APP_URL")));
 
-                if (Request::isset("APP_NAME"))
+                if (Request::isset("APP_NAME") && Request::get("APP_NAME") != App::get("APP_NAME"))
                     App::set("APP_NAME", Fairplay::string(Request::get("APP_NAME")));
 
-                if (Request::isset("APP_TITLE"))
+                if (Request::isset("APP_TITLE") && Request::get("APP_TITLE") != App::get("APP_TITLE"))
                     App::set("APP_TITLE", Fairplay::string(Request::get("APP_TITLE")));
 
-                if (Request::isset("APP_AUTHOR"))
+                if (Request::isset("APP_AUTHOR") && Request::get("APP_AUTHOR") != App::get("APP_AUTHOR"))
                     App::set("APP_AUTHOR", Fairplay::string(Request::get("APP_AUTHOR")));
                 
-                if (Request::isset("APP_LANGUAGE"))
+                if (Request::isset("APP_LANGUAGE") && Request::get("APP_LANGUAGE") != App::get("APP_LANGUAGE"))
                     App::set("APP_LANGUAGE", Fairplay::string(Request::get("APP_LANGUAGE")));
 
-                if (Request::isset("APP_DESCRIPTION"))
+                if (Request::isset("APP_DESCRIPTION") && Request::get("APP_DESCRIPTION") != App::get("APP_DESCRIPTION"))
                     App::set("APP_DESCRIPTION", Fairplay::string(Request::get("APP_DESCRIPTION")));
 
-                if (Request::isset("APP_VERSION"))
+                if (Request::isset("APP_VERSION") && Request::get("APP_VERSION") != App::get("APP_VERSION"))
                     App::set("APP_VERSION", Fairplay::string(Request::get("APP_VERSION")));
 
-                if (Request::isset("APP_ONLINE"))
+                if (Request::isset("APP_ONLINE") && Request::get("APP_ONLINE") != App::get("APP_ONLINE"))
                     App::set("APP_ONLINE", Fairplay::boolean(Request::get("APP_ONLINE")));
                 
-                if (Request::isset("APP_LOGIN"))
+                if (Request::isset("APP_LOGIN") && Request::get("APP_LOGIN") != App::get("APP_LOGIN"))
                     App::set("APP_LOGIN", Fairplay::boolean(Request::get("APP_LOGIN")));
 
-                if (Request::isset("APP_SIGNUP"))
+                if (Request::isset("APP_SIGNUP") && Request::get("APP_SIGNUP") != App::get("APP_SIGNUP"))
                     App::set("APP_SIGNUP", Fairplay::boolean(Request::get("APP_SIGNUP")));
 
-                if (Request::isset("META_PROTECTED"))
+                if (Request::isset("META_PROTECTED") && Request::get("META_PROTECTED") != App::get("META_PROTECTED"))
                     App::set("META_PROTECTED", json_encode(array_map('trim', explode(',', Fairplay::string(Request::get("META_PROTECTED"))))));
 
                 if (Request::isset("config_name") && Request::isset("config_value"))
@@ -96,16 +96,16 @@ class AdminController extends AccountController {
     public function mailAction() {
         switch(Request::get("request")) {
             case "admin/mail/edit":
-                if (Request::isset("MAIL_HOST"))
+                if (Request::isset("MAIL_HOST") && Request::get("MAIL_HOST") != App::get("MAIL_HOST"))
                     App::set("MAIL_HOST", Fairplay::string(Request::get("MAIL_HOST")));
 
-                if (Request::isset("MAIL_SENDER"))
+                if (Request::isset("MAIL_SENDER") && Request::get("MAIL_SENDER") != App::get("MAIL_SENDER"))
                     App::set("MAIL_SENDER", Fairplay::email(Request::get("MAIL_SENDER")));
 
-                if (Request::isset("MAIL_USERNAME"))
+                if (Request::isset("MAIL_USERNAME") && Request::get("MAIL_USERNAME") != App::get("MAIL_USERNAME"))
                     App::set("MAIL_USERNAME", Fairplay::string(Request::get("MAIL_USERNAME")));
 
-                if (Request::isset("MAIL_PASSWORD"))
+                if (Request::isset("MAIL_PASSWORD") && Request::get("MAIL_PASSWORD") != App::get("MAIL_PASSWORD"))
                     App::set("MAIL_PASSWORD", base64_encode(Fairplay::string(Request::get("MAIL_PASSWORD"))));
 
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
@@ -126,30 +126,32 @@ class AdminController extends AccountController {
 
                 Database::insert("app_pages", "slug, title, description, robots, template, role", "'".Fairplay::string(Request::get("slug"))."', '".Fairplay::string(Request::get("title"))."', '".Fairplay::string(Request::get("description"))."', '".Fairplay::string(Request::get("robots"))."', '".Fairplay::string(Request::get("template"))."', '".Fairplay::integer(Request::get("role"))."'");
 
-                Ajax::redirect(App::get("APP_URL")."/admin/pages");
+                Ajax::add(".pages .list", Template::get("admin/elements/PageListItem.tpl", ["item" => new Model\Page(Request::get("slug"))]), "append");
+                Ajax::add('.response', '<div class="success">'._("Page added successfully.").'</div>');
                 break;
             case "admin/page/edit":
                 $page = new Model\Page(Request::get("slug"));
     
-                if (Request::isset("title"))
+                if (Request::isset("title") && Request::get("title")  != $page->get("title"))
                     $page->set("title", Fairplay::string(Request::get("title")));
 
-                if (Request::isset("description"))
+                if (Request::isset("description") && Request::get("description")  != $page->get("description"))
                     $page->set("description", Fairplay::string(Request::get("description")));
 
-                if (Request::isset("robots"))
+                if (Request::isset("robots") && Request::get("robots")  != $page->get("robots"))
                     $page->set("robots", Fairplay::string(Request::get("robots")));
 
-                if (Request::isset("template"))
+                if (Request::isset("template") && Request::get("template")  != $page->get("template"))
                     $page->set("template", Fairplay::string(Request::get("template")));
                 
-                if (Request::isset("role"))
+                if (Request::isset("role") && Request::get("role")  != $page->get("role"))
                     $page->set("role", Fairplay::integer(Request::get("role")));
 
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
             case "admin/page/delete":
                 Database::delete("app_pages", "slug = '".Fairplay::string(Request::get("value"))."'");
+                Ajax::remove('.pages .list li[data-id="'.Request::get("value").'"]');
                 Ajax::add('.response', '<div class="success">'._("Page deleted successfully.").'</div>');
                 break;
             case "admin/page/page":
@@ -161,7 +163,7 @@ class AdminController extends AccountController {
                 $page = Fairplay::integer(Request::get("value"));
                 $items = array_slice($items, ($page-1)*20, 20);
                 
-                Ajax::add('.pages', Template::get("admin/elements/PageList.tpl", ["items" => $items, "page"=> $page, "pages" => $pages]));
+                Ajax::add('.pages .list', Template::get("admin/elements/PageList.tpl", ["items" => $items, "page"=> $page, "pages" => $pages]));
                 break;
             default: 
                 throw new Exception(sprintf(_("Action %s not found."), Request::get("request")));
@@ -182,7 +184,8 @@ class AdminController extends AccountController {
     
                 Database::insert("app_accounts", "email, username, password, token, role", "'".strtolower(Fairplay::email(Request::get("email")))."', '".Fairplay::username(Request::get("username"))."', '".password_hash(Fairplay::password(Request::get("pw1"), Request::get("pw2")), PASSWORD_DEFAULT)."', '".Auth::get_instance_token()."', '".Fairplay::integer(Request::get("role"))."'");
 
-                Ajax::redirect(App::get("APP_URL")."/admin/accounts");
+                Ajax::add(".accounts .list", Template::get("admin/elements/AccountListItem.tpl", ["item" => new Model\Account(Database::$insert_id)]), "append");
+                Ajax::add('.response', '<div class="success">'._("Account added successfully.").'</div>');
                 break;
             case "admin/account/logout":
                 $account = new Model\Account(Fairplay::integer(Request::get("value")));
@@ -192,26 +195,23 @@ class AdminController extends AccountController {
             case "admin/account/edit":
                 $account = new Model\Account(Fairplay::integer(Request::get("id")));
 
-                if (Request::isset("username")) {
-                    if ($account->get("username") != Request::get("username"))
-                        if (!empty(Database::select("app_accounts", "username LIKE '".Fairplay::username(Request::get("username"))."'")[0]))
-                            throw new Exception(_("Your entered username is already taken."));
+                if (Request::isset("username") && Request::get("username") != $account->get("username")) {
+                    if (!empty(Database::select("app_accounts", "username LIKE '".Fairplay::username(Request::get("username"))."'")[0]))
+                        throw new Exception(_("Your entered username is already taken."));
 
                     $account->set("username", Request::get("username"));
                 }
 
-                if (Request::isset("email")) {
-                    if ($account->get("email") != Request::get("email"))
-                        if (!empty(Database::select("app_accounts", "email LIKE '".Fairplay::email(Request::get("email"))."'")[0]))
-                            throw new Exception(_("Your entered email address is already taken."));
+                if (Request::isset("email") && Request::get("email") != $account->get("email")) {
+                    if (!empty(Database::select("app_accounts", "email LIKE '".Fairplay::email(Request::get("email"))."'")[0]))
+                        throw new Exception(_("Your entered email address is already taken."));
     
                     $account->set("email", strtolower(Request::get("email")));
                 }
 
-                if (Request::isset("role")) {
-                    if ($account->get("role") != Request::get("role"))
-                        if ($account->get("id") == $this->account->get("id"))
-                            throw new Exception(_("You can not change your own role."));
+                if (Request::isset("role") && Request::get("role") != $account->get("role")) {
+                    if ($account->get("id") == $this->account->get("id"))
+                        throw new Exception(_("You can not change your own role."));
                         
                     $account->set("role", Fairplay::integer(Request::get("role")));
                 }
@@ -233,7 +233,9 @@ class AdminController extends AccountController {
                     throw new Exception(_("You can not delete yourself."));
 
                 Database::delete("app_accounts", "id = '".Request::get("value")."'");
-                Ajax::add('.response', '<div class="success">'._("User deleted successfully.").'</div>');
+
+                Ajax::remove('.accounts .list li[data-id="'.Request::get("value").'"]');
+                Ajax::add('.response', '<div class="success">'._("Account deleted successfully.").'</div>');
                 break;
             case "admin/account/page":
                 $items = array();

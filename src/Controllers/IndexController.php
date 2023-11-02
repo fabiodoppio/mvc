@@ -252,7 +252,7 @@ class IndexController extends Controller {
                     break;
             case "/admin/pages":
                 $items = array();
-                foreach (Database::select("app_pages", "slug IS NOT NULL LIMIT") as $page)
+                foreach (Database::select("app_pages", "slug IS NOT NULL") as $page)
                     $items[] = new Model\Page($page['slug']);
 
                 $pages = ceil(count($items)/20);
