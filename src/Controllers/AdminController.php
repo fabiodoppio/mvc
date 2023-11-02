@@ -84,7 +84,7 @@ class AdminController extends AccountController {
                 if (Request::isset("MAIL_USERNAME") && Request::get("MAIL_USERNAME") != App::get("MAIL_USERNAME"))
                     App::set("MAIL_USERNAME", Fairplay::string(Request::get("MAIL_USERNAME")));
 
-                if (Request::isset("MAIL_PASSWORD") && Request::get("MAIL_PASSWORD") != App::get("MAIL_PASSWORD"))
+                if (Request::isset("MAIL_PASSWORD") && base64_encode(Request::get("MAIL_PASSWORD")) != App::get("MAIL_PASSWORD"))
                     App::set("MAIL_PASSWORD", base64_encode(Fairplay::string(Request::get("MAIL_PASSWORD"))));
 
                 if (Request::isset("META_PROTECTED") && Request::get("META_PROTECTED") != App::get("META_PROTECTED"))
