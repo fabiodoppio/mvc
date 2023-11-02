@@ -75,27 +75,6 @@ class AdminController extends AccountController {
                 if (Request::isset("APP_SIGNUP") && Request::get("APP_SIGNUP") != App::get("APP_SIGNUP"))
                     App::set("APP_SIGNUP", Fairplay::boolean(Request::get("APP_SIGNUP")));
 
-                if (Request::isset("META_PROTECTED") && Request::get("META_PROTECTED") != App::get("META_PROTECTED"))
-                    App::set("META_PROTECTED", json_encode(array_map('trim', explode(',', Fairplay::string(Request::get("META_PROTECTED"))))));
-
-                if (Request::isset("config_name") && Request::isset("config_value"))
-                    if (is_array(Request::get("config_name")) && is_array(Request::get("config_value")))
-                        for($i = 0; $i < count(Request::get("config_name")); $i++)
-                            App::set(Fairplay::string(Request::get("config_name")[$i]), Fairplay::string(Request::get("config_value")[$i]));
-
-                Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
-                break;
-            default: 
-                throw new Exception(sprintf(_("Action %s not found."), Request::get("request")));
-        }
-    }
-
-    /**
-     * This method Handles mail-related actions such as editing the mail server.
-     */
-    public function mailAction() {
-        switch(Request::get("request")) {
-            case "admin/mail/edit":
                 if (Request::isset("MAIL_HOST") && Request::get("MAIL_HOST") != App::get("MAIL_HOST"))
                     App::set("MAIL_HOST", Fairplay::string(Request::get("MAIL_HOST")));
 
@@ -107,6 +86,14 @@ class AdminController extends AccountController {
 
                 if (Request::isset("MAIL_PASSWORD") && Request::get("MAIL_PASSWORD") != App::get("MAIL_PASSWORD"))
                     App::set("MAIL_PASSWORD", base64_encode(Fairplay::string(Request::get("MAIL_PASSWORD"))));
+
+                if (Request::isset("META_PROTECTED") && Request::get("META_PROTECTED") != App::get("META_PROTECTED"))
+                    App::set("META_PROTECTED", json_encode(array_map('trim', explode(',', Fairplay::string(Request::get("META_PROTECTED"))))));
+
+                if (Request::isset("config_name") && Request::isset("config_value"))
+                    if (is_array(Request::get("config_name")) && is_array(Request::get("config_value")))
+                        for($i = 0; $i < count(Request::get("config_name")); $i++)
+                            App::set(Fairplay::string(Request::get("config_name")[$i]), Fairplay::string(Request::get("config_value")[$i]));
 
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;

@@ -240,16 +240,6 @@ class IndexController extends Controller {
                             "account" => $this->account
                 ]);
                 break;
-                case "/admin/mail":
-                    echo Template::get(
-                            "admin/mail.tpl", [
-                                "title" => sprintf(_("Mail | %s"), App::get("APP_NAME")),
-                                "description" => App::get("APP_DESCRIPTION"),
-                                "robots" => "noindex, nofollow",
-                                "canonical" => App::get("APP_URL")."/admin/mail",
-                                "account" => $this->account
-                    ]);
-                    break;
             case "/admin/pages":
                 $items = array();
                 foreach (Database::select("app_pages", "slug IS NOT NULL") as $page)
