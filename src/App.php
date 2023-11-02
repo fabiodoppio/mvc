@@ -33,7 +33,7 @@ class App {
     protected static $APP_LANGUAGE      = "";
     protected static $APP_VERSION       = "";
     protected static $APP_ONLINE        = true;
-    protected static $APP_DEBUG         = true;
+    protected static $APP_DEBUG         = false;
     protected static $APP_LOGIN         = true;
     protected static $APP_SIGNUP        = false;
     protected static $APP_UPLOAD_SIZE   = 3072000;
@@ -56,7 +56,7 @@ class App {
     protected static $DIR_STYLES        = "/app/assets/styles";
     protected static $DIR_LOCALE        = "/app/locale"; 
     protected static $DIR_VENDOR        = "/app/vendor";
-    protected static $DIR_VIEWS         = "/app/views/de_DE";
+    protected static $DIR_VIEWS         = "/app/views/";
     protected static $DIR_CACHE         = "/app/cache";
     protected static $DIR_MEDIA         = "/app/media";
     protected static $DIR_UPLOADS       = "/app/media/uploads";

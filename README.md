@@ -77,7 +77,7 @@ MVC\App::init([
     #"APP_TITLE"        => "",
     #"APP_AUTHOR"       => "",
     #"APP_DESCRIPTION"  => "",
-    #"APP_LANGUAGE"     => "",
+    #"APP_LANGUAGE"     => "de_DE.utf8",
     #"APP_VERSION"      => "",
     #"APP_ONLINE"       => true,
     #"APP_DEBUG"        => true,
