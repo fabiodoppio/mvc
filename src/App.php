@@ -61,10 +61,10 @@ class App {
     protected static $DIR_MEDIA         = "/app/media";
     protected static $DIR_UPLOADS       = "/app/media/uploads";
     
-    protected static $MAIL_HOST;
-    protected static $MAIL_SENDER;
-    protected static $MAIL_USERNAME;
-    protected static $MAIL_PASSWORD;
+    protected static $MAIL_HOST         = "";
+    protected static $MAIL_SENDER       = "";
+    protected static $MAIL_USERNAME     = "";
+    protected static $MAIL_PASSWORD     = "";
 
     protected static $META_PROTECTED    = "[\"username\"]";
 
