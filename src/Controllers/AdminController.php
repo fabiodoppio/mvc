@@ -188,6 +188,9 @@ class AdminController extends AccountController {
                 Ajax::add('.response', '<div class="success">'._("Account added successfully.").'</div>');
                 break;
             case "admin/account/logout":
+                if ($this->account->get("id") == Fairplay::integer(Request::get("value")))
+                    throw new Exception(_("You can not delete yourself."));
+
                 $account = new Model\Account(Fairplay::integer(Request::get("value")));
                 $account->set("token", Auth::get_instance_token());
                 Ajax::add('.response', '<div class="success">'._("User successfully logged out.").'</div>');
