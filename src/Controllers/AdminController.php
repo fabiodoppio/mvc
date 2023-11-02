@@ -139,7 +139,7 @@ class AdminController extends AccountController {
                         throw new Exception(_("Your entered slug is already used."));
 
                     $page->set("slug", Request::get("slug"));
-                    Ajax::add('.list-item[data-id="'.Request::get("slug").'"] .slug', "slug:".Request::get("slug"));
+                    Ajax::add('.list-item[data-id="'.Request::get("id").'"] .slug', "slug:".Request::get("slug"));
                 }
 
                 if (Request::isset("description") && Request::get("description") != $page->get("description"))
