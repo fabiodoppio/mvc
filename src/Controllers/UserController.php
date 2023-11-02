@@ -111,6 +111,9 @@ class UserController extends AccountController {
 
                 if (Request::isset("pw") && Request::isset("pw1") && Request::isset("pw2")) {
                     if (Request::get("pw1") != "" || Request::get("pw2") != "" || Request::get("pw3") != "") {
+                        if (!in_array("password", json_decode(App::get("META_EDITABLE"))))
+                            throw new Exception(_("You are not allowed to edit your password."));
+
                         if (!password_verify(Request::get("pw"), $this->account->get("password"))) 
                             throw new Exception(_("Your current password does not match."));
                 
