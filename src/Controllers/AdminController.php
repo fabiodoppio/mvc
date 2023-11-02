@@ -91,6 +91,12 @@ class AdminController extends AccountController {
                 if (Request::isset("META_EDITABLE") && Request::get("META_EDITABLE") != App::get("META_EDITABLE"))
                     App::set("META_EDITABLE", json_encode(array_map('trim', explode(',', Fairplay::string(Request::get("META_EDITABLE"))))));
 
+                if (Request::isset("APP_CRON") && Request::get("APP_CRON") != App::get("APP_CRON"))
+                    App::set("APP_CRON", Fairplay::boolean(Request::get("APP_CRON")));
+
+                if (Request::isset("CRON_KEY") && Request::get("CRON_KEY") != App::get("CRON_KEY"))
+                    App::set("CRON_KEY", base64_encode(Fairplay::string(Request::get("CRON_KEY"))));;
+
                 if (Request::isset("config_name") && Request::isset("config_value"))
                     if (is_array(Request::get("config_name")) && is_array(Request::get("config_value")))
                         for($i = 0; $i < count(Request::get("config_name")); $i++)

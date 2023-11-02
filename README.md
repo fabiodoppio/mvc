@@ -83,6 +83,7 @@ MVC\App::init([
     #"APP_DEBUG"        => true,
     #"APP_LOGIN"        => true,
     #"APP_SIGNUP"       => false,
+    #"APP_CRON"         => false,
 
     "SALT_COOKIE"       => "",
     "SALT_TOKEN"        => "",
@@ -104,7 +105,9 @@ MVC\App::init([
     #"DIR_VIEWS"        => "/app/views/de_DE",
     #"DIR_CACHE"        => "/app/cache",
     #"DIR_MEDIA"        => "/app/media",
-    #"DIR_UPLOADS"      => "/app/media/uploads"
+    #"DIR_UPLOADS"      => "/app/media/uploads",
+
+    "CRON_KEY"         => ""
 ]);
 
 ?>

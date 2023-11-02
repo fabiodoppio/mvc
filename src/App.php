@@ -36,6 +36,7 @@ class App {
     protected static $APP_DEBUG         = false;
     protected static $APP_LOGIN         = true;
     protected static $APP_SIGNUP        = false;
+    protected static $APP_CRON          = false;
     protected static $APP_UPLOAD_SIZE   = 3072000;
     protected static $APP_UPLOAD_TYPES  = ['jpe' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'jpg' => 'image/jpg', 'png' => 'image/png', 'gif' => 'image/gif'];
 
@@ -67,6 +68,8 @@ class App {
     protected static $MAIL_PASSWORD     = "";
 
     protected static $META_EDITABLE     = "[\"email\",\"password\"]";
+
+    protected static $CRON_KEY          = "MS8dh2WY1V";
 
     /**
      * Initialize the application based on the provided configuration.

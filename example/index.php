@@ -16,7 +16,9 @@ MVC\App::init([
     "DB_DATABASE"       => "",
 
     "DIR_ROOT"          => "/var/www",
-    "DIR_VIEWS"         => "/app/views/de_DE"
+    "DIR_VIEWS"         => "/app/views/de_DE",
+
+    "CRON_KEY"          => ""
 ]);
 
 ?>

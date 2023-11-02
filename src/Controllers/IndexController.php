@@ -329,6 +329,28 @@ class IndexController extends Controller {
     }
 
     /**
+     * Displaying the website's maintenance page.
+     */
+    public function cronAction() {
+        if (!App::get("APP_CRON"))
+            throw new Exception(_("Page not found."), 404);
+
+        switch(Request::get("request")) {
+            case "/cron":
+                if (!Request::isset("key"))
+                    throw new Exception("Key not found.");
+
+                if (App::get("CRON_KEY") != base64_decode(Fairplay::string(Request::get("code"))))
+                    throw new Exception("Key does not match.");
+
+                echo Template::get("cron.tpl");
+                break;
+            default:
+                $this->customAction();
+        }
+    }
+
+    /**
      * Displaying the website's custom page from database.
      */
     public function customAction() {
