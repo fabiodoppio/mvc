@@ -340,7 +340,7 @@ class IndexController extends Controller {
                 if (!Request::isset("key"))
                     throw new Exception("Key not found.");
 
-                if (App::get("CRON_KEY") != base64_decode(Fairplay::string(Request::get("code"))))
+                if (App::get("CRON_KEY") != Fairplay::string(Request::get("key")))
                     throw new Exception("Key does not match.");
 
                 echo Template::get("cron.tpl");

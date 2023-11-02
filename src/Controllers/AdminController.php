@@ -94,8 +94,11 @@ class AdminController extends AccountController {
                 if (Request::isset("APP_CRON") && Request::get("APP_CRON") != App::get("APP_CRON"))
                     App::set("APP_CRON", Fairplay::boolean(Request::get("APP_CRON")));
 
-                if (Request::isset("CRON_KEY") && Request::get("CRON_KEY") != App::get("CRON_KEY"))
-                    App::set("CRON_KEY", base64_encode(Fairplay::string(Request::get("CRON_KEY"))));;
+                if (Request::isset("CRON_KEY") && Request::get("CRON_KEY") != App::get("CRON_KEY")) {
+                    $key = base64_encode(Fairplay::string(Request::get("CRON_KEY")));
+                    App::set("CRON_KEY", $key);
+                    Ajax::add('label[for="CRON_KEY"]', 'URL<input type="text" value="'.App::get('APP_URL').'/cron?key='.$key.'" disabled/>');
+                }
 
                 if (Request::isset("config_name") && Request::isset("config_value"))
                     if (is_array(Request::get("config_name")) && is_array(Request::get("config_value")))
