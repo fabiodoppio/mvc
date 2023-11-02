@@ -84,9 +84,9 @@ class AdminController extends AccountController {
                 if (Request::isset("MAIL_USERNAME") && Request::get("MAIL_USERNAME") != App::get("MAIL_USERNAME"))
                     App::set("MAIL_USERNAME", Fairplay::string(Request::get("MAIL_USERNAME")));
 
-                if (Request::isset("MAIL_PASSWORD") && base64_encode(Request::get("MAIL_PASSWORD")) != App::get("MAIL_PASSWORD"))
+                if (Request::isset("MAIL_PASSWORD") && str_replace('=', '', base64_encode(Request::get("MAIL_PASSWORD"))) != App::get("MAIL_PASSWORD"))
                     if (Request::get("MAIL_PASSWORD") != "")
-                        App::set("MAIL_PASSWORD", base64_encode(Fairplay::string(Request::get("MAIL_PASSWORD"))));
+                        App::set("MAIL_PASSWORD", str_replace('=', '', base64_encode(Fairplay::string(Request::get("MAIL_PASSWORD")))));
 
                 if (Request::isset("META_EDITABLE") && Request::get("META_EDITABLE") != App::get("META_EDITABLE"))
                     App::set("META_EDITABLE", json_encode(array_map('trim', explode(',', Fairplay::string(Request::get("META_EDITABLE"))))));
@@ -95,9 +95,9 @@ class AdminController extends AccountController {
                     App::set("APP_CRON", Fairplay::boolean(Request::get("APP_CRON")));
 
                 if (Request::isset("CRON_KEY") && Request::get("CRON_KEY") != App::get("CRON_KEY")) {
-                    $key = base64_encode(Fairplay::string(Request::get("CRON_KEY")));
+                    $key = str_replace('=', '', base64_encode(Fairplay::string(Request::get("CRON_KEY"))));
                     App::set("CRON_KEY", $key);
-                    Ajax::add('label[for="CRON_KEY"]', 'URL<input type="text" value="'.App::get('APP_URL').'/cron?key='.$key.'" disabled/>');
+                    Ajax::add('label[for="CRON_URL"]', 'URL <input type="text" value="'.App::get('APP_URL').'/cron?key='.$key.'" disabled/>');
                 }
 
                 if (Request::isset("config_name") && Request::isset("config_value"))
