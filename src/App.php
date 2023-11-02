@@ -66,7 +66,7 @@ class App {
     protected static $MAIL_USERNAME     = "";
     protected static $MAIL_PASSWORD     = "";
 
-    protected static $META_EDITABLE     = "[\"email\"]";
+    protected static $META_EDITABLE     = "[\"email\",\"password\"]";
 
     /**
      * Initialize the application based on the provided configuration.
