@@ -230,13 +230,13 @@ class IndexController extends Controller {
                             "account" => $this->account
                 ]);
                 break;
-            case "/admin/app":
+            case "/admin/settings":
                 echo Template::get(
-                        "admin/app.tpl", [
-                            "title" => sprintf(_("App | %s"), App::get("APP_NAME")),
+                        "admin/settings.tpl", [
+                            "title" => sprintf(_("Settings | %s"), App::get("APP_NAME")),
                             "description" => App::get("APP_DESCRIPTION"),
                             "robots" => "noindex, nofollow",
-                            "canonical" => App::get("APP_URL")."/admin/app",
+                            "canonical" => App::get("APP_URL")."/admin/settings",
                             "account" => $this->account
                 ]);
                 break;
