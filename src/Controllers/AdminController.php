@@ -40,11 +40,11 @@ class AdminController extends AccountController {
     }
 
     /**
-     * This method Handles app-related actions such as editing app settings.
+     * This method Handles app-related actions such as editing settings.
      */
-    public function appAction() {
+    public function settingAction() {
         switch(Request::get("request")) {
-            case "admin/app/edit":
+            case "admin/setting/edit":
                 if (Request::isset("APP_URL") && Request::get("APP_URL") != App::get("APP_URL"))
                     App::set("APP_URL", Fairplay::string(Request::get("APP_URL")));
 
