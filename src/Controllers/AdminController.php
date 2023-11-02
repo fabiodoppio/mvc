@@ -131,7 +131,7 @@ class AdminController extends AccountController {
     
                 if (Request::isset("title") && Request::get("title")  != $page->get("title")) {
                     $page->set("title", Fairplay::string(Request::get("title")));
-                    Ajax::add('.list-item-header .title', Request::get("title"));
+                    Ajax::add('.list-item[data-id="'.Request::get("slug").'"] .title', Request::get("title"));
                 }
                      
                 if (Request::isset("slug") && Request::get("slug")  != $page->get("slug")) {
@@ -139,7 +139,7 @@ class AdminController extends AccountController {
                         throw new Exception(_("Your entered slug is already used."));
 
                     $page->set("slug", Fairplay::string(Request::get("slug")));
-                    Ajax::add('.list-item-header .slug', "slug:".Request::get("slug"));
+                    Ajax::add('.list-item[data-id="'.Request::get("slug").'"] .slug', "slug:".Request::get("slug"));
                 }
 
                 if (Request::isset("description") && Request::get("description")  != $page->get("description"))
@@ -210,7 +210,7 @@ class AdminController extends AccountController {
                         throw new Exception(_("Your entered username is already taken."));
 
                     $account->set("username", Request::get("username"));
-                    Ajax::add(".list-item-header .username", Request::get("username"));
+                    Ajax::add('.list-item[data-id="'.Request::get("id").'"] .username', Request::get("username"));
                 }
 
                 if (Request::isset("email") && Request::get("email") != $account->get("email")) {
