@@ -48,7 +48,7 @@ class Template {
     private static function cache_file(string $file) { 
         $cache = App::get("DIR_ROOT").App::get("DIR_CACHE").'/_'.hash_hmac('sha256', $file, hash_hmac('md5', $file, App::get("SALT_CACHE"))).'.php';
 
-        if (App::get("APP_DEBUG") || !file_exists($cache) || filemtime($cache) < filemtime(App::get("DIR_ROOT").App::get("DIR_VIEWS").'/'.$file)) {
+        if (App::get("APP_DEBUG") || !file_exists($cache)) {
             $template = self::include_files($file);
             $template = self::compile_comments($template);
             $template = self::compile_echos($template);
@@ -75,10 +75,11 @@ class Template {
      * @throws                  Exception If the template file is not found.
      */
     private static function include_files(string $file) {
-        if (!file_exists(App::get("DIR_ROOT").App::get("DIR_VIEWS").'/'.$file))
-            throw new Exception(sprintf(_("Template %s not found."), $file));
+        if (!file_exists($path = App::get("DIR_ROOT").App::get("DIR_VIEWS").'/'.App::get("APP_LANGUAGE").'/'.$file))
+            if (!file_exists($path = App::get("DIR_ROOT").App::get("DIR_VENDOR").'/'.App::get("SRC_PACKAGE")."/src/views/".App::get("APP_LANGUAGE").'/'.$file))
+                throw new Exception(sprintf(_("Template %s not found."), $file));
 
-        $template = file_get_contents(App::get("DIR_ROOT").App::get("DIR_VIEWS").'/'.$file);
+        $template = file_get_contents($path);
 		preg_match_all('/{% ?(include) ?\'?(.*?)\'? ?%}/i', $template, $matches, PREG_SET_ORDER);
 		foreach ($matches as $value) 
 			$template = str_replace($value[0], self::include_files($value[2]), $template);

@@ -24,25 +24,32 @@ namespace MVC;
 class App {
 
     // Application default settings and constants
+    protected static $SRC_NAME          = "mvc";
+    protected static $SRC_PACKAGE       = "fabiodoppio/mvc";
+    protected static $SRC_DESC          = "Model View Controller (MVC) design pattern for simple web applications.";
+    protected static $SRC_AUTHOR        = "Fabio Doppio";
+    protected static $SRC_LICENSE       = "MIT";
+    protected static $SRC_VERSION       = "1.5";
+
     protected static $APP_CONFIG;
     protected static $APP_URL;
-    protected static $APP_NAME;
+    protected static $APP_NAME          = "";
     protected static $APP_TITLE         = "";
     protected static $APP_AUTHOR        = "";
     protected static $APP_DESCRIPTION   = "";
-    protected static $APP_LANGUAGE      = "";
-    protected static $APP_VERSION       = "";
-    protected static $APP_ONLINE        = true;
+    protected static $APP_LANGUAGE      = "en_EN.utf8";
     protected static $APP_DEBUG         = false;
     protected static $APP_LOGIN         = true;
     protected static $APP_SIGNUP        = false;
-    protected static $APP_CRON          = false;
+    protected static $APP_CRONJOB       = false;
+    protected static $APP_MAINTENANCE   = false;
     protected static $APP_UPLOAD_SIZE   = 3072000;
     protected static $APP_UPLOAD_TYPES  = ['jpe' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'jpg' => 'image/jpg', 'png' => 'image/png', 'gif' => 'image/gif'];
 
-    protected static $SALT_COOKIE       = "61OPkPlKK0z/bShM84JL+kjp";
-    protected static $SALT_TOKEN        = "Jneij:12Hn!9Q/QmYbCaaXov";
-    protected static $SALT_CACHE        = "H_RyMlr=/wjz?KjFt?BrBGAs";
+    protected static $SALT_COOKIE;
+    protected static $SALT_TOKEN;
+    protected static $SALT_CACHE;
+    protected static $AUTH_CRON;
     
     protected static $DB_HOST;
     protected static $DB_USERNAME;
@@ -57,19 +64,18 @@ class App {
     protected static $DIR_STYLES        = "/app/assets/styles";
     protected static $DIR_LOCALE        = "/app/locale"; 
     protected static $DIR_VENDOR        = "/app/vendor";
-    protected static $DIR_VIEWS         = "/app/views/";
+    protected static $DIR_VIEWS         = "/app/views";
     protected static $DIR_CACHE         = "/app/cache";
     protected static $DIR_MEDIA         = "/app/media";
     protected static $DIR_UPLOADS       = "/app/media/uploads";
     
-    protected static $MAIL_HOST         = "";
-    protected static $MAIL_SENDER       = "";
-    protected static $MAIL_USERNAME     = "";
-    protected static $MAIL_PASSWORD     = "";
+    protected static $MAIL_HOST;
+    protected static $MAIL_SENDER;
+    protected static $MAIL_USERNAME;
+    protected static $MAIL_PASSWORD;
 
     protected static $META_EDITABLE     = "[\"email\",\"password\"]";
 
-    protected static $CRON_KEY          = "TVM4ZGgyV1kxVg";
 
     /**
      * Initialize the application based on the provided configuration.
@@ -88,6 +94,7 @@ class App {
             putenv('LANGUAGE='.App::get("APP_LANGUAGE"));
             putenv('LC_ALL='.App::get("APP_LANGUAGE"));
             setlocale(LC_ALL, App::get("APP_LANGUAGE"));
+            bindtextdomain("default", App::get("DIR_ROOT").App::get("DIR_VENDOR").'/'.App::get("SRC_PACKAGE")."/src/locale");
             bindtextdomain("app", App::get("DIR_ROOT").App::get("DIR_LOCALE"));
             textdomain("app");
 
