@@ -243,7 +243,7 @@ class IndexController extends Controller {
             case "/admin/pages":
                 $items = array();
                 foreach (Database::select("app_pages", "slug IS NOT NULL") as $page)
-                    $items[] = new Model\Page($page['slug']);
+                    $items[] = new Model\Page($page['id']);
 
                 $pages = ceil(count($items)/20);
                 $items = array_slice($items, 0, 20);
@@ -356,8 +356,9 @@ class IndexController extends Controller {
     public function customAction() {
         if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
             throw new Exception(_("App currently offline. Please try again later."), 407);
-
-        $page = new Model\Page(Request::get("request"));
+        
+        $page = Database::select("app_pages", "slug = '".Request::get("request")."'");
+        $page = new Model\Page($page["id"]);
 
         if ($this->account->get("role") < Model\Account::VERIFIED && $page->get("role") == Model\Account::VERIFIED)
             throw new Exception(_("Your account does not have the required role."), 406); 

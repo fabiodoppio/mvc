@@ -118,16 +118,16 @@ class AdminController extends AccountController {
     public function pageAction() {
         switch(Request::get("request")) {
             case "admin/page/add":
-                if (!empty(Database::select("app_pages", "slug LIKE '".Request::get("slug")."'")[0]))
+                if (!empty(Database::select("app_pages", "slug = '".Request::get("slug")."'")[0]))
                     throw new Exception(_("Your entered slug is already used."));
 
                 Database::insert("app_pages", "slug, title, description, robots, template, role", "'".Fairplay::string(Request::get("slug"))."', '".Fairplay::string(Request::get("title"))."', '".Fairplay::string(Request::get("description"))."', '".Fairplay::string(Request::get("robots"))."', '".Fairplay::string(Request::get("template"))."', '".Fairplay::integer(Request::get("role"))."'");
 
-                Ajax::add(".pages .list", Template::get("admin/elements/PageListItem.tpl", ["item" => new Model\Page(Request::get("slug"))]), "append");
+                Ajax::add(".pages .list", Template::get("admin/elements/PageListItem.tpl", ["item" => new Model\Page(Database::$insert_id)]), "append");
                 Ajax::add('.response', '<div class="success">'._("Page added successfully.").'</div>');
                 break;
             case "admin/page/edit":
-                $page = new Model\Page(Request::get("id"));
+                $page = new Model\Page(Fairplay::integer(Request::get("id")));
     
                 if (Request::isset("title") && Request::get("title") != $page->get("title")) {
                     $page->set("title", Fairplay::string(Request::get("title")));
@@ -135,11 +135,10 @@ class AdminController extends AccountController {
                 }
                      
                 if (Request::isset("slug") && Request::get("slug") != $page->get("slug")) {
-                    if (!empty(Database::select("app_pages", "slug LIKE '".Fairplay::string(Request::get("slug"))."'")[0]))
+                    if (!empty(Database::select("app_pages", "slug = '".Fairplay::string(Request::get("slug"))."'")[0]))
                         throw new Exception(_("Your entered slug is already used."));
 
                     $page->set("slug", Request::get("slug"));
-                    Ajax::add('.list-item[data-id="'.$page->get("id").'"] .slug', "slug:".Request::get("slug"));
                     Ajax::add('.list-item[data-id="'.$page->get("id").'"] .slug', "slug:".Request::get("slug"));
                 }
 
@@ -165,7 +164,7 @@ class AdminController extends AccountController {
             case "admin/page/page":
                 $items = array();
                 foreach (Database::select("app_pages", "id IS NOT NULL") as $page)
-                    $items[] = new Model\Page($page['slug']);
+                    $items[] = new Model\Page($page['id']);
 
                 $pages = ceil(count($items)/20);
                 $page = Fairplay::integer(Request::get("value"));

@@ -37,7 +37,7 @@ class Page extends Model {
      *
      * @var     string  $primaryKey
      */
-    protected $primaryKey = "app_pages.slug";
+    protected $primaryKey = "app_pages.id";
 
     /**
      * Constructor method for the Page class.
