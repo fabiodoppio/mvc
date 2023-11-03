@@ -127,11 +127,11 @@ class AdminController extends AccountController {
                 Ajax::add('.response', '<div class="success">'._("Page added successfully.").'</div>');
                 break;
             case "admin/page/edit":
-                $page = new Model\Page(Request::get("slug"));
+                $page = new Model\Page(Request::get("id"));
     
                 if (Request::isset("title") && Request::get("title") != $page->get("title")) {
                     $page->set("title", Fairplay::string(Request::get("title")));
-                    Ajax::add('.list-item[data-id="'.Request::get("id").'"] .title', Request::get("title"));
+                    Ajax::add('.list-item[data-id="'.$page->get("id").'"] .title', Request::get("title"));
                 }
                      
                 if (Request::isset("slug") && Request::get("slug") != $page->get("slug")) {
@@ -139,8 +139,8 @@ class AdminController extends AccountController {
                         throw new Exception(_("Your entered slug is already used."));
 
                     $page->set("slug", Request::get("slug"));
-                    Ajax::add('.list-item[data-id="'.Request::get("id").'"] .slug', "slug:".Request::get("slug"));
-                    Ajax::add('.list-item[data-id="'.Request::get("id").'"] .slug', "slug:".Request::get("slug"));
+                    Ajax::add('.list-item[data-id="'.$page->get("id").'"] .slug', "slug:".Request::get("slug"));
+                    Ajax::add('.list-item[data-id="'.$page->get("id").'"] .slug', "slug:".Request::get("slug"));
                 }
 
                 if (Request::isset("description") && Request::get("description") != $page->get("description"))
