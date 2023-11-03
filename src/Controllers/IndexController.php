@@ -374,7 +374,9 @@ class IndexController extends Controller {
                 "description" => $page->get("description") ?: App::get("APP_DESCRIPTION"),
                 "robots" => $page->get("robots"),
                 "canonical" => App::get("APP_URL").$page->get("slug"),
-                "account" => $this->account
+                "id" => $page->get("id"),
+                "account" => $this->account,
+                
         ]);
     }
 
