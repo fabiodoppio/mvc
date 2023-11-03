@@ -39,18 +39,6 @@ class Page extends Model {
      */
     protected $primaryKey = "app_pages.id";
 
-    /**
-     * Constructor method for the Page class.
-     *
-     * @param   mixed   $value      The object ID or primary key value for the custom page.
-     * @throws                      Exception If the custom page cannot be found in the database.
-     */
-    public function __construct($value) {
-        $this->objectID = $value;
-        if (empty($this->data = Database::select($this->table, $this->primaryKey." = '".$this->objectID."'")))
-            throw new Exception(_("Page not found."), 404);
-    }
-
 }
 
 ?>

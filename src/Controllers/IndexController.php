@@ -357,8 +357,10 @@ class IndexController extends Controller {
         if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
             throw new Exception(_("App currently offline. Please try again later."), 407);
         
-        $page = Database::select("app_pages", "slug = '".Request::get("request")."'");
-        $page = new Model\Page($page["id"]);
+        if (empty($page = Database::select("app_pages", "slug = '".Request::get("request")."'")))
+            throw new Exception(_("Page not found."), 404);
+
+        $page = new Model\Page($page[0]["id"]);
 
         if ($this->account->get("role") < Model\Account::VERIFIED && $page->get("role") == Model\Account::VERIFIED)
             throw new Exception(_("Your account does not have the required role."), 406); 
