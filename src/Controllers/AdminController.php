@@ -103,7 +103,7 @@ class AdminController extends AccountController {
                 if (Request::isset("config_name") && Request::isset("config_value"))
                     if (is_array(Request::get("config_name")) && is_array(Request::get("config_value")))
                         for($i = 0; $i < count(Request::get("config_name")); $i++)
-                            if (Request::get("meta_name")[$i] != "" && Request::get("meta_name")[$i] != "")
+                            if (Request::get("config_name")[$i] != "")
                                 App::set(Fairplay::string(Request::get("config_name")[$i]), Fairplay::string(Request::get("config_value")[$i]));
 
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
@@ -236,7 +236,8 @@ class AdminController extends AccountController {
                 if (Request::isset("meta_name") && Request::isset("meta_value"))
                     if (is_array(Request::get("meta_name")) && is_array(Request::get("meta_value")))
                         for($i = 0; $i < count(Request::get("meta_name")); $i++)
-                            $account->set(Fairplay::string(Request::get("meta_name")[$i]), Fairplay::string(Request::get("meta_value")[$i]));
+                            if (Request::get("meta_name")[$i] != "")
+                                $account->set(Fairplay::string(Request::get("meta_name")[$i]), Fairplay::string(Request::get("meta_value")[$i]));
 
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
