@@ -127,7 +127,7 @@ class AdminController extends AccountController {
                 Ajax::add('.response', '<div class="success">'._("Page added successfully.").'</div>');
                 break;
             case "admin/page/edit":
-                $page = new Model\Page(Request::get("id"));
+                $page = new Model\Page(Request::get("slug"));
     
                 if (Request::isset("title") && Request::get("title") != $page->get("title")) {
                     $page->set("title", Fairplay::string(Request::get("title")));
@@ -139,6 +139,7 @@ class AdminController extends AccountController {
                         throw new Exception(_("Your entered slug is already used."));
 
                     $page->set("slug", Request::get("slug"));
+                    Ajax::add('.list-item[data-id="'.Request::get("id").'"] .slug', "slug:".Request::get("slug"));
                     Ajax::add('.list-item[data-id="'.Request::get("id").'"] .slug', "slug:".Request::get("slug"));
                 }
 
@@ -157,13 +158,13 @@ class AdminController extends AccountController {
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
             case "admin/page/delete":
-                Database::delete("app_pages", "slug = '".Fairplay::string(Request::get("value"))."'");
+                Database::delete("app_pages", "id = '".Fairplay::string(Request::get("value"))."'");
                 Ajax::remove('.pages .list li[data-id="'.Request::get("value").'"]');
                 Ajax::add('.response', '<div class="success">'._("Page deleted successfully.").'</div>');
                 break;
             case "admin/page/page":
                 $items = array();
-                foreach (Database::select("app_pages", "slug IS NOT NULL") as $page)
+                foreach (Database::select("app_pages", "id IS NOT NULL") as $page)
                     $items[] = new Model\Page($page['slug']);
 
                 $pages = ceil(count($items)/20);

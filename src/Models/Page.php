@@ -48,7 +48,7 @@ class Page extends Model {
     public function __construct($value) {
         $this->objectID = $value;
         if (empty($this->data = Database::select($this->table, $this->primaryKey." = '".$this->objectID."'")))
-            throw new Exception(sprintf(_("Page not found."), $this->objectID), 404);
+            throw new Exception(_("Page not found."), 404);
     }
 
 }
