@@ -53,7 +53,7 @@ $(document).on("submit", "form[data-request]", function(e) {
 	e.preventDefault();
     if (!cooldown) {
         cooldown = true;
-        var data = Array.from(new FormData($(this)[0])).filter(function([k, v]) { return v });
+        var data = new FormData($(this)[0]);
         data.append("request",$(this).attr("data-request"));
         ajax_send(data);
         $('input[type="password"]', this).val('');

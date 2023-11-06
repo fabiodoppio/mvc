@@ -28,7 +28,7 @@ class Request {
      * @return  bool            True if the request parameter exists, false otherwise.
      */
     public static function isset(string $name) {
-        return (isset($_REQUEST[$name]));
+        return (isset($_REQUEST[$name]) && $_REQUEST[$name] != "");
     }
 
     /**
@@ -39,7 +39,7 @@ class Request {
      * @throws                  Exception If the request parameter is not found.
      */
     private static function get(string $name) {
-        if (!isset($_REQUEST[$name]))
+        if (!self::isset($_REQUEST[$name]))
             throw new Exception(sprintf(_("Input %s not found."), $name));
 
         return $_REQUEST[$name];

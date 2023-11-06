@@ -56,15 +56,15 @@
                     </label>
                     <label for="META_PUBLIC"> 
                         Public Account Fields 
-                        <textarea id="META_PUBLIC" name="META_PUBLIC" placeholder="Enter account fields">{{implode(',\n', json_decode(App::get('META_PUBLIC')))}}</textarea>
+                        <textarea id="META_PUBLIC" name="META_PUBLIC" placeholder="Enter account fields">{{implode(",\n", json_decode(App::get('META_PUBLIC')))}}</textarea>
                     </label>
                     <label for="FILES_CSS">
                         Load Additional CSS Files
-                        <textarea id="FILES_CSS" name="FILES_CSS" placeholder="Enter CSS files">{{implode(',\n', json_decode(App::get('FILES_CSS')))}}</textarea>
+                        <textarea id="FILES_CSS" name="FILES_CSS" placeholder="Enter CSS files">{{implode(",\n", json_decode(App::get('FILES_CSS')))}}</textarea>
                     </label>
                     <label for="FILES_JS">
                         Load Additional JS Files
-                        <textarea id="FILES_JS" name="FILES_JS" placeholder="Enter JS files">{{implode(',\n', json_decode(App::get('FILES_JS')))}}</textarea>
+                        <textarea id="FILES_JS" name="FILES_JS" placeholder="Enter JS files">{{implode(",\n", json_decode(App::get('FILES_JS')))}}</textarea>
                     </label>
                     <br><br>
                     <h2>Email</h2>
