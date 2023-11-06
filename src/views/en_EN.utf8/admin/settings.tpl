@@ -95,7 +95,7 @@
                     </label>
                     <label> 
                         URL 
-                        <input type="text" value="{{App::get('APP_URL')}}/cron?key={{App::get('CRON_KEY')}}" disabled/>
+                        <input type="text" value="{{App::get('APP_URL')}}/cron?key={{App::get('AUTH_CRON')}}" disabled/>
                     </label>
                     <br><br>
                     <h2>Additional Settings</h2>
