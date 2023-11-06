@@ -88,13 +88,13 @@ class AdminController extends AccountController {
                     App::set("MAIL_PASSWORD", str_replace('=', '', base64_encode(Request::string("MAIL_PASSWORD"))));
 
                 if (Request::isset("META_PUBLIC") && Request::string("META_PUBLIC") != App::get("META_PUBLIC"))
-                    App::set("META_PUBLIC", json_encode(array_map('trim', explode(',', Request::string("META_PUBLIC")))));
+                    App::set("META_PUBLIC", json_encode(array_map('trim', explode("\n", Request::string("META_PUBLIC")))));
 
                 if (Request::isset("FILES_JS") && Request::string("FILES_JS") != App::get("FILES_JS"))
-                    App::set("FILES_JS", json_encode(array_map('trim', explode(',', Request::string("FILES_JS")))));
+                    App::set("FILES_JS", json_encode(array_map('trim', explode("\n", Request::string("FILES_JS")))));
 
                 if (Request::isset("FILES_CSS") && Request::string("FILES_CSS") != App::get("FILES_CSS"))
-                    App::set("FILES_CSS", json_encode(array_map('trim', explode(',', Request::string("FILES_CSS")))));
+                    App::set("FILES_CSS", json_encode(array_map('trim', explode("\n", Request::string("FILES_CSS")))));
 
                 if (Request::isset("config_name") && Request::isset("config_value"))
                     for($i = 0; $i < count(Request::array("config_name")); $i++)

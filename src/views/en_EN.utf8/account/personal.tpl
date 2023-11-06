@@ -29,7 +29,7 @@
                         <input type="hidden" name="meta_name[2]" value="lastname"/>
                         <input type="text" id="lastname" name="meta_value[2]" placeholder="Enter last name" value="{{$account->get('lastname')}}" required/>
                     </label>
-                    <label for "street">
+                    <label for="street">
                         Street / House Number <span class="required" title="Required">*</span>
                         <input type="hidden" name="meta_name[3]" value="street"/>
                         <input type="text" id="street" name="meta_value[3]" placeholder="Enter street / house number" value="{{$account->get('street')}}" required/>
@@ -47,7 +47,7 @@
                     <label for="country">
                         Country <span class="required" title="Required">*</span>
                         <input type="hidden" name="meta_name[6]" value="country"/>
-                        <input type="text" id="country" name="meta_value[6]" placeholder="Enter country" required/>
+                        <input type="text" id="country" name="meta_value[6]" placeholder="Enter country" value="{{$account->get('country')}}" required/>
                     </label>
                     <div class="response"></div>
                     <button>Save Changes</button>

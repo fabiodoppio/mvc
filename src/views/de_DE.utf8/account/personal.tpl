@@ -47,7 +47,7 @@
                             <label for="country">
                                 Land <span class="required" title="Pflichtfeld">*</span>
                                 <input type="hidden" name="meta_name[6]" value="country"/>
-                                <input type="text" id="country" name="meta_value[6]" placeholder="Land eingeben" required/>
+                                <input type="text" id="country" name="meta_value[6]" placeholder="Land eingeben" value="{{$account->get('country')}}" required/>
                             </label>
                             <div class="response"></div>
                             <button>Änderungen speichern</button>
