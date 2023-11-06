@@ -54,9 +54,6 @@ $(document).on("submit", "form[data-request]", function(e) {
     if (!cooldown) {
         cooldown = true;
         var data = new FormData($(this)[0]);
-        for (const pair of data.entries())
-            if (pair[1] == "")
-                data.delete(pair[0]);
         data.append("request",$(this).attr("data-request"));
         ajax_send(data);
         $('input[type="password"]', this).val('');

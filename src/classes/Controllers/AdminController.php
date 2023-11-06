@@ -49,28 +49,18 @@ class AdminController extends AccountController {
 
                 if (Request::isset("APP_NAME") && Request::string("APP_NAME") != App::get("APP_NAME"))
                     App::set("APP_NAME", Request::string("APP_NAME"));
-                else
-                    App::set("APP_NAME", null);
 
                 if (Request::isset("APP_TITLE") && Request::string("APP_TITLE") != App::get("APP_TITLE"))
                     App::set("APP_TITLE", Request::string("APP_TITLE"));
-                else 
-                    App::set("APP_TITLE", null);
 
                 if (Request::isset("APP_AUTHOR") && Request::string("APP_AUTHOR") != App::get("APP_AUTHOR"))
                     App::set("APP_AUTHOR", Request::string("APP_AUTHOR"));
-                else 
-                    App::set("APP_AUTHOR", null);
                 
                 if (Request::isset("APP_DESCRIPTION") && Request::string("APP_DESCRIPTION") != App::get("APP_DESCRIPTION"))
                     App::set("APP_DESCRIPTION", Request::string("APP_DESCRIPTION"));
-                else
-                    App::set("APP_DESCRIPTION", null);
 
                 if (Request::isset("APP_LANGUAGE") && Request::string("APP_LANGUAGE") != App::get("APP_LANGUAGE"))
                     App::set("APP_LANGUAGE", Request::string("APP_LANGUAGE"));
-                else
-                    App::set("APP_LANGUAGE", null);
                 
                 if (Request::isset("APP_LOGIN") && Request::boolean("APP_LOGIN") != App::get("APP_LOGIN"))
                     App::set("APP_LOGIN", Request::boolean("APP_LOGIN"));
@@ -93,7 +83,8 @@ class AdminController extends AccountController {
                 if (Request::isset("MAIL_USERNAME") && Request::string("MAIL_USERNAME") != App::get("MAIL_USERNAME"))
                     App::set("MAIL_USERNAME", Request::string("MAIL_USERNAME"));
 
-                if (Request::isset("MAIL_PASSWORD") && str_replace('=', '', base64_encode(Request::string("MAIL_PASSWORD"))) != App::get("MAIL_PASSWORD"))
+                if (Request::isset("MAIL_PASSWORD") && Request::string("MAIL_PASSWORD") != "" && 
+                        str_replace('=', '', base64_encode(Request::string("MAIL_PASSWORD"))) != App::get("MAIL_PASSWORD"))
                     App::set("MAIL_PASSWORD", str_replace('=', '', base64_encode(Request::string("MAIL_PASSWORD"))));
 
                 if (Request::isset("META_PUBLIC") && Request::string("META_PUBLIC") != App::get("META_PUBLIC"))
@@ -109,8 +100,6 @@ class AdminController extends AccountController {
                     for($i = 0; $i < count(Request::array("config_name")); $i++)
                         if (is_string(Request::array("config_name")[$i]) && is_string(Request::array("config_value")[$i]))
                             App::set(Request::array("config_name")[$i], Request::array("config_value")[$i]);
-                        else 
-                            App::set(Request::array("config_name")[$i], "");
 
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
@@ -151,13 +140,9 @@ class AdminController extends AccountController {
 
                 if (Request::isset("description") && Request::string("description") != $page->get("description"))
                     $page->set("description", Request::string("description"));
-                else
-                    $page->set("description", "");
 
                 if (Request::isset("robots") && Request::string("robots") != $page->get("robots"))
                     $page->set("robots", Request::string("robots"));
-                else 
-                    $page->set("robots", "");
 
                 if (Request::isset("template") && Request::string("template") != $page->get("template"))
                     $page->set("template", Request::string("template"));
@@ -238,15 +223,13 @@ class AdminController extends AccountController {
                     $account->set("role", Request::integer("role"));
                 }
 
-                if (Request::isset("pw1") && Request::isset("pw2"))
+                if (Request::isset("pw1") && Request::isset("pw2") && Request::string("pw1") != "" && Request::string("pw2") != "")
                     $account->set("password", password_hash(Request::password(), PASSWORD_DEFAULT));
 
                 if (Request::isset("meta_name") && Request::isset("meta_value"))
                     for($i = 0; $i < count(Request::array("meta_name")); $i++)
                         if (is_string(Request::array("meta_name")[$i]) && is_string(Request::array("meta_value")[$i]))
                             $account->set(Request::array("meta_name")[$i], Request::array("meta_value")[$i]);
-                        else
-                            $account->set(Request::array("meta_name")[$i], ""); 
 
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;

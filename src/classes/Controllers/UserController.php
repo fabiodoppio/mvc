@@ -108,7 +108,8 @@ class UserController extends AccountController {
                     }
                 }
 
-                if (Request::isset("pw") && Request::isset("pw1") && Request::isset("pw2")) {
+                if (Request::isset("pw") && Request::isset("pw1") && Request::isset("pw2") &&
+                        Request::string("pw") != "" && Request::string("pw1") != "" && Request::string("pw2") != "") {
                     if (!in_array("password", json_decode(App::get("META_PUBLIC"))))
                         throw new Exception(_("You are not allowed to edit your password."));
 
@@ -125,8 +126,6 @@ class UserController extends AccountController {
 
                         if (is_string(Request::array("meta_name")[$i]) && is_string(Request::array("meta_value")[$i]))
                             $this->account->set(Request::array("meta_name")[$i], Request::array("meta_value")[$i]);
-                        else 
-                            $this->account->set(Request::array("meta_name")[$i], "");
                     }
         
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
