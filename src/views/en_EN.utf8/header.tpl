@@ -5,7 +5,7 @@
 <!-- Copyright (C) {{date('Y')}} {{App::get('APP_NAME')}} - All Rights Reserved. -->
 
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
     <head>
         <base href="{{App::get('APP_URL')}}/">
 		<meta charset="UTF-8"/>
@@ -17,7 +17,7 @@
         <meta name="keywords" content=""/>
         <meta name="revisit-after" content="14 days"/>
         <meta property="og:title" content="{{$title}}"/>
-        <meta property="og:locale" content="de-DE"/>
+        <meta property="og:locale" content="en-EN"/>
         <meta property="og:description" content="{{$description}}"/>
         <meta property="og:url" content="{{$canonical}}"/>
         <meta property="og:site_name" content="{{App::get('APP_NAME')}}"/>

@@ -1,0 +1,402 @@
+# mvc
+# Model View Controller (MVC) design pattern for simple web applications.
+# This file is distributed under the same license as the package (MIT License).
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-11-06 00:22+0200\n"
+"PO-Revision-Date: 2023-11-06 17:35+0100\n"
+"Last-Translator: Fabio Doppio <hallo@fabiodoppio.de>\n"
+"Language-Team: \n"
+"Language: en_EN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0.1\n"
+
+#: src/classes/Email.php:55
+msgid "Email could not be sent."
+msgstr "Email could not be sent."
+
+#: src/classes/Request.php:43
+#, php-format
+msgid "Input %s not found."
+msgstr "Input %s not found."
+
+#: src/classes/Request.php:59
+#, php-format
+msgid "Your username must be between %1$s and %2$s characters long."
+msgstr "Your username must be between %1$s and %2$s characters long."
+
+#: src/classes/Request.php:61
+msgid "Your username cannot contain any special characters."
+msgstr "Your username cannot contain any special characters."
+
+#: src/classes/Request.php:66
+msgid "Your username is not allowed."
+msgstr "Your username is not allowed."
+
+#: src/classes/Request.php:84
+msgid "Your passwords do not match."
+msgstr "Your passwords do not match."
+
+#: src/classes/Request.php:86
+#, php-format
+msgid "Your password must be at least %s characters long."
+msgstr "Your password must be at least %s characters long."
+
+#: src/classes/Request.php:100
+msgid "You have entered an invalid email address."
+msgstr "You have entered an invalid email address."
+
+#: src/classes/Request.php:114
+msgid "You entered an invalid integer."
+msgstr "You entered an invalid integer."
+
+#: src/classes/Request.php:128
+msgid "You entered an invalid number."
+msgstr "You entered an invalid number."
+
+#: src/classes/Request.php:142
+msgid "You entered an invalid string."
+msgstr "You entered an invalid string."
+
+#: src/classes/Request.php:156
+msgid "You entered an invalid array."
+msgstr "You entered an invalid array."
+
+#: src/classes/Request.php:171
+msgid "You entered an invalid boolean."
+msgstr "You entered an invalid boolean."
+
+#: src/classes/Request.php:185
+msgid "You entered an invalid url."
+msgstr "You entered an invalid url."
+
+#: src/classes/Request.php:199
+#, php-format
+msgid "Your message must be between %1$s and %2$s characters long."
+msgstr "Your message must be between %1$s and %2$s characters long."
+
+#: src/classes/Request.php:204
+msgid "Your message is not allowed."
+msgstr "Your message is not allowed."
+
+#: src/classes/Template.php:80
+#, php-format
+msgid "Template %s not found."
+msgstr "Template %s not found."
+
+#: src/classes/Auth.php:67 src/classes/Auth.php:70 src/classes/Auth.php:76
+msgid "Unauthorized Access."
+msgstr "Unauthorized Access."
+
+#: src/classes/Auth.php:91 src/classes/Auth.php:159 src/classes/Auth.php:182
+#: src/classes/Controllers/AccountController.php:141
+msgid "There is no account with this username or email address."
+msgstr "There is no account with this username or email address."
+
+#: src/classes/Auth.php:96
+msgid ""
+"You have entered the password incorrectly too many times. Please wait 10 "
+"minutes and try again."
+msgstr ""
+"You have entered the password incorrectly too many times. Please wait 10 "
+"minutes and try again."
+
+#: src/classes/Auth.php:100
+msgid "You entered an incorrect password."
+msgstr "You entered an incorrect password."
+
+#: src/classes/Auth.php:104 src/classes/Controllers/AccountController.php:49
+msgid "Your account has been suspended or deactivated."
+msgstr "Your account has been suspended or deactivated."
+
+#: src/classes/Auth.php:119 src/classes/Controllers/UserController.php:92
+#: src/classes/Controllers/AdminController.php:192
+#: src/classes/Controllers/AdminController.php:215
+msgid "Your entered username is already taken."
+msgstr "Your entered username is already taken."
+
+#: src/classes/Auth.php:122 src/classes/Controllers/UserController.php:104
+#: src/classes/Controllers/AdminController.php:195
+#: src/classes/Controllers/AdminController.php:223
+msgid "Your entered email address is already taken."
+msgstr "Your entered email address is already taken."
+
+#: src/classes/Auth.php:164
+msgid ""
+"You have tried to request a verification code too many times. Please wait 60 "
+"minutes and try again."
+msgstr ""
+"You have tried to request a verification code too many times. Please wait 60 "
+"minutes and try again."
+
+#: src/classes/Auth.php:190
+msgid "Your verification code is invalid."
+msgstr "Your verification code is invalid."
+
+#: src/classes/Auth.php:211
+msgid "Illegal activity detected."
+msgstr "Illegal activity detected."
+
+#: src/classes/Models/Model.php:65
+#, php-format
+msgid "Model %1$s:%2$s not found."
+msgstr "Model %1$s:%2$s not found."
+
+#: src/classes/Database.php:35
+msgid "Connection to MySQL database failed."
+msgstr "Connection to MySQL database failed."
+
+#: src/classes/App.php:117
+#, php-format
+msgid "Controller %s not found."
+msgstr "Controller %s not found."
+
+#: src/classes/App.php:126 src/classes/Controllers/AccountController.php:76
+#: src/classes/Controllers/AccountController.php:90
+#: src/classes/Controllers/AccountController.php:105
+#: src/classes/Controllers/AccountController.php:129
+#: src/classes/Controllers/AccountController.php:171
+#: src/classes/Controllers/UserController.php:76
+#: src/classes/Controllers/UserController.php:135
+#: src/classes/Controllers/AdminController.php:112
+#: src/classes/Controllers/AdminController.php:181
+#: src/classes/Controllers/AdminController.php:268
+#, php-format
+msgid "Action %s not found."
+msgstr "Action %s not found."
+
+#: src/classes/App.php:147
+#, php-format
+msgid "Variable %s not found."
+msgstr "Variable %s not found."
+
+#: src/classes/Upload.php:39
+msgid "There was a problem uploading your file."
+msgstr "There was a problem uploading your file."
+
+#: src/classes/Upload.php:42
+msgid "Your file type is not allowed."
+msgstr "Your file type is not allowed."
+
+#: src/classes/Upload.php:45
+#, php-format
+msgid "Your file exceeds the maximum allowed file size of %s KB."
+msgstr "Your file exceeds the maximum allowed file size of %s KB."
+
+#: src/classes/Controllers/AccountController.php:44
+msgid "Too many requests in a short time."
+msgstr "Too many requests in a short time."
+
+#: src/classes/Controllers/AccountController.php:63
+#: src/classes/Controllers/IndexController.php:62
+msgid "Login not possible at the moment."
+msgstr "Login not possible at the moment."
+
+#: src/classes/Controllers/AccountController.php:102
+msgid "Sessions successfully logged out."
+msgstr "Sessions successfully logged out."
+
+#: src/classes/Controllers/AccountController.php:116
+#: src/classes/Controllers/IndexController.php:114
+msgid "Signup not possible at the moment."
+msgstr "Signup not possible at the moment."
+
+#: src/classes/Controllers/AccountController.php:150
+#: src/classes/Controllers/IndexController.php:151
+#, php-format
+msgid "Account recovery | %s"
+msgstr "Account recovery | %s"
+
+#: src/classes/Controllers/AccountController.php:162
+msgid "Your account cannot be restored."
+msgstr "Your account cannot be restored."
+
+#: src/classes/Controllers/AccountController.php:168
+msgid ""
+"Your account has been successfully restored. You can now log in as usual."
+msgstr ""
+"Your account has been successfully restored. You can now log in as usual."
+
+#: src/classes/Controllers/IndexController.php:37
+#: src/classes/Controllers/IndexController.php:170
+#: src/classes/Controllers/IndexController.php:357
+#: src/classes/Controllers/UserController.php:40
+msgid "App currently offline. Please try again later."
+msgstr "App currently offline. Please try again later."
+
+#: src/classes/Controllers/IndexController.php:43
+#, php-format
+msgid "Homepage | %s"
+msgstr "Homepage | %s"
+
+#: src/classes/Controllers/IndexController.php:65
+#: src/classes/Controllers/IndexController.php:117
+#: src/classes/Controllers/IndexController.php:140
+#: src/classes/Controllers/IndexController.php:173
+#: src/classes/Controllers/IndexController.php:188
+#: src/classes/Controllers/IndexController.php:219
+#: src/classes/Controllers/IndexController.php:365
+#: src/classes/Controllers/IndexController.php:368
+#: src/classes/Controllers/UserController.php:43
+#: src/classes/Controllers/AdminController.php:38
+msgid "Your account does not have the required role."
+msgstr "Your account does not have the required role."
+
+#: src/classes/Controllers/IndexController.php:71
+#, php-format
+msgid "Login | %s"
+msgstr "Login | %s"
+
+#: src/classes/Controllers/IndexController.php:89
+#: src/classes/Controllers/IndexController.php:312
+#: src/classes/Controllers/IndexController.php:335
+#: src/classes/Controllers/IndexController.php:360
+msgid "Page not found."
+msgstr "Page not found."
+
+#: src/classes/Controllers/IndexController.php:97
+#, php-format
+msgid "Logout | %s"
+msgstr "Logout | %s"
+
+#: src/classes/Controllers/IndexController.php:123
+#, php-format
+msgid "Signup | %s"
+msgstr "Signup | %s"
+
+#: src/classes/Controllers/IndexController.php:179
+#, php-format
+msgid "My Account | %s"
+msgstr "My Account | %s"
+
+#: src/classes/Controllers/IndexController.php:199
+#: src/classes/Controllers/UserController.php:57
+#, php-format
+msgid "Email address verification | %s"
+msgstr "Email address verification | %s"
+
+#: src/classes/Controllers/IndexController.php:225
+#, php-format
+msgid "Administration | %s"
+msgstr "Administration | %s"
+
+#: src/classes/Controllers/IndexController.php:235
+#, php-format
+msgid "Settings | %s"
+msgstr "Settings | %s"
+
+#: src/classes/Controllers/IndexController.php:252
+#, php-format
+msgid "Pages | %s"
+msgstr "Pages | %s"
+
+#: src/classes/Controllers/IndexController.php:272
+#, php-format
+msgid "Accounts | %s"
+msgstr "Accounts | %s"
+
+#: src/classes/Controllers/IndexController.php:295
+#, php-format
+msgid "oops! | %s"
+msgstr "oops! | %s"
+
+#: src/classes/Controllers/IndexController.php:318
+#, php-format
+msgid "Maintenance | %s"
+msgstr "Maintenance | %s"
+
+#: src/classes/Controllers/IndexController.php:372
+#, php-format
+msgid " | %s"
+msgstr " | %s"
+
+#: src/classes/Controllers/UserController.php:73
+msgid "Your email address has been successfully verified."
+msgstr "Your email address has been successfully verified."
+
+#: src/classes/Controllers/UserController.php:89
+msgid "You are not allowed to edit your username."
+msgstr "You are not allowed to edit your username."
+
+#: src/classes/Controllers/UserController.php:101
+msgid "You are not allowed to edit your email address."
+msgstr "You are not allowed to edit your email address."
+
+#: src/classes/Controllers/UserController.php:113
+msgid "You are not allowed to edit your password."
+msgstr "You are not allowed to edit your password."
+
+#: src/classes/Controllers/UserController.php:116
+msgid "Your current password does not match."
+msgstr "Your current password does not match."
+
+#: src/classes/Controllers/UserController.php:124
+#, php-format
+msgid "You are not allowed to edit %s."
+msgstr "You are not allowed to edit %s."
+
+#: src/classes/Controllers/UserController.php:132
+#: src/classes/Controllers/AdminController.php:109
+#: src/classes/Controllers/AdminController.php:162
+#: src/classes/Controllers/AdminController.php:245
+msgid "Changes saved successfully."
+msgstr "Changes saved successfully."
+
+#: src/classes/Controllers/AdminController.php:123
+#: src/classes/Controllers/AdminController.php:140
+msgid "Your entered slug is already used."
+msgstr "Your entered slug is already used."
+
+#: src/classes/Controllers/AdminController.php:128
+msgid "Page added successfully."
+msgstr "Page added successfully."
+
+#: src/classes/Controllers/AdminController.php:167
+msgid "Page deleted successfully."
+msgstr "Page deleted successfully."
+
+#: src/classes/Controllers/AdminController.php:200
+msgid "Account added successfully."
+msgstr "Account added successfully."
+
+#: src/classes/Controllers/AdminController.php:204
+msgid "You can not logout yourself."
+msgstr "You can not logout yourself."
+
+#: src/classes/Controllers/AdminController.php:208
+msgid "Account successfully logged out."
+msgstr "Account successfully logged out."
+
+#: src/classes/Controllers/AdminController.php:230
+msgid "You can not change your own role."
+msgstr "You can not change your own role."
+
+#: src/classes/Controllers/AdminController.php:249
+msgid "You can not delete yourself."
+msgstr "You can not delete yourself."
+
+#: src/classes/Controllers/AdminController.php:254
+msgid "Account deleted successfully."
+msgstr "Account deleted successfully."
+
+#~ msgid "Server currently offline."
+#~ msgstr "Server offline."
+
+#, php-format
+#~ msgid "Backend | %s"
+#~ msgstr "Backend | %s"
+
+#, php-format
+#~ msgid "Users | %s"
+#~ msgstr "Accounts | %s"
+
+#~ msgid "User successfully logged out."
+#~ msgstr "Account erfolgreich abgemeldet."
+
+#~ msgid "User deleted successfully."
+#~ msgstr "Der Account wurde erfolgreich gelöscht."

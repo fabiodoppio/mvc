@@ -39,7 +39,6 @@ class Ajax {
         @self::$output[$option][$target] = $html;
     }
 
-
     /**
      * Mark a specific target for removal in the AJAX response.
      *
@@ -66,7 +65,7 @@ class Ajax {
      */
     public static function push() {
         if (!empty(self::$output))
-            echo json_encode(self::$output, JSON_HEX_QUOT | JSON_HEX_TAG);
+            echo json_encode(self::$output, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_PRETTY_PRINT);
     }
 
 }

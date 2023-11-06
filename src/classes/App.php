@@ -74,7 +74,10 @@ class App {
     protected static $MAIL_USERNAME;
     protected static $MAIL_PASSWORD;
 
-    protected static $META_EDITABLE     = "[\"email\",\"password\"]";
+    protected static $META_PUBLIC       = "[\"email\",\"password\"]";
+
+    protected static $FILES_JS          = "[\"main.js\"]";
+    protected static $FILES_CSS         = "[\"general.css\"]";
 
 
     /**
@@ -94,9 +97,9 @@ class App {
             putenv('LANGUAGE='.App::get("APP_LANGUAGE"));
             putenv('LC_ALL='.App::get("APP_LANGUAGE"));
             setlocale(LC_ALL, App::get("APP_LANGUAGE"));
-            bindtextdomain("default", App::get("DIR_ROOT").App::get("DIR_VENDOR").'/'.App::get("SRC_PACKAGE")."/src/locale");
             bindtextdomain("app", App::get("DIR_ROOT").App::get("DIR_LOCALE"));
-            textdomain("app");
+            bindtextdomain("default", App::get("DIR_ROOT").App::get("DIR_VENDOR").'/'.App::get("SRC_PACKAGE")."/src/locale");
+            textdomain("default");
 
             if (App::get("APP_DEBUG")) {
                 ini_set('display_errors', 1);

@@ -17,7 +17,6 @@ use MVC\App       as App;
 use MVC\Auth      as Auth;
 use MVC\Database  as Database;
 use MVC\Exception as Exception;
-use MVC\Fairplay  as Fairplay;
 use MVC\Models    as Model;
 use MVC\Request   as Request;
 use MVC\Template  as Template;
@@ -34,10 +33,10 @@ class IndexController extends Controller {
      * Displaying the website's home page.
      */
     public function homeAction() {
-        if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
+        if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
             throw new Exception(_("App currently offline. Please try again later."), 407);
 
-        switch(Request::get("request")) {
+        switch(Request::string("request")) {
             case "/":
                 echo Template::get(
                     "home.tpl", [
@@ -57,7 +56,7 @@ class IndexController extends Controller {
      * Displaying the website's login page.
      */
     public function loginAction() {
-        $redirect = (Request::isset("redirect")) ? urldecode(Fairplay::string(Request::get("redirect"))) : "";
+        $redirect = (Request::isset("redirect")) ? urldecode(Request::string("redirect")) : "";
 
         if (!App::get("APP_LOGIN") && ($redirect != "/admin"))
             throw new Exception(_("Login not possible at the moment."), 404);
@@ -65,7 +64,7 @@ class IndexController extends Controller {
         if ($this->account->get("role") > Model\Account::GUEST)
             throw new Exception(_("Your account does not have the required role."), 405);
 
-        switch(Request::get("request")) {
+        switch(Request::string("request")) {
             case "/login":
                 echo Template::get(
                     "login.tpl", [
@@ -89,7 +88,7 @@ class IndexController extends Controller {
         if ($this->account->get("role") < Model\Account::USER)
             throw new Exception(_("Page not found."), 404);
 
-        switch(Request::get("request")) {
+        switch(Request::string("request")) {
             case "/logout":
                 Auth::unset_cookie();
                 $this->account = Auth::get_current_account();
@@ -117,7 +116,7 @@ class IndexController extends Controller {
         if ($this->account->get("role") > Model\Account::GUEST)
             throw new Exception(_("Your account does not have the required role."), 405);
 
-        switch(Request::get("request")) {
+        switch(Request::string("request")) {
             case "/signup":
                 echo Template::get(
                     "signup.tpl", [
@@ -140,9 +139,9 @@ class IndexController extends Controller {
         if ($this->account->get("role") > Model\Account::GUEST)
             throw new Exception(_("Your account does not have the required role."), 405);
 
-        switch(Request::get("request")) {
+        switch(Request::string("request")) {
             case "/recovery":
-                $base = (Request::isset("code")) ? base64_decode(Fairplay::string(Request::get("code"))) : "";
+                $base = (Request::isset("code")) ? base64_decode(Request::string("code")) : "";
                 $parts = explode('/',$base);
                 $credential = $parts[0]??"";
                 $code = $parts[1]??"";
@@ -167,13 +166,13 @@ class IndexController extends Controller {
      * Displaying the website's account page.
      */
     public function accountAction() {
-        if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
+        if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
             throw new Exception(_("App currently offline. Please try again later."), 407);
 
         if ($this->account->get("role") < Model\Account::USER)
             throw new Exception(_("Your account does not have the required role."), 403);
         
-        switch(Request::get("request")) {
+        switch(Request::string("request")) {
             case "/account":
                 echo Template::get(
                     "account/account.tpl", [
@@ -188,12 +187,12 @@ class IndexController extends Controller {
                 if ($this->account->get("role") > Model\Account::USER)
                     throw new Exception(_("Your account does not have the required role."), 405);
 
-                $base = (Request::isset("code")) ? base64_decode(Fairplay::string(Request::get("code"))) : "";
+                $base = (Request::isset("code")) ? base64_decode(Request::string("code")) : "";
                 $parts = explode('/',$base);
                 $email = $parts[0]??"";
                 $code = $parts[1]??"";
 
-                $redirect = (Request::isset("redirect")) ? urldecode(Fairplay::string(Request::get("redirect"))) : "";
+                $redirect = (Request::isset("redirect")) ? urldecode(Request::string("redirect")) : "";
 
                 echo Template::get(
                     "account/verify.tpl", [
@@ -219,7 +218,7 @@ class IndexController extends Controller {
         if ($this->account->get("role") < Model\Account::ADMINISTRATOR)
             throw new Exception(_("Your account does not have the required role."), 403);
         
-        switch(Request::get("request")) {
+        switch(Request::string("request")) {
             case "/admin":
                 echo Template::get(
                         "admin/admin.tpl", [
@@ -242,7 +241,7 @@ class IndexController extends Controller {
                 break;
             case "/admin/pages":
                 $items = array();
-                foreach (Database::select("app_pages", "slug IS NOT NULL") as $page)
+                foreach (Database::select("app_pages", "id IS NOT NULL") as $page)
                     $items[] = new Model\Page($page['id']);
 
                 $pages = ceil(count($items)/20);
@@ -289,7 +288,7 @@ class IndexController extends Controller {
      * Displaying the website's error page.
      */
     public function oopsAction() {
-        switch(Request::get("request")) {
+        switch(Request::string("request")) {
             case "/oops":
                 echo Template::get(
                     "oops.tpl", [
@@ -309,10 +308,10 @@ class IndexController extends Controller {
      * Displaying the website's maintenance page.
      */
     public function maintenanceAction() {
-        if (App::get("APP_ONLINE"))
+        if (!App::get("APP_MAINTENANCE"))
             throw new Exception(_("Page not found."), 404);
             
-        switch(Request::get("request")) {
+        switch(Request::string("request")) {
             case "/maintenance":
                 echo Template::get(
                     "maintenance.tpl", [
@@ -332,15 +331,15 @@ class IndexController extends Controller {
      * Displaying the website's maintenance page.
      */
     public function cronAction() {
-        if (!App::get("APP_CRON"))
+        if (!App::get("APP_CRONJOB"))
             throw new Exception(_("Page not found."), 404);
 
-        switch(Request::get("request")) {
+        switch(Request::string("request")) {
             case "/cron":
                 if (!Request::isset("key"))
                     throw new Exception("Key not found.");
 
-                if (App::get("CRON_KEY") != Fairplay::string(Request::get("key")))
+                if (App::get("AUTH_CRON") != Request::string("key"))
                     throw new Exception("Key does not match.");
 
                 echo Template::get("cron.tpl");
@@ -354,10 +353,10 @@ class IndexController extends Controller {
      * Displaying the website's custom page from database.
      */
     public function customAction() {
-        if (!App::get("APP_ONLINE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
+        if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
             throw new Exception(_("App currently offline. Please try again later."), 407);
         
-        if (empty($page = Database::select("app_pages", "slug = '".Request::get("request")."'")))
+        if (empty($page = Database::select("app_pages", "slug = '".Request::string("request")."'")))
             throw new Exception(_("Page not found."), 404);
 
         $page = new Model\Page($page[0]["id"]);
