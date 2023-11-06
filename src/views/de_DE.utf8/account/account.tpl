@@ -1,6 +1,6 @@
 {% include header.tpl %} 
 
-<main class="account">
+<main class="account dashboard">
     <section class="section">
         <div class="container">
             {% include account/sidebar.tpl %}

@@ -1,6 +1,6 @@
 {% include header.tpl %} 
 
-<main class="admin">
+<main class="admin dashboard">
     <section class="section">
         <div class="container">
             {% include admin/sidebar.tpl %}

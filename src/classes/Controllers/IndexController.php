@@ -339,7 +339,7 @@ class IndexController extends Controller {
                 if (!Request::isset("key"))
                     throw new Exception("Key not found.");
 
-                if (App::get("AUTH_CRON") != Request::string("key"))
+                if (App::get("AUTH_CRON") != base64_decode(Request::string("key")))
                     throw new Exception("Key does not match.");
 
                 echo Template::get("cron.tpl");
