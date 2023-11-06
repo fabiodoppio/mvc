@@ -7,7 +7,7 @@
             <div class="main-content">
                 <h1 class="title">Personal Information</h1>
                 <p>Manage your name and contact information used for invoicing. This personal data is private and will only be used for communication with you.</p>
-                <form data-request="user/personal">
+                <form data-request="user/edit">
                     {% if (in_array("email", json_decode(App::get("META_PUBLIC")))): %}
                         <h2>Contact</h2>
                         <label for="email">Email Address <span class="required" title="Mandatory">*</span><br>

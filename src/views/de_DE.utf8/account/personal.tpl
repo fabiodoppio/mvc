@@ -7,7 +7,7 @@
                     <div class="main-content">
                         <h1 class="title">Persönliche Daten</h1>
                         <p>Verwalte deinen Namen und deine Kontaktinformationen, die zur Ausstellung von Rechnungen verwendet werden. Diese persönlichen Daten sind privat und werden ausschließlich zur Kontaktaufnahme mit dir verwendet.</p>
-                        <form data-request="user/personal">
+                        <form data-request="user/edit">
                             {% if (in_array("email", json_decode(App::get("META_PUBLIC")))): %}
                                 <h2>Kontakt</h2>
                                 <label for="email">E-Mail Adresse <span class="required" title="Pflichtfeld">*</span><br>

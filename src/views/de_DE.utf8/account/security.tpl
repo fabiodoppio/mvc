@@ -6,7 +6,7 @@
                     {% include account/sidebar.tpl %}
                     <div class="main-content">
                         <h1 class="title">Passwort & Sicherheit</h1>
-                        <form data-request="user/security">
+                        <form data-request="user/edit">
                             <h2>Anmeldedaten</h2>
                             {% if (in_array("username", json_decode(App::get("META_PUBLIC")))): %}
                                 <label for="username">Benutzername<br>
@@ -23,7 +23,7 @@
                             <div class="response"></div>
                             <button>Änderungen speichern</button>
                         </form>
-                        <form data-request="user/glogout">
+                        <form data-request="account/glogout">
                             <h2>Überall abmelden</h2>
                             <p>Melde dich überall ab, wo dein Account sonst noch verwendet wird, einschließlich aller anderen Browser, Telefone und sonstigen Geräte.</p>
                             <button>Andere Sitzungen abmelden</button>
