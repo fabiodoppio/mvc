@@ -1,6 +1,9 @@
 {% use MVC\App as App; %}
 {% use MVC\Auth as Auth; %}
+{% use MVC\Database as Database; %}
+{% use MVC\Models as Model; %}
 {% use MVC\Request as Request; %}
+{% use MVC\Template as Template; %}
 
 <!-- Copyright (C) {{date('Y')}} {{App::get('APP_NAME')}} - All Rights Reserved. -->
 
