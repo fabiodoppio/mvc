@@ -8,18 +8,22 @@
                         <h1 class="title">Passwort & Sicherheit</h1>
                         <form data-request="user/edit">
                             <h2>Anmeldedaten</h2>
-                            {% if (in_array("username", json_decode(App::get("META_PUBLIC")))): %}
-                                <label for="username">Benutzername<br>
-                                <input type="text" id="username" name="username" value="{{$account->get('username')}}" placeholder="Benutzername eingeben"/></label><br>
-                            {% endif; %}
-                            {% if (in_array("password", json_decode(App::get("META_PUBLIC")))): %}
-                                <label for="pw">Aktuelles Passwort<br>
-                                <input type="password" id="pw" name="pw" placeholder="Aktuelles Passwort eingeben"/></label><br>
-                                <label for="pw1">Neues Passwort<br>
-                                <input type="password" id="pw1" name="pw1" placeholder="Neues Passwort eingeben"/></label><br>
-                                <label for="pw2">Neues Passwort wiederholen<br>
-                                <input type="password" id="pw2" name="pw2" placeholder="Neues Passwort wiederholen"/></label><br>
-                            {% endif; %}
+                            <label for="username">
+                                Benutzername <span class="required" title="Pflichtfeld">*</span>
+                                <input type="text" id="username" name="username" value="{{$account->get('username')}}" placeholder="Benutzername eingeben" required/>
+                            </label>
+                            <label for="pw">
+                                Aktuelles Passwort
+                                <input type="password" id="pw" name="pw" placeholder="Aktuelles Passwort eingeben"/>
+                            </label>
+                            <label for="pw1">
+                                Neues Passwort
+                                <input type="password" id="pw1" name="pw1" placeholder="Neues Passwort eingeben"/>
+                            </label>
+                            <label for="pw2">
+                                Neues Passwort wiederholen
+                                <input type="password" id="pw2" name="pw2" placeholder="Neues Passwort wiederholen"/>
+                            </label>
                             <div class="response"></div>
                             <button>Änderungen speichern</button>
                         </form>
