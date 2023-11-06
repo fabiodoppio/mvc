@@ -26,12 +26,12 @@
         <link rel="icon" type="image/png" href="{{App::get('APP_URL')}}{{App::get('DIR_MEDIA')}}/favicon.png"/>
         <link rel="canonical" href="{{$canonical}}"/>
         <link rel="stylesheet" href="{{App::get('APP_URL')}}{{App::get('DIR_VENDOR')}}/{{App::get('SRC_PACKAGE')}}/src/assets/css/general.css"/>
-        {% foreach (App::get("FILES_CSS") as $file): %}
+        {% foreach (json_decode(App::get("FILES_CSS")) as $file): %}
             <link rel="stylesheet" href="{{App::get('APP_URL')}}{{App::get('DIR_STYLES')}}/{{$file}}"/>
         {% endforeach; %}
         <script src="{{App::get('APP_URL')}}{{App::get('DIR_VENDOR')}}/components/jquery/jquery.min.js"></script>
         <script src="{{App::get('APP_URL')}}{{App::get('DIR_VENDOR')}}/{{App::get('SRC_PACKAGE')}}/src/assets/js/ajax.js"></script>
-        {% foreach (App::get("FILES_JS") as $file): %}
+        {% foreach (json_decode(App::get("FILES_JS")) as $file): %}
             <script src="{{App::get('APP_URL')}}{{App::get('DIR_SCRIPTS')}}/{{$file}}"></script>
         {% endforeach; %}
 	</head>
