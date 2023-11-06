@@ -258,6 +258,20 @@ class AdminController extends AccountController {
         }
     }
 
+    /**
+     * This method clears the cache.
+     */
+    public function cacheAction() {
+        switch(Request::string("request")) {
+            case "admin/cache/clear":
+                Template::clear_cache();
+                Ajax::add('.response', '<div class="success">'._("Cache cleared successfully.").'</div>');
+                break;
+            default: 
+                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")));
+        }
+    }
+
 }
 
 ?>

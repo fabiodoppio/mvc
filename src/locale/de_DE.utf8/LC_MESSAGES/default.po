@@ -386,6 +386,10 @@ msgstr "Du kannst dich nicht selbst löschen."
 msgid "Account deleted successfully."
 msgstr "Account erfolgreich gelöscht."
 
+#: src/classes/Controllers/AdminController.php:268
+msgid "Cache cleared successfully."
+msgstr "Cache erfolgreich geleert."
+
 #~ msgid "Server currently offline."
 #~ msgstr "Server offline."
 

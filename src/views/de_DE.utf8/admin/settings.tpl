@@ -113,7 +113,7 @@
                         <input type="text" id="config_value[{{$index}}]" name="config_value[{{$index}}]" placeholder="Wert eingeben"/>
                     </label>
                     <br><br>
-                    <button class="btn is--primary" title="Änderungen speichern">Änderungen speichern</button>
+                    <button class="btn is--primary" title="Änderungen speichern">Änderungen speichern</button> <a data-request="admin/cache/clear">Cache leeren</a>
                 </form>
             </div>
         </div>
