@@ -42,6 +42,7 @@
                 <input type="text" value="{{date('d.m.Y H:i',strtotime($item->get('lastaction')))}}" disabled/>
             </label>
             <br>
+            {% $index = 0; %}
             <h3>Additional Settings</h3>
             {% foreach (\MVC\Database::select("app_accounts_meta", "name IS NOT NULL AND id = '".$item->get("id")."'") as $meta): %}
                 <label for="meta_value[{{$index}}]-{{$item->get('id')}}">{{$meta['name']}}

@@ -43,6 +43,7 @@
             </label>
             <br>
             <h3>Zusätzliche Einstellungen</h3>
+            {% $index = 0; %}
             {% foreach (\MVC\Database::select("app_accounts_meta", "name IS NOT NULL AND id = '".$item->get("id")."'") as $meta): %}
                 <label for="meta_value[{{$index}}]-{{$item->get('id')}}">{{$meta['name']}}
                     <input type="hidden" name="meta_name[{{$index}}]" value="{{$meta['name']}}"/>
