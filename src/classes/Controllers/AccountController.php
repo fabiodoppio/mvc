@@ -59,7 +59,7 @@ class AccountController extends Controller {
             case "account/login":
                 $redirect = (Request::isset("redirect")) ? Request::string("redirect") : "";
 
-                if ((!App::get("APP_LOGIN") || !App::get("APP_ONLINE")) && $redirect != "/admin")
+                if ((!App::get("APP_LOGIN") || !App::get("APP_MAINTENANCE")) && $redirect != "/admin")
                         throw new Exception(_("Login not possible at the moment."));
 
                 Auth::set_current_account(
@@ -112,7 +112,7 @@ class AccountController extends Controller {
      * @throws Exception If signup is not allowed or if there are issues with the registration data.
      */
     public function signupAction() {
-        if (!App::get("APP_SIGNUP") || !App::get("APP_ONLINE"))
+        if (!App::get("APP_SIGNUP") || !App::get("APP_MAINTENANCE"))
             throw new Exception(_("Signup not possible at the moment."));
 
         switch(Request::string("signup")) {
