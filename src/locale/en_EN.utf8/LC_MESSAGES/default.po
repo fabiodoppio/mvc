@@ -7,13 +7,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-11-06 00:22+0200\n"
-"PO-Revision-Date: 2023-11-06 17:35+0100\n"
+"PO-Revision-Date: 2023-11-07 19:20+0100\n"
 "Last-Translator: Fabio Doppio <hallo@fabiodoppio.de>\n"
 "Language-Team: \n"
 "Language: en_EN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 
 #: src/classes/Email.php:55
@@ -274,43 +275,53 @@ msgstr "Signup | %s"
 msgid "My Account | %s"
 msgstr "My Account | %s"
 
-#: src/classes/Controllers/IndexController.php:199
+#: src/classes/Controllers/IndexController.php:193
+#, php-format
+msgid "Personal Information | %s"
+msgstr "Personal Information | %s"
+
+#: src/classes/Controllers/IndexController.php:203
+#, php-format
+msgid "Password & Security | %s"
+msgstr "Password & Security | %s"
+
+#: src/classes/Controllers/IndexController.php:223
 #: src/classes/Controllers/UserController.php:57
 #, php-format
 msgid "Email address verification | %s"
 msgstr "Email address verification | %s"
 
-#: src/classes/Controllers/IndexController.php:225
+#: src/classes/Controllers/IndexController.php:253
 #, php-format
 msgid "Administration | %s"
 msgstr "Administration | %s"
 
-#: src/classes/Controllers/IndexController.php:235
+#: src/classes/Controllers/IndexController.php:263
 #, php-format
 msgid "Settings | %s"
 msgstr "Settings | %s"
 
-#: src/classes/Controllers/IndexController.php:252
+#: src/classes/Controllers/IndexController.php:280
 #, php-format
 msgid "Pages | %s"
 msgstr "Pages | %s"
 
-#: src/classes/Controllers/IndexController.php:272
+#: src/classes/Controllers/IndexController.php:300
 #, php-format
 msgid "Accounts | %s"
 msgstr "Accounts | %s"
 
-#: src/classes/Controllers/IndexController.php:295
+#: src/classes/Controllers/IndexController.php:323
 #, php-format
 msgid "oops! | %s"
 msgstr "oops! | %s"
 
-#: src/classes/Controllers/IndexController.php:318
+#: src/classes/Controllers/IndexController.php:346
 #, php-format
 msgid "Maintenance | %s"
 msgstr "Maintenance | %s"
 
-#: src/classes/Controllers/IndexController.php:372
+#: src/classes/Controllers/IndexController.php:400
 #, php-format
 msgid " | %s"
 msgstr " | %s"

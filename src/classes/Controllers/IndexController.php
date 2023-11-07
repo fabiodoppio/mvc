@@ -174,13 +174,37 @@ class IndexController extends Controller {
         
         switch(Request::string("request")) {
             case "/account":
+                header("Location: ".App::get("APP_URL")."/account/dashboard");
+                exit();
+                break;
+            case "/account/dashboard":
                 echo Template::get(
-                    "account/account.tpl", [
+                    "account/dashboard.tpl", [
                         "title" => sprintf(_("My Account | %s"), App::get("APP_NAME")),
                         "description" => App::get("APP_DESCRIPTION"),
                         "robots" => "noindex, nofollow",
                         "canonical" => App::get("APP_URL")."/account",
                         "account" => $this->account
+                ]);
+                break;
+            case "/account/personal":
+                echo Template::get(
+                    "account/personal.tpl", [
+                        "title" => sprintf(_("Personal Information | %s"), App::get("APP_NAME")),
+                        "description" => App::get("APP_DESCRIPTION"),
+                        "robots" => "noindex, nofollow",
+                        "canonical" => App::get("APP_URL")."/account/personal",
+                        "account" => $this->account
+                ]);
+                break;
+            case "/account/security":
+                    echo Template::get(
+                        "account/security.tpl", [
+                            "title" => sprintf(_("Password & Security | %s"), App::get("APP_NAME")),
+                            "description" => App::get("APP_DESCRIPTION"),
+                            "robots" => "noindex, nofollow",
+                            "canonical" => App::get("APP_URL")."/account/security",
+                            "account" => $this->account
                 ]);
                 break;
             case "/account/verify":
@@ -220,23 +244,27 @@ class IndexController extends Controller {
         
         switch(Request::string("request")) {
             case "/admin":
+                header("Location: ".App::get("APP_URL")."/admin/dashboard");
+                exit();
+                break;
+            case "/admin/dashboard":
                 echo Template::get(
-                        "admin/admin.tpl", [
-                            "title" => sprintf(_("Administration | %s"), App::get("APP_NAME")),
-                            "description" => App::get("APP_DESCRIPTION"),
-                            "robots" => "noindex, nofollow",
-                            "canonical" => App::get("APP_URL")."/admin",
-                            "account" => $this->account
+                    "admin/dashboard.tpl", [
+                        "title" => sprintf(_("Administration | %s"), App::get("APP_NAME")),
+                        "description" => App::get("APP_DESCRIPTION"),
+                        "robots" => "noindex, nofollow",
+                        "canonical" => App::get("APP_URL")."/admin",
+                        "account" => $this->account
                 ]);
                 break;
             case "/admin/settings":
                 echo Template::get(
-                        "admin/settings.tpl", [
-                            "title" => sprintf(_("Settings | %s"), App::get("APP_NAME")),
-                            "description" => App::get("APP_DESCRIPTION"),
-                            "robots" => "noindex, nofollow",
-                            "canonical" => App::get("APP_URL")."/admin/settings",
-                            "account" => $this->account
+                    "admin/settings.tpl", [
+                        "title" => sprintf(_("Settings | %s"), App::get("APP_NAME")),
+                        "description" => App::get("APP_DESCRIPTION"),
+                        "robots" => "noindex, nofollow",
+                        "canonical" => App::get("APP_URL")."/admin/settings",
+                        "account" => $this->account
                 ]);
                 break;
             case "/admin/pages":
@@ -248,15 +276,15 @@ class IndexController extends Controller {
                 $items = array_slice($items, 0, 20);
         
                 echo Template::get(
-                        "admin/pages.tpl", [
-                            "title" => sprintf(_("Pages | %s"), App::get("APP_NAME")),
-                            "description" => App::get("APP_DESCRIPTION"),
-                            "robots" => "noindex, nofollow",
-                            "canonical" => App::get("APP_URL")."/admin/pages",
-                            "items" => $items,
-                            "page" => 1,
-                            "pages" => $pages,
-                            "account" => $this->account
+                    "admin/pages.tpl", [
+                        "title" => sprintf(_("Pages | %s"), App::get("APP_NAME")),
+                        "description" => App::get("APP_DESCRIPTION"),
+                        "robots" => "noindex, nofollow",
+                        "canonical" => App::get("APP_URL")."/admin/pages",
+                        "items" => $items,
+                        "page" => 1,
+                        "pages" => $pages,
+                        "account" => $this->account
                 ]);
                 break;
             case "/admin/accounts":
@@ -268,15 +296,15 @@ class IndexController extends Controller {
                 $items = array_slice($items, 0, 20);
 
                 echo Template::get(
-                        "admin/accounts.tpl", [
-                            "title" => sprintf(_("Accounts | %s"), App::get("APP_NAME")),
-                            "description" => App::get("APP_DESCRIPTION"),
-                            "robots" => "noindex, nofollow",
-                            "canonical" => App::get("APP_URL")."/admin/accounts",
-                            "items" => $items,
-                            "page" => 1,
-                            "pages" => $pages,
-                            "account" => $this->account
+                    "admin/accounts.tpl", [
+                        "title" => sprintf(_("Accounts | %s"), App::get("APP_NAME")),
+                        "description" => App::get("APP_DESCRIPTION"),
+                        "robots" => "noindex, nofollow",
+                        "canonical" => App::get("APP_URL")."/admin/accounts",
+                        "items" => $items,
+                        "page" => 1,
+                        "pages" => $pages,
+                        "account" => $this->account
                 ]);
                 break;
             default:

@@ -276,43 +276,53 @@ msgstr "Registrieren | %s"
 msgid "My Account | %s"
 msgstr "Mein Account | %s"
 
-#: src/classes/Controllers/IndexController.php:199
+#: src/classes/Controllers/IndexController.php:193
+#, php-format
+msgid "Personal Information | %s"
+msgstr "Persönliche Daten | %s"
+
+#: src/classes/Controllers/IndexController.php:203
+#, php-format
+msgid "Password & Security | %s"
+msgstr "Passwort & Sicherheit | %s"
+
+#: src/classes/Controllers/IndexController.php:223
 #: src/classes/Controllers/UserController.php:57
 #, php-format
 msgid "Email address verification | %s"
 msgstr "E-Mail Adresse verifizieren | %s"
 
-#: src/classes/Controllers/IndexController.php:225
+#: src/classes/Controllers/IndexController.php:253
 #, php-format
 msgid "Administration | %s"
 msgstr "Administration | %s"
 
-#: src/classes/Controllers/IndexController.php:235
+#: src/classes/Controllers/IndexController.php:263
 #, php-format
 msgid "Settings | %s"
 msgstr "Einstellungen | %s"
 
-#: src/classes/Controllers/IndexController.php:252
+#: src/classes/Controllers/IndexController.php:280
 #, php-format
 msgid "Pages | %s"
 msgstr "Seiten | %s"
 
-#: src/classes/Controllers/IndexController.php:272
+#: src/classes/Controllers/IndexController.php:300
 #, php-format
 msgid "Accounts | %s"
 msgstr "Accounts | %s"
 
-#: src/classes/Controllers/IndexController.php:295
+#: src/classes/Controllers/IndexController.php:323
 #, php-format
 msgid "oops! | %s"
 msgstr "oops! | %s"
 
-#: src/classes/Controllers/IndexController.php:318
+#: src/classes/Controllers/IndexController.php:346
 #, php-format
 msgid "Maintenance | %s"
 msgstr "Wartungsmodus | %s"
 
-#: src/classes/Controllers/IndexController.php:372
+#: src/classes/Controllers/IndexController.php:400
 #, php-format
 msgid " | %s"
 msgstr " | %s"
