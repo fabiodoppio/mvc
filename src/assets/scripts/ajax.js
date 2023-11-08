@@ -60,3 +60,7 @@ $(document).on("submit", "form[data-request]", function(e) {
         $('button', this).addClass("loading");
     }
 });
+
+$(document).on("change", 'input[type="file"]', function(e) {
+    $(this).closest('form').submit();
+});

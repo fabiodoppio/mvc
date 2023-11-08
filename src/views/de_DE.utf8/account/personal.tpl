@@ -7,11 +7,15 @@
                     <div class="main-content">
                         <h1 class="title">Persönliche Daten</h1>
                         <p>Verwalte deinen Namen und deine Kontaktinformationen, die zur Ausstellung von Rechnungen verwendet werden. Diese persönlichen Daten sind privat und werden ausschließlich zur Kontaktaufnahme mit dir verwendet.</p>
-                        {% if ($account->get("avatar")): %}
-                            <img src="{{App::get('APP_URL')}}{{App::get('DIR_UPLOADS')}}/{{$account->get('avatar')}}" width="200" height="200">
-                        {% endif; %}
+                        <div class="avatar">
+                            {% if ($account->get("avatar")): %}
+                                <img src="{{App::get('APP_URL')}}{{App::get('DIR_UPLOADS')}}/{{$account->get('avatar')}}"/>
+                            {% endif; %}
+                        </div>
                         <form data-request="user/edit/avatar">
-                            <input type="file" name="avatar"/>
+                            <label for="avatar"> Hochladen
+                            <input id="avatar" type="file" name="avatar" hidden/>
+                            </label>
                             <div class="response"></div>
                             <button>Bild hochladen</button>
                             <a href="#" data-request="user/edit/avatar">Bild löschen</a>

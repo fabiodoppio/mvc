@@ -21,6 +21,7 @@ use MVC\Exception as Exception;
 use MVC\Models    as Model;
 use MVC\Request   as Request;
 use MVC\Template  as Template;
+use MVC\Upload    as Upload;
 
 /**
  * AdminController Class
@@ -230,6 +231,27 @@ class AdminController extends AccountController {
                     for($i = 0; $i < count(Request::array("meta_name")); $i++)
                         if (is_string(Request::array("meta_name")[$i]) && is_string(Request::array("meta_value")[$i]))
                             $account->set(Request::array("meta_name")[$i], Request::array("meta_value")[$i]);
+
+                Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
+                break;
+            case "admin/account/edit/avatar":
+                $account = new Model\Account(Request::integer("id"));
+
+                if (Request::isset("avatar")) {
+                    $file = Request::file("avatar");
+                    $size = getimagesize($file["tmp_name"]);
+                    if ($size[0] != $size[1])
+                        throw new Exception(_("Your avatar has to be squared."));
+                    $upload = new Upload($file,"avatar");
+                    $account->set("avatar", $upload->get_file_name());
+                    Ajax::add('.accounts .list li[data-id="'.Request::integer("value").'"] .avatar', '<img src="'.$upload->get_file_url().'"/>');
+                }
+                else
+                    if ($account->get("avatar")) {
+                        Upload::delete($account->get("avatar"));
+                        $account->set("avatar", null);
+                        Ajax::remove('.accounts .list li[data-id="'.Request::integer("value").'"] .avatar img');
+                    }
 
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;

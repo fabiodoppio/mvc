@@ -37,7 +37,8 @@ class Upload {
     public function __construct(array $file, string $prefix = "") {
         $filename = $prefix."_".bin2hex(random_bytes(9));
         $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-        move_uploaded_file($file['tmp_name'], App::get("DIR_ROOT").App::get("DIR_UPLOADS")."/".$filename.".".$ext);
+        if (!move_uploaded_file($file['tmp_name'], App::get("DIR_ROOT").App::get("DIR_UPLOADS")."/".$filename.".".$ext))
+            throw new Exception(_("File could not be uploaded."));
         $this->filename = $filename.".".$ext;
     }
 
@@ -57,6 +58,17 @@ class Upload {
      */
     public function get_file_url() {
         return App::get("APP_URL").App::get("DIR_UPLOADS")."/".$this->filename;
+    }
+
+    /**
+     * Delete a file of a given filename.
+     *
+     * @param   string  $filename   The name of the uploaded file.
+     * @throws                      Exception If the file can not be found.
+     */
+    public static function delete(string $filename) {
+        if (!unlink(App::get("DIR_ROOT").App::get("DIR_UPLOADS")."/".$filename))
+            throw new Exception(_("File could not be deleted."));
     }
 
 }

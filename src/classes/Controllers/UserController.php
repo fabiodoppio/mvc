@@ -132,6 +132,9 @@ class UserController extends AccountController {
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
             case "user/edit/avatar":
+                if (!in_array("avatar", json_decode(App::get("META_PUBLIC"))))
+                        throw new Exception(_("You are not allowed to edit your avatar."));
+
                 if (Request::isset("avatar")) {
                     $file = Request::file("avatar");
                     $size = getimagesize($file["tmp_name"]);
@@ -139,9 +142,14 @@ class UserController extends AccountController {
                         throw new Exception(_("Your avatar has to be squared."));
                     $upload = new Upload($file,"avatar");
                     $this->account->set("avatar", $upload->get_file_name());
+                    Ajax::add('.avatar', '<img src="'.$upload->get_file_url().'"/>');
                 }
                 else
-                    $this->account->set("avatar", null);
+                    if ($this->account->get("avatar")) {
+                        Upload::delete($this->account->get("avatar"));
+                        $this->account->set("avatar", null);
+                        Ajax::remove('.avatar img');
+                    }
 
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;

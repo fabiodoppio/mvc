@@ -28,7 +28,7 @@ class Request {
      * @return  bool            True if the request parameter exists, false otherwise.
      */
     public static function isset(string $name) {
-        return (isset($_REQUEST[$name]) || isset($FILES_[$name]));
+        return (isset($_REQUEST[$name]) || isset($_FILES[$name]));
     }
 
     /**

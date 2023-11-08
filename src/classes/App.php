@@ -74,7 +74,7 @@ class App {
     protected static $MAIL_USERNAME;
     protected static $MAIL_PASSWORD;
 
-    protected static $META_PUBLIC       = "[\"email\",\"password\",\"company\",\"firstname\",\"lastname\",\"street\",\"postal\",\"city\",\"country\"]";
+    protected static $META_PUBLIC       = "[\"email\",\"password\",\"company\",\"displayname\",\"firstname\",\"lastname\",\"street\",\"postal\",\"city\",\"country\",\"avatar\"]";
 
     protected static $FILES_JS          = "[\"main.js\"]";
     protected static $FILES_CSS         = "[\"general.css\"]";
