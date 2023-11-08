@@ -9,7 +9,7 @@
                         <p>Verwalte deinen Namen und deine Kontaktinformationen, die zur Ausstellung von Rechnungen verwendet werden. Diese persönlichen Daten sind privat und werden ausschließlich zur Kontaktaufnahme mit dir verwendet.</p>
                         {% if ($account->get("avatar")): %}
                             <img src="{{App::get('APP_URL')}}{{App::get('DIR_UPLOADS')}}/{{$account->get('avatar')}}" width="200" height="200">
-                        {% endif;}
+                        {% endif; %}
                         <form data-request="user/edit/avatar">
                             <input type="file" name="avatar"/>
                             <div class="response"></div>
