@@ -22,6 +22,7 @@ use MVC\Exception as Exception;
 use MVC\Models    as Model;
 use MVC\Request   as Request;
 use MVC\Template  as Template;
+use MVC\Upload    as Upload;
 
 /**
  * UserController Class
@@ -128,6 +129,20 @@ class UserController extends AccountController {
                             $this->account->set(Request::array("meta_name")[$i], Request::array("meta_value")[$i]);
                     }
         
+                Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
+                break;
+            case "user/edit/avatar":
+                if (Request::isset("avatar")) {
+                    $file = Request::file("avatar");
+                    $size = getimagesize($file["tmp_name"]);
+                    if ($size[0] != $size[1])
+                        throw new Exception(_("Your avatar has to be squared."));
+                    $upload = new Upload($file,"avatar");
+                    $this->account->set("avatar", $upload->get_file_name());
+                }
+                else
+                    $this->account->set("avatar", null);
+
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
             default: 

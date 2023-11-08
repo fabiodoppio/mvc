@@ -115,7 +115,7 @@ class AccountController extends Controller {
         if (!App::get("APP_SIGNUP") || !App::get("APP_MAINTENANCE"))
             throw new Exception(_("Signup not possible at the moment."));
 
-        switch(Request::string("signup")) {
+        switch(Request::string("request")) {
             case "account/signup":
                 Auth::set_new_account(
                     Request::username(), 

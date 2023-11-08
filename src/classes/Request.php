@@ -28,7 +28,7 @@ class Request {
      * @return  bool            True if the request parameter exists, false otherwise.
      */
     public static function isset(string $name) {
-        return (isset($_REQUEST[$name]));
+        return (isset($_REQUEST[$name]) || isset($FILE_[$name]));
     }
 
     /**
@@ -43,6 +43,26 @@ class Request {
             throw new Exception(sprintf(_("Input %s not found."), $name));
 
         return $_REQUEST[$name];
+    }
+
+    /**
+     * Validate a file.
+     *
+     * @param   string  $name   The input name of the file to validate.
+     * @return  array           The validated file if it meets the criteria.
+     * @throws                  Exception If the file does not meet the criteria.
+     */
+    public static function file(string $name) {
+        if ($_FILES[$name]['error'] !== 0)
+            throw new Exception(_("There was a problem uploading your file."));
+        
+        if (!in_array(mime_content_type($_FILES[$name]['tmp_name']), App::get("APP_UPLOAD_TYPES")))
+            throw new Exception(_("Your file type is not allowed."));
+
+        if ($_FILES[$name]["size"] > App::get("APP_UPLOAD_SIZE"))
+            throw new Exception(sprintf(_("Your file exceeds the maximum allowed file size of %s KB."), (App::get("APP_UPLOAD_SIZE")/1000)));
+
+        return $_FILES[$name];
     }
 
     /**
