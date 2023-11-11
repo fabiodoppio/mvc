@@ -81,7 +81,7 @@ class Request {
             throw new Exception(_("Your username cannot contain any special characters."));
         
         $check = preg_replace("/[^A-Za-z0-9üÜöÖäÄ]/", "", strtolower($val));
-        foreach(Database::select("app_badwords", "badword IS NOT NULL") as $badword)
+        foreach(Database::query("SELECT * FROM app_badwords") as $badword)
             if  (strstr($check, strtolower($badword["badword"])) !== false)
                 throw new Exception(_("Your username is not allowed."));
 
@@ -219,7 +219,7 @@ class Request {
             throw new Exception(sprintf(_("Your message must be between %1\$s and %2\$s characters long."), 2, 250));
         
         $check = preg_replace("/[^A-Za-z0-9üÜöÖäÄ]/", "", strtolower($val));
-        foreach(Database::select("app_badwords", "badword IS NOT NULL") as $badword)
+        foreach(Database::query("SELECT * FROM app_badwords") as $badword)
             if  (strstr($check, strtolower($badword["badword"])) !== false)
                 throw new Exception(_("Your message is not allowed."));
 

@@ -61,7 +61,7 @@ abstract class Model {
      */
     public function __construct($value) {
         $this->objectID = $value;
-        if (empty($this->data = Database::select($this->table, $this->primaryKey." = '".$this->objectID."'")))
+        if (empty($this->data = Database::query("SELECT * FROM ".$this->table." WHERE ".$this->primaryKey." = ?", [$this->objectID])))
             throw new Exception(sprintf(_("Model %1\$s:%2\$s not found."), get_class($this), $this->objectID));
     }
     
@@ -84,7 +84,7 @@ abstract class Model {
      */
     public function set($key, $value) {
         $this->data[0][$key] = $value;
-        Database::update($this->table, $key." = '".$value."'", $this->primaryKey." = '".$this->objectID."'");
+        Database::query("UPDATE ".$this->table." SET ".$key." = ? WHERE ".$this->primaryKey." = ?", [$value, $this->objectID]);
     }
     
     /**

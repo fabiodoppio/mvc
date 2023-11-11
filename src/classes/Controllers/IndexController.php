@@ -269,7 +269,7 @@ class IndexController extends Controller {
                 break;
             case "/admin/pages":
                 $items = array();
-                foreach (Database::select("app_pages", "id IS NOT NULL") as $page)
+                foreach (Database::query("SELECT * FROM app_pages") as $page)
                     $items[] = new Model\Page($page['id']);
 
                 $pages = ceil(count($items)/20);
@@ -289,7 +289,7 @@ class IndexController extends Controller {
                 break;
             case "/admin/accounts":
                 $items = array();
-                foreach (Database::select("app_accounts", "id IS NOT NULL") as $account)
+                foreach (Database::query("SELECT * FROM app_accounts") as $account)
                     $items[] = new Model\Account($account['id']);
 
                 $pages = ceil(count($items)/20);
@@ -384,7 +384,7 @@ class IndexController extends Controller {
         if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
             throw new Exception(_("App currently offline. Please try again later."), 407);
         
-        if (empty($page = Database::select("app_pages", "slug = '".Request::string("request")."'")))
+        if (empty($page = Database::query("SELECT * FROM app_pages WHERE slug = ?", [Request::string("request")])))
             throw new Exception(_("Page not found."), 404);
 
         $page = new Model\Page($page[0]["id"]);

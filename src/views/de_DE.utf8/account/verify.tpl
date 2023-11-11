@@ -8,7 +8,7 @@
                     {% if ($email != ""): %}
                         <form data-request="user/verify/submit">
                             {% if ($code == ""): %}
-                                <div class="success">Wir haben dir einen <b>Bestätigungscode</b> zum Zurücksetzen deines Passwortes an die hinterlegte <b>E-Mail Adresse</b> geschickt.</div>
+                                <div class="success">Wir haben dir einen <b>Bestätigungscode</b> zum Verifizieren an die hinterlegte <b>E-Mail Adresse</b> geschickt.</div>
                             {% endif; %}
                             <label for="code">Bestätigungscode <span class="required" title="Pflichtfeld">*</span><br>
                             <input type="text" id="code" name="code" value="{{$code}}" placeholder="Bestätigungscode eingeben" required/></label><br><br>

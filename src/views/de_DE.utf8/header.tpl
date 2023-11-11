@@ -28,14 +28,15 @@
         <title>{{$title}}</title>
         <link rel="icon" type="image/png" href="{{App::get('APP_URL')}}{{App::get('DIR_MEDIA')}}/favicon.png"/>
         <link rel="canonical" href="{{$canonical}}"/>
-        <link rel="stylesheet" href="{{App::get('APP_URL')}}{{App::get('DIR_VENDOR')}}/{{App::get('SRC_PACKAGE')}}/src/assets/styles/general.css"/>
         {% foreach (json_decode(App::get("FILES_CSS")) as $file): %}
-            <link rel="stylesheet" href="{{App::get('APP_URL')}}{{App::get('DIR_STYLES')}}/{{$file}}"/>
+            {% if (file_exists(App::get("DIR_ROOT").$file)): %}
+                <link rel="stylesheet" href="{{App::get('APP_URL')}}{{$file}}"/>
+            {% endif; %}
         {% endforeach; %}
-        <script src="{{App::get('APP_URL')}}{{App::get('DIR_VENDOR')}}/components/jquery/jquery.min.js"></script>
-        <script src="{{App::get('APP_URL')}}{{App::get('DIR_VENDOR')}}/{{App::get('SRC_PACKAGE')}}/src/assets/scripts/ajax.js"></script>
         {% foreach (json_decode(App::get("FILES_JS")) as $file): %}
-            <script src="{{App::get('APP_URL')}}{{App::get('DIR_SCRIPTS')}}/{{$file}}"></script>
+            {% if (file_exists(App::get("DIR_ROOT").$file)): %}
+                <script src="{{App::get('APP_URL')}}{{$file}}"></script>
+            {% endif; %}
         {% endforeach; %}
 	</head>
     <body data-client="{{Auth::get_client_token()}}">

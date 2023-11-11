@@ -45,6 +45,9 @@ class AdminController extends AccountController {
     public function settingsAction() {
         switch(Request::string("request")) {
             case "admin/settings/edit":
+                if (Request::isset("APP_DEBUG") && Request::boolean("APP_DEBUG") != App::get("APP_DEBUG"))
+                    App::set("APP_DEBUG", Request::boolean("APP_DEBUG"));
+
                 if (Request::isset("APP_URL") && Request::url("APP_URL") != App::get("APP_URL"))
                     App::set("APP_URL", Request::url("APP_URL"));
 
@@ -115,12 +118,12 @@ class AdminController extends AccountController {
     public function pageAction() {
         switch(Request::string("request")) {
             case "admin/page/add":
-                if (!empty(Database::select("app_pages", "slug = '".Request::string("slug")."'")[0]))
+                if (!empty(Database::query("SELECT * FROM app_pages WHERE slug = ?", [Request::string("slug")])[0]))
                     throw new Exception(_("Your entered slug is already used."));
 
-                Database::insert("app_pages", "slug, title, description, robots, template, role", "'".Request::string("slug")."', '".Request::string("title")."', '".Request::string("description")."', '".Request::string("robots")."', '".Request::string("template")."', '".Request::integer("role")."'");
+                Database::query("INSERT INTO app_pages (slug, title, description, robots, template, role) VALUES (?, ?, ?, ?, ?, ?)", [Request::string("slug"), Request::string("title"), Request::string("description"), Request::string("robots"), Request::string("template"), Request::integer("role")]);
 
-                Ajax::add(".pages .list", Template::get("admin/elements/PageListItem.tpl", ["item" => new Model\Page(Database::$insert_id)]), "append");
+                Ajax::add(".admin.pages .list", Template::get("admin/elements/PageListItem.tpl", ["item" => new Model\Page(Database::$insert_id)]), "append");
                 Ajax::add('.response', '<div class="success">'._("Page added successfully.").'</div>');
                 break;
             case "admin/page/edit":
@@ -128,15 +131,15 @@ class AdminController extends AccountController {
     
                 if (Request::isset("title") && Request::string("title") != $page->get("title")) {
                     $page->set("title", Request::string("title"));
-                    Ajax::add('.list-item[data-id="'.Request::integer("id").'"] .title', Request::string("title"));
+                    Ajax::add('.admin.pages .list .list-item[data-id="'.Request::integer("id").'"] .title', Request::string("title"));
                 }
                      
                 if (Request::isset("slug") && Request::string("slug") != $page->get("slug")) {
-                    if (!empty(Database::select("app_pages", "slug = '".Request::string("slug")."'")[0]))
+                    if (!empty(Database::query("SELECT * FROM app_pages WHERE slug = ?", [Request::string("slug")])[0]))
                         throw new Exception(_("Your entered slug is already used."));
 
                     $page->set("slug", Request::string("slug"));
-                    Ajax::add('.list-item[data-id="'.Request::integer("id").'"] .slug', "slug:".Request::string("slug"));
+                    Ajax::add('.admin.pages .list .list-item[data-id="'.Request::integer("id").'"] .slug', "slug:".Request::string("slug"));
                 }
 
                 if (Request::isset("description") && Request::string("description") != $page->get("description"))
@@ -154,20 +157,20 @@ class AdminController extends AccountController {
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
             case "admin/page/delete":
-                Database::delete("app_pages", "id = '".Request::integer("value")."'");
-                Ajax::remove('.pages .list li[data-id="'.Request::integer("value").'"]');
+                Database::query("DELETE FROM app_pages WHERE id = ?", [Request::integer("value")]);
+                Ajax::remove('.admin.pages .list li[data-id="'.Request::integer("value").'"]');
                 Ajax::add('.response', '<div class="success">'._("Page deleted successfully.").'</div>');
                 break;
             case "admin/page/scroll":
                 $items = array();
-                foreach (Database::select("app_pages", "id IS NOT NULL") as $page)
+                foreach (Database::query("SELECT * FROM app_pages") as $page)
                     $items[] = new Model\Page($page['id']);
 
                 $pages = ceil(count($items)/20);
                 $page = Request::integer("value");
                 $items = array_slice($items, ($page - 1) * 20, 20);
                 
-                Ajax::add('.pages .list', Template::get("admin/elements/PageList.tpl", ["items" => $items, "page"=> $page, "pages" => $pages]));
+                Ajax::add('.admin.pages .list', Template::get("admin/elements/PageList.tpl", ["items" => $items, "page"=> $page, "pages" => $pages]));
                 break;
             default: 
                 throw new Exception(sprintf(_("Action %s not found."), Request::string("request")));
@@ -180,15 +183,15 @@ class AdminController extends AccountController {
     public function accountAction() {
         switch(Request::string("request")) {
             case "admin/account/add":
-                if (!empty(Database::select("app_accounts", "username LIKE '".Request::username()."'")[0]))
+                if (!empty(Database::query("SELECT * FROM app_accounts username LIKE ?",[Request::username()])[0]))
                     throw new Exception(_("Your entered username is already taken."));
     
-                if (!empty(Database::select("app_accounts", "email LIKE '".Request::email()."'")[0]))
+                if (!empty(Database::query("SELECT * FROM app_accounts WHERE email LIKE ?", [Request::email()])[0]))
                     throw new Exception(_("Your entered email address is already taken."));
     
-                Database::insert("app_accounts", "email, username, password, token, role", "'".strtolower(Request::email("email"))."', '".Request::username("username")."', '".password_hash(Request::password(), PASSWORD_DEFAULT)."', '".Auth::get_instance_token()."', '".Request::integer("role")."'");
+                Database::query("INSERT INTO app_accounts (email, username, password, token, role) VALUES (?, ?, ?, ?, ?)", [strtolower(Request::email("email")), Request::username("username"), password_hash(Request::password(), PASSWORD_DEFAULT), Auth::get_instance_token(), Request::integer("role")]);
 
-                Ajax::add(".accounts .list", Template::get("admin/elements/AccountListItem.tpl", ["item" => new Model\Account(Database::$insert_id)]), "append");
+                Ajax::add(".admin.accounts .list", Template::get("admin/elements/AccountListItem.tpl", ["item" => new Model\Account(Database::$insert_id)]), "append");
                 Ajax::add('.response', '<div class="success">'._("Account added successfully.").'</div>');
                 break;
             case "admin/account/logout":
@@ -203,15 +206,15 @@ class AdminController extends AccountController {
                 $account = new Model\Account(Request::integer("id"));
 
                 if (Request::isset("username") && Request::username() != $account->get("username")) {
-                    if (!empty(Database::select("app_accounts", "username LIKE '".Request::username()."'")[0]))
+                    if (!empty(Database::query("SELECT * FROM app_accounts WHERE username LIKE ?", [Request::username()])[0]))
                         throw new Exception(_("Your entered username is already taken."));
 
                     $account->set("username", Request::username());
-                    Ajax::add('.list-item[data-id="'.Request::integer("id").'"] .username', Request::username());
+                    Ajax::add('.admin .accounts .list .list-item[data-id="'.Request::integer("id").'"] .username', Request::username());
                 }
 
                 if (Request::isset("email") && Request::email() != $account->get("email")) {
-                    if (!empty(Database::select("app_accounts", "email LIKE '".Request::email()."'")[0]))
+                    if (!empty(Database::query("SELECT * FROM app_accounts WHERE email LIKE ?", [Request::email()])[0]))
                         throw new Exception(_("Your entered email address is already taken."));
     
                     $account->set("email", strtolower(Request::email()));
@@ -234,7 +237,7 @@ class AdminController extends AccountController {
 
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
-            case "admin/account/edit/avatar":
+            case "admin/account/avatar/upload":
                 $account = new Model\Account(Request::integer("id"));
 
                 if (Request::isset("avatar")) {
@@ -243,37 +246,46 @@ class AdminController extends AccountController {
                     if ($size[0] != $size[1])
                         throw new Exception(_("Your avatar has to be squared."));
                     $upload = new Upload($file,"avatar");
-                    $account->set("avatar", $upload->get_file_name());
-                    Ajax::add('.accounts .list li[data-id="'.Request::integer("value").'"] .avatar', '<img src="'.$upload->get_file_url().'"/>');
-                }
-                else
-                    if ($account->get("avatar")) {
-                        Upload::delete($account->get("avatar"));
-                        $account->set("avatar", null);
-                        Ajax::remove('.accounts .list li[data-id="'.Request::integer("value").'"] .avatar img');
-                    }
 
-                Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
+                    if ($account->get("avatar"))
+                        Upload::delete($account->get("avatar"));
+
+                    $account->set("avatar", $upload->get_file_name());
+                    Ajax::add('.admin.accounts .list li[data-id="'.Request::integer("id").'"] .avatar', '<img src="'.$upload->get_file_url().'"/>');
+                }
+
+                Ajax::add('.response', '<div class="success">'._("Avatar uploaded successfully.").'</div>');
+                break;
+            case "admin/account/avatar/delete":
+                $account = new Model\Account(Request::integer("value"));
+
+                if ($account->get("avatar")) {
+                    Upload::delete($account->get("avatar"));
+                    $account->set("avatar", null);
+                    Ajax::remove('.admin.accounts .list li[data-id="'.Request::integer("value").'"] .avatar img');
+                }
+
+                Ajax::add('.response', '<div class="success">'._("Avatar deleted successfully.").'</div>');
                 break;
             case "admin/account/delete":
                 if ($this->account->get("id") == Request::integer("value"))
                     throw new Exception(_("You can not delete yourself."));
 
-                Database::delete("app_accounts", "id = '".Request::integer("value")."'");
+                Database::query("DELETE FROM app_accounts WHERE id = ?", [Request::integer("value")]);
 
-                Ajax::remove('.accounts .list li[data-id="'.Request::integer("value").'"]');
+                Ajax::remove('.admin.accounts .list li[data-id="'.Request::integer("value").'"]');
                 Ajax::add('.response', '<div class="success">'._("Account deleted successfully.").'</div>');
                 break;
             case "admin/account/scroll":
                 $items = array();
-                foreach (Database::select("app_accounts", "id IS NOT NULL") as $account)
+                foreach (Database::query("SELECT * FROM app_accounts") as $account)
                     $items[] = new Model\Account($account['id']);
 
                 $pages = ceil(count($items)/20);
                 $page = Request::integer("value");
                 $items = array_slice($items, ($page-1)*20, 20);
                 
-                Ajax::add('.accounts', Template::get("admin/elements/AccountList.tpl", ["items" => $items, "page"=> $page, "pages" => $pages]));
+                Ajax::add('.admin.accounts', Template::get("admin/elements/AccountList.tpl", ["items" => $items, "page"=> $page, "pages" => $pages]));
                 break;
             default: 
                 throw new Exception(sprintf(_("Action %s not found."), Request::string("request")));

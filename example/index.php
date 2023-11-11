@@ -15,12 +15,7 @@ MVC\App::init([
     "DB_HOST"           => "localhost",
     "DB_USERNAME"       => "username",
     "DB_PASSWORD"       => "************",
-    "DB_DATABASE"       => "my_app",
-
-    "MAIL_HOST"         => "mail.mydomain.com",
-    "MAIL_SENDER"       => "your@email.com",
-    "MAIL_USERNAME"     => "username",
-    "MAIL_PASSWORD"     => "************"
+    "DB_DATABASE"       => "my_app"
 ]);
 
 ?>

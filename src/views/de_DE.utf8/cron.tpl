@@ -1,4 +1,4 @@
 {% use MVC\Database as Database; %}
-{% Database::delete("app_accounts_watchlist", "detected < NOW() - INTERVAL 30 DAY"); %}
+{% Database::query("DELETE FROM app_accounts_watchlist WHERE detected < NOW() - INTERVAL 30 DAY"); %}
 
 Cronjob ausgeführt.

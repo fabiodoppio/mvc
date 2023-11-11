@@ -81,7 +81,7 @@ class Account extends Model {
      */
     public function __construct($value) {
         parent::__construct($value);
-        foreach(Database::select("app_accounts_meta", "id = '".$this->get("id")."'") as $meta)
+        foreach(Database::query("SELECT * FROM app_accounts_meta WHERE id = ?", [$this->get("id")]) as $meta)
             $this->data[0][$meta["name"]] = $meta["value"];
     }
 
@@ -96,17 +96,17 @@ class Account extends Model {
      * @param   mixed   $value  The value to set.
      */
     public function set($key, $value) {
-        if (!empty(Database::operate("SHOW COLUMNS FROM ".$this->table." LIKE '".$key."'")))
-            Database::update($this->table, $key." = '".$value."'", $this->primaryKey." = '".$this->objectID."'");
+        if (in_array($key, ["id", "username", "email", "password", "token", "role", "registered", "lastaction"]))
+            Database::query("UPDATE ".$this->table." SET ".$key." = ? WHERE id = ?", [$value, $this->objectID]);
         else 
             if ($this->get($key) !== null)
                 if ($value === null || $value == "")
-                    Database::delete("app_accounts_meta", "id = '".$this->get("id")."' AND name = '".$key."'");
+                    Database::query("DELETE FROM app_accounts_meta WHERE id = ? AND name = ?", [$this->get("id"), $key]);
                 else
-                    Database::update("app_accounts_meta", "value = '".$value."'", "id = '".$this->get("id")."' AND name = '".$key."'");
+                    Database::query("UPDATE app_accounts_meta SET value = ? WHERE id = ? AND name = ?", [$value, $this->get("id"), $key]);
             else
                 if ($value !== null && $value != "")
-                    Database::insert("app_accounts_meta", "id, name, value", "'".$this->get("id")."', '".$key."', '".$value."'");
+                    Database::query("INSERT INTO app_accounts_meta (id, name, value) VALUES (?, ?, ?)", [$this->get("id"), $key, $value]);
 
         $this->data[0][$key] = $value;
     }
@@ -117,7 +117,7 @@ class Account extends Model {
      * @param   string  $request    The suspicious request or activity to record.
      */
     public function set_suspicious(string $request) {
-        Database::insert("app_accounts_watchlist", "id, request", "'".$this->get("id")."', '".$request."'");
+        Database::query("INSERT INTO app_accounts_watchlist (id, request) VALUES (?, ?)", [$this->get("id"), $request]);
     }
 
     /**
@@ -128,7 +128,7 @@ class Account extends Model {
      * @return  int                 The number of suspicions for the user account.
      */
     public function get_suspicions(string $request = "", float $timespan = 1440) {
-        return count(Database::select("app_accounts_watchlist", "id = '".$this->get("id")."' AND request = '".$request."' AND detected BETWEEN (DATE_SUB(NOW(),INTERVAL ".$timespan." MINUTE)) AND NOW()"));
+        return count(Database::query("SELECT * FROM app_accounts_watchlist WHERE id = ? AND request = ? AND detected BETWEEN (DATE_SUB(NOW(),INTERVAL ? MINUTE)) AND NOW()", [$this->get("id"), $request, $timespan]));
     }
 
 }

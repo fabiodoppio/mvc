@@ -59,7 +59,7 @@ class AccountController extends Controller {
             case "account/login":
                 $redirect = (Request::isset("redirect")) ? Request::string("redirect") : "";
 
-                if ((!App::get("APP_LOGIN") || !App::get("APP_MAINTENANCE")) && $redirect != "/admin")
+                if ((!App::get("APP_LOGIN") || App::get("APP_MAINTENANCE")) && $redirect != "/admin")
                         throw new Exception(_("Login not possible at the moment."));
 
                 Auth::set_current_account(
@@ -112,7 +112,7 @@ class AccountController extends Controller {
      * @throws Exception If signup is not allowed or if there are issues with the registration data.
      */
     public function signupAction() {
-        if (!App::get("APP_SIGNUP") || !App::get("APP_MAINTENANCE"))
+        if (!App::get("APP_SIGNUP") || App::get("APP_MAINTENANCE"))
             throw new Exception(_("Signup not possible at the moment."));
 
         switch(Request::string("request")) {
@@ -137,7 +137,7 @@ class AccountController extends Controller {
      */
     public function recoveryAction() {
         $credential = Request::string("credential");
-        if (empty($account = Database::select("app_accounts", "email LIKE '".$credential."' OR username = '".$credential."'")))
+        if (empty($account = Database::query("SELECT * FROM app_accounts WHERE email LIKE ? OR username = ?", [$credential, $credential])))
             throw new Exception(_("There is no account with this username or email address."));
 
         $account = new Model\Account($account[0]["id"]);

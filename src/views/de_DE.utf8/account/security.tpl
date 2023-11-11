@@ -24,7 +24,6 @@
                                 Neues Passwort wiederholen
                                 <input type="password" id="pw2" name="pw2" placeholder="Neues Passwort wiederholen"/>
                             </label>
-                            <div class="response"></div>
                             <button>Änderungen speichern</button>
                         </form>
                         <form data-request="account/glogout">
@@ -35,6 +34,7 @@
                     </div>
                 </div>
             </section>
+            <div class="response"></div>
         </main>
 
 {% include footer.tpl %}

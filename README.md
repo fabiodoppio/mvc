@@ -94,7 +94,7 @@ MVC\App::init([
     "DB_PASSWORD"       => "",                      // [REQUIRED] password to your mysql server
     "DB_DATABASE"       => "",                      // [REQUIRED] database to your mysql server
 
-    "DIR_ROOT"          => "/var/www",              // [REQUIRED] path to your root directory, no trailing slash
+    "DIR_ROOT"          => "/var/www"               // [REQUIRED] path to your root directory, no trailing slash
     #"DIR_ASSETS"       => "/app/assets",           // [OPTIONAL] path to your asset files, such as styles and scripts
     #"DIR_CLASSES"      => "/app/classes",          // [OPTIONAL] path to your custom or extended classes
     #"DIR_FONTS"        => "/app/assets/fonts",     // [OPTIONAL] path to your fonts
@@ -106,11 +106,6 @@ MVC\App::init([
     #"DIR_CACHE"        => "/app/cache",            // [OPTIONAL] path to your cache files
     #"DIR_MEDIA"        => "/app/media",            // [OPTIONAL] path to your media files
     #"DIR_UPLOADS"      => "/app/media/uploads",    // [OPTIONAL] path to your user uploads
-    
-    "MAIL_HOST"         => "",                      // [REQUIRED] hostname to your mail server
-    "MAIL_SENDER"       => "",                      // [REQUIRED] sender address for your outgoing mails
-    "MAIL_USERNAME"     => "",                      // [REQUIRED] username to your mail server
-    "MAIL_PASSWORD"     => ""                       // [REQUIRED] password to your mail server
 ]);
 
 ?>

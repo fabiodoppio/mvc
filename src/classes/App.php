@@ -40,7 +40,7 @@ class App {
     protected static $APP_LANGUAGE      = "en_EN.utf8";
     protected static $APP_DEBUG         = false;
     protected static $APP_LOGIN         = true;
-    protected static $APP_SIGNUP        = false;
+    protected static $APP_SIGNUP        = true;
     protected static $APP_CRONJOB       = false;
     protected static $APP_MAINTENANCE   = false;
     protected static $APP_UPLOAD_SIZE   = 3072000;
@@ -69,16 +69,15 @@ class App {
     protected static $DIR_MEDIA         = "/app/media";
     protected static $DIR_UPLOADS       = "/app/media/uploads";
     
-    protected static $MAIL_HOST;
-    protected static $MAIL_SENDER;
-    protected static $MAIL_USERNAME;
-    protected static $MAIL_PASSWORD;
+    protected static $MAIL_HOST         = "";
+    protected static $MAIL_SENDER       = "";
+    protected static $MAIL_USERNAME     = "";
+    protected static $MAIL_PASSWORD     = "";
 
     protected static $META_PUBLIC       = "[\"email\",\"password\",\"company\",\"displayname\",\"firstname\",\"lastname\",\"street\",\"postal\",\"city\",\"country\",\"avatar\"]";
 
-    protected static $FILES_JS          = "[\"main.js\"]";
-    protected static $FILES_CSS         = "[\"general.css\"]";
-
+    protected static $FILES_JS          = "[\"\/app\/vendor\/components\/jquery\/jquery.min.js\",\"\/app\/vendor\/fabiodoppio\/mvc\/src\/assets\/scripts\/ajax.js\"]";
+    protected static $FILES_CSS         = "[\"\/app\/vendor\/fabiodoppio\/mvc\/src\/assets\/styles\/general.css\"]";
 
     /**
      * Initialize the application based on the provided configuration.
@@ -91,7 +90,7 @@ class App {
                 if (property_exists(__CLASS__, $key))
                     self::$$key = $value;
                 
-            foreach (Database::select("app_config", "name IS NOT NULL") as $config)
+            foreach (Database::query("SELECT * FROM app_config") as $config)
                 self::$APP_CONFIG[$config["name"]] = $config["value"];
             
             putenv('LANGUAGE='.App::get("APP_LANGUAGE"));
@@ -163,14 +162,14 @@ class App {
      * @param   mixed   $value  The value to set.
      */
     public static function set($key, $value) {
-        if (!empty(Database::select("app_config", "name = '".$key."'")))
+        if (!empty(Database::query("SELECT * FROM app_config WHERE name = ?", [$key])))
             if ($value === null || $value == "")
-                Database::delete("app_config", "name = '".$key."'");
+                Database::query("DELETE FROM app_config WHERE name = ?", [$key]);
             else
-                Database::update("app_config", "value = '".$value."'", "name = '".$key."'");
+                Database::query("UPDATE app_config SET value = ? WHERE name = ?", [$value, $key]);
         else
             if ($value !== null && $value != "")
-                Database::insert("app_config", "name, value", "'".$key."', '".$value."'");
+                Database::query("INSERT INTO app_config (name, value) VALUES (?, ?)", [$key, $value]);
     }
 
 }

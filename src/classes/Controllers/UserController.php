@@ -71,7 +71,7 @@ class UserController extends AccountController {
                 if (Request::isset("redirect"))
                     Ajax::redirect(App::get("APP_URL").Request::string("redirect")); 
                 else
-                    Ajax::add('.main-content form', '<div class="success">'._("Your email address has been successfully verified.").'</div>');
+                    Ajax::add('.account .main-content form', '<div class="success">'._("Your email address has been successfully verified.").'</div>');
                 break;
             default: 
                 throw new Exception(sprintf(_("Action %s not found."), Request::string("request")));
@@ -89,7 +89,7 @@ class UserController extends AccountController {
                         if (!in_array("username", json_decode(App::get("META_PUBLIC"))))
                             throw new Exception(_("You are not allowed to edit your username."));
 
-                        if (!empty(Database::select("app_accounts", "username LIKE '".Request::username()."'")[0]))
+                        if (!empty(Database::query("SELECT * FROM app_accounts WHERE username LIKE ?", [Request::username()])[0]))
                             throw new Exception(_("Your entered username is already taken."));
 
                         $this->account->set("username", Request::username());
@@ -101,7 +101,7 @@ class UserController extends AccountController {
                         if (!in_array("email", json_decode(App::get("META_PUBLIC"))))
                             throw new Exception(_("You are not allowed to edit your email address."));
 
-                        if (!empty(Database::select("app_accounts", "email LIKE '".Request::email()."'")[0]))
+                        if (!empty(Database::query("SELECT * FROM app_accounts WHERE email LIKE ?", [Request::email()])[0]))
                             throw new Exception(_("Your entered email address is already taken."));
 
                         $this->account->set("email", strtolower(Request::email()));
@@ -131,7 +131,7 @@ class UserController extends AccountController {
         
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
-            case "user/edit/avatar":
+            case "user/edit/avatar/upload":
                 if (!in_array("avatar", json_decode(App::get("META_PUBLIC"))))
                         throw new Exception(_("You are not allowed to edit your avatar."));
 
@@ -141,17 +141,27 @@ class UserController extends AccountController {
                     if ($size[0] != $size[1])
                         throw new Exception(_("Your avatar has to be squared."));
                     $upload = new Upload($file,"avatar");
-                    $this->account->set("avatar", $upload->get_file_name());
-                    Ajax::add('.avatar', '<img src="'.$upload->get_file_url().'"/>');
-                }
-                else
-                    if ($this->account->get("avatar")) {
-                        Upload::delete($this->account->get("avatar"));
-                        $this->account->set("avatar", null);
-                        Ajax::remove('.avatar img');
-                    }
 
-                Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
+                    if ($this->account->get("avatar"))
+                        Upload::delete($this->account->get("avatar"));
+
+                    $this->account->set("avatar", $upload->get_file_name());
+                    Ajax::add('.account .avatar', '<img src="'.$upload->get_file_url().'"/>');
+                }
+
+                Ajax::add('.response', '<div class="success">'._("Avatar uploaded successfully.").'</div>');
+                break;
+            case "user/edit/avatar/delete":
+                if (!in_array("avatar", json_decode(App::get("META_PUBLIC"))))
+                    throw new Exception(_("You are not allowed to edit your avatar."));
+
+                if ($this->account->get("avatar")) {
+                    Upload::delete($this->account->get("avatar"));
+                    $this->account->set("avatar", null);
+                    Ajax::remove('.account .avatar img');
+                }
+
+                Ajax::add('.response', '<div class="success">'._("Avatar deleted successfully.").'</div>');
                 break;
             default: 
                 throw new Exception(sprintf(_("Action %s not found."), Request::string("request")));

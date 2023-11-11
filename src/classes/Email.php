@@ -33,6 +33,9 @@ class Email {
      */
 	public static function send(string $subject, string $recipient, string $template, ?string $attachment = null, ?string $attachment_name = null) {
         $mail = new \PHPMailer\PHPMailer\PHPMailer();
+
+        if (!App::get("MAIL_HOST") || !App::get("MAIL_SENDER") || !App::get("MAIL_USERNAME") || !App::get("MAIL_PASSWORD"))
+            throw new Exception(_("Mail server not found."));
         
         $mail->isSMTP();
         $mail->isHTML(true);

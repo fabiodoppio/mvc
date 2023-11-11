@@ -8,7 +8,7 @@
                 {% if ($email != ""): %}
                     <form data-request="user/verify/submit">
                         {% if ($code == ""): %}
-                            <div class="success">We've sent you a <b>verification code</b> to reset your password to the registered <b>email address</b>.</div>
+                            <div class="success">We've sent you a <b>verification code</b> to verify to the registered <b>email address</b>.</div>
                         {% endif; %}
                         <label for="code">Verification Code <span class="required" title="Required">*</span><br>
                         <input type="text" id="code" name="code" value="{{$code}}" placeholder="Enter verification code" required/></label><br><br>

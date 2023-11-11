@@ -9,6 +9,13 @@
                 <p>Hier hast du die Möglichkeit Einstellungen deiner App vorzunehmen anzulegen, zu bearbeiten oder zu löschen.</p>
                 <h2>App</h2>
                 <form data-request="admin/settings/edit">
+                    <label for="APP_DEBUG">
+                        Umgebung <span class="required" title="Pflichtfeld">*</span>
+                        <select id="APP_DEBUG" name="APP_DEBUG" required>
+                            <option value="1" {{(App::get('APP_DEBUG') == 1) ? "selected" : ""}}>Entwicklung</option>
+                            <option value="0" {{(App::get('APP_DEBUG') == 0) ? "selected" : ""}}>Produktion</option>
+                        </select>
+                    </label>
                     <label for="APP_URL">
                         App URL <span class="required" title="Pflichtfeld">*</span>
                         <input type="text" id="APP_URL" name="APP_URL" value="{{App::get('APP_URL')}}" placeholder="App URL eingeben" required/>
@@ -99,18 +106,16 @@
                     </label>
                     <br><br>
                     <h2>Zusätzliche Einstellungen</h2>
-                    {% $index = 0; %}
-                    {% $ignore = "'APP_URL', 'APP_NAME', 'APP_TITLE', 'APP_AUTHOR', 'APP_DESCRIPTION', 'APP_LANGUAGE', 'META_PUBLIC', 'FILES_JS', 'FILES_CSS', 'APP_LOGIN', 'APP_MAINTENANCE', 'APP_SIGNUP', 'MAIL_HOST', 'MAIL_SENDER', 'MAIL_USERNAME', 'MAIL_PASSWORD', 'APP_CRONJOB'"; %}
-                    {% foreach (Database::select("app_config", "name NOT IN (".$ignore.")") as $config): %}
-                        <label for="config_value[{{$index}}]">{{$config['name']}}
-                            <input type="hidden" name="config_name[{{$index}}]" value="{{$config['name']}}"/>
-                            <input type="text" id="config_value[{{$index}}]" name="config_value[{{$index}}]" value="{{$config['value']}}" placeholder="Wert eingeben"/>
+                    {% $ignore = "'APP_DEBUG', 'APP_URL', 'APP_NAME', 'APP_TITLE', 'APP_AUTHOR', 'APP_DESCRIPTION', 'APP_LANGUAGE', 'META_PUBLIC', 'FILES_JS', 'FILES_CSS', 'APP_LOGIN', 'APP_MAINTENANCE', 'APP_SIGNUP', 'MAIL_HOST', 'MAIL_SENDER', 'MAIL_USERNAME', 'MAIL_PASSWORD', 'APP_CRONJOB'"; %}
+                    {% foreach (Database::query("SELECT * FROM app_config WHERE name NOT IN (".$ignore.")") as $key => $config): %}
+                        <label for="config_value[{{$key}}]">{{$config['name']}}
+                            <input type="hidden" name="config_name[]" value="{{$config['name']}}"/>
+                            <input type="text" id="config_value[{{$key}}]" name="config_value[]" value="{{$config['value']}}" placeholder="Wert eingeben"/>
                         </label>
-                        {% $index++; %}
                     {% endforeach; %}
-                    <label for="config_value[{{$index}}]">
-                        <input type="text" name="config_name[{{$index}}]" placeholder="Name eingeben"/>
-                        <input type="text" id="config_value[{{$index}}]" name="config_value[{{$index}}]" placeholder="Wert eingeben"/>
+                    <label for="config_value[]">
+                        <input type="text" name="config_name[]" placeholder="Name eingeben"/>
+                        <input type="text" id="config_value[]" name="config_value[]" placeholder="Wert eingeben"/>
                     </label>
                     <br><br>
                     <button class="btn is--primary" title="Änderungen speichern">Änderungen speichern</button> <a data-request="admin/cache/clear">Cache leeren</a>

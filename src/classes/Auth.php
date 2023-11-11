@@ -66,7 +66,7 @@ class Auth {
         if (empty($cookie = explode('$', $_COOKIE["account"])))
             throw new Exception(_("Unauthorized Access."), 403);
 
-        if (empty($account = Database::select("app_accounts", "id = '".$cookie[1]."'")))
+        if (empty($account = Database::query("SELECT * FROM app_accounts WHERE id = ?", [$cookie[1]])))
             throw new Exception(_("Unauthorized Access."), 403);
 
         $account = new Model\Account($account[0]["id"]);
@@ -87,7 +87,7 @@ class Auth {
      * @throws                          Exception If authentication fails or the account is suspended.
      */
     public static function set_current_account(string $credential, string $password, bool $stay = false) {
-        if (empty($account = Database::select("app_accounts", "email LIKE '".$credential."' OR username = '".$credential."'")))
+        if (empty($account = Database::query("SELECT * FROM app_accounts WHERE email LIKE ? OR username = ?", [$credential, $credential])))
             throw new Exception(_("There is no account with this username or email address."));
 
         $account = new Model\Account($account[0]["id"]);
@@ -115,13 +115,13 @@ class Auth {
      * @throws                      Exception If the username or email is already taken.
      */
     public static function set_new_account(string $username, string $email, string $password) {
-        if (!empty(Database::select("app_accounts", "username LIKE '".$username."'")[0]))
+        if (!empty(Database::query("SELECT * FROM app_accounts WHERE username LIKE ?", [$username])[0]))
             throw new Exception(_("Your entered username is already taken."));
 
-        if (!empty(Database::select("app_accounts", "email LIKE '".$email."'")[0]))
+        if (!empty(Database::query("SELECT * FROM app_accounts WHERE email LIKE ?", [$email])[0]))
             throw new Exception(_("Your entered email address is already taken."));
 
-        Database::insert("app_accounts", "email, username, password, token, role", "'".strtolower($email)."', '".$username."', '".password_hash($password, PASSWORD_DEFAULT)."', '".self::get_instance_token()."', '".Model\Account::USER."'");
+        Database::query("INSERT INTO app_accounts (email, username, password, token, role) VALUES (?, ?, ?, ?, ?)", [strtolower($email), $username, password_hash($password, PASSWORD_DEFAULT), self::get_instance_token(), Model\Account::USER]);
 
         self::set_cookie(Database::$insert_id, self::get_instance_token());
     }
@@ -155,7 +155,7 @@ class Auth {
      * @throws                          Exception If there is no account with the provided credentials.
      */
     public static function get_confirmcode(string $credential) {
-        if (empty($account = Database::select("app_accounts", "email LIKE '".$credential."' OR username = '".$credential."'")))
+        if (empty($account = Database::query("SELECT * FROM app_accounts WHERE email LIKE ? OR username = ?", [$credential, $credential])))
             throw new Exception(_("There is no account with this username or email address."));
 
         $account = new Model\Account($account[0]["id"]);
@@ -178,7 +178,7 @@ class Auth {
      * @throws                          Exception If the confirmation code is invalid.
      */
     public static function verify_confirmcode(string $credential, string $confirmcode) {
-        if (empty($account = Database::select("app_accounts", "email LIKE '".$credential."' OR username = '".$credential."'"))) 
+        if (empty($account = Database::query("SELECT * FROM app_accounts WHERE email LIKE ? OR username = ?", [$credential, $credential]))) 
             throw new Exception(_("There is no account with this username or email address."));
 
         $account = new Model\Account($account[0]["id"]);

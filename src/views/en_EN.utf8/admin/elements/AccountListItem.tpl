@@ -3,8 +3,20 @@
         <span class="username">{{$item->get("username")}}</span><span class="id">ID: {{$item->get("id")}}</span>
     </div>
     <div class="list-item-content">
+        <h3>Edit Account</h3>
+        <div class="avatar">
+            {% if ($item->get("avatar")): %}
+                <img src="{{App::get('APP_URL')}}{{App::get('DIR_UPLOADS')}}/{{$item->get('avatar')}}"/>
+            {% endif; %}
+        </div>
+        <form data-request="admin/account/avatar/upload">
+            <label for="avatar-{{$item->get('id')}}"> <span class="btn is--primary">Upload Avatar</span>
+                <input id="avatar-{{$item->get('id')}}" type="file" name="avatar" accept="image/*" hidden/>
+                <input name="id" type="hidden" value="{{$item->get('id')}}"/>
+            </label>
+            <a class="btn is--secondary" data-request="admin/account/avatar/delete" data-value="{{$item->get('id')}}">Delete Avatar</a>
+        </form>
         <form data-request="admin/account/edit">
-            <h3>Edit Account</h3>
             <label for="username-{{$item->get('id')}}">
                 Username <span class="required" title="Mandatory">*</span>
                 <input type="text" id="username-{{$item->get('id')}}" name="username" value="{{$item->get('username')}}" placeholder="Enter username" required/>
@@ -12,6 +24,11 @@
             <label for="email-{{$item->get('id')}}">
                 Email Address <span class="required" title="Mandatory">*</span>
                 <input type="email" id="email-{{$item->get('id')}}" name="email" value="{{$item->get('email')}}" placeholder="Enter email address" required/>
+            </label>
+            <label for="displayname-{{$item->get('id')}}">
+                Display name
+                <input type="hidden" name="meta_name[]" value="displayname"/>
+                <input type="text" id="displayname-{{$item->get('id')}}" name="meta_value[]" value="{{$item->get('displayname')}}" placeholder="Enter display name"/>
             </label>
             <label for="role-{{$item->get('id')}}"> 
                 Role <span class="required" title="Mandatory">*</span>
@@ -42,18 +59,17 @@
                 <input type="text" value="{{date('d.m.Y H:i',strtotime($item->get('lastaction')))}}" disabled/>
             </label>
             <br>
-            {% $index = 0; %}
             <h3>Additional Settings</h3>
-            {% foreach (\MVC\Database::select("app_accounts_meta", "name IS NOT NULL AND id = '".$item->get("id")."'") as $meta): %}
-                <label for="meta_value[{{$index}}]-{{$item->get('id')}}">{{$meta['name']}}
-                    <input type="hidden" name="meta_name[{{$index}}]" value="{{$meta['name']}}"/>
-                    <input type="text" id="meta_value[{{$index}}]-{{$item->get('id')}}" name="meta_value[{{$index}}]" value="{{$meta['value']}}" placeholder="Enter value"/>
+            {% $ignore = "'displayname', 'avatar'"; %}
+            {% foreach (\MVC\Database::query("SELECT * FROM app_accounts_meta WHERE name NOT IN (".$ignore.") AND id = ?", [$item->get("id")]) as $key => $meta): %}
+                <label for="meta_value[{{$key}}]-{{$item->get('id')}}">{{$meta['name']}}
+                    <input type="hidden" name="meta_name[]" value="{{$meta['name']}}"/>
+                    <input type="text" id="meta_value[{{$key}}]-{{$item->get('id')}}" name="meta_value[]" value="{{$meta['value']}}" placeholder="Enter value"/>
                 </label>
-                {% $index++; %}
             {% endforeach; %}
-            <label for="meta_value[{{$index}}]-{{$item->get('id')}}">
-                <input type="text" name="meta_name[{{$index}}]" placeholder="Enter name"/>
-                <input type="text" id="meta_value[{{$index}}]-{{$item->get('id')}}" name="meta_value[{{$index}}]" placeholder="Enter value"/>
+            <label for="meta_value[]-{{$item->get('id')}}">
+                <input type="text" name="meta_name[]" placeholder="Enter name"/>
+                <input type="text" id="meta_value[]-{{$item->get('id')}}" name="meta_value[]" placeholder="Enter value"/>
             </label>
             <br><br>
             <input type="hidden" name="id" value="{{$item->get('id')}}"/>
