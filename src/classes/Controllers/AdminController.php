@@ -183,7 +183,7 @@ class AdminController extends AccountController {
     public function accountAction() {
         switch(Request::string("request")) {
             case "admin/account/add":
-                if (!empty(Database::query("SELECT * FROM app_accounts username LIKE ?",[Request::username()])[0]))
+                if (!empty(Database::query("SELECT * FROM app_accounts WHERE username LIKE ?",[Request::username()])[0]))
                     throw new Exception(_("Your entered username is already taken."));
     
                 if (!empty(Database::query("SELECT * FROM app_accounts WHERE email LIKE ?", [Request::email()])[0]))
