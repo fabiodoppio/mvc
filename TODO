@@ -1,0 +1,6 @@
+- Change APP_DEBUG to APP_ENV
+- Minify CSS / JS
+- Rename "Pages" to "Custom Pages"
+- Add "Design" to Admin Page
+- Add CSS-Styles to Admin / Account Page
+- Mobile Viewport 
