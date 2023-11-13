@@ -26,6 +26,7 @@
                             </label>
                             <button class="btn is--primary">Änderungen speichern</button>
                         </form>
+                        <br><br> 
                         <form data-request="account/glogout">
                             <h2>Überall abmelden</h2>
                             <p>Melde dich überall ab, wo dein Account sonst noch verwendet wird, einschließlich aller anderen Browser, Telefone und sonstigen Geräte.</p>
