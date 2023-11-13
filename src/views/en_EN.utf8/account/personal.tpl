@@ -9,7 +9,7 @@
                 <h2>Avatar</h2>
                 <div class="avatar">
                     {% if ($account->get("avatar")): %}
-                        <img src="{{App::get('APP_URL')}}{{App::get('DIR_UPLOADS')}}/{{$account->get('avatar')}}" src="avatar"/>
+                        <img src="{{App::get('APP_URL')}}{{App::get('DIR_UPLOADS')}}/{{$account->get('avatar')}}" alt="avatar"/>
                     {% endif; %}
                 </div>
                 <form data-request="user/edit/avatar/upload">
@@ -18,6 +18,7 @@
                     </label>
                     <a class="btn is--secondary" data-request="user/edit/avatar/delete" data-value="">Delete Avatar</a>
                 </form>
+                <br><br>
                 <h2>Contact Information</h2>
                 <form data-request="user/edit">
                     <label for="displayname">
@@ -65,7 +66,7 @@
                         <input type="hidden" name="meta_name[]" value="country"/>
                         <input type="text" id="country" name="meta_value[]" placeholder="Enter country" value="{{$account->get('country')}}" required/>
                     </label>
-                    <button>Save Changes</button>
+                    <button class="btn is--primary">Save Changes</button>
                 </form>                
             </div>
         </div>

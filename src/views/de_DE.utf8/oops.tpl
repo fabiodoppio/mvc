@@ -1,6 +1,6 @@
 {% include header.tpl %}
 
-    <main class="page error">
+    <main class="page oops">
         <section class="section">
             <div class="container">
                 <div class="main-content">

@@ -24,12 +24,12 @@
                                 Neues Passwort wiederholen
                                 <input type="password" id="pw2" name="pw2" placeholder="Neues Passwort wiederholen"/>
                             </label>
-                            <button>Änderungen speichern</button>
+                            <button class="btn is--primary">Änderungen speichern</button>
                         </form>
                         <form data-request="account/glogout">
                             <h2>Überall abmelden</h2>
                             <p>Melde dich überall ab, wo dein Account sonst noch verwendet wird, einschließlich aller anderen Browser, Telefone und sonstigen Geräte.</p>
-                            <button>Andere Sitzungen abmelden</button>
+                            <button class="btn is--primary">Andere Sitzungen abmelden</button>
                         </form>
                     </div>
                 </div>

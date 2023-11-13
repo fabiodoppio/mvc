@@ -118,7 +118,7 @@
                         <input type="text" id="config_value[]" name="config_value[]" placeholder="Enter value"/>
                     </label>
                     <br><br>
-                    <button class="btn is--primary" title="Save Changes">Save Changes</button> <a data-request="admin/cache/clear">Clear Cache</a>
+                    <button class="btn is--primary" title="Save Changes">Save Changes</button> <a class="btn is--secondary" data-request="admin/cache/clear">Clear Cache</a>
                 </form>
             </div>
         </div>

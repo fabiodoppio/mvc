@@ -18,7 +18,7 @@
                         <label for="pw2">Confirm New Password <span class="required" title="Mandatory">*</span><br>
                         <input type="password" id="pw2" name="pw2" placeholder="Confirm new password"/></label><br><br>
                         <div class="response"></div>
-                        <button>Recover Account</button>
+                        <button class="btn is--primary">Recover Account</button>
                     </form>
                 {% else: %}
                     <form data-request="account/recovery/request">
@@ -26,7 +26,7 @@
                         <label for="credential">Username or Email Address <span class="required" title="Mandatory">*</span><br>
                         <input type="text" id="credential" name="credential" placeholder="Enter username or email address" required/></label><br><br>
                         <div class="response"></div>
-                        <button>Request Confirmation Code</button>
+                        <button class="btn is--primary">Request Confirmation Code</button>
                     </form>
                 {% endif; }
             </div>

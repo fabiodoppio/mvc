@@ -16,6 +16,7 @@
             </label>
             <a class="btn is--secondary" data-request="admin/account/avatar/delete" data-value="{{$item->get('id')}}">Delete Avatar</a>
         </form>
+        <br><br>
         <form data-request="admin/account/edit">
             <label for="username-{{$item->get('id')}}">
                 Username <span class="required" title="Mandatory">*</span>

@@ -1,7 +1,7 @@
 {% include header.tpl %} 
 
 <main class="admin dashboard">
-    <section class="section">
+    <section class="section is--light">
         <div class="container">
             {% include admin/sidebar.tpl %}
             <div class="main-content">

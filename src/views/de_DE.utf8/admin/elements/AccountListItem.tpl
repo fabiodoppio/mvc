@@ -16,6 +16,7 @@
             </label>
             <a class="btn is--secondary" data-request="admin/account/avatar/delete" data-value="{{$item->get('id')}}">Profilbild löschen</a>
         </form>
+        <br><br>
         <form data-request="admin/account/edit">
             <label for="username-{{$item->get('id')}}">
                 Benutzername <span class="required" title="Pflichtfeld">*</span>

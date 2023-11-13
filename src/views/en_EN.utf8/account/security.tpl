@@ -25,12 +25,12 @@
                         <input type="password" id="pw2" name="pw2" placeholder="Repeat new password"/>
                     </label>
                     <div class="response"></div>
-                    <button>Save Changes</button>
+                    <button class="btn is--primary">Save Changes</button>
                 </form>                
                 <form data-request="account/glogout">
                     <h2>Sign Out Everywhere</h2>
                     <p>Sign out from all other sessions where your account is used, including all other browsers, phones, and devices.</p>
-                    <button>Sign Out Other Sessions</button>
+                    <button class="btn is--primary">Sign Out Other Sessions</button>
                 </form>
             </div>
         </div>

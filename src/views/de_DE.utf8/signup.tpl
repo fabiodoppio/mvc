@@ -15,7 +15,10 @@
                         <label for="pw2">Passwort wiederholen <span class="required" title="Pflichtfeld">*</span><br>
                         <input type="password" id="pw2" name="pw2" placeholder="Passwort wiederholen" autocomplete="off" required/></label><br>
                         <div class="response"></div>
-                        <button>Registrieren</button>
+                        <button class="btn is--primary">Registrieren</button>
+                        {% if (App::get("APP_LOGIN")): %}
+                            <a href="{{App::get('APP_URL')}}/login" class="btn is--secondary">Anmelden</a>
+                        {% endif; %}
                     </form>
                 </div>
             </div>

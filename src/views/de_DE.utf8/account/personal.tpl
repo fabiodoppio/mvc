@@ -9,7 +9,7 @@
                         <h2>Profilbild</h2>
                         <div class="avatar">
                             {% if ($account->get("avatar")): %}
-                                <img src="{{App::get('APP_URL')}}{{App::get('DIR_UPLOADS')}}/{{$account->get('avatar')}}" src="profilbild"/>
+                                <img src="{{App::get('APP_URL')}}{{App::get('DIR_UPLOADS')}}/{{$account->get('avatar')}}" alt="profilbild"/>
                             {% endif; %}
                         </div>
                         <form data-request="user/edit/avatar/upload">
@@ -18,8 +18,9 @@
                             </label>
                             <a class="btn is--secondary" data-request="user/edit/avatar/delete" data-value="">Profilbild löschen</a>
                         </form>
+                        <br><br>
+                        <h2>Kontakt</h2>
                         <form data-request="user/edit">
-                            <h2>Kontakt</h2>
                             <label for="displayname">
                                 Anzeigename
                                 <input type="hidden" name="meta_name[]" value="displayname"/>
@@ -65,7 +66,7 @@
                                 <input type="hidden" name="meta_name[]" value="country"/>
                                 <input type="text" id="country" name="meta_value[]" placeholder="Land eingeben" value="{{$account->get('country')}}" required/>
                             </label>
-                            <button>Änderungen speichern</button>
+                            <button class="btn is--primary">Änderungen speichern</button>
                         </form>
                     </div>
                 </div>

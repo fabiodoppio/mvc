@@ -15,7 +15,10 @@
                     <label for="pw2">Repeat Password <span class="required" title="Mandatory">*</span><br>
                     <input type="password" id="pw2" name="pw2" placeholder="Repeat password" autocomplete="off" required></label><br>
                     <div class="response"></div>
-                    <button>Sign Up</button>
+                    <button class="btn is--primary">Sign Up</button>
+                    {% if (App::get("APP_LOGIN")): %}
+                        <a href="{{App::get('APP_URL')}}/login" class="btn is--secondary">Log In</a>
+                    {% endif; %}
                 </form>
             </div>
         </div>

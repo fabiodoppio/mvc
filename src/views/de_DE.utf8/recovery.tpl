@@ -18,7 +18,7 @@
                             <label for="pw2">Neues Passwort bestätigen <span class="required" title="Pflichtfeld">*</span><br>
                             <input type="password" id="pw2" name="pw2" placeholder="Neues Passwort bestätigen"/></label><br><br>
                             <div class="response"></div>
-                            <button>Account wiederherstellen</button>
+                            <button class="btn is--primary">Account wiederherstellen</button>
                         </form>
                     {% else: %}
                         <form data-request="account/recovery/request">
@@ -26,7 +26,7 @@
                             <label for="credential">Benutzername oder E-Mail Adresse <span class="required" title="Pflichtfeld">*</span><br>
                             <input type="text" id="credential" name="credential" placeholder="Benutzername oder E-Mail Adresse eingeben" required/></label><br><br>
                             <div class="response"></div>
-                            <button>Bestätigungscode anfordern</button>
+                            <button class="btn is--primary">Bestätigungscode anfordern</button>
                         </form>
                     {% endif; %}  
                 </div>

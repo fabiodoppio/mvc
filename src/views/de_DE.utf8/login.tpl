@@ -16,7 +16,10 @@
                             <input type="hidden" name="redirect" value="{{$redirect}}"/>
                         {% endif; %}
                         <div class="response"></div>
-                        <button>Anmelden</button>
+                        <button class="btn is--primary">Anmelden</button>
+                        {% if (App::get("APP_SIGNUP")): %}
+                            <a href="{{App::get('APP_URL')}}/signup" class="btn is--secondary">Registrieren</a>
+                        {% endif; %}
                     </form>
                 </div>
             </div>

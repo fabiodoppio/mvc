@@ -16,7 +16,7 @@
                                 <input type="hidden" name="redirect" value="{{$redirect}}"/>
                             {% endif; %}
                             <div class="response"></div>
-                            <button>E-Mail Adresse verifizieren</button>
+                            <button class="btn is--primary">E-Mail Adresse verifizieren</button>
                         </form>
                     {% else: %}
                         <form data-request="user/verify/request">
@@ -26,7 +26,7 @@
                                 <input type="hidden" name="redirect" value="{{$redirect}}"/>
                             {% endif; %}
                             <div class="response"></div>
-                            <button>Bestätigungscode anfordern</button>
+                            <button class="btn is--primary">Bestätigungscode anfordern</button>
                         </form>
                     {% endif; %}  
                 </div>
