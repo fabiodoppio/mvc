@@ -65,7 +65,7 @@ class AccountController extends Controller {
                 Auth::set_current_account(
                     Request::string("credential"), 
                     Request::string("pw"),
-                    Request::isset("stay") ? Request::boolean("stay") : false);
+                    Request::isset("stay") ? Request::integer("stay") : false);
 
                 if ($redirect != "")
                     Ajax::redirect(App::get("APP_URL").$redirect);

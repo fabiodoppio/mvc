@@ -29,7 +29,7 @@ class App {
     protected static $SRC_DESC          = "Model View Controller (MVC) design pattern for simple web applications.";
     protected static $SRC_AUTHOR        = "Fabio Doppio";
     protected static $SRC_LICENSE       = "MIT";
-    protected static $SRC_VERSION       = "1.5";
+    protected static $SRC_VERSION       = "1.53";
 
     protected static $APP_CONFIG;
     protected static $APP_URL;

@@ -45,8 +45,8 @@ class AdminController extends AccountController {
     public function settingsAction() {
         switch(Request::string("request")) {
             case "admin/settings/edit":
-                if (Request::isset("APP_DEBUG") && Request::boolean("APP_DEBUG") != App::get("APP_DEBUG"))
-                    App::set("APP_DEBUG", Request::boolean("APP_DEBUG"));
+                if (Request::isset("APP_DEBUG") && Request::integer("APP_DEBUG") != App::get("APP_DEBUG"))
+                    App::set("APP_DEBUG", Request::integer("APP_DEBUG"));
 
                 if (Request::isset("APP_URL") && Request::url("APP_URL") != App::get("APP_URL"))
                     App::set("APP_URL", Request::url("APP_URL"));
@@ -66,17 +66,17 @@ class AdminController extends AccountController {
                 if (Request::isset("APP_LANGUAGE") && Request::string("APP_LANGUAGE") != App::get("APP_LANGUAGE"))
                     App::set("APP_LANGUAGE", Request::string("APP_LANGUAGE"));
                 
-                if (Request::isset("APP_LOGIN") && Request::boolean("APP_LOGIN") != App::get("APP_LOGIN"))
-                    App::set("APP_LOGIN", Request::boolean("APP_LOGIN"));
+                if (Request::isset("APP_LOGIN") && Request::integer("APP_LOGIN") != App::get("APP_LOGIN"))
+                    App::set("APP_LOGIN", Request::integer("APP_LOGIN"));
 
-                if (Request::isset("APP_SIGNUP") && Request::boolean("APP_SIGNUP") != App::get("APP_SIGNUP"))
-                    App::set("APP_SIGNUP", Request::boolean("APP_SIGNUP"));
+                if (Request::isset("APP_SIGNUP") && Request::integer("APP_SIGNUP") != App::get("APP_SIGNUP"))
+                    App::set("APP_SIGNUP", Request::integer("APP_SIGNUP"));
 
-                if (Request::isset("APP_CRONJOB") && Request::boolean("APP_CRONJOB") != App::get("APP_CRONJOB"))
-                    App::set("APP_CRONJOB", Request::boolean("APP_CRONJOB"));
+                if (Request::isset("APP_CRONJOB") && Request::integer("APP_CRONJOB") != App::get("APP_CRONJOB"))
+                    App::set("APP_CRONJOB", Request::integer("APP_CRONJOB"));
 
-                if (Request::isset("APP_MAINTENANCE") && Request::boolean("APP_MAINTENANCE") != App::get("APP_MAINTENANCE"))
-                    App::set("APP_MAINTENANCE", Request::boolean("APP_MAINTENANCE"));
+                if (Request::isset("APP_MAINTENANCE") && Request::integer("APP_MAINTENANCE") != App::get("APP_MAINTENANCE"))
+                    App::set("APP_MAINTENANCE", Request::integer("APP_MAINTENANCE"));
 
                 if (Request::isset("MAIL_HOST") && Request::string("MAIL_HOST") != App::get("MAIL_HOST"))
                     App::set("MAIL_HOST", Request::string("MAIL_HOST"));
