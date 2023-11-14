@@ -77,7 +77,7 @@ class Template {
     private static function include_files(string $file) {
         if (!file_exists($path = App::get("DIR_ROOT").App::get("DIR_VIEWS").'/'.App::get("APP_LANGUAGE").'/'.$file))
             if (!file_exists($path = App::get("DIR_ROOT").App::get("DIR_VENDOR").'/'.App::get("SRC_PACKAGE")."/src/views/".App::get("APP_LANGUAGE").'/'.$file))
-                throw new Exception(sprintf(_("Template %s not found."), $file));
+                throw new Exception(sprintf(_("Template %s not found."), $file), 1037);
 
         $template = file_get_contents($path);
 		preg_match_all('/{% ?(include) ?\'?(.*?)\'? ?%}/i', $template, $matches, PREG_SET_ORDER);

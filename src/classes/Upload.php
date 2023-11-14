@@ -38,7 +38,7 @@ class Upload {
         $filename = $prefix."_".bin2hex(random_bytes(9));
         $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
         if (!move_uploaded_file($file['tmp_name'], App::get("DIR_ROOT").App::get("DIR_UPLOADS")."/".$filename.".".$ext))
-            throw new Exception(_("File could not be uploaded."));
+            throw new Exception(_("File could not be uploaded."), 1038);
         $this->filename = $filename.".".$ext;
     }
 
@@ -68,7 +68,7 @@ class Upload {
      */
     public static function delete(string $filename) {
         if (!unlink(App::get("DIR_ROOT").App::get("DIR_UPLOADS")."/".$filename))
-            throw new Exception(_("File could not be deleted."));
+            throw new Exception(_("File could not be deleted."), 1039);
     }
 
 }

@@ -40,7 +40,7 @@ class Request {
      */
     private static function get(string $name) {
         if (!isset($_REQUEST[$name]))
-            throw new Exception(sprintf(_("Input %s not found."), $name));
+            throw new Exception(sprintf(_("Input %s not found."), $name), 1019);
 
         return $_REQUEST[$name];
     }
@@ -54,13 +54,13 @@ class Request {
      */
     public static function file(string $name) {
         if ($_FILES[$name]['error'] !== 0)
-            throw new Exception(_("There was a problem uploading your file."));
+            throw new Exception(_("There was a problem uploading your file."), 1020);
         
         if (!in_array(mime_content_type($_FILES[$name]['tmp_name']), App::get("APP_UPLOAD_TYPES")))
-            throw new Exception(_("Your file type is not allowed."));
+            throw new Exception(_("Your file type is not allowed."), 1021);
 
         if ($_FILES[$name]["size"] > App::get("APP_UPLOAD_SIZE"))
-            throw new Exception(sprintf(_("Your file exceeds the maximum allowed file size of %s KB."), (App::get("APP_UPLOAD_SIZE")/1000)));
+            throw new Exception(sprintf(_("Your file exceeds the maximum allowed file size of %s KB."), (App::get("APP_UPLOAD_SIZE")/1000)), 1022);
 
         return $_FILES[$name];
     }
@@ -76,14 +76,14 @@ class Request {
         $val = self::get($name);
 
         if (strlen($val) > 18 || strlen($val) < 3)
-            throw new Exception(sprintf(_("Your username must be between %1\$s and %2\$s characters long."), 2, 18));
+            throw new Exception(sprintf(_("Your username must be between %1\$s and %2\$s characters long."), 2, 18), 1023);
         elseif (preg_match('/[^A-Za-z0-9]+/', $val, $res))
-            throw new Exception(_("Your username cannot contain any special characters."));
+            throw new Exception(_("Your username cannot contain any special characters."), 1024);
         
         $check = preg_replace("/[^A-Za-z0-9üÜöÖäÄ]/", "", strtolower($val));
         foreach(Database::query("SELECT * FROM app_badwords") as $badword)
             if  (strstr($check, strtolower($badword["badword"])) !== false)
-                throw new Exception(_("Your username is not allowed."));
+                throw new Exception(_("Your username is not allowed."), 1025);
 
         return $val;
     }
@@ -101,9 +101,9 @@ class Request {
         $val2 = self::get($name2);
 
         if ($val1 != $val2)
-            throw new Exception(_("Your passwords do not match."));
+            throw new Exception(_("Your passwords do not match."), 1026);
         elseif (strlen($val1) < 8)
-            throw new Exception(sprintf(_("Your password must be at least %s characters long."), 8));
+            throw new Exception(sprintf(_("Your password must be at least %s characters long."), 8), 1027);
         return $val1;
     }
 
@@ -117,7 +117,7 @@ class Request {
     public static function email(string $name = "email") {
         $val = filter_var(self::get($name), FILTER_VALIDATE_EMAIL);
 		if ($val === false) 
-            throw new Exception(_("You have entered an invalid email address."));
+            throw new Exception(_("You have entered an invalid email address."), 1028);
         return $val;
     }
     
@@ -131,7 +131,7 @@ class Request {
 	public static function integer(string $name) {
 		$val = filter_var(self::get($name), FILTER_VALIDATE_INT);
 		if ($val === false) 
-            throw new Exception(_("You entered an invalid integer."));
+            throw new Exception(_("You entered an invalid integer."), 1029);
 		return $val;
 	}
     
@@ -145,7 +145,7 @@ class Request {
     public static function number(string $name) {
         $val = self::get($name);
         if(!is_numeric($val))
-            throw new Exception(_("You entered an invalid number."));
+            throw new Exception(_("You entered an invalid number."), 1030);
         return $val;
     }
     
@@ -159,7 +159,7 @@ class Request {
 	public static function string(string $name) {
         $val = self::get($name);
 		if (!is_string($val))
-            throw new Exception(_("You entered an invalid string."));
+            throw new Exception(_("You entered an invalid string."), 1031);
 		return $val;
 	}
 
@@ -173,7 +173,7 @@ class Request {
 	public static function array(string $name) {
         $val = self::get($name);
 		if (!is_array($val))
-            throw new Exception(_("You entered an invalid array."));
+            throw new Exception(_("You entered an invalid array."), 1032);
 
 		return $val;
 	}
@@ -188,7 +188,7 @@ class Request {
 	public static function boolean(string $name) {
 		$val = filter_var(self::get($name), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         if ($val === null)
-            throw new Exception(_("You entered an invalid boolean."));
+            throw new Exception(_("You entered an invalid boolean."), 1033);
 		return $val;
 	}
 
@@ -202,7 +202,7 @@ class Request {
 	public static function url(string $name) {
 		$val = filter_var(self::get($name), FILTER_VALIDATE_URL);
 		if ($val === false)
-            throw new Exception(_("You entered an invalid url."));
+            throw new Exception(_("You entered an invalid url."), 1034);
         return $val;
 	}
 
@@ -216,12 +216,12 @@ class Request {
     public static function message(string $name = "message") {
         $val = self::get($name);
         if (strlen($val) > 2 || strlen($val) < 250)
-            throw new Exception(sprintf(_("Your message must be between %1\$s and %2\$s characters long."), 2, 250));
+            throw new Exception(sprintf(_("Your message must be between %1\$s and %2\$s characters long."), 2, 250), 1035);
         
         $check = preg_replace("/[^A-Za-z0-9üÜöÖäÄ]/", "", strtolower($val));
         foreach(Database::query("SELECT * FROM app_badwords") as $badword)
             if  (strstr($check, strtolower($badword["badword"])) !== false)
-                throw new Exception(_("Your message is not allowed."));
+                throw new Exception(_("Your message is not allowed."), 1036);
 
         return $val;
     }

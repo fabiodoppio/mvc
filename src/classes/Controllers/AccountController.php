@@ -41,12 +41,12 @@ class AccountController extends Controller {
         Auth::verify_client_token(Request::string("client"));
 
         if (time() < strtotime($this->account->get("lastaction")) + 2)
-            throw new Exception(_("Too many requests in a short time."));
+            throw new Exception(_("Too many requests in a short time."), 1040);
 
         $this->account->set("lastaction", date("Y-m-d H:i:s", time()));
 
         if ($this->account->get("role") < Model\Account::GUEST)
-            throw new Exception(_("Your account has been suspended or deactivated."));
+            throw new Exception(_("Your account has been suspended or deactivated."), 1041);
     }
 
     /**
@@ -60,7 +60,7 @@ class AccountController extends Controller {
                 $redirect = (Request::isset("redirect")) ? Request::string("redirect") : "";
 
                 if ((!App::get("APP_LOGIN") || App::get("APP_MAINTENANCE")) && $redirect != "/admin")
-                        throw new Exception(_("Login not possible at the moment."));
+                        throw new Exception(_("Login not possible at the moment."), 1042);
 
                 Auth::set_current_account(
                     Request::string("credential"), 
@@ -73,7 +73,7 @@ class AccountController extends Controller {
                     Ajax::redirect(App::get("APP_URL")."/account");
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")), 1043);
         }
     }
 
@@ -87,7 +87,7 @@ class AccountController extends Controller {
                 Ajax::redirect(App::get("APP_URL")."/");
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")), 1044);
         }
     }
 
@@ -102,7 +102,7 @@ class AccountController extends Controller {
                 Ajax::add(".response", '<div class="success">'._("Sessions successfully logged out."), "success");
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")), 1045);
         }   
     }
 
@@ -113,7 +113,7 @@ class AccountController extends Controller {
      */
     public function signupAction() {
         if (!App::get("APP_SIGNUP") || App::get("APP_MAINTENANCE"))
-            throw new Exception(_("Signup not possible at the moment."));
+            throw new Exception(_("Signup not possible at the moment."), 1046);
 
         switch(Request::string("request")) {
             case "account/signup":
@@ -126,7 +126,7 @@ class AccountController extends Controller {
                 Ajax::redirect(App::get("APP_URL")."/account/verify");
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")), 1047);
         }
     }
 
@@ -138,7 +138,7 @@ class AccountController extends Controller {
     public function recoveryAction() {
         $credential = Request::string("credential");
         if (empty($account = Database::query("SELECT * FROM app_accounts WHERE email LIKE ? OR username = ?", [$credential, $credential])))
-            throw new Exception(_("There is no account with this username or email address."));
+            throw new Exception(_("There is no account with this username or email address."), 1048);
 
         $account = new Model\Account($account[0]["id"]);
 
@@ -159,7 +159,7 @@ class AccountController extends Controller {
             case "account/recovery/submit":
                 Auth::verify_confirmcode($credential, str_replace(' ', '', Request::string("code")));
                 if ($account->get("role") < Model\Account::DEACTIVATED)
-                    throw new Exception(_("Your account cannot be restored."));
+                    throw new Exception(_("Your account cannot be restored."), 1049);
             
                 $account->set("password", password_hash(Request::password(), PASSWORD_DEFAULT));
                 $account->set("role", ($account->get("role") == Model\Account::DEACTIVATED) ? Model\Account::USER : $account->get("role"));
@@ -168,7 +168,7 @@ class AccountController extends Controller {
                 Ajax::add('.main-content form', '<div class="success">'._("Your account has been successfully restored. You can now log in as usual."), "success");
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")), 1050);
         }
     }
 
