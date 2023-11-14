@@ -38,7 +38,7 @@ class Database {
                return array_pop(self::$connections);
 
 		if (!($mysqli = mysqli_connect(App::get("DB_HOST") , App::get("DB_USERNAME"), App::get("DB_PASSWORD"), App::get("DB_DATABASE"))))
-			throw new Exception(_("Connection to MySQL database failed."));
+			throw new Exception(_("Connection to MySQL database failed."), 1014);
 
 		return $mysqli;
 	}
@@ -62,7 +62,7 @@ class Database {
           }
      
           if (!$stmt->execute())
-               throw new Exception(_("Execute statement to MySQL database failed."));
+               throw new Exception(_("Execute statement to MySQL database failed."), 1016);
 
           $result = $stmt->get_result();
           self::$insert_id = $mysqli->insert_id;

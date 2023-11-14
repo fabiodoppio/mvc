@@ -35,7 +35,7 @@ class Email {
         $mail = new \PHPMailer\PHPMailer\PHPMailer();
 
         if (!App::get("MAIL_HOST") || !App::get("MAIL_SENDER") || !App::get("MAIL_USERNAME") || !App::get("MAIL_PASSWORD"))
-            throw new Exception(_("Mail server not found."));
+            throw new Exception(_("Mail server not found."), 1017);
         
         $mail->isSMTP();
         $mail->isHTML(true);
@@ -55,7 +55,7 @@ class Email {
         if ($attachment && $attachment_name)
             $mail->addStringAttachment($attachment, $attachment_name);
         if(!$mail->send())
-           throw new Exception(_("Email could not be sent."));
+           throw new Exception(_("Email could not be sent."), 1018);
 	}
 
 }

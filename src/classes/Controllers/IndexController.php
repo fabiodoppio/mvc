@@ -365,10 +365,10 @@ class IndexController extends Controller {
         switch(Request::string("request")) {
             case "/cron":
                 if (!Request::isset("key"))
-                    throw new Exception("Key not found.");
+                    throw new Exception("Key not found.", 1066);
 
                 if (App::get("AUTH_CRON") != base64_decode(Request::string("key")))
-                    throw new Exception("Key does not match.");
+                    throw new Exception("Key does not match.", 1067);
 
                 echo Template::get("cron.tpl");
                 break;

@@ -38,10 +38,10 @@ class UserController extends AccountController {
         parent::beforeAction();
 
         if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
-            throw new Exception(_("App currently offline. Please try again later."));
+            throw new Exception(_("App currently offline. Please try again later."), 1068);
 
         if ($this->account->get("role") < Model\Account::USER)
-            throw new Exception(_("Your account does not have the required role."));
+            throw new Exception(_("Your account does not have the required role."), 1069);
     }
 
     /**
@@ -74,7 +74,7 @@ class UserController extends AccountController {
                     Ajax::add('.account .main-content form', '<div class="success">'._("Your email address has been successfully verified.").'</div>');
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")), 1070);
         }
     }
 
@@ -87,10 +87,10 @@ class UserController extends AccountController {
                 if (Request::isset("username")) {
                     if ($this->account->get("username") != Request::username()) {
                         if (!in_array("username", json_decode(App::get("META_PUBLIC"))))
-                            throw new Exception(_("You are not allowed to edit your username."));
+                            throw new Exception(_("You are not allowed to edit your username."), 1071);
 
                         if (!empty(Database::query("SELECT * FROM app_accounts WHERE username LIKE ?", [Request::username()])[0]))
-                            throw new Exception(_("Your entered username is already taken."));
+                            throw new Exception(_("Your entered username is already taken."), 1072);
 
                         $this->account->set("username", Request::username());
                     }
@@ -99,10 +99,10 @@ class UserController extends AccountController {
                 if (Request::isset("email")) {
                     if ($this->account->get("email") != Request::email()) {
                         if (!in_array("email", json_decode(App::get("META_PUBLIC"))))
-                            throw new Exception(_("You are not allowed to edit your email address."));
+                            throw new Exception(_("You are not allowed to edit your email address."), 1073);
 
                         if (!empty(Database::query("SELECT * FROM app_accounts WHERE email LIKE ?", [Request::email()])[0]))
-                            throw new Exception(_("Your entered email address is already taken."));
+                            throw new Exception(_("Your entered email address is already taken."), 1074);
 
                         $this->account->set("email", strtolower(Request::email()));
                         $this->account->set("role", ($this->account->get("role") == Model\Account::VERIFIED) ? Model\Account::USER : $this->account->get("role"));
@@ -112,10 +112,10 @@ class UserController extends AccountController {
                 if (Request::isset("pw") && Request::isset("pw1") && Request::isset("pw2") &&
                         Request::string("pw") != "" && Request::string("pw1") != "" && Request::string("pw2") != "") {
                     if (!in_array("password", json_decode(App::get("META_PUBLIC"))))
-                        throw new Exception(_("You are not allowed to edit your password."));
+                        throw new Exception(_("You are not allowed to edit your password."), 1075);
 
                     if (!password_verify(Request::string("pw"), $this->account->get("password"))) 
-                        throw new Exception(_("Your current password does not match."));
+                        throw new Exception(_("Your current password does not match."), 1076);
                 
                     $this->account->set("password", password_hash(Request::password(), PASSWORD_DEFAULT));
                 }
@@ -123,7 +123,7 @@ class UserController extends AccountController {
                 if (Request::isset("meta_name") && Request::isset("meta_value"))
                     for($i = 0; $i < count(Request::array("meta_name")); $i++) {
                         if (!in_array(Request::array("meta_name")[$i], json_decode(App::get("META_PUBLIC"))))
-                            throw new Exception(sprintf(_("You are not allowed to edit %s."), Request::array("meta_name")[$i]));
+                            throw new Exception(sprintf(_("You are not allowed to edit %s."), Request::array("meta_name")[$i]), 1077);
 
                         if (is_string(Request::array("meta_name")[$i]) && is_string(Request::array("meta_value")[$i]))
                             $this->account->set(Request::array("meta_name")[$i], Request::array("meta_value")[$i]);
@@ -133,13 +133,13 @@ class UserController extends AccountController {
                 break;
             case "user/edit/avatar/upload":
                 if (!in_array("avatar", json_decode(App::get("META_PUBLIC"))))
-                        throw new Exception(_("You are not allowed to edit your avatar."));
+                        throw new Exception(_("You are not allowed to edit your avatar."), 1078);
 
                 if (Request::isset("avatar")) {
                     $file = Request::file("avatar");
                     $size = getimagesize($file["tmp_name"]);
                     if ($size[0] != $size[1])
-                        throw new Exception(_("Your avatar has to be squared."));
+                        throw new Exception(_("Your avatar has to be squared."), 1079);
                     $upload = new Upload($file,"avatar");
 
                     if ($this->account->get("avatar"))
@@ -153,7 +153,7 @@ class UserController extends AccountController {
                 break;
             case "user/edit/avatar/delete":
                 if (!in_array("avatar", json_decode(App::get("META_PUBLIC"))))
-                    throw new Exception(_("You are not allowed to edit your avatar."));
+                    throw new Exception(_("You are not allowed to edit your avatar."), 1080);
 
                 if ($this->account->get("avatar")) {
                     Upload::delete($this->account->get("avatar"));
@@ -164,7 +164,7 @@ class UserController extends AccountController {
                 Ajax::add('.response', '<div class="success">'._("Avatar deleted successfully.").'</div>');
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")), 1081);
         }
     }
 

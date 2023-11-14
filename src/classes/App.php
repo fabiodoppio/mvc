@@ -116,7 +116,7 @@ class App {
             $actionMethodName          = $actionName."Action";
 
             if (!class_exists($controllerClassName))
-                throw new Exception(sprintf(_("Controller %s not found."), $controllerName));
+                throw new Exception(sprintf(_("Controller %s not found."), $controllerName), 1000);
             
             $controller = new $controllerClassName();
                 
@@ -125,16 +125,15 @@ class App {
                     $actionMethodName = "customAction";
 
             if (!method_exists($controller, $actionMethodName))
-                throw new Exception(sprintf(_("Action %s not found."), $actionName));
+                throw new Exception(sprintf(_("Action %s not found."), $actionName), 1001);
                 
             $controller->beforeAction();
             $controller->$actionMethodName();
+            $controller->afterAction();
         }
         catch(Exception $exception) {
             $exception->process();
         }
-        
-        $controller->afterAction();
     }
 
     /**
@@ -146,7 +145,7 @@ class App {
      */
     public static function get($key) {
         if ((!property_exists(__CLASS__, $key) || !isset(self::$$key)) && !isset(self::$APP_CONFIG[$key]))
-            throw new Exception(sprintf(_("Variable %s not found."), $key));
+            throw new Exception(sprintf(_("Variable %s not found."), $key), 1002);
 
         return self::$APP_CONFIG[$key] ?? self::$$key;
     }
@@ -162,7 +161,7 @@ class App {
      * @param   mixed   $value  The value to set.
      */
     public static function set($key, $value) {
-        if (!empty(Database::query("SELECT * FROM app_config WHERE name = ?", [$key])))
+        if (!empty(Database::query("SELECT * FROM app_config WHERE name LIKE ?", [$key])))
             if ($value === null || $value == "")
                 Database::query("DELETE FROM app_config WHERE name = ?", [$key]);
             else

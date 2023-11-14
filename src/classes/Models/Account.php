@@ -99,7 +99,7 @@ class Account extends Model {
         if (in_array($key, ["id", "username", "email", "password", "token", "role", "registered", "lastaction"]))
             Database::query("UPDATE ".$this->table." SET ".$key." = ? WHERE id = ?", [$value, $this->objectID]);
         else 
-            if ($this->get($key) !== null)
+            if (!empty(Database::query("SELECT * FROM app_accounts_meta WHERE id = ? AND name LIKE ?", [$this->get("id"), $key])))
                 if ($value === null || $value == "")
                     Database::query("DELETE FROM app_accounts_meta WHERE id = ? AND name = ?", [$this->get("id"), $key]);
                 else

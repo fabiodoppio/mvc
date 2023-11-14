@@ -36,7 +36,7 @@ class AdminController extends AccountController {
     public function beforeAction() {
         parent::beforeAction();
         if ($this->account->get("role") < Model\Account::ADMINISTRATOR)
-            throw new Exception(_("Your account does not have the required role."));
+            throw new Exception(_("Your account does not have the required role."), 1051);
     }
 
     /**
@@ -108,7 +108,7 @@ class AdminController extends AccountController {
                 Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")), 1052);
         }
     }
 
@@ -119,7 +119,7 @@ class AdminController extends AccountController {
         switch(Request::string("request")) {
             case "admin/page/add":
                 if (!empty(Database::query("SELECT * FROM app_pages WHERE slug = ?", [Request::string("slug")])[0]))
-                    throw new Exception(_("Your entered slug is already used."));
+                    throw new Exception(_("Your entered slug is already used."), 1053);
 
                 Database::query("INSERT INTO app_pages (slug, title, description, robots, template, role) VALUES (?, ?, ?, ?, ?, ?)", [Request::string("slug"), Request::string("title"), Request::string("description"), Request::string("robots"), Request::string("template"), Request::integer("role")]);
 
@@ -136,7 +136,7 @@ class AdminController extends AccountController {
                      
                 if (Request::isset("slug") && Request::string("slug") != $page->get("slug")) {
                     if (!empty(Database::query("SELECT * FROM app_pages WHERE slug = ?", [Request::string("slug")])[0]))
-                        throw new Exception(_("Your entered slug is already used."));
+                        throw new Exception(_("Your entered slug is already used."), 1054);
 
                     $page->set("slug", Request::string("slug"));
                     Ajax::add('.admin.pages .list .list-item[data-id="'.Request::integer("id").'"] .slug', "slug:".Request::string("slug"));
@@ -173,7 +173,7 @@ class AdminController extends AccountController {
                 Ajax::add('.admin.pages .list', Template::get("admin/elements/PageList.tpl", ["items" => $items, "page"=> $page, "pages" => $pages]));
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")), 1055);
         }
     }
 
@@ -184,10 +184,10 @@ class AdminController extends AccountController {
         switch(Request::string("request")) {
             case "admin/account/add":
                 if (!empty(Database::query("SELECT * FROM app_accounts WHERE username LIKE ?",[Request::username()])[0]))
-                    throw new Exception(_("Your entered username is already taken."));
+                    throw new Exception(_("Your entered username is already taken."), 1056);
     
                 if (!empty(Database::query("SELECT * FROM app_accounts WHERE email LIKE ?", [Request::email()])[0]))
-                    throw new Exception(_("Your entered email address is already taken."));
+                    throw new Exception(_("Your entered email address is already taken."), 1057);
     
                 Database::query("INSERT INTO app_accounts (email, username, password, token, role) VALUES (?, ?, ?, ?, ?)", [strtolower(Request::email("email")), Request::username("username"), password_hash(Request::password(), PASSWORD_DEFAULT), Auth::get_instance_token(), Request::integer("role")]);
 
@@ -196,7 +196,7 @@ class AdminController extends AccountController {
                 break;
             case "admin/account/logout":
                 if ($this->account->get("id") == Request::integer("value"))
-                    throw new Exception(_("You can not logout yourself."));
+                    throw new Exception(_("You can not logout yourself."), 1058);
 
                 $account = new Model\Account(Request::integer("value"));
                 $account->set("token", Auth::get_instance_token());
@@ -207,7 +207,7 @@ class AdminController extends AccountController {
 
                 if (Request::isset("username") && Request::username() != $account->get("username")) {
                     if (!empty(Database::query("SELECT * FROM app_accounts WHERE username LIKE ?", [Request::username()])[0]))
-                        throw new Exception(_("Your entered username is already taken."));
+                        throw new Exception(_("Your entered username is already taken."), 1059);
 
                     $account->set("username", Request::username());
                     Ajax::add('.admin .accounts .list .list-item[data-id="'.Request::integer("id").'"] .username', Request::username());
@@ -215,14 +215,14 @@ class AdminController extends AccountController {
 
                 if (Request::isset("email") && Request::email() != $account->get("email")) {
                     if (!empty(Database::query("SELECT * FROM app_accounts WHERE email LIKE ?", [Request::email()])[0]))
-                        throw new Exception(_("Your entered email address is already taken."));
+                        throw new Exception(_("Your entered email address is already taken."), 1060);
     
                     $account->set("email", strtolower(Request::email()));
                 }
 
                 if (Request::isset("role") && Request::integer("role") != $account->get("role")) {
                     if ($account->get("id") == $this->account->get("id"))
-                        throw new Exception(_("You can not change your own role."));
+                        throw new Exception(_("You can not change your own role."), 1061);
                         
                     $account->set("role", Request::integer("role"));
                 }
@@ -244,7 +244,7 @@ class AdminController extends AccountController {
                     $file = Request::file("avatar");
                     $size = getimagesize($file["tmp_name"]);
                     if ($size[0] != $size[1])
-                        throw new Exception(_("Your avatar has to be squared."));
+                        throw new Exception(_("Your avatar has to be squared."), 1062);
                     $upload = new Upload($file,"avatar");
 
                     if ($account->get("avatar"))
@@ -269,7 +269,7 @@ class AdminController extends AccountController {
                 break;
             case "admin/account/delete":
                 if ($this->account->get("id") == Request::integer("value"))
-                    throw new Exception(_("You can not delete yourself."));
+                    throw new Exception(_("You can not delete yourself."), 1063);
 
                 Database::query("DELETE FROM app_accounts WHERE id = ?", [Request::integer("value")]);
 
@@ -288,7 +288,7 @@ class AdminController extends AccountController {
                 Ajax::add('.admin.accounts', Template::get("admin/elements/AccountList.tpl", ["items" => $items, "page"=> $page, "pages" => $pages]));
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")), 1064);
         }
     }
 
@@ -302,7 +302,7 @@ class AdminController extends AccountController {
                 Ajax::add('.response', '<div class="success">'._("Cache cleared successfully.").'</div>');
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")));
+                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")), 1065);
         }
     }
 
