@@ -1,13 +1,15 @@
 <?php 
 
 /**
- * mvc
- * Model View Controller (MVC) design pattern for simple web applications.
+ * 
+ *  MVC
+ *  Model View Controller (MVC) design pattern for simple web applications.
  *
- * @see     https://github.com/fabiodoppio/mvc
+ *  @see     https://github.com/fabiodoppio/mvc
  *
- * @author  Fabio Doppio (Developer) <hallo@fabiodoppio.de>
- * @license https://opensource.org/license/mit/ MIT License
+ *  @author  Fabio Doppio (Developer) <hallo@fabiodoppio.de>
+ *  @license https://opensource.org/license/mit/ MIT License
+ * 
  */
 
 
@@ -17,20 +19,28 @@ use MVC\Ajax as Ajax;
 use MVC\Auth as Auth;
 
 /**
- * Controller Class (Abstract)
+ * 
+ *  Controller Class (Abstract)
  *
- * The Controller class serves as a base class for other controller classes and provides common functionality.
+ *  The Controller class is an abstract class that serves as the base class for all controllers
+ *  in the MVC framework. It provides common functionality such as initializing the user account
+ *  and executing actions before and after the main action.
+ * 
  */
 abstract class Controller {
 
     /**
-     * @var Model\Account|Model\Guest    $account   The user account associated with the current session.
+     *  @var    mixed   $account    User account information
      */
     protected $account;
 
+
     /**
-     * Executes before performing any action in the controller.
-     * It sets the $account property to the user account associated with the current session.
+     * 
+     *  Executes actions before the main action.
+     * 
+     *  @since  2.0
+     * 
      */
     public function beforeAction() {
         session_start();
@@ -38,8 +48,11 @@ abstract class Controller {
     }
 
     /**
-     * Executes after performing an action in the controller.
-     * It sends all queued AJAX responses.
+     * 
+     *  Executes actions after the main action.
+     * 
+     *  @since  2.0
+     * 
      */
     public function afterAction() {
         Ajax::push();

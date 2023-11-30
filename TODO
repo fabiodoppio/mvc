@@ -1,8 +1,3 @@
-- Minify CSS / JS
-- Rename "Pages" to "Custom Pages"
-- Add "Design" to Admin Page
-- Add CSS-Styles to Admin / Account Page
-- Mobile Viewport 
-- Displayname in mail templates
-- Validation for display name (badwords)
-- Badwords on Admin Page
+- add default theme
+- mobile viewport for default theme
+- detailed documentation in readme file

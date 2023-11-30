@@ -1,6 +1,6 @@
 {
     "require": {
-        "fabiodoppio/mvc": "^1.5"
+        "fabiodoppio/mvc": "^2.0"
     },
     "autoload": {
     	"psr-4": {

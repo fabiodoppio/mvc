@@ -1,13 +1,15 @@
 <?php
 
 /**
- * mvc
- * Model View Controller (MVC) design pattern for simple web applications.
+ * 
+ *  MVC
+ *  Model View Controller (MVC) design pattern for simple web applications.
  *
- * @see     https://github.com/fabiodoppio/mvc
+ *  @see     https://github.com/fabiodoppio/mvc
  *
- * @author  Fabio Doppio (Developer) <hallo@fabiodoppio.de>
- * @license https://opensource.org/license/mit/ MIT License
+ *  @author  Fabio Doppio (Developer) <hallo@fabiodoppio.de>
+ *  @license https://opensource.org/license/mit/ MIT License
+ * 
  */
 
 
@@ -19,141 +21,190 @@ use MVC\Auth      as Auth;
 use MVC\Database  as Database;
 use MVC\Email     as Email;
 use MVC\Exception as Exception;
+use MVC\Fairplay  as Fairplay;
 use MVC\Models    as Model;
-use MVC\Request   as Request;
 use MVC\Template  as Template;
 use MVC\Upload    as Upload;
 
 /**
- * UserController Class
+ * 
+ *  UserController Class
  *
- * This controller class handles actions related to user-specific functionality, including logout and email verification.
+ *  The UserController class extends the AccountController and is responsible for handling
+ *  user-related actions, such as profile management and verification processes.
+ *
  */
 class UserController extends AccountController {
 
     /**
-     * Performs actions before processing any user-related actions.
+     * 
+     *  Executes actions before the main action, including checking the user role.
+     * 
+     *  @since  2.0
+     * 
      */
     public function beforeAction() {
         parent::beforeAction();
-
         if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
-            throw new Exception(_("App currently offline. Please try again later."), 1068);
+            throw new Exception(_("App currently offline. Please try again later."), 1083);
 
         if ($this->account->get("role") < Model\Account::USER)
-            throw new Exception(_("Your account does not have the required role."), 1069);
+            throw new Exception(_("Your account does not have the required role."), 1084);
     }
 
     /**
-     * Handles the email verification action for the user, including sending a verification email and processing the
-     * verification code submission.
+     * 
+     *  Handles user verification-related actions, including requesting and submitting verification.
+     *
+     *  @since  2.0
+     *  @param  string  $request    The requested action.
+     *
      */
-    public function verifyAction() {
-        switch(Request::string("request")) {
+    public function verifyAction(string $request) {
+        switch($request) {
             case "user/verify/request":
+
                 $code = Auth::get_confirmcode($this->account->get("email"));
                 $link = App::get("APP_URL")."/account/verify?code=".str_replace('=', '', base64_encode($this->account->get("email")."/".$code));
-                $redirect = (Request::isset("redirect")) ? "&redirect=".urlencode(Request::string("redirect")) : "";
+                $redirect = (!empty($_POST["redirect"])) ? "&redirect=".urlencode(Fairplay::string($_POST["redirect"])) : "";
 
                 Email::send(sprintf(_("Email address verification | %s"), App::get("APP_NAME")), $this->account->get("email"), Template::get("email/verify.tpl", [
-                    "username" => $this->account->get("username"),
-                    "app_name" => App::get("APP_NAME"),
-                    "code" => $code,
-                    "link" => $link.$redirect
+                    "var" => (object) [
+                        "code" => $code,
+                        "link" => $link.$redirect
+                    ],
+                    "app" => (object) [
+                        "url" => App::get("APP_URL"),
+                        "name" => App::get("APP_NAME")
+                    ],
+                    "account" => (object) [
+                        "id" => $this->account->get("id"),
+                        "email" => $this->account->get("email"),
+                        "username" => $this->account->get("username"),
+                        "displayname" => $this->account->get("displayname") ?? $this->account->get("username")
+                    ]
                 ]));
 
+                Ajax::add('.response', '<div class="success">'._("Please wait while redirecting..").'</div>');
                 Ajax::redirect(App::get("APP_URL")."/account/verify?code=".str_replace('=', '', base64_encode($this->account->get("email"))).$redirect);
+
                 break;
             case "user/verify/submit":
-                Auth::verify_confirmcode($this->account->get("email"), str_replace(' ', '', Request::string("code")));
+        
+                if (empty($_POST["code"]))
+                    throw new Exception(_("Required input not found."), 1085);
+
+                Auth::verify_confirmcode($this->account->get("email"), str_replace(' ', '', Fairplay::string($_POST["code"])));
                 $this->account->set("role", ($this->account->get("role") == Model\Account::USER) ? Model\Account::VERIFIED : $this->account->get("role"));
 
-                if (Request::isset("redirect"))
-                    Ajax::redirect(App::get("APP_URL").Request::string("redirect")); 
+
+                if (!empty($_POST["redirect"])) {
+                    Ajax::add('.response', '<div class="success">'._("Please wait while redirecting..").'</div>');
+                    Ajax::redirect(App::get("APP_URL").Fairplay::string($_POST["redirect"])); 
+                }
                 else
-                    Ajax::add('.account .main-content form', '<div class="success">'._("Your email address has been successfully verified.").'</div>');
+                    Ajax::add('.account .main-content form', '<div class="success">'._("Email address successfully verified.").'</div>');
+
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")), 1070);
+                throw new Exception(sprintf(_("Action %s not found."), $request), 1086);
         }
     }
 
     /**
-     * This method Handles user-related actions such as editing the user account.
+     * 
+     * Handles user editing-related actions, including updating username, email, password, and custom fields.
+     *
+     *  @since  2.0
+     *  @param  string  $request    The requested action.
+     * 
      */
-    public function editAction() {
-        switch(Request::string("request")) {
+    public function editAction(string $request) {
+        switch($request) {
             case "user/edit":
-                if (Request::isset("username")) {
-                    if ($this->account->get("username") != Request::username()) {
-                        if (!in_array("username", json_decode(App::get("META_PUBLIC"))))
-                            throw new Exception(_("You are not allowed to edit your username."), 1071);
 
-                        if (!empty(Database::query("SELECT * FROM app_accounts WHERE username LIKE ?", [Request::username()])[0]))
-                            throw new Exception(_("Your entered username is already taken."), 1072);
+                if (!empty($_POST["username"]) && $_POST["username"] != $this->account->get("username")) {
+                    if (!in_array("username", json_decode(App::get("APP_METAFIELDS"))))
+                        throw new Exception(_("You are not allowed to edit your username."),1087);
 
-                        $this->account->set("username", Request::username());
-                    }
+                    if (!empty(Database::query("SELECT * FROM app_accounts WHERE username LIKE ?", [$_POST["username"]])[0]))
+                        throw new Exception(_("This username is already taken."), 1088);
+
+                    $this->account->set("username", Fairplay::username($_POST["username"]));
                 }
 
-                if (Request::isset("email")) {
-                    if ($this->account->get("email") != Request::email()) {
-                        if (!in_array("email", json_decode(App::get("META_PUBLIC"))))
-                            throw new Exception(_("You are not allowed to edit your email address."), 1073);
+                if (!empty($_POST["displayname"]) && $_POST["displayname"] != $this->account->get("displayname")) {
+                    if (!in_array($_POST["displayname"], [$this->account->get("username"), $this->account->get("company"), $this->account->get("firstname"), $this->account->get("lastname"), $this->account->get("firstname")." ".$this->account->get("lastname"), $this->account->get("lastname")." ".$this->account->get("firstname")]))
+                        throw new Exception(_("This displayname is not allowed."), 1089);
 
-                        if (!empty(Database::query("SELECT * FROM app_accounts WHERE email LIKE ?", [Request::email()])[0]))
-                            throw new Exception(_("Your entered email address is already taken."), 1074);
-
-                        $this->account->set("email", strtolower(Request::email()));
-                        $this->account->set("role", ($this->account->get("role") == Model\Account::VERIFIED) ? Model\Account::USER : $this->account->get("role"));
-                    }
+                    $this->account->set("displayname", Fairplay::string($_POST["displayname"]));
                 }
 
-                if (Request::isset("pw") && Request::isset("pw1") && Request::isset("pw2") &&
-                        Request::string("pw") != "" && Request::string("pw1") != "" && Request::string("pw2") != "") {
-                    if (!in_array("password", json_decode(App::get("META_PUBLIC"))))
-                        throw new Exception(_("You are not allowed to edit your password."), 1075);
+                if (!empty($_POST["email"]) && $_POST["email"] != $this->account->get("email")) {
+                    if (!in_array("email", json_decode(App::get("APP_METAFIELDS"))))
+                        throw new Exception(_("You are not allowed to edit your email address."), 1090);
 
-                    if (!password_verify(Request::string("pw"), $this->account->get("password"))) 
-                        throw new Exception(_("Your current password does not match."), 1076);
+                    if (!empty(Database::query("SELECT * FROM app_accounts WHERE email LIKE ?", [$_POST["email"]])[0]))
+                        throw new Exception(_("This email address is already taken."), 1091);
+
+                    $this->account->set("email", strtolower(Fairplay::email($_POST["email"])));
+                    $this->account->set("role", ($this->account->get("role") == Model\Account::VERIFIED) ? Model\Account::USER : $this->account->get("role"));
+                }
+
+                if (!empty($_POST["pw"]) && !empty($_POST["pw1"]) && !empty($_POST["pw2"])) {
+                    if (!password_verify($_POST["pw"], $this->account->get("password"))) 
+                        throw new Exception(_("Your current password does not match."), 1092);
                 
-                    $this->account->set("password", password_hash(Request::password(), PASSWORD_DEFAULT));
+                    $this->account->set("password", password_hash(Fairplay::password($_POST["pw1"], $_POST["pw2"]), PASSWORD_DEFAULT));
+                    $this->account->set("token", Auth::get_instance_token());
+                    Auth::set_auth_cookie($this->account->get("id"), Auth::get_instance_token(), 0);
                 }
 
-                if (Request::isset("meta_name") && Request::isset("meta_value"))
-                    for($i = 0; $i < count(Request::array("meta_name")); $i++) {
-                        if (!in_array(Request::array("meta_name")[$i], json_decode(App::get("META_PUBLIC"))))
-                            throw new Exception(sprintf(_("You are not allowed to edit %s."), Request::array("meta_name")[$i]), 1077);
+                if (isset($_POST["name"]) && isset($_POST["value"]))
+                    for($i = 0; $i < count($_POST["name"]); $i++) 
+                        if (!empty($_POST["name"][$i]) && isset($_POST["value"][$i])) {
+                            if (!in_array($_POST["name"][$i], json_decode(App::get("APP_METAFIELDS"))) || in_array($_POST["name"][$i], array_keys($this->account->get_data())))
+                                throw new Exception(sprintf(_("You are not allowed to edit %s."), $_POST["name"][$i]), 1093);
 
-                        if (is_string(Request::array("meta_name")[$i]) && is_string(Request::array("meta_value")[$i]))
-                            $this->account->set(Request::array("meta_name")[$i], Request::array("meta_value")[$i]);
-                    }
+                            $this->account->set(Fairplay::string($_POST["name"][$i]), Fairplay::string($_POST["value"][$i]));
+                        }
         
-                Ajax::add('.response', '<div class="success">'._("Changes saved successfully.").'</div>');
+                Ajax::add('.response', '<div class="success">'._("Changes successfully saved.").'</div>');
+
                 break;
             case "user/edit/avatar/upload":
-                if (!in_array("avatar", json_decode(App::get("META_PUBLIC"))))
-                        throw new Exception(_("You are not allowed to edit your avatar."), 1078);
 
-                if (Request::isset("avatar")) {
-                    $file = Request::file("avatar");
-                    $size = getimagesize($file["tmp_name"]);
-                    if ($size[0] != $size[1])
-                        throw new Exception(_("Your avatar has to be squared."), 1079);
-                    $upload = new Upload($file,"avatar");
+                if (!isset($_FILES["avatar"]))
+                    throw new Exception(_("Required input not found."), 1094);
 
-                    if ($this->account->get("avatar"))
-                        Upload::delete($this->account->get("avatar"));
+                if (!in_array("avatar", json_decode(App::get("APP_METAFIELDS"))))
+                    throw new Exception(_("You are not allowed to edit your avatar."), 1095);
 
-                    $this->account->set("avatar", $upload->get_file_name());
-                    Ajax::add('.account .avatar', '<img src="'.$upload->get_file_url().'"/>');
-                }
+                if ($this->account->get("role") < Model\Account::VERIFIED)
+                    throw new Exception(_("You have to verify your email address before you can upload a avatar."), 1106);
 
-                Ajax::add('.response', '<div class="success">'._("Avatar uploaded successfully.").'</div>');
+                $file = Fairplay::file($_FILES["avatar"]);
+                $size = getimagesize($file["tmp_name"]);
+                if ($size[0] != $size[1])
+                    throw new Exception(_("The avatar has to be squared."), 1096);
+
+                if (!in_array(mime_content_type($file['tmp_name']), array_filter(json_decode(App::get("UPLOAD_IMAGE_TYPES")))))
+                    throw new Exception(_("This file type not allowed."), 1107);
+
+                $upload = new Upload($file,"avatar");
+
+                if ($this->account->get("avatar"))
+                    Upload::delete($this->account->get("avatar"));
+
+                $this->account->set("avatar", $upload->get_file_name());
+                Ajax::add('.account .avatar', '<img src="'.$upload->get_file_url().'"/>');
+                Ajax::add('.response', '<div class="success">'._("Avatar successfully uploaded.").'</div>');
+ 
                 break;
             case "user/edit/avatar/delete":
-                if (!in_array("avatar", json_decode(App::get("META_PUBLIC"))))
-                    throw new Exception(_("You are not allowed to edit your avatar."), 1080);
+
+                if (!in_array("avatar", json_decode(App::get("APP_METAFIELDS"))))
+                    throw new Exception(_("You are not allowed to edit your avatar."), 1097);
 
                 if ($this->account->get("avatar")) {
                     Upload::delete($this->account->get("avatar"));
@@ -161,10 +212,11 @@ class UserController extends AccountController {
                     Ajax::remove('.account .avatar img');
                 }
 
-                Ajax::add('.response', '<div class="success">'._("Avatar deleted successfully.").'</div>');
+                Ajax::add('.response', '<div class="success">'._("Avatar successfully deleted.").'</div>');
+
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), Request::string("request")), 1081);
+                throw new Exception(sprintf(_("Action %s not found."), $request), 1098);
         }
     }
 

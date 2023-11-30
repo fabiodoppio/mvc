@@ -1,0 +1,45 @@
+/**
+ * 
+ *  MVC
+ *  Model View Controller (MVC) design pattern for simple web applications.
+ *
+ *  @see     https://github.com/fabiodoppio/mvc
+ *
+ *  @author  Fabio Doppio (Developer) <hallo@fabiodoppio.de>
+ *  @license https://opensource.org/license/mit/ MIT License
+ * 
+ */
+
+ .tooltip {
+    position:relative;
+    cursor:pointer;
+    float:right;
+  }
+  
+  .tooltip span {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    left: 140%;
+    white-space: nowrap;
+    font-size: 12px;
+  }
+  
+  .tooltip span::after {
+    content: "";
+    position: absolute;
+    top: 11px;
+    right: 100%;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent black transparent transparent;
+  }
+
+  .tooltip:hover span {
+    visibility: visible;
+  }
