@@ -27,7 +27,7 @@
                                 <input type="password" id="pw2" name="pw2" minlength="8" maxlength="64" placeholder="{{'Repeat password'}}" autocomplete="off" required/>
                             </label>
                             <label for="confirm">
-                                <input type="checkbox" name="confirm" id="confirm" value="1" required>{{"I agree to the Terms of Service and Privacy Policy."}}
+                                <input type="checkbox" name="confirm" id="confirm" value="1" required>{{"I agree to the Terms of Service and Privacy Policy."}} <span class="required" title="{{'Required'}}">*</span>
                             </label><br><br>
                             {% if ($request->redirect != ""): %}
                                 <input type="hidden" name="redirect" value="{{$request->redirect}}"/>
