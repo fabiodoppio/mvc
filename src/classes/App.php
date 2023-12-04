@@ -179,7 +179,7 @@ class App {
 
             foreach (Database::query("SELECT * FROM app_properties") as $property) 
                 if (!property_exists(__CLASS__, $property["name"]))
-                    self::$properties[$config["name"]] = $property["value"]; 
+                    self::$properties[$property["name"]] = $property["value"]; 
                 else
                     self::$config[$property["name"]] = $property["value"];
 
