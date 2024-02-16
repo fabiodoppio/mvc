@@ -117,8 +117,8 @@ MVC\App::init([
 ```
 You can now log in at https://yourdomain/login
 
-Username: ***admin*** 
-Password: ***admin123**
+Username: **admin**
+Password: **admin123**
 
 Don't forget to change your username and password!
 
