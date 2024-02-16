@@ -1,4 +1,4 @@
-{{"Hello %s", $account->displayname}},
+{{"Hello %s", $account->meta->displayname}},
 <br/><br/>
 {{"you are receiving this email because someone is trying to verify your email address on %s. If this wasn't you, you can simply ignore this email.", $app->name}}
 <br/><br/>

@@ -10,6 +10,121 @@
  * 
  */
 
+ :root {
+  --color-primary-100: #3f49f7; 
+  --color-primary-200: #625cf9;
+  --color-primary-300: #7c6ffa; 
+  --color-primary-400: #9282fc;
+  --color-primary-500: #a796fd;
+  --color-primary-600: #baabfe;
+
+  --color-secondary-100: #1a1825;
+  --color-secondary-200: #2f2d3a;
+  --color-secondary-300: #46444f;
+  --color-secondary-400: #5d5b66;
+  --color-secondary-500: #76747e;
+  --color-secondary-600: #908f96; 
+  --color-secondary-700: #ebebeb;
+  --color-secondary-800: #ffffff;
+
+  --font-system: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --box-shadow: 0 4px 5px 0 var(--color-secondary-600);
+}
+
+
+
+
+.container {
+  padding: 10px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+
+
+header {
+  height:60px;
+  background: var(--color-secondary-200);
+  color: var(--color-secondary-600);
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+header .actions {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+header .actions > ul {
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+
+header .actions > li {
+  padding: 0 10px;
+  position:relative;
+}
+
+header .actions a {
+    color: var(--color-secondary-600);
+    opacity: .8;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+
+header .actions a:hover {
+  opacity:1;
+}
+
+header .actions li:first-child {
+  margin-right: auto;
+}
+
+header .avatar {
+  border-radius: 40px;
+  width: 40px;
+  height: 40px;
+  background: #FFF;
+  display: block;
+  cursor: pointer;
+}
+
+header a.avatar::before {
+  font-family: "Font Awesome 6 Free";
+  content: "\f007";
+  color: #808080;
+  font-weight: bold;
+  line-height: 40px;
+  text-align: center;
+  display: block;
+  font-size: 20px;
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+}
+
+header .avatar img {
+  width:50px;
+  height:50px;
+  border-radius:100px;
+  background-color:#EEE;
+}
+
+header .brand, header .menu {
+  display:none;
+}
+
+
+
+
+
  .tooltip {
     position:relative;
     cursor:pointer;
@@ -18,28 +133,247 @@
   
   .tooltip span {
     visibility: hidden;
-    background-color: black;
+    background-color: var(--color-secondary-100);
     color: #fff;
     border-radius: 5px;
     padding: 5px 10px;
     position: absolute;
     z-index: 1;
-    top: -5px;
-    left: 140%;
+    top: 100%;
     white-space: nowrap;
     font-size: 12px;
+    right: -9px;
   }
   
   .tooltip span::after {
-    content: "";
+    content: " ";
     position: absolute;
-    top: 11px;
-    right: 100%;
+    bottom: 100%; 
+    right:10px;
+    margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: transparent black transparent transparent;
+    border-color: transparent transparent var(--color-secondary-100) transparent;
   }
 
   .tooltip:hover span {
     visibility: visible;
   }
+
+  .signup label[for="firstname"] {
+    display:none;
+  }
+
+
+
+
+  .is-center {
+    text-align: center;
+    justify-content: center;
+}
+
+
+.dropdown {
+    display: none;
+    position: absolute;
+    z-index:1000;
+    top:100%;
+    right:0%;
+    background: #FFF;
+    box-shadow: var(--box-shadow);
+    border:1px solid var(--border);
+    border-radius:5px;
+    text-wrap: nowrap;
+}
+
+
+ .dropdown .dropdown-header {
+    display: block;
+    padding: 6px 15px;
+    margin-bottom: 0;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--secondary);
+    white-space: nowrap;
+    font-weight: bold;
+    opacity:.5;
+}
+
+.dropdown ul {
+  list-style:none;
+  padding:0;
+  margin:0;
+  margin-bottom:10px;
+}
+
+.dropdown li a {
+    display:block;
+    text-decoration:none;
+    padding: 5px 15px;
+    color:#4f5d73 !important;
+}
+
+.dropdown li i {
+    margin-right: 10px;
+    width: 16px;
+}
+
+
+.dropdown .dropdown-divider {
+    border-top: 1px solid var(--border);
+    margin:10px 0;
+}
+
+
+
+
+
+
+input[type="text"], input[type="email"], input[type="password"], select, input[type="number"], textarea {
+  border: 1px solid var(--color-secondary-600);
+  border-radius: 5px;
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+  font-size:16px;
+  padding: 10px 20px;
+  outline: 0;
+  background:#FFF;
+}
+
+label {
+  font-size: 12px;
+  color: var(--color-secondary-600);
+  display: inline-block;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  width:100%;
+}
+
+.container {
+  width: 100%;
+  padding: 0 50px;
+}
+
+.btn {
+  -webkit-apperance:none;
+  -moz-apperance:none;
+  padding: 12px 24px;
+  border-radius: 5px;
+  font-weight: normal;
+  outline:none;
+  white-space: nowrap;
+  font-size: 18px !important;
+  font-weight: 100;
+  line-height:1.0;
+  overflow:hidden;
+  text-decoration: none !important;
+  user-select: none;
+  transition: background-color .2s ease,border-color .2s ease;
+  margin-right:10px;
+  display:inline-block !important;
+  vertical-align: top;
+  border:2px solid black;
+  cursor:pointer;
+}
+
+.btn.is--primary {
+  color: #fff;
+  border-color:var(--color-primary-100);
+  background-color: var(--color-primary-100);
+}
+
+.btn.is--secondary {
+  color: var(--color-primary-100);
+  background-color: transparent;
+  border-color: var(--color-primary-100);
+
+}
+
+.btn:hover, .btn.is--active{
+  color:#FFF;
+  border-color: var(--color-primary-200);
+  background-color: var(--color-primary-200);
+}
+
+
+label[for="stay"] {
+  cursor:pointer;
+  font-size:12px;
+}
+
+input[type="checkbox"] {
+  margin-right: 5px;
+  height: 15px;
+  width: 15px;
+  vertical-align: middle;
+}
+
+button.loading::after {
+  content: "\f110";
+  font-family: 'FontAwesome';
+  animation: spin 1.5s infinite linear;
+  display: inline-block;
+  padding:1px;
+  font-size:18px;
+}
+
+button.loading {
+  font-size:0px !important;
+}
+
+
+
+
+/* The Modal (background) */
+.modalbox {
+  display: none; 
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}

@@ -1,12 +1,15 @@
-{% include head.tpl %} 
-        {% include header.tpl %}
+{% include /header.tpl %} 
+        {% include /topbar.tpl %}
 
-        <main class="page signup">
+        <main class="account signup">
             <section class="section is--light">
                 <div class="container">
                     <div class="main-content">
                     <h2 class="title">{{"Signup"}}</h1>
                         <form data-request="account/signup">
+                            <label for="firstname">
+                                <input type="text" id="firstname" name="firstname" tabindex="-1"/>
+                            </label>
                             <label for="username">
                                 {{"Username"}} <span class="required" title="{{'Required'}}">*</span>
                                 <div class="tooltip"><i class="fas fa-circle-info"></i><span>{{"Your username must be between 3 and 18 characters long<br>and cannot contain any special characters"}}</span></div>
@@ -43,5 +46,4 @@
             </section>
         </main>
 
-        {% include footer.tpl %} 
-{% include foot.tpl %}
+        {% include /footer.tpl %} 

@@ -1,4 +1,4 @@
-{% include head.tpl %} 
+{% include /header.tpl %} 
         {% include header.tpl %}
 
         <main class="page maintenance">
@@ -11,5 +11,4 @@
             </section>
         </main>
 
-        {% include footer.tpl %} 
-{% include foot.tpl %}
+        {% include /footer.tpl %} 

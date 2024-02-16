@@ -61,7 +61,7 @@ abstract class Model {
     public function __construct(mixed $value) {
         $this->objectID = $value;
         if (empty($this->data = Database::query("SELECT * FROM ".$this->table." WHERE ".$this->primaryKey." = ?", [$this->objectID])))
-            throw new Exception(sprintf(_("Model %1\$s:%2\$s not found."), get_class($this), $this->objectID), 1099);
+            throw new Exception(sprintf(_("Model %1\$s:%2\$s not found."), get_class($this), $this->objectID), 1077);
     }
 
     /**
@@ -89,6 +89,17 @@ abstract class Model {
     public function set(string $name, mixed $value) {
         Database::query("UPDATE ".$this->table." SET ".$name." = ? WHERE ".$this->primaryKey." = ?", [$value, $this->objectID]);
         $this->data[0][$name] = $value;
+    }
+
+    /**
+     * 
+     *  Delete model.
+     *
+     *  @since  2.0
+     * 
+     */
+    public function delete() {
+        Database::query("DELETE FROM ".$this->table." WHERE ".$this->primaryKey." = ?", [$this->objectID]);
     }
 
     /**

@@ -13,13 +13,9 @@ Model View Controller (MVC) design pattern for simple web applications.
 
 - **Account Verification:**  Includes a built-in function to verify Accounts via E-Mail, enhancing security and trustworthiness in user registration.
 
-- **File Uploads:** Users can easily upload files through a secure and user-friendly interface, supporting various file formats and sizes.
-
 - **Security Mechanisms:** The package implements modern security measures to protect against potential attacks. This includes cooldown periods for repeated incorrect or unauthorized inputs and the verification of action tokens to prevent malicious actions.
 
 - **Multi Language Support**
-
-- **Admin Backend**
 
 - **More Features soon..**
 
@@ -41,7 +37,7 @@ $ composer update
 ### SQL-Statements for your Database:
 
 ```sql
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO"; START TRANSACTION; SET time_zone = "+00:00"; CREATE TABLE `app_accounts`( `id` int UNSIGNED NOT NULL, `username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `email` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `password` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `role` int UNSIGNED NOT NULL, `registered` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, `lastaction` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; INSERT INTO `app_accounts` (`id`, `username`, `email`, `password`, `token`, `role`, `registered`, `lastaction`) VALUES (1000, 'admin', 'someone@example.com', '$2y$10$mF/1IeSTLohx/J35LYnEoueV50p3g9EOgnfADE0E7seJw127fHzY2', 'deP5E5KznHsLl0TMeLyvbndNg7KEky6W', 7, '2023-11-29 00:00:00', '2023-11-29 00:00:00'); CREATE TABLE `app_accounts_meta` ( `id` int UNSIGNED NOT NULL, `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; CREATE TABLE `app_accounts_watchlist` ( `id` int UNSIGNED NOT NULL, `request` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `detected` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; CREATE TABLE `app_pages` ( `id` int UNSIGNED NOT NULL, `slug` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `title` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `robots` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `template` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `role` int UNSIGNED NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; INSERT INTO `app_pages` (`id`, `slug`, `title`, `description`, `robots`, `template`, `role`) VALUES (1, '/imprint', 'Imprint', '', 'noindex, nofollow', 'imprint.tpl', 3), (2, '/privacy', 'Privacy Policy', '', 'noindex, nofollow', 'privacy.tpl', 3), (3, '/terms', 'Terms of Service', '', 'noindex, nofollow', 'terms.tpl', 3); CREATE TABLE `app_pages_meta` ( `id` int UNSIGNED NOT NULL, `name` varchar(64) COLLATE utf8mb4_general_ci NOT NULL, `value` text COLLATE utf8mb4_general_ci NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; CREATE TABLE `app_properties` ( `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; ALTER TABLE `app_accounts` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `username` (`username`), ADD UNIQUE KEY `email` (`email`); ALTER TABLE `app_accounts_meta` ADD PRIMARY KEY (`id`,`name`); ALTER TABLE `app_accounts_watchlist` ADD PRIMARY KEY (`id`,`detected`); ALTER TABLE `app_pages` ADD PRIMARY KEY (`id`) USING BTREE; ALTER TABLE `app_pages_meta` ADD PRIMARY KEY (`id`,`name`); ALTER TABLE `app_properties` ADD PRIMARY KEY (`name`); ALTER TABLE `app_accounts` MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1001; ALTER TABLE `app_pages` MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4; ALTER TABLE `app_accounts_meta` ADD CONSTRAINT `app_accounts_meta_ibfk_1` FOREIGN KEY (`id`) REFERENCES `app_accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `app_accounts_watchlist` ADD CONSTRAINT `app_accounts_watchlist_ibfk_1` FOREIGN KEY (`id`) REFERENCES `app_accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `app_pages_meta` ADD CONSTRAINT `app_pages_meta_ibfk_1` FOREIGN KEY (`id`) REFERENCES `app_pages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; COMMIT; 
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO"; START TRANSACTION; SET time_zone = "+00:00"; CREATE TABLE `app_accounts`( `id` int UNSIGNED NOT NULL, `username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `email` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `password` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `role` int UNSIGNED NOT NULL, `registered` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, `lastaction` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; INSERT INTO `app_accounts` (`id`, `username`, `email`, `password`, `token`, `role`, `registered`, `lastaction`) VALUES (1000, 'admin', 'someone@example.com', '$2y$10$mF/1IeSTLohx/J35LYnEoueV50p3g9EOgnfADE0E7seJw127fHzY2', 'deP5E5KznHsLl0TMeLyvbndNg7KEky6W', 8, '2023-11-29 00:00:00', '2023-11-29 00:00:00'); CREATE TABLE `app_accounts_meta` ( `id` int UNSIGNED NOT NULL, `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; CREATE TABLE `app_accounts_watchlist` ( `id` int UNSIGNED NOT NULL, `request` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `detected` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; ALTER TABLE `app_accounts` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `username` (`username`), ADD UNIQUE KEY `email` (`email`); ALTER TABLE `app_accounts_meta` ADD PRIMARY KEY (`id`,`name`); ALTER TABLE `app_accounts_watchlist` ADD PRIMARY KEY (`id`,`detected`); ALTER TABLE `app_accounts` MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1001; ALTER TABLE `app_accounts_meta` ADD CONSTRAINT `app_accounts_meta_ibfk_1` FOREIGN KEY (`id`) REFERENCES `app_accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `app_accounts_watchlist` ADD CONSTRAINT `app_accounts_watchlist_ibfk_1` FOREIGN KEY (`id`) REFERENCES `app_accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; COMMIT;
 ```
 
 
@@ -78,22 +74,31 @@ MVC\App::init([
     #"APP_AUTHOR"       => "",                      // [OPTIONAL] author of your app
     #"APP_DESCRIPTION"  => "",                      // [OPTIONAL] description of your app
     #"APP_LANGUAGE"     => "en_EN.utf8",            // [OPTIONAL] your prefered (server-)language
-    #"APP_THEME"        => "default",               // [OPTIONAL] your prefered app color scheme
     #"APP_DEBUG"        => false,                   // [OPTIONAL] de/activates debug mode
     #"APP_LOGIN"        => true,                    // [OPTIONAL] de/activates login (except admins)
     #"APP_SIGNUP"       => false,                   // [OPTIONAL] de/activates signup
     #"CRON_ACTIVE"      => false,                   // [OPTIONAL] de/activates cronjob
     #"APP_MAINTENANCE"  => false,                   // [OPTIONAL] de/activates maintenance mode (except admins)
+    #"APP_BADWORDS"     => [],                      // [OPTIONAL] forbidden words for usernames or messages
+    #"APP_PAGES"        => [],                      // [OPTIONAL] urls to custom pages
    
     "SALT_COOKIE"       => "",                      // [REQUIRED] randomized hash for security reasons
     "SALT_TOKEN"        => "",                      // [REQUIRED] randomized hash for security reasons
     "SALT_CACHE"        => "",                      // [REQUIRED] randomized hash for security reasons
     "CRON_AUTH"         => "",                      // [REQUIRED] randomized hash for security reasons
     
-    "DB_HOST"           => "",                      // [REQUIRED] hostname to your mysql server
-    "DB_USERNAME"       => "",                      // [REQUIRED] username to your mysql server
-    "DB_PASSWORD"       => "",                      // [REQUIRED] password to your mysql server
-    "DB_DATABASE"       => "",                      // [REQUIRED] database to your mysql server
+    "DB_HOST"           => "",                      // [OPTIONAL] hostname to your mysql server
+    "DB_USERNAME"       => "",                      // [OPTIONAL] username to your mysql server
+    "DB_PASSWORD"       => "",                      // [OPTIONAL] password to your mysql server
+    "DB_DATABASE"       => "",                      // [OPTIONAL] database to your mysql server
+
+    "MAIL_HOST"         => "",                      // [OPTIONAL] hostname to your mail server
+    "MAIL_SENDER"       => "",                      // [OPTIONAL] sender email address for system emails
+    "MAIL_RECEIVER"     => "",                      // [OPTIONAL] receiver email address for contact form
+    "MAIL_USERNAME"     => "",                      // [OPTIONAL] username to your mail server
+    "MAIL_PASSWORD"     => "",                      // [OPTIONAL] password to your mail server
+    #"MAIL_ENCRYPT"     => "ssl",                   // [OPTIONAL] ssl or tsl for encryption
+    #"MAIL_PORT"        => "465,                    // [OPTIONAL] port to your mail server
 
     "DIR_ROOT"          => "/var/www"               // [REQUIRED] path to your root directory, no trailing slash
     #"DIR_ASSETS"       => "/app/assets",           // [OPTIONAL] path to your asset files, such as styles and scripts
@@ -105,13 +110,12 @@ MVC\App::init([
     #"DIR_VENDOR"       => "/app/vendor",           // [OPTIONAL] path to your third-party libraries
     #"DIR_VIEWS"        => "/app/views",            // [OPTIONAL] path to your template files
     #"DIR_CACHE"        => "/app/cache",            // [OPTIONAL] path to your cache files
-    #"DIR_MEDIA"        => "/app/media",            // [OPTIONAL] path to your media files
-    #"DIR_UPLOADS"      => "/app/media/uploads",    // [OPTIONAL] path to your user uploads
+    #"DIR_MEDIA"        => "/app/media"             // [OPTIONAL] path to your media files
 ]);
 
 ?>
 ```
-You can now log in at https://yourdomain/admin
+You can now log in at https://yourdomain/login
 
 Username: ***admin*** 
 Password: ***admin123**

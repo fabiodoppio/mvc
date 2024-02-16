@@ -48,10 +48,7 @@ class Database {
           if (!empty(self::$connections))
                return array_pop(self::$connections);
 
-		if (!($mysqli = mysqli_connect(App::get("DB_HOST") , App::get("DB_USERNAME"), App::get("DB_PASSWORD"), App::get("DB_DATABASE"))))
-			throw new Exception(_("Connection to MySQL database failed."), 1014);
-
-		return $mysqli;
+		return mysqli_connect(App::get("DB_HOST") , App::get("DB_USERNAME"), App::get("DB_PASSWORD"), App::get("DB_DATABASE"));
 	}
 	
 	/**
@@ -65,30 +62,33 @@ class Database {
       *
       */
      public static function query(string $sql, array $params = []) {
-          $mysqli = self::connect();
-          $mysqli->set_charset("UTF8");
-          $stmt = $mysqli->prepare($sql);
-     
-          if (!empty($params)) {
-               $types = str_repeat('s', count($params));
-               $stmt->bind_param($types, ...$params);
+          try {
+               $mysqli = self::connect();
+               $mysqli->set_charset("UTF8");
+               $stmt = $mysqli->prepare($sql);
+          
+               if (!empty($params)) {
+                    $types = str_repeat('s', count($params));
+                    $stmt->bind_param($types, ...$params);
+               }
+          
+               $stmt->execute();
+               $result = $stmt->get_result();
+               self::$insert_id = $mysqli->insert_id;
+          
+               $rows = [];
+               if ($result !== false) 
+                    while ($row = $result->fetch_assoc())
+                         $rows[] = $row;
+          
+               $stmt->close();
+               self::$connections[] = $mysqli;
+          
+               return $rows;
           }
-     
-          if (!$stmt->execute())
-               throw new Exception(_("Execute statement to MySQL database failed."), 1015);
-
-          $result = $stmt->get_result();
-          self::$insert_id = $mysqli->insert_id;
-     
-          $rows = [];
-          if ($result !== false) 
-               while ($row = $result->fetch_assoc())
-                    $rows[] = $row;
-     
-          $stmt->close();
-          self::$connections[] = $mysqli;
-     
-          return $rows;
+          catch(\mysqli_sql_exception) {
+               throw new Exception(_("Connection to MySQL database failed."), 1013);
+          }
      }
 
 }

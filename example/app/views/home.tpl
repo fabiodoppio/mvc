@@ -35,7 +35,6 @@
             <section class="section">
                 <div class="container">
                     <div class="main-content">
-                        {% textdomain("app"); %}
                         <h1 class="title">{{"Homepage"}}</h1>
                     </div>
                 </div>

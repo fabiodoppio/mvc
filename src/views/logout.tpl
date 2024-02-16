@@ -1,15 +1,18 @@
-{% include head.tpl %} 
-        {% include header.tpl %}
+{% include /header.tpl %} 
+        {% include /topbar.tpl %}
 
-        <main class="page logout">
+        <main class="account logout">
             <section class="section">
                 <div class="container">
                     <div class="main-content">
-                        <h1 class="title">{{"You successfully logged out."}}</h1>
+                        <div class="alert success">
+                            <div class="alert-content">
+                                {{"You successfully logged out."}}    
+                            </div>                           
+                        </div>
                     </div>
                 </div>
             </section>
         </main>
 
-        {% include footer.tpl %} 
-{% include foot.tpl %}
+        {% include /footer.tpl %} 

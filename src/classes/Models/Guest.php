@@ -16,6 +16,7 @@
 namespace MVC\Models;
 
 use MVC\Auth as Auth;
+use MVC\App  as App;
 
 /**
  * 
@@ -43,18 +44,14 @@ class Guest extends Account {
         if (empty($_SESSION["account"] ?? []))
             $_SESSION["account"] = [
                 "data" => [
-                    "id" => null,
-                    "email" => null,
-                    "username" => null,
-                    "password" => null,
                     "token" => Auth::get_instance_token(),
                     "role" => Account::GUEST,
                     "lastaction" => date('Y-m-d H:i:s', time()),
-                    "registered" => date('Y-m-d H:i:s', time())
-                ],
-                "meta" => [
-                    "avatar" => "avatar_0.png",
-                    "displayname" => _("Guest")
+                    "registered" => date('Y-m-d H:i:s', time()),
+                    "meta" => [
+                        "displayname" => _("Guest"),
+                        "language" => $_COOKIE["locale"] ?? App::get("APP_LANGUAGE")
+                    ]
                 ]
             ];
     }
@@ -69,7 +66,7 @@ class Guest extends Account {
      * 
      */
     public function get(string $name) {
-        return $_SESSION["account"]["data"][$name] ?? $_SESSION["account"]["meta"][$name] ?? null;
+        return $_SESSION["account"]["data"][$name] ?? $_SESSION["account"]["data"]["meta"][$name] ?? null;
     }
 
     /**
@@ -85,7 +82,7 @@ class Guest extends Account {
         if (isset($_SESSION["account"]["data"][$name]))
             $_SESSION["account"]["data"][$name] = $value;
         else
-            $_SESSION["account"]["meta"][$name] = $value;
+            $_SESSION["account"]["data"]["meta"][$name] = $value;
     }
 
     /**
@@ -98,18 +95,6 @@ class Guest extends Account {
      */
     public function get_data() {
         return $_SESSION["account"]["data"];
-    }
-
-    /**
-     * 
-     *  Get all meta data associated with the guest account.
-     *
-     *  @since  2.0
-     *  @return array   An array containing all the meta data
-     * 
-     */
-    public function get_meta() {
-        return $_SESSION["account"]["meta"];
     }
 
 }

@@ -16,6 +16,10 @@
 namespace MVC\Models;
 
 use MVC\Database as Database;
+use MVC\App as App;
+use MVC\Auth as Auth;
+use MVC\Exception as Exception;
+use MVC\Models as Model;
 
 /**
  * 
@@ -26,12 +30,7 @@ use MVC\Database as Database;
  *  for interacting with user account data in the database.
  * 
  */
-class Account extends Model {
-
-    /**
-     *  @var    array   $meta           The meta data associated with the account
-     */
-    protected $meta;
+class Account extends Model\Model {
 
     /**
      *  @var    string  $table          The name of the database table associated with user accounts
@@ -49,6 +48,7 @@ class Account extends Model {
      *  @var    int     GUEST           Constant representing the role for guests
      *  @var    int     USER            Constant representing the role for common users
      *  @var    int     VERIFIED        Constant representing the role for verified users
+     *  @var    int     SUPPORTER       Constant representing the role for supporters
      *  @var    int     MODERATOR       Constant representing the role for moderators
      *  @var    int     ADMINISTRATOR   Constant representing the role for administrators
      */
@@ -57,8 +57,9 @@ class Account extends Model {
     public const        GUEST           = 3;
     public const        USER            = 4;
     public const        VERIFIED        = 5;
-    public const        MODERATOR       = 6;
-    public const        ADMINISTRATOR   = 7;
+    public const        SUPPORTER       = 6;
+    public const        MODERATOR       = 7;
+    public const        ADMINISTRATOR   = 8;
 
 
     /**    
@@ -71,8 +72,9 @@ class Account extends Model {
      */
     public function __construct($value) {
         parent::__construct($value);
-        foreach(Database::query("SELECT * FROM app_accounts_meta WHERE id = ?", [$this->get("id")]) as $meta) 
-            $this->meta[$meta["name"]] = $meta["value"];
+
+        foreach(Database::query("SELECT * FROM ".$this->table."_meta WHERE id = ?", [$this->get("id")]) as $meta) 
+            $this->data[0]["meta"][$meta["name"]] = $meta["value"];
     }
 
     /**
@@ -85,7 +87,7 @@ class Account extends Model {
      * 
      */
     public function get(string $name) {
-        return $this->data[0][$name] ?? $this->meta[$name] ?? null;
+        return $this->data[0][$name] ?? $this->data[0]["meta"][$name] ?? null;
     }
 
     /**
@@ -98,32 +100,33 @@ class Account extends Model {
      * 
      */
     public function set(string $name, mixed $value) {
-        if (isset($this->data[0][$name]))
+        if (isset($this->data[0][$name])) {
+            if ($name == "username")
+                if (!empty(Database::query("SELECT * FROM ".$this->table." WHERE username LIKE ?",[$value])[0]))
+                    throw new Exception(_("This username is already taken."), 1073);
+
+            if ($name == "email")
+                if (!empty(Database::query("SELECT * FROM ".$this->table." WHERE email LIKE ?", [$value])[0]))
+                    throw new Exception(_("This email address is already taken."), 1074);
+
             parent::set($name, $value);
+        }
         else {
-            if (isset($this->meta[$name]))
+            if ($this->get("avatar"))
+                if (file_exists($file = App::get("DIR_ROOT").App::get("DIR_MEDIA")."/avatars/".$this->get("avatar")))
+                    unlink($file);
+
+            if (isset($this->data[0]["meta"][$name]))
                 if ($value !== "" && $value !== null)
-                    Database::query("UPDATE app_accounts_meta SET value = ? WHERE id = ? AND name = ?", [$value, $this->get("id"), $name]);
-                else
-                    Database::query("DELETE FROM app_accounts_meta WHERE id = ? AND name = ?", [$this->get("id"), $name]);
+                    Database::query("UPDATE ".$this->table."_meta SET value = ? WHERE id = ? AND name = ?", [$value, $this->get("id"), $name]);
+                else 
+                    Database::query("DELETE FROM ".$this->table."_meta WHERE id = ? AND name = ?", [$this->get("id"), $name]);
             else
                 if ($value !== "" && $value !== null)
-                    Database::query("INSERT INTO app_accounts_meta (id, name, value) VALUES (?, ?, ?)", [$this->get("id"), $name, $value]);
+                    Database::query("INSERT INTO ".$this->table."_meta (id, name, value) VALUES (?, ?, ?)", [$this->get("id"), $name, $value]);
         
-            $this->meta[$name] = $value;
+            $this->data[0]["meta"][$name] = $value;
         }
-    }
-
-    /**
-     * 
-     *  Get all meta data associated with the account.
-     *
-     *  @since  2.0
-     *  @return array   An array containing all the meta data
-     * 
-     */
-    public function get_meta() {
-        return $this->meta ?? [];
     }
 
     /**
@@ -134,8 +137,8 @@ class Account extends Model {
      *  @param  string  $request    The request to be added to the watchlist
      * 
      */
-    public function set_watch(string $request) {
-        Database::query("INSERT INTO app_accounts_watchlist (id, request) VALUES (?, ?)", [$this->get("id"), $request]);
+    public function add_to_watchlist(string $request) {
+        Database::query("INSERT INTO ".$this->table."_watchlist (id, request) VALUES (?, ?)", [$this->get("id"), $request]);
     }
 
     /**
@@ -148,8 +151,45 @@ class Account extends Model {
      *  @return int                 The count of requests in the watchlist
      * 
      */
-    public function get_watch(string $request = "", float $timespan = 1440) {
-        return count(Database::query("SELECT * FROM app_accounts_watchlist WHERE id = ? AND request = ? AND detected BETWEEN (NOW() - INTERVAL ? MINUTE) AND NOW()", [$this->get("id"), $request, $timespan]));
+    public function count_in_watchlist(string $request = "", float $timespan = 1440) {
+        return count(Database::query("SELECT * FROM ".$this->table."_watchlist WHERE id = ? AND request = ? AND detected BETWEEN (NOW() - INTERVAL ? MINUTE) AND NOW()", [$this->get("id"), $request, $timespan]));
+    }
+
+    /**
+     * 
+     *  Create a new model.
+     *
+     *  @since  2.0
+     *  @param  string  $username   Username for the new account
+     *  @param  string  $email      Email address for the new account
+     *  @param  string  $password   Password for the new account
+     *  @param  int     $role       Role for the new accoutn
+     *  @return int                 New created user id
+     * 
+     */
+    public static function create(string $username, string $email, string $password, int $role = self::USER) {
+
+        if (!empty(Database::query("SELECT * FROM app_accounts WHERE username LIKE ?",[$username])[0]))
+            throw new Exception(_("This username is already taken."), 1075);
+        
+        if (!empty(Database::query("SELECT * FROM app_accounts WHERE email LIKE ?", [$email])[0]))
+            throw new Exception(_("This email address is already taken."), 1076);
+        
+        Database::query("INSERT INTO app_accounts (email, username, password, token, role) VALUES (?, ?, ?, ?, ?)", [strtolower($email), $username, password_hash($password, PASSWORD_DEFAULT), Auth::get_instance_token(), $role]);
+
+        return Database::$insert_id;
+    }
+
+    /**
+     * 
+     *  delete model.
+     *
+     *  @since  2.0
+     * 
+     */
+   public function delete() {
+        $this->set("avatar", null);
+        parent::delete();
     }
 
 }

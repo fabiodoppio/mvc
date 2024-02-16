@@ -1,7 +1,7 @@
-{% include head.tpl %} 
-        {% include header.tpl %}
+{% include /header.tpl %} 
+        {% include /topbar.tpl %}
 
-        <main class="page recovery">
+        <main class="account recovery">
             <section class="section is--light">
                 <div class="container">
                     <div class="main-content">
@@ -46,5 +46,4 @@
             </section>
         </main>
 
-        {% include footer.tpl %} 
-{% include foot.tpl %}
+        {% include /footer.tpl %} 

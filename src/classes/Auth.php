@@ -110,11 +110,11 @@ class Auth {
 
         $account = new Model\Account($account[0]["id"]);
 
-        if ($account->get_watch("set_current_account", 10) > 3)
+        if ($account->count_in_watchlist("set_current_account", 10) > 3)
             throw new Exception(_("You have entered the password incorrectly too many times. Please wait 10 minutes and try again."), 1004);
 
         if (!password_verify($password, $account->get("password"))) {
-            $account->set_watch("set_current_account");
+            $account->add_to_watchlist("set_current_account");
             throw new Exception(_("You have entered an incorrect password."), 1005);
         }
 
@@ -136,15 +136,7 @@ class Auth {
      * 
      */
     public static function set_new_account(string $username, string $email, string $password) {
-        if (!empty(Database::query("SELECT * FROM app_accounts WHERE username LIKE ?", [$username])[0]))
-            throw new Exception(_("This username is already taken."), 1007);
-
-        if (!empty(Database::query("SELECT * FROM app_accounts WHERE email LIKE ?", [$email])[0]))
-            throw new Exception(_("This email address is already taken."), 1008);
-
-        Database::query("INSERT INTO app_accounts (email, username, password, token, role) VALUES (?, ?, ?, ?, ?)", [strtolower($email), $username, password_hash($password, PASSWORD_DEFAULT), self::get_instance_token(), Model\Account::USER]);
-
-        self::set_auth_cookie(Database::$insert_id, self::get_instance_token());
+        self::set_auth_cookie(Model\Account::create($username, $email, $password), self::get_instance_token());
     }
 
     /**
@@ -198,14 +190,14 @@ class Auth {
      */
     public static function get_confirmcode(string $credential) {
         if (empty($account = Database::query("SELECT * FROM app_accounts WHERE email LIKE ? OR username = ?", [$credential, $credential])))
-            throw new Exception(_("There is no account with this username or email address."), 1009);
+            throw new Exception(_("There is no account with this username or email address."), 1007);
 
         $account = new Model\Account($account[0]["id"]);
 
-        if ($account->get_watch("get_confirmcode", 60) > 3)
-            throw new Exception(_("You have tried to request a confirmation code too many times. Please wait 60 minutes and try again."), 1010);
+        if ($account->count_in_watchlist("get_confirmcode", 60) > 3)
+            throw new Exception(_("You have tried to request a confirmation code too many times. Please wait 60 minutes and try again."), 1008);
 
-        $account->set_watch("get_confirmcode");
+        $account->add_to_watchlist("get_confirmcode");
         $hash = hash_hmac('sha256', date("dmYH").$account->get("id").$account->get("token"), hash_hmac('md5', date("dmYH").$account->get("id").$account->get("token"), App::get("SALT_TOKEN")));
         $code = strtoupper(substr($hash,0,3)."-".substr($hash,29,3)."-".substr($hash, -3));
         
@@ -216,22 +208,27 @@ class Auth {
      * 
      *  Verify a confirmation code for a user account.
      *
-     *  @since  2.0
+     *  @since  2.08092
      *  @param  string  $credential     The email or username of the user.
      *  @param  string  $confirmcode    The confirmation code to verify.
      * 
      */
     public static function verify_confirmcode(string $credential, string $confirmcode) {
         if (empty($account = Database::query("SELECT * FROM app_accounts WHERE email LIKE ? OR username = ?", [$credential, $credential]))) 
-            throw new Exception(_("There is no account with this username or email address."), 1011);
+            throw new Exception(_("There is no account with this username or email address."), 1009);
 
         $account = new Model\Account($account[0]["id"]);
+        
+        if ($account->count_in_watchlist("verify_confirmcode", 60) > 3)
+            throw new Exception(_("You have tried to verify a confirmation code too many times. Please wait 60 minutes and try again."), 1010);
 
+        $account->add_to_watchlist("verify_confirmcode");
         $hash = hash_hmac('sha256', date("dmYH").$account->get("id").$account->get("token"), hash_hmac('md5', date("dmYH").$account->get("id").$account->get("token"), App::get("SALT_TOKEN")));
         $code = strtoupper(substr($hash,0,3)."-".substr($hash,29,3)."-".substr($hash, -3));
 
+        
         if (!hash_equals($confirmcode, $code))
-            throw new Exception(_("This confirmation code is invalid."), 1012);
+            throw new Exception(_("This confirmation code is invalid."), 1011);
     }
 
     /**
@@ -257,7 +254,7 @@ class Auth {
      */
     public static function verify_client_token(string $token) {
         if (!hash_equals($_SESSION["client"][$token], hash_hmac('sha256', $token, hash_hmac('md5', $token, App::get("SALT_TOKEN")))))
-            throw new Exception(_("Illegal activity detected."), 1013);
+            throw new Exception(_("Illegal activity detected."), 1012);
     }
 
 }

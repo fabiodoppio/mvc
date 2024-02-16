@@ -1,5 +1,5 @@
-{% include head.tpl %} 
-        {% include header.tpl %} 
+{% include /header.tpl %} 
+        {% include /topbar.tpl %} 
 
         <main class="account verify">
             <section class="section is--light">
@@ -38,5 +38,4 @@
             </section>
         </main>
 
-        {% include footer.tpl %} 
-{% include foot.tpl %} 
+        {% include /footer.tpl %} 

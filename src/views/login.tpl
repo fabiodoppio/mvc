@@ -1,7 +1,7 @@
-{% include head.tpl %} 
-        {% include header.tpl %}
+{% include /header.tpl %} 
+        {% include /topbar.tpl %}
 
-        <main class="page login">
+        <main class="account login">
             <section class="section is--light">
                 <div class="container">
                     <div class="main-content">
@@ -19,8 +19,8 @@
                             <label for="stay">
                                 <input type="checkbox" name="stay" id="stay" value="1">{{"Stay logged in"}}
                             </label><br><br>
-                            {% if ($request->redirect != ""): %}
-                                <input type="hidden" name="redirect" value="{{$request->redirect}}"/>
+                            {% if ($request->get->redirect??""): %}
+                                <input type="hidden" name="redirect" value="{{$request->get->redirect}}"/>
                             {% endif; %}
                             <div class="response"></div>
                             <button class="btn is--primary">{{"Log In"}}</button>
@@ -33,5 +33,4 @@
             </section>
         </main>
 
-        {% include footer.tpl %} 
-{% include foot.tpl %}
+        {% include /footer.tpl %} 

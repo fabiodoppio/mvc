@@ -37,32 +37,34 @@ class Exception extends \Exception {
     public function process() {
         switch($this->getCode()) {
             case 403:
+
                 Auth::unset_auth_cookie();
                 http_response_code(403);
                 $redirect = (!empty($_GET["redirect"])) ? Fairplay::string($_GET["redirect"]) : strtok($_SERVER["REQUEST_URI"], '?');
                 header("Location: ".App::get("APP_URL")."/login?redirect=".urlencode($redirect));
                 exit;
+
                 break;
             case 404:
+
                 http_response_code(404);
                 header("Location: ".App::get("APP_URL")."/oops");
                 exit;
+
                 break;
             case 405:
+
                 http_response_code(405);
                 header("Location: ".App::get("APP_URL")."/account");
                 exit;
+
                 break;
             case 406:
+
                 http_response_code(406);
-                $redirect = (!empty($_GET["redirect"])) ? Fairplay::string($_GET["redirect"]) : strtok($_SERVER["REQUEST_URI"], '?');
-                header("Location: ".App::get("APP_URL")."/account/verify?redirect=".urlencode($redirect));
-                exit;
-                break;
-            case 407:
-                http_response_code(407);
                 header("Location: ".App::get("APP_URL")."/maintenance");
                 exit;
+                
                 break;
             default:
                 echo $this->getMessage()." (Code: ".$this->getCode().")";

@@ -43,7 +43,7 @@ class Template {
         $template = ob_get_contents();
         ob_end_clean();
 
-        return preg_replace(['/\>[^\S ]+/s','/[^\S ]+\</s','/(\s)+/s'], ['>','<','\\1'], $template);
+        return $template;
     }
 
     /**
@@ -91,16 +91,17 @@ class Template {
      * 
      */
     private static function include_files(string $file) {
-        if (!file_exists($path = App::get("DIR_ROOT").App::get("DIR_VIEWS")."/".$file))
-            if (!file_exists($path = App::get("DIR_ROOT").App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/views/".$file))
-                throw new Exception(sprintf(_("Template %s not found."), $file), 1035);
-
+        if (!file_exists($path = App::get("DIR_ROOT").App::get("DIR_VIEWS").$file))
+            if (!file_exists($path = App::get("DIR_ROOT").App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/views".$file))
+                throw new Exception(sprintf(_("Template %s not found."), $file), 1030);
+            
         $template = file_get_contents($path);
+
 		preg_match_all('/{% ?(include) ?\'?(.*?)\'? ?%}/i', $template, $matches, PREG_SET_ORDER);
 		foreach ($matches as $value) 
 			$template = str_replace($value[0], self::include_files($value[2]), $template);
 
-        return $template;
+        return preg_replace(['/\>[^\S ]+/s','/[^\S ]+\</s','/(\s)+/s'], ['>','<','\\1'], $template);
     }
 
     /**

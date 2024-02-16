@@ -27,28 +27,6 @@ class Fairplay {
 
     /**
      * 
-     *  Validate a file.
-     *
-     *  @since  2.0
-     *  @param  array  $file    The file to validate.
-     *  @return array           The validated file if it meets the criteria.
-     * 
-     */
-    public static function file(array $file) {
-        if ($file['error'] !== 0)
-            throw new Exception(_("There was a problem uploading your file."), 1018);
-        
-        if (!in_array(mime_content_type($file['tmp_name']), array_filter(json_decode(App::get("UPLOAD_FILE_TYPES")))))
-            throw new Exception(_("This file type is not allowed."), 1019);
-
-        if ($file["size"] > App::get("UPLOAD_FILE_SIZE"))
-            throw new Exception(sprintf(_("The file exceeds the maximum allowed file size of %s KB."), (App::get("UPLOAD_FILE_SIZE")/1000)), 1020);
-
-        return $file;
-    }
-
-    /**
-     * 
      *  Validate a username.
      *
      *  @since  2.0
@@ -58,14 +36,14 @@ class Fairplay {
      */
     public static function username(string $value) {
         if (strlen($value) > 18 || strlen($value) < 4)
-            throw new Exception(_("The username must be between 3 and 18 characters long."), 1021);
+            throw new Exception(_("The username must be between 3 and 18 characters long."), 1015);
         elseif (preg_match('/[^A-Za-z0-9]+/', $value, $res))
-            throw new Exception(_("The username cannot contain any special characters."), 1022);
+            throw new Exception(_("The username cannot contain any special characters."), 1016);
         
         $check = preg_replace("/[^A-Za-z0-9üÜöÖäÄ]/", "", strtolower($value));
-        foreach(array_filter(json_decode(App::get("APP_BADWORDS"))) as $badword)
+        foreach(App::get("APP_BADWORDS") as $badword)
             if (!empty($badword) && strstr($check, strtolower($badword)) !== false)
-                throw new Exception(_("This username is not allowed."), 1023);
+                throw new Exception(_("This username is not allowed."), 1017);
 
         return $value;
     }
@@ -82,9 +60,9 @@ class Fairplay {
      */
     public static function password(string $value1, ?string $value2 = null) {
         if ($value1 != $value2)
-            throw new Exception(_("The passwords do not match."), 1024);
+            throw new Exception(_("The passwords do not match."), 1018);
         elseif (strlen($value1) < 8)
-            throw new Exception(sprintf(_("Your password must be at least %s characters long."), 8), 1025);
+            throw new Exception(sprintf(_("Your password must be at least %s characters long."), 8), 1019);
         return $value1;
     }
 
@@ -100,7 +78,7 @@ class Fairplay {
     public static function email(string $value) {
         $value = filter_var($value, FILTER_VALIDATE_EMAIL);
 		if ($value === false) 
-            throw new Exception(_("Invalid email address."), 1026);
+            throw new Exception(_("Invalid email address."), 1020);
         return $value;
     }
     
@@ -116,7 +94,7 @@ class Fairplay {
 	public static function integer(int|string $value) {
 		$value = filter_var($value, FILTER_VALIDATE_INT);
 		if ($value === false) 
-            throw new Exception(_("Invalid integer."), 1027);
+            throw new Exception(_("Invalid integer."), 1021);
 		return $value;
 	}
     
@@ -131,7 +109,7 @@ class Fairplay {
      */
     public static function number(float|string $value) {
         if(!is_numeric($value))
-            throw new Exception(_("Invalid number."), 1028);
+            throw new Exception(_("Invalid number."), 1022);
         return $value;
     }
 
@@ -146,7 +124,7 @@ class Fairplay {
      */
 	public static function array(array $value) {
 		if (!is_array($value))
-            throw new Exception(_("Invalid array."), 1029);
+            throw new Exception(_("Invalid array."), 1023);
 
 		return $value;
 	}
@@ -162,7 +140,7 @@ class Fairplay {
      */
 	public static function string(string $value) {
 		if (!is_string($value))
-            throw new Exception(_("Invalid string."), 1030);
+            throw new Exception(_("Invalid string."), 1024);
 		return $value;
 	}
 
@@ -178,7 +156,7 @@ class Fairplay {
 	public static function boolean(bool|string $value) {
 		$value = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         if ($value === null)
-            throw new Exception(_("Invalid boolean."), 1031);
+            throw new Exception(_("Invalid boolean."), 1025);
 		return $value;
 	}
 
@@ -194,7 +172,22 @@ class Fairplay {
 	public static function url(string $value) {
 		$value = filter_var($value, FILTER_VALIDATE_URL);
 		if ($value === false)
-            throw new Exception(_("Invalid url."), 1032);
+            throw new Exception(_("Invalid url."), 1026);
+        return $value;
+	}
+
+    /**
+     * 
+     *  Validate a datetime.
+     *
+     *  @since  2.0
+     *  @param  string  $value  The URL to validate.
+     *  @return string          The validated URL if it is valid.
+     * 
+     */
+	public static function datetime(string $value) {
+		if (!strtotime($value))
+            throw new Exception(_("Invalid datetime."), 1027);
         return $value;
 	}
 
@@ -209,12 +202,12 @@ class Fairplay {
      */
     public static function message(string $value) {
         if (strlen($value) > 2 || strlen($value) < 250)
-            throw new Exception(sprintf(_("The message must be between %1\$s and %2\$s characters long."), 2, 250), 1033);
+            throw new Exception(sprintf(_("The message must be between %1\$s and %2\$s characters long."), 2, 250), 1028);
         
         $check = preg_replace("/[^A-Za-z0-9üÜöÖäÄ]/", "", strtolower($value));
-        foreach(array_filter(json_decode(App::get("APP_BADWORDS"))) as $badword)
+        foreach(App::get("APP_BADWORDS") as $badword)
             if (!empty($badword) && strstr($check, strtolower($badword)) !== false)
-                throw new Exception(_("This message is not allowed."), 1034);
+                throw new Exception(_("This message is not allowed."), 1029);
 
         return $value;
     }

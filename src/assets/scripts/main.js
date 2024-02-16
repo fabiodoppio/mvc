@@ -12,4 +12,16 @@
 
 $(function() {
 
+
+    $('[data-trigger="dropdown"]').click(function() { $('.dropdown').not($(this).next()).hide(); $(this).next('.dropdown').toggle(); });
+
+
+
+
+   $(document).click(function(e) { 
+        var target = e.target; 
+        if (!$(target).is('[data-trigger="dropdown"]') && !$(target).parents().is('[data-trigger="dropdown"]')) 
+        { $('.dropdown').hide(); }
+    }); 
+
 });

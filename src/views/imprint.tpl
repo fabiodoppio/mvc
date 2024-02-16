@@ -1,5 +1,5 @@
-{% include head.tpl %} 
-        {% include header.tpl %}
+{% include /header.tpl %} 
+        {% include topbar.tpl %}
 
         <main class="page imprint">
             <section class="section">
@@ -11,5 +11,4 @@
             </section>
         </main>
 
-        {% include footer.tpl %} 
-{% include foot.tpl %}
+        {% include /footer.tpl %} 

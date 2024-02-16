@@ -15,73 +15,95 @@
 
 namespace MVC;
 
+use MVC\App         as App;
+use MVC\Exception   as Exception;
+
 /**
  * 
  *  Upload Class
  *
- *  The Upload class provides methods for handling file uploads, including validation and storing files.
+ *  The Upload class provides methods for uploading users avatars and attachments from contact forms.
  * 
  */
 class Upload {
 
     /**
-     *  @var    string  $filename   The filename of the uploaded file.
+     *  @var    int     ATTACHMENT      Constant representing an attachment upload
      */
-    private $filename;
-
-
+    public const ATTACHMENT = 1;
+    
     /**
-     * 
-     *  Construct an Upload object for handling file uploads.
+     *  @var    int     AVATAR          Constant representing an avatar upload
+     */
+    public const AVATAR = 2;
+
+     
+    /**
      *
-     *  @since  2.0
-     *  @param  array   $file       The file information from the $_FILES array.
-     *  @param  string  $prefix     (Optional) Prefix to prepend to the generated filename.
+     *  The Upload class provides methods for uploading users avatars and attachments from contact forms.
+     * 
+     *  @since 2.0
+     *  @param  array   $file       File array from upload
+     *  @param  int     $type       File type, Attachment or Avatar
+     *  @return                     Generated name of the uploaded file
      * 
      */
-    public function __construct(array $file, string $prefix = "") {
-        $filename = $prefix."_".bin2hex(random_bytes(9));
-        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-        if (!move_uploaded_file($file['tmp_name'], App::get("DIR_ROOT").App::get("DIR_UPLOADS")."/".$filename.".".$ext))
+     public static function upload(array $file, int $type) {
+        $dirname    = App::get("DIR_MEDIA");
+        $basename   = pathinfo($file["name"], PATHINFO_BASENAME);
+        $extension  = pathinfo($file["name"], PATHINFO_EXTENSION);
+        $imagesize  = getimagesize($file["tmp_name"]);
+        $filetype   = mime_content_type($file["tmp_name"]);
+
+        switch($type) {
+            case self::ATTACHMENT:
+                if (!in_array($filetype, ["image/jpeg", "image/jpg", "image/png", "application/pdf", "text/plain"]))
+                    throw new Exception(_("File has to be %s.", "a jpeg, jpg, png or txt"), 1031);
+
+                if ($file["size"] > 12582912)
+                    throw new Exception(sprintf(_("File exceeds the maximum allowed file size of %s KB."), 12288), 1032);
+
+                $dirname  = $dirname."/uploads";
+                $basename = "upload_".bin2hex(random_bytes(9));
+                break;
+            case self::AVATAR: 
+                if (!in_array($filetype, ["image/jpeg", "image/jpg", "image/png"]))
+                    throw new Exception(_("File has to be %s.", "a jpeg, jpg or png"), 1033);
+
+                if ($file["size"] > 3145728)
+                    throw new Exception(sprintf(_("File exceeds the maximum allowed file size of %s KB."), 3072), 1034);
+
+                if ($imagesize[0] != $imagesize[1])
+                    throw new Exception(_("Avatar has to be squared."), 1035); 
+
+                if ($filetype == IMAGETYPE_JPEG) {
+                    $img = imagecreatefromjpeg($file["tmp_name"]);
+                    $new_img = imagecreatetruecolor(150, 150);
+                    imagecopyresampled($new_img, $img, 0, 0, 0, 0, 150, 150, $imagesize[0], $imagesize[1]);
+                    imagejpeg($new_img, $file["tmp_name"], 100);
+                }
+                elseif ($filetype == IMAGETYPE_PNG) {
+                    $img = imagecreatefrompng($file["tmp_name"]);
+                    $new_img = imagecreatetruecolor(150, 150);
+                    imagecopyresampled($new_img, $img, 0, 0, 0, 0, 150, 150, $imagesize[0], $imagesize[1]);
+                    imagepng($new_img, $file["tmp_name"]);
+                }
+
+                $dirname = $dirname."/avatars";
+                $basename = "avatar_".bin2hex(random_bytes(9));
+                break;
+        }
+
+        if (!is_dir($dir = App::get("DIR_ROOT").$dirname))
+            mkdir($dir, 0777, true);
+
+        if (file_exists(App::get("DIR_ROOT").$dirname."/".$basename.".".$extension))
+            $basename .= "_copy";
+
+        if (!move_uploaded_file($file["tmp_name"], App::get("DIR_ROOT").$dirname."/".$basename.".".$extension))
             throw new Exception(_("File could not be uploaded."), 1036);
-        $this->filename = $filename.".".$ext;
-    }
 
-    /**
-     * 
-     *  Get the name of the uploaded file.
-     *
-     *  @since  2.0
-     *  @return string  The name of the uploaded file.
-     * 
-     */
-    public function get_file_name() {
-        return $this->filename;
-    }
-
-    /**
-     * 
-     *  Get the URL of the uploaded file.
-     *
-     *  @since  2.0
-     *  @return string  The URL of the uploaded file.
-     * 
-     */
-    public function get_file_url() {
-        return App::get("APP_URL").App::get("DIR_UPLOADS")."/".$this->filename;
-    }
-
-    /**
-     * 
-     *  Delete a file of a given filename.
-     *
-     *  @since  2.0
-     *  @param  string  $filename   The name of the uploaded file.
-     * 
-     */
-    public static function delete(string $filename) {
-        if (!unlink(App::get("DIR_ROOT").App::get("DIR_UPLOADS")."/".$filename))
-            throw new Exception(_("File could not be deleted."), 1037);
+        return $basename.".".$extension;
     }
 
 }

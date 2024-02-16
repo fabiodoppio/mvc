@@ -40,9 +40,6 @@ class Email {
 	public static function send(string $subject, string $recipient, string $template, ?string $attachment = null, ?string $attachment_name = null) {
         $mail = new \PHPMailer\PHPMailer\PHPMailer();
 
-        if (!App::get("MAIL_HOST") || !App::get("MAIL_SENDER") || !App::get("MAIL_USERNAME") || !App::get("MAIL_PASSWORD"))
-            throw new Exception(_("Mail server not found."), 1016);
-        
         $mail->isSMTP();
         $mail->isHTML(true);
         $mail->CharSet    = 'UTF-8';
@@ -51,8 +48,8 @@ class Email {
         $mail->SMTPAuth   = true;
         $mail->Username   = App::get("MAIL_USERNAME");
         $mail->Password   = base64_decode(App::get("MAIL_PASSWORD"));
-        $mail->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port       = 465;
+        $mail->SMTPSecure = App::get("MAIL_ENCRYPT");
+        $mail->Port       = App::get("MAIL_PORT");
         $mail->setFrom(App::get("MAIL_SENDER"), App::get("APP_NAME"));
         $mail->addAddress($recipient);
         $mail->Subject    = $subject;
@@ -60,8 +57,9 @@ class Email {
 
         if ($attachment && $attachment_name)
             $mail->addStringAttachment($attachment, $attachment_name);
+
         if(!$mail->send())
-           throw new Exception(_("Email could not be sent."), 1017);
+           throw new Exception(_("Email could not be sent."), 1014);
 	}
 
 }
