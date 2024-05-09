@@ -7,17 +7,17 @@
 {% if ($var->platform != ""): %} <b>{{"Platform"}}:</b> {{$var->platform}}<br/>{% endif; %}
 <br/>
 <b>{{"Message"}}:</b><br/>
-{{$message}}
+{{$var->message}}
 {% if ($var->attachment != ""): %} 
     <br/>
     <br/>
     <b>{{"Attachment"}}:</b><br/>
-    <a href="{{$app->url}}{{$app->directory->media}}/{{$var->attachment}}">{{$var->attachment}}</a>
+    <a href="{{$app->url}}{{$app->directory->media}}/uploads/{{$var->attachment}}">{{$var->attachment}}</a>
 {% endif; %}
 <br/><br/><br/>
 {{"Best regards"}}<br/>
 {{$app->name}}
 <div style="font-size:12px; line-height: 150%; margin-top:50px;">
-- - -<br>
+- - -<br/>
 {{"This is an automatically generated email, please do not reply."}}
 </div>

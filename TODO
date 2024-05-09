@@ -1,8 +1,3 @@
 - add default theme
 - mobile viewport for default theme
-- id for and name "for"-label inputs in general
-- tooltip for avatar
-- contact form (with upload)
-- example classes and models
-- detailed documentation in readme file
-- cookiebanner
+- main.js minify

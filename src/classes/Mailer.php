@@ -17,13 +17,13 @@ namespace MVC;
 
 /**
  * 
- *  Email Class
+ *  Mailer Class
  *
- *  The Email class provides functionality for sending emails using the PHPMailer library.
+ *  The Mailer class provides functionality for sending emails using the PHPMailer library.
  *  It supports sending HTML emails with optional attachments.
  * 
  */
-class Email {
+class Mailer {
 
     /**
      * 

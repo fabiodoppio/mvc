@@ -17,28 +17,28 @@ namespace MVC;
 
 /**
  * 
- *  Template Class
+ *  Cache Class
  *
- *  The Template class provides methods for working with templates, including rendering templates, caching, and clearing cache.
+ *  The Cache class provides methods for working with the template cache, including rendering or caching templates.
  * 
  */
-class Template {
+class Cache {
 
     /**
      * 
-     *  Render a template file with optional variables.
+     *  Get a template file with optional variables from the cache.
      *
      *  @since  2.0
-     *  @param  string      $file   The name of the template file to render.
+     *  @param  string      $file   The name of the template file to compile.
      *  @param  array|null  $vars   (Optional) Associative array of variables to pass to the template.
-     *  @return string              The rendered template as a string.
+     *  @return string              The compiled template as a string.
      * 
      */
     public static function get(string $file, ?array $vars = []) {
         ob_start();
         extract($vars, EXTR_OVERWRITE); 
 
-        include self::cache_file($file);
+        include self::compile($file);
 
         $template = ob_get_contents();
         ob_end_clean();
@@ -55,11 +55,11 @@ class Template {
      *  @return string          The path to the cached template file.
      * 
      */
-    private static function cache_file(string $file) { 
+    private static function compile(string $file) { 
         $cache = App::get("DIR_ROOT").App::get("DIR_CACHE").'/_'.hash_hmac('sha256', $file, hash_hmac('md5', $file, App::get("SALT_CACHE"))).'.php';
 
         if (App::get("APP_DEBUG") || !file_exists($cache)) {
-            $template = self::include_files($file);
+            $template = self::compile_includes($file);
             $template = self::compile_comments($template);
             $template = self::compile_echos($template);
             $template = self::compile_php($template);
@@ -71,26 +71,15 @@ class Template {
 
     /**
      * 
-     *  Clear the template cache by deleting cached files.
-     * 
-     *  @since 2.0
-     * 
-     */
-    public static function clear_cache() {
-        foreach(glob(App::get("DIR_ROOT").App::get("DIR_CACHE").'/*') as $file)
-			unlink($file);
-    }
-
-    /**
-     * 
      *  Include and process template files recursively.
      *
      *  @since  2.0
      *  @param  string  $file   The name of the template file to process.
+     *  @param  string  $dir    The directory which contains the template file.
      *  @return string          The processed template content.
      * 
      */
-    private static function include_files(string $file) {
+    private static function compile_includes(string $file) {
         if (!file_exists($path = App::get("DIR_ROOT").App::get("DIR_VIEWS").$file))
             if (!file_exists($path = App::get("DIR_ROOT").App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/views".$file))
                 throw new Exception(sprintf(_("Template %s not found."), $file), 1030);
@@ -99,7 +88,7 @@ class Template {
 
 		preg_match_all('/{% ?(include) ?\'?(.*?)\'? ?%}/i', $template, $matches, PREG_SET_ORDER);
 		foreach ($matches as $value) 
-			$template = str_replace($value[0], self::include_files($value[2]), $template);
+			$template = str_replace($value[0], self::compile_includes($value[2]), $template);
 
         return preg_replace(['/\>[^\S ]+/s','/[^\S ]+\</s','/(\s)+/s'], ['>','<','\\1'], $template);
     }
@@ -153,6 +142,18 @@ class Template {
      */
     private static function compile_php(string $template) {
 		return preg_replace('~\{%\s*(.+?)\s*\%}~is', '<?php $1 ?>', $template);
+    }
+
+    /**
+     * 
+     *  Clear the template cache by deleting cached files.
+     * 
+     *  @since 2.0
+     * 
+     */
+    public static function clear() {
+        foreach(glob(App::get("DIR_ROOT").App::get("DIR_CACHE").'/*') as $file)
+			unlink($file);
     }
 
 }

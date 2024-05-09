@@ -15,8 +15,8 @@
 
 namespace MVC\Controllers;
 
-use MVC\Ajax as Ajax;
-use MVC\Auth as Auth;
+use MVC\App     as App;
+use MVC\Ajax    as Ajax;
 
 /**
  * 
@@ -44,7 +44,7 @@ abstract class Controller {
      */
     public function beforeAction() {
         session_start();
-        $this->account = Auth::get_current_account();
+        $this->account = App::get_instance_model();
     }
 
     /**

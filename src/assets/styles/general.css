@@ -31,9 +31,6 @@
   --box-shadow: 0 4px 5px 0 var(--color-secondary-600);
 }
 
-
-
-
 .container {
   padding: 10px 20px;
   max-width: 1200px;
@@ -160,7 +157,7 @@ header .brand, header .menu {
     visibility: visible;
   }
 
-  .signup label[for="firstname"] {
+  .signup label[for="firstname"], .help label[for="firstname"] {
     display:none;
   }
 

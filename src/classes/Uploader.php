@@ -20,12 +20,12 @@ use MVC\Exception   as Exception;
 
 /**
  * 
- *  Upload Class
+ *  Uploader Class
  *
- *  The Upload class provides methods for uploading users avatars and attachments from contact forms.
+ *  The Uploader class provides methods for uploading users avatars and attachments from contact forms.
  * 
  */
-class Upload {
+class Uploader {
 
     /**
      *  @var    int     ATTACHMENT      Constant representing an attachment upload
@@ -40,7 +40,7 @@ class Upload {
      
     /**
      *
-     *  The Upload class provides methods for uploading users avatars and attachments from contact forms.
+     *  Uploads users avatars and attachments from contact forms.
      * 
      *  @since 2.0
      *  @param  array   $file       File array from upload
@@ -49,6 +49,9 @@ class Upload {
      * 
      */
      public static function upload(array $file, int $type) {
+        if (!$file["name"] || !$file["size"] || !$file["tmp_name"])
+            return ""; 
+
         $dirname    = App::get("DIR_MEDIA");
         $basename   = pathinfo($file["name"], PATHINFO_BASENAME);
         $extension  = pathinfo($file["name"], PATHINFO_EXTENSION);
@@ -58,7 +61,7 @@ class Upload {
         switch($type) {
             case self::ATTACHMENT:
                 if (!in_array($filetype, ["image/jpeg", "image/jpg", "image/png", "application/pdf", "text/plain"]))
-                    throw new Exception(_("File has to be %s.", "a jpeg, jpg, png or txt"), 1031);
+                    throw new Exception(_("File has to be a jpeg, jpg, png, pdf or txt."), 1031);
 
                 if ($file["size"] > 12582912)
                     throw new Exception(sprintf(_("File exceeds the maximum allowed file size of %s KB."), 12288), 1032);
@@ -68,7 +71,7 @@ class Upload {
                 break;
             case self::AVATAR: 
                 if (!in_array($filetype, ["image/jpeg", "image/jpg", "image/png"]))
-                    throw new Exception(_("File has to be %s.", "a jpeg, jpg or png"), 1033);
+                    throw new Exception(_("File has to be a jpeg, jpg or png."), 1033);
 
                 if ($file["size"] > 3145728)
                     throw new Exception(sprintf(_("File exceeds the maximum allowed file size of %s KB."), 3072), 1034);

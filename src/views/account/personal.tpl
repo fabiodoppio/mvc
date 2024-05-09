@@ -1,16 +1,16 @@
-{% include /header.tpl %} 
-        {% include /topbar.tpl %} 
+{% include /_includes/header.tpl %} 
+        {% include /_includes/topbar.tpl %} 
 
         <main class="account personal">
             <section class="section is--light">
                 <div class="container">
-                    {% include /account/sidebar.tpl %}
+                    {% include /_includes/sidebar.tpl %}
                     <div class="main-content">
                         <h1 class="title">{{"Hey %s", $account->meta->displayname ?? $account->username}},</h1>
                         <p>{{"Manage your personal information."}}</p> 
-                        {% if ($account->role < 5): %}
+                        {% if ($account->role < $account->roles->verified): %}
                             <span class="info">
-                                {{"Your email address is not verified. <a href=\"%s/account/verify\">Verify now</a> to gain full access to all features of this app.", $app->url}}                               
+                                {{"Your email address is not verified."}} {{"<a href=\"%s/account/email\">Verify now</a> to gain full access to all features of this app.", $app->url}}
                             </span>
                         {% endif; %}
                             <h2 class="title">{{"Avatar"}}</h2>
@@ -19,15 +19,23 @@
                                     <img src="{{$app->url}}{{$directory->uploads}}/{{$account->avatar}}" alt="{{$account->avatar}}"/>
                                 {% endif; %}
                             </div>
-                            <form data-request="user/edit/avatar/upload">
-                                <label for="avatar"> <span class="btn is--primary">{{"Upload Avatar"}}</span>
+                            <form data-request="account/personal/avatar/upload">
+                                <label for="avatar"> 
+                                    <div class="tooltip"><i class="fas fa-circle-info"></i><span>{{"Your image must be squared and not exceed the maximum allowed file size of %s KB", "3072"}}</span></div>
+                                    <span class="btn is--primary">{{"Upload Avatar"}}</span>
                                     <input id="avatar" type="file" name="avatar" accept="image/*" hidden/>
                                 </label>
-                                <a class="btn is--secondary" data-request="user/edit/avatar/delete" data-value="">{{"Delete Avatar"}}</a>
+                                <br><br>
+                                <div class="response"></div>
+                            </form>
+                            <form data-request="account/personal/avatar/delete">
+                                <br><br>
+                                <div class="response"></div>
+                                <button class="btn is--secondary" data-request="account/personal/avatar/delete">{{"Delete Avatar"}}</button>
                             </form>
                             <br><br>
                         <h2 class="title">{{"Contact"}}</h2>
-                        <form data-request="user/edit">
+                        <form data-request="account/personal/edit">
                                 <label for="displayname">
                                     {{"Display Name"}} <span class="required" title="{{'Required'}}">*</span>
                                     <select id="displayname" name="displayname" required>
@@ -55,58 +63,52 @@
                                 </label>
                                 <label for="company">
                                     {{"Company"}}
-                                    <input type="hidden" name="name[]" value="company"/>
-                                    <input type="text" id="company" name="value[]" maxlength="64" placeholder="{{'Enter company'}}" value="{{$account->company}}"/>
+                                    <input type="text" id="company" name="company" maxlength="64" placeholder="{{'Enter company'}}" value="{{$account->meta->company}}"/>
                                 </label>
                                 <label for="firstname">
                                     {{"First Name"}}
-                                    <input type="hidden" name="name[]" value="firstname"/>
-                                    <input type="text" id="firstname" name="value[]" maxlength="64" placeholder="{{'Enter first name'}}" value="{{$account->firstname}}"/>
+                                    <input type="text" id="firstname" name="firstname" maxlength="64" placeholder="{{'Enter first name'}}" value="{{$account->meta->firstname}}"/>
                                 </label>
                                 <label for="lastname">
                                     {{"Last Name"}}
-                                    <input type="hidden" name="name[]" value="lastname"/>
-                                    <input type="text" id="lastname" name="value[]" maxlength="64" placeholder="{{'Enter last name'}}" value="{{$account->lastname}}"/>
+                                    <input type="text" id="lastname" name="lastname" maxlength="64" placeholder="{{'Enter last name'}}" value="{{$account->meta->lastname}}"/>
                                 </label>
                                 <label for="street">
                                     {{"Street / House Number"}}
-                                    <input type="hidden" name="name[]" value="street"/>
-                                    <input type="text" id="street" name="value[]" maxlength="64" placeholder="{{'Enter street / house number'}}" value="{{$account->street}}"/>
+                                    <input type="text" id="street" name="street" maxlength="64" placeholder="{{'Enter street / house number'}}" value="{{$account->meta->street}}"/>
                                 </label>
                                 <label for="postal">
                                     {{"ZIP Code"}}
-                                    <input type="hidden" name="name[]" value="postal"/>
-                                    <input type="text" id="postal" name="value[]" maxlength="64" placeholder="{{'Enter zip code'}}" value="{{$account->postal}}"/>
+                                    <input type="text" id="postal" name="postal" maxlength="64" placeholder="{{'Enter zip code'}}" value="{{$account->meta->postal}}"/>
                                 </label>
                                 <label for="city">
                                     {{"City"}}
-                                    <input type="hidden" name="name[]" value="city"/>
-                                    <input type="text" id="city" name="value[]" maxlength="64" placeholder="{{'Enter city'}}" value="{{$account->city}}"/>
+                                    <input type="text" id="city" name="city" maxlength="64" placeholder="{{'Enter city'}}" value="{{$account->meta->city}}"/>
                                 </label>
                                 <label for="country">
                                     {{"Country"}}
-                                    <input type="hidden" name="name[]" value="country"/>
-                                    <input type="text" id="country" name="value[]" maxlength="64" placeholder="{{'Enter country'}}" value="{{$account->country}}"/>
+                                    <input type="text" id="country" name="country" maxlength="64" placeholder="{{'Enter country'}}" value="{{$account->meta->country}}"/>
                                 </label>
+                                <br><br>
+                                <div class="response"></div>
                             <button class="btn is--primary">{{"Save Changes"}}</button>
                         </form>
-                            <br><br>
-                            <h2 class="title">{{"Language"}}</h2>
-                            <form data-request="account/locale">
-                                <label for="language">
-                                    {{"Preferred Language"}} <span class="required" title="{{'Required'}}">*</span>
-                                    <select id="language" name="language" required>
-                                        {% $language = $account->meta->language ?? $app->meta->language; %}
-                                        <option value="de_DE.utf8" {{($language == "de_DE.utf8") ? "selected" : ""}}>Deutsch</option>
-                                        <option value="en_EN.utf8" {{($language == "en_EN.utf8") ? "selected" : ""}}>English</option>
-                                    </select>
-                                </label>
-                                <button class="btn is--primary">{{"Change Language"}}</button>
-                            </form>
+                        <br><br>
+                        <h2 class="title">{{"Language"}}</h2>
+                        <form data-request="account/locale">
+                            <label for="language">
+                                {{"Preferred Language"}} <span class="required" title="{{'Required'}}">*</span>
+                                <select id="language" name="value" required>
+                                    {% $language = $account->meta->language ?? $app->meta->language; %}
+                                    <option value="de_DE.utf8" {{($language == "de_DE.utf8") ? "selected" : ""}}>Deutsch</option>
+                                    <option value="en_EN.utf8" {{($language == "en_EN.utf8") ? "selected" : ""}}>English</option>
+                                </select>
+                            </label>
+                            <button class="btn is--primary">{{"Change Language"}}</button>
+                        </form>
                     </div>
                 </div>
             </section>
-            <div class="response"></div>
         </main>
 
-        {% include /footer.tpl %} 
+{% include /_includes/footer.tpl %} 

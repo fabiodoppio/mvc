@@ -15,11 +15,10 @@
 
 namespace MVC\Models;
 
-use MVC\Database as Database;
-use MVC\App as App;
-use MVC\Auth as Auth;
-use MVC\Exception as Exception;
-use MVC\Models as Model;
+use MVC\App         as App;
+use MVC\Database    as Database;
+use MVC\Exception   as Exception;
+use MVC\Models      as Model;
 
 /**
  * 
@@ -112,9 +111,23 @@ class Account extends Model\Model {
             parent::set($name, $value);
         }
         else {
-            if ($this->get("avatar"))
+            if ($name == "avatar" && $this->get("avatar"))
                 if (file_exists($file = App::get("DIR_ROOT").App::get("DIR_MEDIA")."/avatars/".$this->get("avatar")))
                     unlink($file);
+
+            if ($name == "displayname")
+                if (!in_array($value, 
+                        [
+                            $this->get("username"), 
+                            $this->get("company"), 
+                            $this->get("firstname"), 
+                            $this->get("lastname"), 
+                            $this->get("firstname")." ".$this->get("lastname"), 
+                            $this->get("lastname")." ".$this->get("firstname")
+                        ]
+                    ))
+                    $value = null;
+                    
 
             if (isset($this->data[0]["meta"][$name]))
                 if ($value !== "" && $value !== null)
@@ -151,7 +164,7 @@ class Account extends Model\Model {
      *  @return int                 The count of requests in the watchlist
      * 
      */
-    public function count_in_watchlist(string $request = "", float $timespan = 1440) {
+    public function count_in_watchlist(string $request = "", float $timespan = 43200) {
         return count(Database::query("SELECT * FROM ".$this->table."_watchlist WHERE id = ? AND request = ? AND detected BETWEEN (NOW() - INTERVAL ? MINUTE) AND NOW()", [$this->get("id"), $request, $timespan]));
     }
 
@@ -175,14 +188,14 @@ class Account extends Model\Model {
         if (!empty(Database::query("SELECT * FROM app_accounts WHERE email LIKE ?", [$email])[0]))
             throw new Exception(_("This email address is already taken."), 1076);
         
-        Database::query("INSERT INTO app_accounts (email, username, password, token, role) VALUES (?, ?, ?, ?, ?)", [strtolower($email), $username, password_hash($password, PASSWORD_DEFAULT), Auth::get_instance_token(), $role]);
+        Database::query("INSERT INTO app_accounts (email, username, password, token, role) VALUES (?, ?, ?, ?, ?)", [strtolower($email), $username, password_hash($password, PASSWORD_DEFAULT), App::get_instance_token(), $role]);
 
-        return Database::$insert_id;
+        self::set_auth_cookie(Database::$insert_id, App::get_instance_token());
     }
 
     /**
      * 
-     *  delete model.
+     *  Delete model.
      *
      *  @since  2.0
      * 
@@ -190,6 +203,128 @@ class Account extends Model\Model {
    public function delete() {
         $this->set("avatar", null);
         parent::delete();
+    }
+
+    /**
+     * 
+     *  Set the current user account based on provided credentials and password.
+     *
+     *  @since  2.0
+     *  @param  string  $credential     The email or username of the user.
+     *  @param  string  $password       The user's password.
+     *  @param  bool    $stay           (optional) Whether to set a long-lasting cookie.
+     * 
+     */
+    public static function login(string $credential, string $password, bool $stay = false) {
+        if (empty($account = Database::query("SELECT * FROM app_accounts WHERE email LIKE ? OR username = ?", [$credential, $credential])))
+            throw new Exception(_("There is no account with this username or email address."), 1003);
+
+        $account = new Model\Account($account[0]["id"]);
+
+        if ($account->count_in_watchlist("set_current_account", 10) > 3)
+            throw new Exception(_("You have entered the password incorrectly too many times. Please wait 10 minutes and try again."), 1004);
+
+        if (!password_verify($password, $account->get("password"))) {
+            $account->add_to_watchlist("set_current_account");
+            throw new Exception(_("You have entered an incorrect password."), 1005);
+        }
+
+        if ($account->get("role") < Model\Account::GUEST)
+            throw new Exception(_("Your account is suspended or deactivated."), 1006);
+
+        self::set_auth_cookie($account->get("id"), $account->get("token"), ($stay)?time()+(60*60*24*90):0);
+        self::set_locale_cookie($account->get("language")??App::get("APP_LANGUAGE"), time()+(60*60*24*180));
+    }
+
+    /**
+     * 
+     *  Set a user account's authentication cookie.
+     *
+     *  @since  2.0
+     *  @param  int         $id         The user account's ID.
+     *  @param  string      $token      The user account's authentication token.
+     *  @param  string|null $expiry     (optional) The expiration time for the cookie.
+     * 
+     */
+    public static function set_auth_cookie(int $id, string $token, ?string $expiry = "0") {
+        $hash = hash_hmac('sha256', $id.$token, hash_hmac('md5', $id.$token, App::get("SALT_COOKIE")));
+        setcookie("account", $hash."$".$id, $expiry, "/", $_SERVER['SERVER_NAME'], 1);
+        $_COOKIE["account"] =  $hash."$".$id;
+    }
+
+    /**
+     *  Unset the user's authentication cookie.
+     * 
+     *  @since 2.0
+     */
+    public static function unset_auth_cookie() {
+        setcookie("account", "", -1, "/", $_SERVER['SERVER_NAME'], 1);
+        unset($_COOKIE["account"]);
+    }
+
+    /**
+     * 
+     *  Set a user's locale cookie.
+     *
+     *  @since  2.0
+     *  @param  string      $lang       The user's preferred language.
+     *  @param  string|null $expiry     (optional) The expiration time for the cookie.
+     * 
+     */
+    public static function set_locale_cookie(string $lang, ?string $expiry = "0") {
+        setcookie("locale", $lang, $expiry, "/", $_SERVER['SERVER_NAME'], 1);
+        $_COOKIE["locale"] = $lang;
+    }
+
+    /**
+     * 
+     *  Get a confirmation code for a user account based on their credentials.
+     *
+     *  @since  2.0
+     *  @param  string  $credential     The email or username of the user.
+     *  @return string                  The generated confirmation code.
+     * 
+     */
+    public static function get_confirmcode(string $credential) {
+        if (empty($account = Database::query("SELECT * FROM app_accounts WHERE email LIKE ? OR username = ?", [$credential, $credential])))
+            throw new Exception(_("There is no account with this username or email address."), 1007);
+
+        $account = new Model\Account($account[0]["id"]);
+
+        if ($account->count_in_watchlist("get_confirmcode", 60) > 3)
+            throw new Exception(_("You have tried to request a confirmation code too many times. Please wait 60 minutes and try again."), 1008);
+
+        $account->add_to_watchlist("get_confirmcode");
+        $hash = hash_hmac('sha256', date("dmYH").$account->get("id").$account->get("token"), hash_hmac('md5', date("dmYH").$account->get("id").$account->get("token"), App::get("SALT_TOKEN")));
+        $code = strtoupper(substr($hash,0,3)."-".substr($hash,29,3)."-".substr($hash, -3));
+        
+        return $code;
+    } 
+
+    /**
+     * 
+     *  Verify a confirmation code for a user account.
+     *
+     *  @since  2.08092
+     *  @param  string  $credential     The email or username of the user.
+     *  @param  string  $confirmcode    The confirmation code to verify.
+     * 
+     */
+    public static function verify_confirmcode(string $credential, string $confirmcode) {
+        if (empty($account = Database::query("SELECT * FROM app_accounts WHERE email LIKE ? OR username = ?", [$credential, $credential]))) 
+            throw new Exception(_("There is no account with this username or email address."), 1009);
+
+        $account = new Model\Account($account[0]["id"]);
+        
+        if ($account->count_in_watchlist("verify_confirmcode", 60) > 3)
+            throw new Exception(_("You have tried to verify a confirmation code too many times. Please wait 60 minutes and try again."), 1010);
+
+        $account->add_to_watchlist("verify_confirmcode");
+        $hash = hash_hmac('sha256', date("dmYH").$account->get("id").$account->get("token"), hash_hmac('md5', date("dmYH").$account->get("id").$account->get("token"), App::get("SALT_TOKEN")));
+        $code = strtoupper(substr($hash,0,3)."-".substr($hash,29,3)."-".substr($hash, -3));
+
+        if (!hash_equals($confirmcode, $code))
+            throw new Exception(_("This confirmation code is invalid."), 1011);
     }
 
 }

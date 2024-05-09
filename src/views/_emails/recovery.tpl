@@ -1,4 +1,4 @@
-{{"Hello %s", $account->meta->displayname}},
+{{"Hello %s", $account->meta->displayname ?? $account->username}},
 <br/><br/>
 {{"you are receiving this email because someone is trying to recover your account on %s. If this wasn't you, you can simply ignore this email.", $app->name}}
 <br/><br/>
@@ -8,6 +8,6 @@
 {{"Best regards"}}<br/>
 {{$app->name}}
 <div style="font-size:12px; line-height: 150%; margin-top:50px;">
-- - -<br>
+- - -<br/>
 {{"This is an automatically generated email, please do not reply."}}
 </div>

@@ -31,6 +31,21 @@ class Ajax {
      */
     protected static $output = [];
 
+    /**
+     *  @var    string  HTML        Constant representing the jquery .html() command
+     */
+    public const HTML = 'html';
+
+    /**
+     *  @var    string  APPEND      Constant representing the jquery .append() command
+     */
+    public const APPEND = 'append';
+
+    /**
+     *  @var    string  PREPEND     Constant representing the jquery .prepend() command
+     */
+    public const PREPEND = 'prepend';
+
 
     /**
      * 
@@ -39,9 +54,10 @@ class Ajax {
      *  @since  2.0
      *  @param  string  $target     The target identifier where the HTML content will be added.
      *  @param  string  $html       The HTML content to be added to the target.
+     *  @param  string  $option     The information how HTML content will be added.
      * 
      */
-    public static function add(string $target, string $html = "", ?string $option = "html") {
+    public static function add(string $target, string $html = "", ?string $option = Ajax::HTML) {
         @self::$output[$option][$target] = $html;
     }
 

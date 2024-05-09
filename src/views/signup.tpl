@@ -1,14 +1,14 @@
-{% include /header.tpl %} 
-        {% include /topbar.tpl %}
+{% include /_includes/header.tpl %} 
+        {% include /_includes/topbar.tpl %}
 
         <main class="account signup">
             <section class="section is--light">
                 <div class="container">
                     <div class="main-content">
-                    <h2 class="title">{{"Signup"}}</h1>
+                    <h2 class="title">{{"Sign Up"}}</h1>
                         <form data-request="account/signup">
                             <label for="firstname">
-                                <input type="text" id="firstname" name="firstname" tabindex="-1"/>
+                                <input type="text" id="firstname" name="firstname" autocomplete="off" tabindex="-1"/>
                             </label>
                             <label for="username">
                                 {{"Username"}} <span class="required" title="{{'Required'}}">*</span>
@@ -17,7 +17,7 @@
                             </label>
                             <label for="email">
                                 {{"Email Address"}} <span class="required" title="{{'Required'}}">*</span>
-                                <div class="tooltip"><i class="fas fa-circle-info"></i><span>{{"In the next step you will have to verify your email address"}}</span></div>
+                                <div class="tooltip"><i class="fas fa-circle-info"></i><span>{{"You will have to verify your email address to<br>gain full access to all features of this app"}}</span></div>
                                 <input type="email" id="email" name="email" maxlength="64" placeholder="{{'Enter email address'}}" autocomplete="off" required/>
                             </label>
                             <label for="pw1">
@@ -32,13 +32,17 @@
                             <label for="confirm">
                                 <input type="checkbox" name="confirm" id="confirm" value="1" required>{{"I agree to the Terms of Service and Privacy Policy."}} <span class="required" title="{{'Required'}}">*</span>
                             </label><br><br>
-                            {% if ($request->redirect != ""): %}
+                            {% if ($request->get->redirect??"" != ""): %}
                                 <input type="hidden" name="redirect" value="{{$request->redirect}}"/>
                             {% endif; %}
                             <div class="response"></div>
                             <button class="btn is--primary">{{"Sign Up"}}</button>
                             {% if ($app->login): %}
-                                <a href="{{$config->url}}/login" class="btn is--secondary">{{"Log In"}}</a>
+                                {% if ($request->get->redirect??""): %}
+                                    <a href="{{$app->url}}/login?redirect={{urlencode($request->get->redirect)}}" class="btn is--secondary">{{"Log In"}}</a>
+                                {% else: %}
+                                    <a href="{{$app->url}}/login" class="btn is--secondary">{{"Log In"}}</a>
+                                {% endif; %}
                             {% endif; %}
                         </form>
                     </div>
@@ -46,4 +50,4 @@
             </section>
         </main>
 
-        {% include /footer.tpl %} 
+{% include /_includes/footer.tpl %} 

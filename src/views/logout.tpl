@@ -1,5 +1,5 @@
-{% include /header.tpl %} 
-        {% include /topbar.tpl %}
+{% include /_includes/header.tpl %} 
+        {% include /_includes/topbar.tpl %}
 
         <main class="account logout">
             <section class="section">
@@ -15,4 +15,4 @@
             </section>
         </main>
 
-        {% include /footer.tpl %} 
+{% include /_includes/footer.tpl %} 

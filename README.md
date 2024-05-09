@@ -76,16 +76,15 @@ MVC\App::init([
     #"APP_LANGUAGE"     => "en_EN.utf8",            // [OPTIONAL] your prefered (server-)language
     #"APP_DEBUG"        => false,                   // [OPTIONAL] de/activates debug mode
     #"APP_LOGIN"        => true,                    // [OPTIONAL] de/activates login (except admins)
-    #"APP_SIGNUP"       => false,                   // [OPTIONAL] de/activates signup
-    #"CRON_ACTIVE"      => false,                   // [OPTIONAL] de/activates cronjob
+    #"APP_SIGNUP"       => true,                    // [OPTIONAL] de/activates signup
+    #"APP_CRON"         => false,                   // [OPTIONAL] de/activates cronjob
     #"APP_MAINTENANCE"  => false,                   // [OPTIONAL] de/activates maintenance mode (except admins)
     #"APP_BADWORDS"     => [],                      // [OPTIONAL] forbidden words for usernames or messages
-    #"APP_PAGES"        => [],                      // [OPTIONAL] urls to custom pages
-   
+    #"APP_PAGES"        => [[...], [...]],          // [OPTIONAL] custom pages
+
     "SALT_COOKIE"       => "",                      // [REQUIRED] randomized hash for security reasons
     "SALT_TOKEN"        => "",                      // [REQUIRED] randomized hash for security reasons
     "SALT_CACHE"        => "",                      // [REQUIRED] randomized hash for security reasons
-    "CRON_AUTH"         => "",                      // [REQUIRED] randomized hash for security reasons
     
     "DB_HOST"           => "",                      // [OPTIONAL] hostname to your mysql server
     "DB_USERNAME"       => "",                      // [OPTIONAL] username to your mysql server
@@ -101,7 +100,6 @@ MVC\App::init([
     #"MAIL_PORT"        => "465,                    // [OPTIONAL] port to your mail server
 
     "DIR_ROOT"          => "/var/www"               // [REQUIRED] path to your root directory, no trailing slash
-    #"DIR_ASSETS"       => "/app/assets",           // [OPTIONAL] path to your asset files, such as styles and scripts
     #"DIR_CLASSES"      => "/app/classes",          // [OPTIONAL] path to your custom or extended classes
     #"DIR_FONTS"        => "/app/assets/fonts",     // [OPTIONAL] path to your fonts
     #"DIR_SCRIPTS"      => "/app/assets/scripts",   // [OPTIONAL] path to your .js scripts

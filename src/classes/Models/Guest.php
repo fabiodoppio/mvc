@@ -15,8 +15,8 @@
 
 namespace MVC\Models;
 
-use MVC\Auth as Auth;
-use MVC\App  as App;
+use MVC\App     as App;
+use MVC\Models  as Model;
 
 /**
  * 
@@ -27,7 +27,7 @@ use MVC\App  as App;
  *  guest account data stored in the session.
  * 
  */
-class Guest extends Account {
+class Guest extends Model\Account {
 
     /**
      *
@@ -44,12 +44,11 @@ class Guest extends Account {
         if (empty($_SESSION["account"] ?? []))
             $_SESSION["account"] = [
                 "data" => [
-                    "token" => Auth::get_instance_token(),
-                    "role" => Account::GUEST,
+                    "token" => App::get_instance_token(),
+                    "role" => self::GUEST,
                     "lastaction" => date('Y-m-d H:i:s', time()),
                     "registered" => date('Y-m-d H:i:s', time()),
                     "meta" => [
-                        "displayname" => _("Guest"),
                         "language" => $_COOKIE["locale"] ?? App::get("APP_LANGUAGE")
                     ]
                 ]
@@ -95,6 +94,17 @@ class Guest extends Account {
      */
     public function get_data() {
         return $_SESSION["account"]["data"];
+    }
+
+    /**
+     * 
+     *  Delete model.
+     *
+     *  @since  2.0
+     * 
+     */
+    public function delete() {
+        unset($_SESSION["account"]);
     }
 
 }

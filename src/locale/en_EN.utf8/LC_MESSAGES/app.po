@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MVC 2.0\n"
-"POT-Creation-Date: 2023-11-30 12:59+0100\n"
-"PO-Revision-Date: 2023-11-30 13:19+0100\n"
+"POT-Creation-Date: 2024-05-05 14:00+0200\n"
+"PO-Revision-Date: 2024-05-05 14:00+0200\n"
 "Last-Translator: Fabio Doppio <hallo@fabiodoppio.de>\n"
 "Language-Team: Fabio Doppio\n"
 "Language: en\n"
@@ -28,43 +28,14 @@ msgstr "Action %s not found."
 msgid "Variable %s not set."
 msgstr "Variable %s not set."
 
+msgid "Illegal activity detected."
+msgstr "Illegal activity detected."
+
 msgid "Unauthorized Access."
 msgstr "Unauthorized Access."
 
-msgid "There is no account with this username or email address."
-msgstr "There is no account with this username or email address."
-
-msgid ""
-"You have entered the password incorrectly too many times. Please wait 10 "
-"minutes and try again."
-msgstr ""
-"You have entered the password incorrectly too many times. Please wait 10 "
-"minutes and try again."
-
-msgid "You have entered an incorrect password."
-msgstr "You have entered an incorrect password."
-
-msgid "Your account is suspended or deactivated."
-msgstr "Your account is suspended or deactivated."
-
-msgid "This username is already taken."
-msgstr "This username is already taken."
-
-msgid "This email address is already taken."
-msgstr "This email address is already taken."
-
-msgid ""
-"You have tried to request a confirmation code too many times. Please wait 60 "
-"minutes and try again."
-msgstr ""
-"You have tried to request a confirmation code too many times. Please wait 60 "
-"minutes and try again."
-
-msgid "This confirmation code is invalid."
-msgstr "This confirmation code is invalid."
-
-msgid "Illegal activity detected."
-msgstr "Illegal activity detected."
+msgid "Template %s not found."
+msgstr "Template %s not found."
 
 msgid "Required input not found."
 msgstr "Required input not found."
@@ -72,20 +43,23 @@ msgstr "Required input not found."
 msgid "Too many requests in a short time."
 msgstr "Too many requests in a short time."
 
+msgid "Your account is suspended or deactivated."
+msgstr "Your account is suspended or deactivated."
+
 msgid "Log in not possible at the moment."
 msgstr "Log in not possible at the moment."
 
 msgid "Please wait while redirecting.."
 msgstr "Please wait while redirecting.."
 
-msgid "Sessions successfully logged out."
-msgstr "Sessions successfully logged out."
-
 msgid "Sign up not possible at the moment."
 msgstr "Sign up not possible at the moment."
 
-msgid "Account recovery | %s"
-msgstr "Account recovery | %s"
+msgid "There is no account with this username or email address."
+msgstr "There is no account with this username or email address."
+
+msgid "Account Recovery | %s"
+msgstr "Account Recovery | %s"
 
 msgid "Your account cannot be restored."
 msgstr "Your account cannot be restored."
@@ -93,41 +67,17 @@ msgstr "Your account cannot be restored."
 msgid "Account successfully restored. You can now log in as usual."
 msgstr "Account successfully restored. You can now log in as usual."
 
+msgid "App currently offline. Please try again later."
+msgstr "App currently offline. Please try again later."
+
 msgid "Your account does not have the required role."
 msgstr "Your account does not have the required role."
-
-msgid "You can not set %s as an additional field."
-msgstr "You can not set %s as an additional field."
 
 msgid "Changes successfully saved."
 msgstr "Changes successfully saved."
 
-msgid "This slug is already used."
-msgstr "This slug is already used."
-
-msgid "Page successfully added."
-msgstr "Page successfully added."
-
-msgid "Page successfully deleted."
-msgstr "Page successfully deleted."
-
-msgid "Account successfully added."
-msgstr "Account successfully added."
-
-msgid "You can not logout yourself."
-msgstr "You can not logout yourself."
-
-msgid "Account successfully logged out."
-msgstr "Account successfully logged out."
-
-msgid "You can not change your own role."
-msgstr "You can not change your own role."
-
-msgid "The avatar has to be squared."
-msgstr "The avatar has to be squared."
-
-msgid "This file type not allowed."
-msgstr "This file type not allowed."
+msgid "You have to verify your email address before you can upload an avatar."
+msgstr "You have to verify your email address before you can upload an avatar."
 
 msgid "Avatar successfully uploaded."
 msgstr "Avatar successfully uploaded."
@@ -135,119 +85,74 @@ msgstr "Avatar successfully uploaded."
 msgid "Avatar successfully deleted."
 msgstr "Avatar successfully deleted."
 
-msgid "You can not delete yourself."
-msgstr "You can not delete yourself."
+msgid "Your current password does not match."
+msgstr "Your current password does not match."
 
-msgid "Account successfully deleted."
-msgstr "Account successfully deleted."
+msgid "Sessions successfully logged out."
+msgstr "Sessions successfully logged out."
 
-msgid "Cache successfully cleared."
-msgstr "Cache successfully cleared."
+msgid "You can not deactivate your account."
+msgstr "You can not deactivate your account."
 
-msgid "App currently offline. Please try again later."
-msgstr "App currently offline. Please try again later."
+msgid "Account Deactivated | %s"
+msgstr "Account Deactivated | %s"
 
-msgid "Homepage"
-msgstr "Homepage"
-
-msgid "Log In"
-msgstr "Log In"
-
-msgid "Page not found."
-msgstr "Page not found."
-
-msgid "Log Out"
-msgstr "Log Out"
-
-msgid "Sign Up"
-msgstr "Sign Up"
-
-msgid "Account recovery"
-msgstr "Account recovery"
-
-msgid "My Account"
-msgstr "My Account"
-
-msgid "Personal Information"
-msgstr "Personal Information"
-
-msgid "Password & Security"
-msgstr "Password & Security"
-
-msgid "Email address verification"
-msgstr "Email address verification"
-
-msgid "Administration"
-msgstr "Administration"
-
-msgid "App Settings"
-msgstr "App Settings"
-
-msgid "Custom Pages"
-msgstr "Custom Pages"
-
-msgid "Accounts"
-msgstr "Accounts"
-
-msgid "oops!"
-msgstr "oops!"
-
-msgid "Maintenance"
-msgstr "Maintenance"
-
-msgid "Key not found."
-msgstr "Key not found."
-
-msgid "Key does not match."
-msgstr "Key does not match."
-
-msgid "Email address verification | %s"
-msgstr "Email address verification | %s"
+msgid "Email Address Verification | %s"
+msgstr "Email Address Verification | %s"
 
 msgid "Email address successfully verified."
 msgstr "Email address successfully verified."
 
-msgid "You are not allowed to edit your username."
-msgstr "You are not allowed to edit your username."
+msgid "You have to verify your email address before you can send a message with an attachment."
+msgstr "You have to verify your email address before you can send a message with an attachment."
 
-msgid "This displayname is not allowed."
-msgstr "This displayname is not allowed."
+msgid "New Message | %s"
+msgstr "New Message | %s"
 
-msgid "You are not allowed to edit your email address."
-msgstr "You are not allowed to edit your email address."
+msgid "Message successfully sent."
+msgstr "Message successfully sent."
 
-msgid "Your current password does not match."
-msgstr "Your current password does not match."
+msgid "Homepage | %s"
+msgstr "Homepage | %s"
 
-msgid "You are not allowed to edit %s."
-msgstr "You are not allowed to edit %s."
+msgid "Page not found."
+msgstr "Page not found."
 
-msgid "You are not allowed to edit your avatar."
-msgstr "You are not allowed to edit your avatar."
+msgid " | %s"
+msgstr " | %s"
 
-msgid "You have to verify your email address before you can upload a avatar."
-msgstr "You have to verify your email address before you can upload a avatar."
+msgid "Log In | %s"
+msgstr "Log In | %s"
+
+msgid "Log Out | %s"
+msgstr "Log Out | %s"
+
+msgid "Goodbye | %s"
+msgstr "Goodbye | %s"
+
+msgid "Sign Up | %s"
+msgstr "Sign Up | %s"
+
+msgid "Personal Information | %s"
+msgstr "Personal Information | %s"
+
+msgid "Account & Security | %s"
+msgstr "Account & Security | %s"
+
+msgid "Email Settings | %s"
+msgstr "Email Settings | %s"
+
+msgid "Help | %s"
+msgstr "Help | %s"
+
+msgid "Maintenance | %s"
+msgstr "Maintenance | %s"
+
+msgid "oops! | %s"
+msgstr "oops! | %s"
 
 msgid "Connection to MySQL database failed."
 msgstr "Connection to MySQL database failed."
-
-msgid "Execute statement to MySQL database failed."
-msgstr "Execute statement to MySQL database failed."
-
-msgid "Mail server not found."
-msgstr "Mail server not found."
-
-msgid "Email could not be sent."
-msgstr "Email could not be sent."
-
-msgid "There was a problem uploading your file."
-msgstr "There was a problem uploading your file."
-
-msgid "This file type is not allowed."
-msgstr "This file type is not allowed."
-
-msgid "The file exceeds the maximum allowed file size of %s KB."
-msgstr "The file exceeds the maximum allowed file size of %s KB."
 
 msgid "The username must be between 3 and 18 characters long."
 msgstr "The username must be between 3 and 18 characters long."
@@ -285,48 +190,56 @@ msgstr "Invalid boolean."
 msgid "Invalid url."
 msgstr "Invalid url."
 
+msgid "Invalid datetime."
+msgstr "Invalid datetime."
+
 msgid "The message must be between %1$s and %2$s characters long."
 msgstr "The message must be between %1$s and %2$s characters long."
 
 msgid "This message is not allowed."
 msgstr "This message is not allowed."
 
-msgid "Guest"
-msgstr "Guest"
+msgid "Email could not be sent."
+msgstr "Email could not be sent."
+
+msgid "This username is already taken."
+msgstr "This username is already taken."
+
+msgid "This email address is already taken."
+msgstr "This email address is already taken."
+
+msgid "You have entered the password incorrectly too many times. Please wait 10 minutes and try again."
+msgstr "You have entered the password incorrectly too many times. Please wait 10 minutes and try again."
+
+msgid "You have entered an incorrect password."
+msgstr "You have entered an incorrect password."
+
+msgid "You have tried to request a confirmation code too many times. Please wait 60 minutes and try again."
+msgstr "You have tried to request a confirmation code too many times. Please wait 60 minutes and try again."
+
+msgid "You have tried to verify a confirmation code too many times. Please wait 60 minutes and try again."
+msgstr "You have tried to verify a confirmation code too many times. Please wait 60 minutes and try again."
+
+msgid "This confirmation code is invalid."
+msgstr "This confirmation code is invalid."
 
 msgid "Model %1$s:%2$s not found."
 msgstr "Model %1$s:%2$s not found."
 
-msgid "Template %s not found."
-msgstr "Template %s not found."
+msgid "File has to be a jpeg, jpg, png, pdf or txt."
+msgstr "File has to be a jpeg, jpg, png, pdf or txt."
+
+msgid "File exceeds the maximum allowed file size of %s KB."
+msgstr "File exceeds the maximum allowed file size of %s KB."
+
+msgid "File has to be a jpeg, jpg or png."
+msgstr "File has to be a jpeg, jpg or png."
+
+msgid "Avatar has to be squared."
+msgstr "Avatar has to be squared."
 
 msgid "File could not be uploaded."
 msgstr "File could not be uploaded."
-
-msgid "File could not be deleted."
-msgstr "File could not be deleted."
-
-msgid "Hello %s"
-msgstr "Hello %s"
-
-msgid ""
-"you are receiving this email because someone is trying to verify your email "
-"address on %s. If this wasn't you, you can simply ignore this email."
-msgstr ""
-"you are receiving this email because someone is trying to verify your email "
-"address on %s. If this wasn't you, you can simply ignore this email."
-
-msgid "Please enter the following code to complete the verification:"
-msgstr "Please enter the following code to complete the verification:"
-
-msgid "Alternatively, you can click on this link:"
-msgstr "Alternatively, you can click on this link:"
-
-msgid "Best regards"
-msgstr "Best regards"
-
-msgid "This is an automatically generated email, please do not reply."
-msgstr "This is an automatically generated email, please do not reply."
 
 msgid "en"
 msgstr "en"
@@ -334,269 +247,146 @@ msgstr "en"
 msgid "en-EN"
 msgstr "en-EN"
 
-msgid "Dashboard"
-msgstr "Dashboard"
+msgid "Toggle Sidebar"
+msgstr "Toggle Sidebar"
 
-msgid "Create, edit or delete accounts."
-msgstr "Create, edit or delete accounts."
+msgid "Help"
+msgstr "Help"
 
-msgid "All Accounts"
-msgstr "All Accounts"
+msgid "My Account"
+msgstr "My Account"
 
-msgid "Edit Account"
-msgstr "Edit Account"
+msgid "Personal Information"
+msgstr "Personal Information"
 
-msgid "Upload Avatar"
-msgstr "Upload Avatar"
+msgid "Account & Security"
+msgstr "Account & Security"
 
-msgid "Delete Avatar"
-msgstr "Delete Avatar"
+msgid "Email Settings"
+msgstr "Email Settings"
 
-msgid "Username"
-msgstr "Username"
+msgid "Log Out"
+msgstr "Log Out"
 
-msgid "Required"
-msgstr "Required"
+msgid "Log In"
+msgstr "Log In"
 
-msgid ""
-"The username must be between 3 and 18 characters long<br>and cannot contain "
-"any special characters"
-msgstr ""
-"The username must be between 3 and 18 characters long<br>and cannot contain "
-"any special characters"
+msgid "Sign Up"
+msgstr "Sign Up"
 
-msgid "Enter username"
-msgstr "Enter username"
+msgid "Imprint"
+msgstr "Imprint"
+
+msgid "Select Language"
+msgstr "Select Language"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "Terms"
+msgstr "Terms"
+
+msgid "Privacy"
+msgstr "Privacy"
+
+msgid "Cronjob executed."
+msgstr "Cronjob executed."
+
+msgid "Manage your newsletter preference."
+msgstr "Manage your newsletter preference."
+
+msgid "Contact"
+msgstr "Contact"
 
 msgid "Email Address"
 msgstr "Email Address"
 
-msgid ""
-"The email address will be verified the next time the user access a page for "
-"verified user"
-msgstr ""
-"The email address will be verified the next time the user access a page for "
-"verified user"
+msgid "Required"
+msgstr "Required"
+
+msgid "You will have to verify your email address again"
+msgstr "You will have to verify your email address again"
 
 msgid "Enter email address"
 msgstr "Enter email address"
 
-msgid "Display Name"
-msgstr "Display Name"
-
-msgid "The display name of the user"
-msgstr "The display name of the user"
-
-msgid "Role"
-msgstr "Role"
-
-msgid "The permission role of the user"
-msgstr "The permission role of the user"
-
-msgid "Blocked"
-msgstr "Blocked"
-
-msgid "Deactivated"
-msgstr "Deactivated"
-
-msgid "User"
-msgstr "User"
-
-msgid "Verified"
-msgstr "Verified"
-
-msgid "Moderator"
-msgstr "Moderator"
-
-msgid "Administrator"
-msgstr "Administrator"
-
-msgid "New Password"
-msgstr "New Password"
-
-msgid "The password must be at least 8 characters long"
-msgstr "The password must be at least 8 characters long"
-
-msgid "Enter new password"
-msgstr "Enter new password"
-
-msgid "Repeat New Password"
-msgstr "Repeat New Password"
-
-msgid "Repeat new password"
-msgstr "Repeat new password"
-
-msgid "Registered Since"
-msgstr "Registered Since"
-
-msgid "Last Action"
-msgstr "Last Action"
-
-msgid "Additional Settings"
-msgstr "Additional Settings"
-
-msgid "Enter value"
-msgstr "Enter value"
-
-msgid "Enter name"
-msgstr "Enter name"
+msgid "I would like to be informed about news by email."
+msgstr "I would like to be informed about news by email."
 
 msgid "Save Changes"
 msgstr "Save Changes"
 
-msgid "Log Out Account"
-msgstr "Log Out Account"
+msgid "Email Address Verification"
+msgstr "Email Address Verification"
 
-msgid "Delete Account"
-msgstr "Delete Account"
+msgid "We've sent you a <b>confirmation code</b> to verify to the registered <b>email address</b>."
+msgstr "We've sent you a <b>confirmation code</b> to verify to the registered <b>email address</b>."
 
-msgid "Add New Account"
-msgstr "Add New Account"
+msgid "Confirmation Code"
+msgstr "Confirmation Code"
 
-msgid "Password"
-msgstr "Password"
+msgid "You can find the 9-digit confirmation code in the email we sent you"
+msgstr "You can find the 9-digit confirmation code in the email we sent you"
 
-msgid "Enter password"
-msgstr "Enter password"
+msgid "Enter confirmation code"
+msgstr "Enter confirmation code"
 
-msgid "Repeat Password"
-msgstr "Repeat Password"
+msgid "Verify Email Address"
+msgstr "Verify Email Address"
 
-msgid "Repeat password"
-msgstr "Repeat password"
+msgid "We will send you a <b>confirmation code</b> to verify to your registered <b>email address</b>."
+msgstr "We will send you a <b>confirmation code</b> to verify to your registered <b>email address</b>."
 
-msgid "Add Account"
-msgstr "Add Account"
+msgid "Request Confirmation Code"
+msgstr "Request Confirmation Code"
 
-msgid "Create, edit or delete custom pages."
-msgstr "Create, edit or delete custom pages."
+msgid "oops! Page not found."
+msgstr "oops! Page not found."
 
-msgid "All Pages"
-msgstr "All Pages"
+msgid "Terms of Service"
+msgstr "Terms of Service"
 
-msgid "Edit Page"
-msgstr "Edit Page"
+msgid "You successfully logged out."
+msgstr "You successfully logged out."
 
-msgid "Title"
-msgstr "Title"
+msgid "It's a pity you're leaving.. :("
+msgstr "It's a pity you're leaving.. :("
 
-msgid "Title of the page"
-msgstr "Title of the page"
+msgid "..but we understand. We wish you all the best and hope to see you again very soon!"
+msgstr "..but we understand. We wish you all the best and hope to see you again very soon!"
 
-msgid "Enter title"
-msgstr "Enter title"
+msgid "Your account has been successfully deactivated."
+msgstr "Your account has been successfully deactivated."
 
-msgid "URL Slug"
-msgstr "URL Slug"
+msgid "If this was a mistake, you have 90 days to recover your account before it will be permanently deleted from our servers. You can click on this link to start the recovery:"
+msgstr "If this was a mistake, you have 90 days to recover your account before it will be permanently deleted from our servers. You can click on this link to start the recovery:"
 
-msgid "Url to the page, starting with a slash<br>e.g. /imprint"
-msgstr "Url to the page, starting with a slash<br>e.g. /imprint"
+msgid "Recover Account"
+msgstr "Recover Account"
 
-msgid "Enter url slug"
-msgstr "Enter url slug"
+msgid "Hello %s"
+msgstr "Hello %s"
 
-msgid "Description"
-msgstr "Description"
+msgid "you are receiving this email because your account on %s has been deactivated."
+msgstr "you are receiving this email because your account on %s has been deactivated."
 
-msgid "Description of the page"
-msgstr "Description of the page"
+msgid "Best regards"
+msgstr "Best regards"
 
-msgid "Enter description"
-msgstr "Enter description"
-
-msgid "Robots"
-msgstr "Robots"
-
-msgid "Robots of the page<br>e.g. index, nofollow"
-msgstr "Robots of the page<br>e.g. index, nofollow"
-
-msgid "Enter robots"
-msgstr "Enter robots"
-
-msgid "Template Path"
-msgstr "Template Path"
-
-msgid "Path to the template file in the views directory<br>e.g. imprint.tpl"
-msgstr "Path to the template file in the views directory<br>e.g. imprint.tpl"
-
-msgid "Enter template path"
-msgstr "Enter template path"
-
-msgid "Minimal Requirements"
-msgstr "Minimal Requirements"
-
-msgid "Minimum allowed user role to access the page"
-msgstr "Minimum allowed user role to access the page"
-
-msgid "Delete Page"
-msgstr "Delete Page"
-
-msgid "Add New Page"
-msgstr "Add New Page"
-
-msgid "Add Page"
-msgstr "Add Page"
-
-msgid "Manage your login credentials and security settings."
-msgstr "Manage your login credentials and security settings."
-
-msgid ""
-"Your email address is not verified. <a href=\"%s/account/verify\">Verify "
-"now</a> to gain full access to all features of this app."
-msgstr ""
-"Your email address is not verified. <a href=\"%s/account/verify\">Verify "
-"now</a> to gain full access to all features of this app."
-
-msgid "Login Credentials"
-msgstr "Login Credentials"
-
-msgid ""
-"Your username must be between 3 and 18 characters long<br>and cannot contain "
-"any special characters"
-msgstr ""
-"Your username must be between 3 and 18 characters long<br>and cannot contain "
-"any special characters"
-
-msgid "Current Password"
-msgstr "Current Password"
-
-msgid "Enter current password"
-msgstr "Enter current password"
-
-msgid "Your password must be at least 8 characters long"
-msgstr "Your password must be at least 8 characters long"
-
-msgid "Sign Out Everywhere"
-msgstr "Sign Out Everywhere"
-
-msgid ""
-"Sign out from all other sessions where your account is used, including all "
-"other browsers, phones, and devices."
-msgstr ""
-"Sign out from all other sessions where your account is used, including all "
-"other browsers, phones, and devices."
-
-msgid "Sign Out Other Sessions"
-msgstr "Sign Out Other Sessions"
-
-msgid "The site is currently in maintenance mode."
-msgstr "The site is currently in maintenance mode."
-
-msgid ""
-"you are receiving this email because someone is trying to recover your "
-"account on %s. If this wasn't you, you can simply ignore this email."
-msgstr ""
-"you are receiving this email because someone is trying to recover your "
-"account on %s. If this wasn't you, you can simply ignore this email."
-
-msgid "Please enter the following code to complete the recovery:"
-msgstr "Please enter the following code to complete the recovery:"
+msgid "This is an automatically generated email, please do not reply."
+msgstr "This is an automatically generated email, please do not reply."
 
 msgid "Username or Email Address"
 msgstr "Username or Email Address"
 
 msgid "Enter username or email address"
 msgstr "Enter username or email address"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Enter password"
+msgstr "Enter password"
 
 msgid "Recover account"
 msgstr "Recover account"
@@ -607,29 +397,107 @@ msgstr "Forgot your password?"
 msgid "Stay logged in"
 msgstr "Stay logged in"
 
-msgid "de"
-msgstr "de"
+msgid "Name"
+msgstr "Name"
 
-msgid "de-DE"
-msgstr "de-DE"
+msgid "Enter name"
+msgstr "Enter name"
 
-msgid "Terms of Service"
-msgstr "Terms of Service"
+msgid "Subject"
+msgstr "Subject"
 
-msgid "oops! Page not found."
-msgstr "oops! Page not found."
+msgid "Select Subject"
+msgstr "Select Subject"
+
+msgid "Feedback"
+msgstr "Feedback"
+
+msgid "Report Bug"
+msgstr "Report Bug"
+
+msgid "General Question"
+msgstr "General Question"
+
+msgid "Legal Question"
+msgstr "Legal Question"
+
+msgid "Account Issues"
+msgstr "Account Issues"
+
+msgid "Change Username"
+msgstr "Change Username"
+
+msgid "Other"
+msgstr "Other"
+
+msgid "Platform"
+msgstr "Platform"
+
+msgid "Select Platform"
+msgstr "Select Platform"
+
+msgid "All"
+msgstr "All"
+
+msgid "for"
+msgstr "for"
+
+msgid "on"
+msgstr "on"
+
+msgid "Not listed"
+msgstr "Not listed"
+
+msgid "Message"
+msgstr "Message"
+
+msgid "Enter message"
+msgstr "Enter message"
+
+msgid "Attachment"
+msgstr "Attachment"
+
+msgid "Your attachment must not exceed the maximum allowed file size of %s KB"
+msgstr "Your attachment must not exceed the maximum allowed file size of %s KB"
+
+msgid "Upload Attachment"
+msgstr "Upload Attachment"
+
+msgid "With a verified email address you can also send an attachment with your request."
+msgstr "With a verified email address you can also send an attachment with your request."
+
+msgid "<a href=\"%s/account/email\">Verify now</a> to gain full access to all features of this app."
+msgstr "<a href=\"%s/account/email\">Verify now</a> to gain full access to all features of this app."
+
+msgid "By sending your message, you agree to the Terms of Service and Privacy Policy. Don't worry, we will only use your email address to contact you."
+msgstr "By sending your message, you agree to the Terms of Service and Privacy Policy. Don't worry, we will only use your email address to contact you."
+
+msgid "Send Message"
+msgstr "Send Message"
+
+msgid "Hey %s"
+msgstr "Hey %s"
 
 msgid "Manage your personal information."
 msgstr "Manage your personal information."
 
+msgid "Your email address is not verified."
+msgstr "Your email address is not verified."
+
 msgid "Avatar"
 msgstr "Avatar"
 
-msgid "Contact"
-msgstr "Contact"
+msgid "Your image must be squared and not exceed the maximum allowed file size of %s KB"
+msgstr "Your image must be squared and not exceed the maximum allowed file size of %s KB"
 
-msgid "You will have to verify your email address again"
-msgstr "You will have to verify your email address again"
+msgid "Upload Avatar"
+msgstr "Upload Avatar"
+
+msgid "Delete Avatar"
+msgstr "Delete Avatar"
+
+msgid "Display Name"
+msgstr "Display Name"
 
 msgid "Company"
 msgstr "Company"
@@ -673,310 +541,119 @@ msgstr "Country"
 msgid "Enter country"
 msgstr "Enter country"
 
-msgid "Language"
-msgstr "Language"
-
 msgid "Preferred Language"
 msgstr "Preferred Language"
 
 msgid "Change Language"
 msgstr "Change Language"
 
-msgid "Imprint"
-msgstr "Imprint"
+msgid "Manage your login credentials and security settings."
+msgstr "Manage your login credentials and security settings."
 
-msgid "You successfully logged out."
-msgstr "You successfully logged out."
+msgid "Login Credentials"
+msgstr "Login Credentials"
 
-msgid "Add or edit your app settings."
-msgstr "Add or edit your app settings."
+msgid "Username"
+msgstr "Username"
 
-msgid "General"
-msgstr "General"
+msgid "Your username must be between 3 and 18 characters long<br>and cannot contain any special characters"
+msgstr "Your username must be between 3 and 18 characters long<br>and cannot contain any special characters"
 
-msgid "Environment"
-msgstr "Environment"
+msgid "Enter username"
+msgstr "Enter username"
 
-msgid ""
-"Development mode disables caching and enables php error "
-"reporting<br>Production mode enables caching and disables php error reporting"
-msgstr ""
-"Development mode disables caching and enables php error "
-"reporting<br>Production mode enables caching and disables php error reporting"
+msgid "Current Password"
+msgstr "Current Password"
 
-msgid "Development"
-msgstr "Development"
+msgid "Enter current password"
+msgstr "Enter current password"
 
-msgid "Production"
-msgstr "Production"
+msgid "New Password"
+msgstr "New Password"
 
-msgid "App URL"
-msgstr "App URL"
+msgid "Your password must be at least 8 characters long"
+msgstr "Your password must be at least 8 characters long"
 
-msgid "Url to your app, no trailing slash<br>e.g. https://mydomain.com"
-msgstr "Url to your app, no trailing slash<br>e.g. https://mydomain.com"
+msgid "Enter new password"
+msgstr "Enter new password"
 
-msgid "App Name"
-msgstr "App Name"
+msgid "Repeat New Password"
+msgstr "Repeat New Password"
 
-msgid "Name of your app"
-msgstr "Name of your app"
+msgid "Repeat new password"
+msgstr "Repeat new password"
 
-msgid "Enter app name"
-msgstr "Enter app name"
+msgid "Sign Out Everywhere"
+msgstr "Sign Out Everywhere"
 
-msgid "Homepage Title"
-msgstr "Homepage Title"
+msgid "Sign out from all other sessions where your account is used, including all other browsers, phones, and devices."
+msgstr "Sign out from all other sessions where your account is used, including all other browsers, phones, and devices."
 
-msgid "Title of your start page"
-msgstr "Title of your start page"
+msgid "Sign Out Other Sessions"
+msgstr "Sign Out Other Sessions"
 
-msgid "Enter homepage title"
-msgstr "Enter homepage title"
+msgid "Deactivate Account"
+msgstr "Deactivate Account"
 
-msgid "App Author"
-msgstr "App Author"
+msgid "When you deactivate your account you have 90 days to recover your account before it will be permanently deleted from our servers."
+msgstr "When you deactivate your account you have 90 days to recover your account before it will be permanently deleted from our servers."
 
-msgid "Author of your app"
-msgstr "Author of your app"
+msgid "Are you sure?"
+msgstr "Are you sure?"
 
-msgid "Enter app author"
-msgstr "Enter app author"
+msgid "you are receiving this email because someone is trying to recover your account on %s. If this wasn't you, you can simply ignore this email."
+msgstr "you are receiving this email because someone is trying to recover your account on %s. If this wasn't you, you can simply ignore this email."
 
-msgid "App Description"
-msgstr "App Description"
+msgid "Please enter the following code to complete the recovery:"
+msgstr "Please enter the following code to complete the recovery:"
 
-msgid "Description of your app"
-msgstr "Description of your app"
+msgid "Alternatively, you can click on this link:"
+msgstr "Alternatively, you can click on this link:"
 
-msgid "Enter app description"
-msgstr "Enter app description"
+msgid "you are receiving this email because someone is trying to verify your email address on %s. If this wasn't you, you can simply ignore this email."
+msgstr "you are receiving this email because someone is trying to verify your email address on %s. If this wasn't you, you can simply ignore this email."
 
-msgid "App Language"
-msgstr "App Language"
+msgid "Please enter the following code to complete the verification:"
+msgstr "Please enter the following code to complete the verification:"
 
-msgid "Your preferred language"
-msgstr "Your preferred language"
+msgid "Account Recovery"
+msgstr "Account Recovery"
 
-msgid "App Color Scheme"
-msgstr "App Color Scheme"
+msgid "We've sent you a <b>confirmation code</b> to reset your password to the registered <b>email address</b>."
+msgstr "We've sent you a <b>confirmation code</b> to reset your password to the registered <b>email address</b>."
 
-msgid "Your preferred color scheme"
-msgstr "Your preferred color scheme"
+msgid "We will send you a <b>confirmation code</b> to reset your password to the registered <b>email address</b>."
+msgstr "We will send you a <b>confirmation code</b> to reset your password to the registered <b>email address</b>."
 
-msgid "Default"
-msgstr "Default"
+msgid "Privacy Policy"
+msgstr "Privacy Policy"
 
-msgid "Gray-Purple"
-msgstr "Gray-Purple"
+msgid "Homepage"
+msgstr "Homepage"
 
-msgid "Login"
-msgstr "Login"
+msgid "The site is currently in maintenance mode."
+msgstr "The site is currently in maintenance mode."
 
-msgid "De/activates the login page, except for admins"
-msgstr "De/activates the login page, except for admins"
-
-msgid "Enable"
-msgstr "Enable"
-
-msgid "Disable"
-msgstr "Disable"
-
-msgid "De/activates the signup page"
-msgstr "De/activates the signup page"
-
-msgid "Signup"
-msgstr "Signup"
-
-msgid "Maintenance Mode"
-msgstr "Maintenance Mode"
-
-msgid "De/activates maintenance mode, except for admins"
-msgstr "De/activates maintenance mode, except for admins"
-
-msgid "Public Metafields"
-msgstr "Public Metafields"
-
-msgid "Fields a user can edit in the account settings"
-msgstr "Fields a user can edit in the account settings"
-
-msgid "Enter metafields"
-msgstr "Enter metafields"
-
-msgid "Badwords"
-msgstr "Badwords"
-
-msgid "Words not allowed for usernames and short messages"
-msgstr "Words not allowed for usernames and short messages"
-
-msgid "Enter badwords"
-msgstr "Enter badwords"
-
-msgid "Additional CSS Files"
-msgstr "Additional CSS Files"
-
-msgid ""
-"Paths to additional CSS files in the app directory<br>e.g. /app/assets/"
-"styles/general.css"
-msgstr ""
-"Paths to additional CSS files in the app directory<br>e.g. /app/assets/"
-"styles/general.css"
-
-msgid "Enter additional css files"
-msgstr "Enter additional css files"
-
-msgid "Additional JS Files"
-msgstr "Additional JS Files"
-
-msgid ""
-"Paths to additional JavaScript files in the app directory<br>e.g. /app/"
-"assets/scripts/main.js"
-msgstr ""
-"Paths to additional JavaScript files in the app directory<br>e.g. /app/"
-"assets/scripts/main.js"
-
-msgid "Enter additional js files"
-msgstr "Enter additional js files"
-
-msgid "Maximum File Size"
-msgstr "Maximum File Size"
-
-msgid "Maximum allowed file size in bytes"
-msgstr "Maximum allowed file size in bytes"
-
-msgid "Enter maximum file size"
-msgstr "Enter maximum file size"
-
-msgid "Allowed File Types"
-msgstr "Allowed File Types"
-
-msgid "Allowed file types for uploads"
-msgstr "Allowed file types for uploads"
-
-msgid "Enter allowed file types"
-msgstr "Enter allowed file types"
-
-msgid "Hostname"
-msgstr "Hostname"
-
-msgid "Hostname of your mail server"
-msgstr "Hostname of your mail server"
-
-msgid "Enter hostname"
-msgstr "Enter hostname"
-
-msgid "Sender"
-msgstr "Sender"
-
-msgid "Sender email address for outgoing emails"
-msgstr "Sender email address for outgoing emails"
-
-msgid "Enter sender"
-msgstr "Enter sender"
-
-msgid "Username of your mail server"
-msgstr "Username of your mail server"
-
-msgid "Password of your mail server"
-msgstr "Password of your mail server"
-
-msgid "Cron"
-msgstr "Cron"
-
-msgid "Cronjob"
-msgstr "Cronjob"
-
-msgid "De/activates the cronjob page"
-msgstr "De/activates the cronjob page"
-
-msgid "URL"
-msgstr "URL"
-
-msgid "Secured url to the cronjob page"
-msgstr "Secured url to the cronjob page"
-
-msgid "Enter values"
-msgstr "Enter values"
-
-msgid "Empty Cache"
-msgstr "Empty Cache"
-
-msgid ""
-"This is the dashboard for admins. Please select the section in the left "
-"sidebar you want to configure."
-msgstr ""
-"This is the dashboard for admins. Please select the section in the left "
-"sidebar you want to configure."
-
-msgid "Cronjob executed."
-msgstr "Cronjob executed."
-
-msgid "Hey %s"
-msgstr "Hey %s"
-
-msgid ""
-"welcome to your dashboard! From here, you can track every section of your "
-"account. You can also update your personal information or change your login "
-"credentials."
-msgstr ""
-"welcome to your dashboard! From here, you can track every section of your "
-"account. You can also update your personal information or change your login "
-"credentials."
-
-msgid "In the next step you will have to verify your email address"
-msgstr "In the next step you will have to verify your email address"
+msgid "You will have to verify your email address to<br>gain full access to all features of this app"
+msgstr "You will have to verify your email address to<br>gain full access to all features of this app"
 
 msgid "Your Password must be at least 8 characters long"
 msgstr "Your Password must be at least 8 characters long"
 
+msgid "Repeat Password"
+msgstr "Repeat Password"
+
+msgid "Repeat password"
+msgstr "Repeat password"
+
 msgid "I agree to the Terms of Service and Privacy Policy."
 msgstr "I agree to the Terms of Service and Privacy Policy."
 
-msgid "Verify Email Address"
-msgstr "Verify Email Address"
+msgid "Hello"
+msgstr "Hello"
 
-msgid ""
-"We've sent you a <b>confirmation code</b> to verify to the registered "
-"<b>email address</b>."
-msgstr ""
-"We've sent you a <b>confirmation code</b> to verify to the registered "
-"<b>email address</b>."
+msgid "you received a new message via the contact form"
+msgstr "you received a new message via the contact form"
 
-msgid "Confirmation Code"
-msgstr "Confirmation Code"
-
-msgid "You can find the 9-digit confirmation code in the email we sent you"
-msgstr "You can find the 9-digit confirmation code in the email we sent you"
-
-msgid "Enter confirmation code"
-msgstr "Enter confirmation code"
-
-msgid ""
-"We will send you a <b>confirmation code</b> to verify to your registered "
-"<b>email address</b>."
-msgstr ""
-"We will send you a <b>confirmation code</b> to verify to your registered "
-"<b>email address</b>."
-
-msgid "Request Confirmation Code"
-msgstr "Request Confirmation Code"
-
-msgid "Recover Account"
-msgstr "Recover Account"
-
-msgid ""
-"We've sent you a <b>confirmation code</b> to reset your password to the "
-"registered <b>Email Address</b>."
-msgstr ""
-"We've sent you a <b>confirmation code</b> to reset your password to the "
-"registered <b>Email Address</b>."
-
-msgid ""
-"We will send you a <b>confirmation code</b> to reset your password to the "
-"registered <b>Email Address</b>."
-msgstr ""
-"We will send you a <b>confirmation code</b> to reset your password to the "
-"registered <b>Email Address</b>."
-
-msgid "Privacy Policy"
-msgstr "Privacy Policy"
+msgid "From"
+msgstr "From"

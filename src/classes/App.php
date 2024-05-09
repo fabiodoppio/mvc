@@ -15,6 +15,8 @@
 
 namespace MVC;
 
+use MVC\Models as Model;
+
 /**
  * 
  *  App Class
@@ -26,6 +28,11 @@ namespace MVC;
  * 
  */
 class App {
+
+    /**
+     *  @var    string  $instance      Generated token for current instance
+     */
+    protected static $instance;
 
     /**
      *  @var    string  $SRC_NAME               Name of the framework
@@ -49,6 +56,7 @@ class App {
      *  @var    string  $APP_AUTHOR             Author of the app
      *  @var    string  $APP_DESCRIPTION        Description of the app
      *  @var    string  $APP_LANGUAGE           Language of the app
+     *  @var    bool    $APP_CRON               Cronjobs active
      *  @var    bool    $APP_DEBUG              Testing Env active
      *  @var    bool    $APP_LOGIN              Login active 
      *  @var    bool    $APP_SIGNUP             Signup active
@@ -62,16 +70,16 @@ class App {
     protected static    $APP_AUTHOR             = "";
     protected static    $APP_DESCRIPTION        = "";
     protected static    $APP_LANGUAGE           = "en_EN.utf8";
+    protected static    $APP_CRON               = true;
     protected static    $APP_DEBUG              = true;
     protected static    $APP_LOGIN              = true;
     protected static    $APP_SIGNUP             = true;
     protected static    $APP_MAINTENANCE        = false;
-    protected static    $APP_BADWORDS           = "[\"\"]";
+    protected static    $APP_BADWORDS           = [];
     protected static    $APP_PAGES              = [];
 
     /**
      *  @var    string  $DIR_ROOT               Root directory of the app
-     *  @var    string  $DIR_ASSETS             Directory for assets
      *  @var    string  $DIR_CLASSES            Directory for classes
      *  @var    string  $DIR_FONTS              Directory for fonts
      *  @var    string  $DIR_SCRIPTS            Directory for scripts
@@ -83,7 +91,6 @@ class App {
      *  @var    string  $DIR_MEDIA              Directory for media files
      */
     protected static    $DIR_ROOT;
-    protected static    $DIR_ASSETS             = "/app/assets";
     protected static    $DIR_CLASSES            = "/app/classes";   
     protected static    $DIR_FONTS              = "/app/assets/fonts";   
     protected static    $DIR_SCRIPTS            = "/app/assets/scripts";
@@ -130,18 +137,11 @@ class App {
     protected static    $MAIL_PASSWORD          = "";
     protected static    $MAIL_ENCRYPT           = "ssl";
     protected static    $MAIL_PORT              = "465";
-
-    /**
-     *  @var    string  $CRON_AUTH              Randomized hash for cron jobs
-     *  @var    bool    $CRON_ACTIVE            Cronjobs active
-     */
-    protected static    $CRON_AUTH;
-    protected static    $CRON_ACTIVE            = false;
     
 
     /**
      * 
-     *  Initializes the application ased on the provided configuration.
+     *  Initializes the application based on the provided configuration.
      * 
      *  @since  2.0
      *  @param  array   $config     An associative array containing application configuration settings
@@ -219,6 +219,75 @@ class App {
             throw new Exception(sprintf(_("Variable %s not set."), $name), 1002);
 
         return self::$$name;
+    }
+
+    /**
+     * 
+     *  Generate a unique instance token for the application.
+     *
+     *  @since  2.0
+     *  @param  bool    $store  Store token in session.
+     *  @return string          The generated instance token.
+     * 
+     */
+    public static function get_instance_token($store = false) {
+        if (!is_null(self::$instance))
+            return self::$instance;
+
+        $token = "";
+        $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";
+        $codeAlphabet.= "0123456789";
+        $max = strlen($codeAlphabet);
+    
+        for ($i=0; $i < 32; $i++)
+            $token .= $codeAlphabet[random_int(0, $max-1)];
+    
+        if ($store)
+            $_SESSION["instance"][$token] = hash_hmac('sha256', $token, hash_hmac('md5', $token, App::get("SALT_TOKEN")));
+
+        self::$instance = $token;
+        return $token;
+    }
+
+    /**
+     * 
+     *  Verify a instance token for the current session.
+     *
+     *  @since  2.0
+     *  @param  string  $token  The instance token to verify.
+     * 
+     */
+    public static function verify_instance_token(string $token) {
+        if (!hash_equals($_SESSION["instance"][$token]??"", hash_hmac('sha256', $token, hash_hmac('md5', $token, App::get("SALT_TOKEN")))))
+            throw new Exception(_("Illegal activity detected."), 1012);
+    }
+
+    /**
+     * 
+     *  Get the current instance model based on the cookies and sessions.
+     *
+     *  @since  2.0
+     *  @return Model\Account|Model\Guest   The current user account or a guest user if not logged in.
+     * 
+     */
+    public static function get_instance_model() {
+        if (!isset($_COOKIE["account"]))
+            return new Model\Guest();
+
+        if (empty($cookie = explode('$', $_COOKIE["account"])))
+            throw new Exception(_("Unauthorized Access."), 403);
+
+        if (empty($account = Database::query("SELECT * FROM app_accounts WHERE id = ?", [$cookie[1]])))
+            throw new Exception(_("Unauthorized Access."), 403);
+
+        $account = new Model\Account($account[0]["id"]);
+        $hash = hash_hmac('sha256', $account->get("id").$account->get("token"), hash_hmac('md5', $account->get("id").$account->get("token"), App::get("SALT_COOKIE")));
+
+        if (!hash_equals($cookie[0], $hash))
+            throw new Exception(_("Unauthorized Access."), 403);
+
+        return $account;
     }
 
 }

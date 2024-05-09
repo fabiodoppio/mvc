@@ -1,5 +1,5 @@
-{% include /header.tpl %} 
-        {% include /topbar.tpl %}
+{% include /_includes/header.tpl %} 
+        {% include /_includes/topbar.tpl %}
 
         <main class="account login">
             <section class="section is--light">
@@ -25,7 +25,11 @@
                             <div class="response"></div>
                             <button class="btn is--primary">{{"Log In"}}</button>
                             {% if ($app->signup): %}
-                                <a href="{{$app->url}}/signup" class="btn is--secondary">{{"Sign Up"}}</a>
+                                {% if ($request->get->redirect??""): %}
+                                    <a href="{{$app->url}}/signup?redirect={{urlencode($request->get->redirect)}}" class="btn is--secondary">{{"Sign Up"}}</a>
+                                {% else: %}
+                                    <a href="{{$app->url}}/signup" class="btn is--secondary">{{"Sign Up"}}</a>
+                                {% endif; %}
                             {% endif; %}
                         </form>
                     </div>
@@ -33,4 +37,4 @@
             </section>
         </main>
 
-        {% include /footer.tpl %} 
+{% include /_includes/footer.tpl %} 

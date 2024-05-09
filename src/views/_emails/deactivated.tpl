@@ -1,4 +1,4 @@
-{{"Hello %s", $account->meta->displayname}},
+{{"Hello %s", $account->meta->displayname ?? $account->username}},
 <br/><br/>
 {{"you are receiving this email because your account on %s has been deactivated.", $app->name}}
 <br/><br/>
@@ -7,6 +7,6 @@
 {{"Best regards"}}<br/>
 {{$app->name}}
 <div style="font-size:12px; line-height: 150%; margin-top:50px;">
-- - -<br>
+- - -<br/>
 {{"This is an automatically generated email, please do not reply."}}
 </div>
