@@ -2,7 +2,7 @@
         {% include /topbar.tpl %}
 
         <main class="page privacy">
-            <section class="section">
+            <section>
                 <div class="container">
                     <div class="main-content">
                         <h1 class="title">{{"Privacy Policy"}}</h1>

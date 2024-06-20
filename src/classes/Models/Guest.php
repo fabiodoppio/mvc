@@ -15,19 +15,20 @@
 
 namespace MVC\Models;
 
-use MVC\App     as App;
-use MVC\Models  as Model;
+use MVC\App         as App;
+use MVC\Database    as Database;
+use MVC\Exception   as Exception;
+use MVC\Models      as Model;
 
 /**
  * 
  *  Guest Class
  *
  *  The Guest class represents a guest user account with limited functionality.
- *  It extends the Account class and provides methods for accessing and managing
- *  guest account data stored in the session.
+ *  It provides methods for accessing and managing guest account data stored in the session.
  * 
  */
-class Guest extends Model\Account {
+class Guest extends Model\Model {
 
     /**
      *
@@ -41,11 +42,11 @@ class Guest extends Model\Account {
      * 
      */
     public function __construct() {
-        if (empty($_SESSION["account"] ?? []))
-            $_SESSION["account"] = [
+        if (empty($_SESSION["guest"] ?? []))
+            $_SESSION["guest"] = [
                 "data" => [
                     "token" => App::get_instance_token(),
-                    "role" => self::GUEST,
+                    "role" => Model\Account::GUEST,
                     "lastaction" => date('Y-m-d H:i:s', time()),
                     "registered" => date('Y-m-d H:i:s', time()),
                     "meta" => [
@@ -65,7 +66,7 @@ class Guest extends Model\Account {
      * 
      */
     public function get(string $name) {
-        return $_SESSION["account"]["data"][$name] ?? $_SESSION["account"]["data"]["meta"][$name] ?? null;
+        return $_SESSION["guest"]["data"][$name] ?? $_SESSION["guest"]["data"]["meta"][$name] ?? null;
     }
 
     /**
@@ -78,10 +79,22 @@ class Guest extends Model\Account {
      * 
      */
     public function set(string $name, mixed $value) {
-        if (isset($_SESSION["account"]["data"][$name]))
-            $_SESSION["account"]["data"][$name] = $value;
+        if (isset($_SESSION["guest"]["data"][$name]))
+            $_SESSION["guest"]["data"][$name] = $value;
         else
-            $_SESSION["account"]["data"]["meta"][$name] = $value;
+            $_SESSION["guest"]["data"]["meta"][$name] = $value;
+    }
+
+    /**
+     * 
+     *  Add an event to the guests log.
+     *
+     *  @since  2.0
+     *  @param  string      $event      The event to be added to the log
+     * 
+     */
+    public function log(string $event) {
+        $_SESSION["guest"]["log"][] = $event;
     }
 
     /**
@@ -93,7 +106,7 @@ class Guest extends Model\Account {
      * 
      */
     public function get_data() {
-        return $_SESSION["account"]["data"];
+        return $_SESSION["guest"]["data"];
     }
 
     /**
@@ -104,7 +117,33 @@ class Guest extends Model\Account {
      * 
      */
     public function delete() {
-        unset($_SESSION["account"]);
+        unset($_SESSION["guest"]);
+        session_regenerate_id();
+    }
+
+    /**
+     * 
+     *  Sign up a new account.
+     *
+     *  @since  2.0
+     *  @param  string  $username   Username for the new account
+     *  @param  string  $email      Email address for the new account
+     *  @param  string  $password   Password for the new account
+     * 
+     */
+    public function signup(string $username, string $email, string $password) {
+        if (!empty(Database::query("SELECT * FROM app_accounts WHERE username LIKE ?",[$username])[0]))
+            throw new Exception(_("This username is already taken."), 1076);
+                
+        if (!empty(Database::query("SELECT * FROM app_accounts WHERE email LIKE ?", [$email])[0]))
+            throw new Exception(_("This email address is already taken."), 1077);
+                
+        Database::query("INSERT INTO app_accounts (email, username, password, token, role) VALUES (?, ?, ?, ?, ?)", [strtolower($email), $username, password_hash($password, PASSWORD_DEFAULT), App::get_instance_token(), Model\Account::USER]);
+
+        $account = new Model\Account(Database::$insert_id);
+        $account->set("language",  $_COOKIE["locale"] ?? App::get("APP_LANGUAGE"));
+
+        App::set_auth_cookie($account->get("id"), App::get_instance_token());
     }
 
 }

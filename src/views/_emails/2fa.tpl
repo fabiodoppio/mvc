@@ -1,8 +1,8 @@
 {{"Hello %s,", $account->meta->displayname ?? $account->username}} 
 <br/><br/>
-{{"you are receiving this email because you are trying to verify your email address on %s.", $app->name}}
+{{"you are receiving this email because you are trying to log in from a new device or browser on %s.", $app->name}}
 <br/><br/>
-{{"Please enter the following code to complete the verification:"}}
+{{"Please enter the following code to complete the authentication:"}}
 <br/><br/>
 <span style="font-size:24px; font-weight:bold; letter-spacing:.15em;">{{$var->code}}</span>
 <br/><br/>

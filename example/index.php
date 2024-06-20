@@ -12,7 +12,8 @@ MVC\App::init([
             "title"         => "Imprint",
             "description"   => "This is a custom page",
             "robots"        => "noindex, nofollow",
-            "canonical"     => "/imprint"
+            "canonical"     => "/imprint",
+            "class"         => "page imprint"
 
         ],
         [
@@ -20,7 +21,8 @@ MVC\App::init([
             "title"         => "Privacy Policy",
             "description"   => "This is a custom page",
             "robots"        => "noindex, nofollow",
-            "canonical"     => "/privacy"
+            "canonical"     => "/privacy",
+            "class"         => "page privacy"
 
         ],
         [
@@ -28,9 +30,15 @@ MVC\App::init([
             "title"         => "Terms of Service",
             "description"   => "This is a custom page",
             "robots"        => "noindex, nofollow",
-            "canonical"     => "/terms"
+            "canonical"     => "/terms",
+            "class"         => "page terms"
 
         ]
+    ],
+
+    "APP_LANGUAGES"     => [
+        "English"           => "en_EN.utf8",
+        "Deutsch"           => "de_DE.utf8"
     ],
 
     // DON'T USE THESE!

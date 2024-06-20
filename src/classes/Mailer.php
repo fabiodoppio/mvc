@@ -30,11 +30,11 @@ class Mailer {
      *  Send an email with the specified subject, recipient, HTML template, and optional attachment.
      *
      *  @since  2.0
-     *  @param  string          $subject The subject of the email.
-     *  @param  string          $recipient The recipient's email address.
-     *  @param  string          $template The HTML content of the email.
-     *  @param  string|null     $attachment (Optional) The attachment content as a string.
-     *  @param  string|null     $attachment_name (Optional) The name of the attachment file.
+     *  @param  string          $subject            The subject of the email.
+     *  @param  string          $recipient          The recipient's email address.
+     *  @param  string          $template           The HTML content of the email.
+     *  @param  string|null     $attachment         (Optional) The attachment content as a string.
+     *  @param  string|null     $attachment_name    (Optional) The name of the attachment file.
      * 
      */
 	public static function send(string $subject, string $recipient, string $template, ?string $attachment = null, ?string $attachment_name = null) {
@@ -59,7 +59,7 @@ class Mailer {
             $mail->addStringAttachment($attachment, $attachment_name);
 
         if(!$mail->send())
-           throw new Exception(_("Email could not be sent."), 1014);
+           throw new Exception(_("Email could not be sent."), 1022);
 	}
 
 }

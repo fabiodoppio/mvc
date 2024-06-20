@@ -10,29 +10,4 @@
  * 
  */
 
-$(function() {
-
-    $('[data-trigger="dropdown"]').click(function() { $('.dropdown').not($(this).next()).hide(); $(this).next('.dropdown').toggle(); });
-
-    $(document).click(function(e) { 
-        var target = e.target; 
-        if (!$(target).is('[data-trigger="dropdown"]') && !$(target).parents().is('[data-trigger="dropdown"]')) 
-            $('.dropdown').hide();
-    }); 
-
-    $(document).on("change",'input[name="avatar"]',(function(e){$(this).closest("form").submit()}));
-
-
-    $(document).on("change", 'input[name="attachment"]', function(e) {
-        e.preventDefault(); 
-        $('label[for="attachment"] .btn.is--secondary').attr("style", "display: none !important");
-        $(".attachment-info").html((this.files.length)?this.files[0].name+' <i class="fas fa-circle-xmark"></i>':"");
-      });
-      
-      $(document).on("click", ".attachment-info i", function(e) {
-          e.preventDefault();
-          $('label[for="attachment"] input[name="attachment"]').val("");
-          $('label[for="attachment"] .btn.is--secondary').attr("style", "display: inline-block !important");
-          $(".attachment-info").html("");
-      });
-});
+$(function(){$(document).on("click","body",function(t){!$(".dropdown.is--active, .modalbox.is--active").length||$(t.target).is('[data-trigger="modalbox"], [data-trigger="dropdown"]')||$(t.target).parents().is('[data-trigger="modalbox"], [data-trigger="dropdown"]')||($(".dropdown").removeClass("is--active"),$(".modalbox").addClass("is--vanishing"),setTimeout(function(){$(".modalbox").removeClass("is--active is--vanishing")},500))}),$(document).on("click",'[data-trigger="dropdown"]',function(t){t.preventDefault(),$(".dropdown").removeClass("is--active"),$(this).next(".dropdown").addClass("is--active")}),$(document).on("click",'[data-trigger="modalbox"]',function(t){t.preventDefault(),$(".modalbox").removeClass("is--active"),$(this).next(".modalbox").addClass("is--active")}),$(document).on("click",'[data-trigger="menu"]',function(t){t.preventDefault(),$(".menu").toggleClass("is--mobile")}),$(document).on("click",'[data-trigger="remove"]',function(t){t.preventDefault(),$('input[name="attachment"]').val(""),$('[data-trigger="attachment"]').removeClass("is--hidden"),$(".attachment-info").html("")}),$(document).on("change",'input[name="attachment"]',function(t){t.preventDefault(),$('[data-trigger="attachment"]').addClass("is--hidden"),$(".attachment-info").html(this.files.length?this.files[0].name+' <i class="fas fa-circle-xmark" data-trigger="remove"></i>':"")}),$(document).on("click",'[data-trigger="attachment"]',function(t){t.preventDefault(),$('input[name="attachment"]').click()}),$(document).on("click",'[data-trigger="avatar"]',function(t){t.preventDefault(),$('input[name="avatar"]').click()}),$(document).on("change",'input[name="avatar"]',function(t){$(this).closest("form").submit(),$(this).val("")})});

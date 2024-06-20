@@ -30,7 +30,7 @@ use MVC\Ajax    as Ajax;
 abstract class Controller {
 
     /**
-     *  @var    mixed   $account    User account information
+     *  @var    Model\Account|Model\Guest   $account     User account or guest model
      */
     protected $account;
 
@@ -44,7 +44,7 @@ abstract class Controller {
      */
     public function beforeAction() {
         session_start();
-        $this->account = App::get_instance_model();
+        $this->account = App::get_account_by_cookie();
     }
 
     /**

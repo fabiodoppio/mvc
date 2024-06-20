@@ -1,14 +1,13 @@
 {% include /_includes/header.tpl %} 
         {% include /_includes/topbar.tpl %}
 
-        <main class="page maintenance">
-            <section class="section">
-                <div class="container">
-                    <div class="main-content">
-                        <h1 class="title">{{"The site is currently in maintenance mode."}}</h1>
-                    </div>
+        <main class="is--fading">
+            <div class="container">
+                <div class="main-content">
+                    <h1 class="title">{{"The app is currently in maintenance mode."}}</h1>
+                    <p>{{"We are currently working to get the app back online as quickly as possible. Please check again later - Thank you!"}}</p>
                 </div>
-            </section>
+            </div>
         </main>
 
 {% include /_includes/footer.tpl %} 

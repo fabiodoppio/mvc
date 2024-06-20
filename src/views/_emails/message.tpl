@@ -1,6 +1,6 @@
-{{"Hello"}},
+{{"Hello,"}} 
 <br/><br/>
-{{"you received a new message via the contact form"}}:
+{{"you received a new message via the contact form:"}}
 <br/><br/>
 <b>{{"From"}}:</b> {{$var->name}} <<a href="mailto:{{$var->email}}">{{$var->email}}</a>><br/>
 {% if ($var->subject != ""): %} <b>{{"Subject"}}:</b> {{$var->subject}}<br/>{% endif; %}
@@ -18,6 +18,6 @@
 {{"Best regards"}}<br/>
 {{$app->name}}
 <div style="font-size:12px; line-height: 150%; margin-top:50px;">
-- - -<br/>
-{{"This is an automatically generated email, please do not reply."}}
+    - - -<br/>
+    {{"This is an automatically generated email, please do not reply."}}
 </div>

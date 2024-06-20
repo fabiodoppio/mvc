@@ -1,40 +1,38 @@
 {% include /_includes/header.tpl %} 
         {% include /_includes/topbar.tpl %}
 
-        <main class="account login">
-            <section class="section is--light">
-                <div class="container">
-                    <div class="main-content">
-                    <h2 class="title">{{"Log In"}}</h1>
-                        <form data-request="account/login">
-                            <label for="credential">
-                                {{"Username or Email Address"}} <span class="required" title="{{'Required'}}">*</span>
-                                <input type="text" id="credential" name="credential" maxlength="64" placeholder="{{'Enter username or email address'}}" autocomplete="off" required/>
-                            </label>
-                            <label for="pw">
-                                {{"Password"}} <span class="required" title="{{'Required'}}">*</span>
-                                <input type="password" id="pw" name="pw" maxlength="64" placeholder="{{'Enter password'}}" autocomplete="off" required/>
-                            </label>
-                            <a href="{{$app->url}}/recovery" title="{{'Recover account'}}">{{"Forgot your password?"}}</a><br><br>
-                            <label for="stay">
-                                <input type="checkbox" name="stay" id="stay" value="1">{{"Stay logged in"}}
-                            </label><br><br>
-                            {% if ($request->get->redirect??""): %}
-                                <input type="hidden" name="redirect" value="{{$request->get->redirect}}"/>
+        <main>
+            <div class="container">
+                <div class="main-content is--fading">
+                    <h1 class="title">{{"Log In"}}</h1>
+                    <form data-request="account/login">
+                        <label for="credential">
+                            {{"Username or Email Address"}} <span class="is--required" title="{{'Required'}}">*</span>
+                            <input type="text" id="credential" name="credential" maxlength="64" placeholder="{{'Enter username or email address'}}" autocomplete="username email" required/>
+                        </label>
+                        <label for="pw">
+                            {{"Password"}} <span class="is--required" title="{{'Required'}}">*</span>
+                            <input type="password" id="pw" name="pw" maxlength="64" placeholder="{{'Enter password'}}" autocomplete="current-password" required/>
+                            <a href="{{$app->url}}/recovery" title="{{'Recover account'}}">{{"Forgot your password?"}}</a>
+                        </label>
+                        <label for="remember">
+                            <input type="checkbox" name="remember" id="remember" value="1">{{"Remember me!"}}
+                        </label>
+                        {% if (!empty($request->get->redirect)): %}
+                            <input type="hidden" name="redirect" value="{{$request->get->redirect}}"/>
+                        {% endif; %}
+                        <div class="response"></div>
+                        <button class="btn is--primary is--submit">{{"Log In"}}</button>
+                        {% if ($app->signup): %}
+                            {% if (!empty($request->get->redirect)): %}
+                                <a href="{{$app->url}}/signup?redirect={{urlencode($request->get->redirect)}}" class="btn is--secondary">{{"Sign Up"}}</a>
+                            {% else: %}
+                                <a href="{{$app->url}}/signup" class="btn is--secondary">{{"Sign Up"}}</a>
                             {% endif; %}
-                            <div class="response"></div>
-                            <button class="btn is--primary">{{"Log In"}}</button>
-                            {% if ($app->signup): %}
-                                {% if ($request->get->redirect??""): %}
-                                    <a href="{{$app->url}}/signup?redirect={{urlencode($request->get->redirect)}}" class="btn is--secondary">{{"Sign Up"}}</a>
-                                {% else: %}
-                                    <a href="{{$app->url}}/signup" class="btn is--secondary">{{"Sign Up"}}</a>
-                                {% endif; %}
-                            {% endif; %}
-                        </form>
-                    </div>
+                        {% endif; %}
+                    </form>
                 </div>
-            </section>
+            </div>
         </main>
 
 {% include /_includes/footer.tpl %} 

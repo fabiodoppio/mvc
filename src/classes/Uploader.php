@@ -61,31 +61,31 @@ class Uploader {
         switch($type) {
             case self::ATTACHMENT:
                 if (!in_array($filetype, ["image/jpeg", "image/jpg", "image/png", "application/pdf", "text/plain"]))
-                    throw new Exception(_("File has to be a jpeg, jpg, png, pdf or txt."), 1031);
+                    throw new Exception(_("File has to be a jpeg, jpg, png, pdf or txt."), 1023);
 
                 if ($file["size"] > 12582912)
-                    throw new Exception(sprintf(_("File exceeds the maximum allowed file size of %s KB."), 12288), 1032);
+                    throw new Exception(sprintf(_("File exceeds the maximum allowed file size of %s KB."), 12288), 1024);
 
                 $dirname  = $dirname."/uploads";
                 $basename = "upload_".bin2hex(random_bytes(9));
                 break;
             case self::AVATAR: 
                 if (!in_array($filetype, ["image/jpeg", "image/jpg", "image/png"]))
-                    throw new Exception(_("File has to be a jpeg, jpg or png."), 1033);
+                    throw new Exception(_("File has to be a jpeg, jpg or png."), 1025);
 
                 if ($file["size"] > 3145728)
-                    throw new Exception(sprintf(_("File exceeds the maximum allowed file size of %s KB."), 3072), 1034);
+                    throw new Exception(sprintf(_("File exceeds the maximum allowed file size of %s KB."), 3072), 1026);
 
                 if ($imagesize[0] != $imagesize[1])
-                    throw new Exception(_("Avatar has to be squared."), 1035); 
+                    throw new Exception(_("Avatar has to be squared."), 1027); 
 
-                if ($filetype == IMAGETYPE_JPEG) {
+                if (in_array($filetype, ["image/jpeg", "image/jpg"])) {
                     $img = imagecreatefromjpeg($file["tmp_name"]);
                     $new_img = imagecreatetruecolor(150, 150);
                     imagecopyresampled($new_img, $img, 0, 0, 0, 0, 150, 150, $imagesize[0], $imagesize[1]);
                     imagejpeg($new_img, $file["tmp_name"], 100);
                 }
-                elseif ($filetype == IMAGETYPE_PNG) {
+                elseif (in_array($filetype, ["image/png"])) {
                     $img = imagecreatefrompng($file["tmp_name"]);
                     $new_img = imagecreatetruecolor(150, 150);
                     imagecopyresampled($new_img, $img, 0, 0, 0, 0, 150, 150, $imagesize[0], $imagesize[1]);
@@ -104,7 +104,7 @@ class Uploader {
             $basename .= "_copy";
 
         if (!move_uploaded_file($file["tmp_name"], App::get("DIR_ROOT").$dirname."/".$basename.".".$extension))
-            throw new Exception(_("File could not be uploaded."), 1036);
+            throw new Exception(_("File could not be uploaded."), 1028);
 
         return $basename.".".$extension;
     }

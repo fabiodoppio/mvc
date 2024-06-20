@@ -1,36 +1,33 @@
 <header>
     <nav class="container">
+        <div class="mobile" data-trigger="menu" title="{{'Main Menu'}}"><i class="fas fa-bars"></i></div>
         <div class="brand">
-            <a href="{{$app->url}}" title="{{$app->name}}">
-                {* Logo *}
-            </a>
+            <a href="{{$app->url}}" title="{{'Homepage'}}"><i class="fa-solid fa-shield-cat"></i></a>
+        </div>
         </div>
         <ul class="menu">
-            <li>Menu 1</li>
-            <li>Menu 2</li>
-            <li>Menu 3</li>
+            <li><a href="{{$app->url}}">{{"Homepage"}}</a></li>
+            <li><a href="#">Menu 1</a></li>
+            <li><a href="#">Menu 2</a></li>
+            <li><a href="#">Menu 3</a></li>
         </ul>
-        <ul class="actions">
+        <ul class="cta">
             <li>
-                <a data-trigger="sidebar" title="{{'Toggle Sidebar'}}"><i class="fas fa-bars"></i></a>
+                <a href="{{$app->url}}/contact" title="{{'Contact'}}"><i class="fas fa-envelope"></i></a>
             </li>
             <li>
-                <a href="{{$app->url}}/help" title="{{'Help'}}"><i class="fas fa-circle-question"></i></a>
-            </li>
-            
-            <li>
-                <a class="avatar" data-trigger="dropdown" title="{{$account->meta->displayname ?? $account->username}}">
-                    {% if ($account->meta->avatar ?? null): %}
-                        <img src="{{$account->meta->avatar}}" alt="_avatar" width="40" height="40"/>
+                <div class="avatar" data-trigger="dropdown" title="{{$account->meta->displayname ?? $account->username}}">
+                    {% if ($account->role >= $account->roles->user && !empty($account->meta->avatar)): %}
+                        <img src="{{$app->url}}{{$app->directory->media}}/avatars/{{$account->meta->avatar}}" alt="_avatar"/>
                     {% endif; %}
-                </a>
-                <div class="dropdown account">
+                </div>
+                <div class="dropdown">
                     <div class="dropdown-header">
                         {{"My Account"}}
                     </div>
                     <ul>
                         {% if ($account->role >= $account->roles->user): %}
-                            <li><a href="{{$app->url}}/account/personal"><i class="fas fa-user"></i> {{"Personal Information"}}</a></li>
+                            <li><a href="{{$app->url}}/account/personal"><i class="fas fa-user"></i> {{"Personal Data"}}</a></li>
                             <li><a href="{{$app->url}}/account/security"><i class="fas fa-lock"></i> {{"Account & Security"}}</a></li>
                             <li><a href="{{$app->url}}/account/email"><i class="fas fa-envelope"></i> {{"Email Settings"}}</a></li>
                             <li><div class="dropdown-divider"></div></li>

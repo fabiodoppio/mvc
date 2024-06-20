@@ -17,6 +17,8 @@ Model View Controller (MVC) design pattern for simple web applications.
 
 - **Multi Language Support**
 
+- **2-Factor Authentication**
+
 - **More Features soon..**
 
 
@@ -37,7 +39,7 @@ $ composer update
 ### SQL-Statements for your Database:
 
 ```sql
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO"; START TRANSACTION; SET time_zone = "+00:00"; CREATE TABLE `app_accounts`( `id` int UNSIGNED NOT NULL, `username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `email` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `password` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `role` int UNSIGNED NOT NULL, `registered` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, `lastaction` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; INSERT INTO `app_accounts` (`id`, `username`, `email`, `password`, `token`, `role`, `registered`, `lastaction`) VALUES (1000, 'admin', 'someone@example.com', '$2y$10$mF/1IeSTLohx/J35LYnEoueV50p3g9EOgnfADE0E7seJw127fHzY2', 'deP5E5KznHsLl0TMeLyvbndNg7KEky6W', 8, '2023-11-29 00:00:00', '2023-11-29 00:00:00'); CREATE TABLE `app_accounts_meta` ( `id` int UNSIGNED NOT NULL, `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; CREATE TABLE `app_accounts_watchlist` ( `id` int UNSIGNED NOT NULL, `request` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `detected` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; ALTER TABLE `app_accounts` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `username` (`username`), ADD UNIQUE KEY `email` (`email`); ALTER TABLE `app_accounts_meta` ADD PRIMARY KEY (`id`,`name`); ALTER TABLE `app_accounts_watchlist` ADD PRIMARY KEY (`id`,`detected`); ALTER TABLE `app_accounts` MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1001; ALTER TABLE `app_accounts_meta` ADD CONSTRAINT `app_accounts_meta_ibfk_1` FOREIGN KEY (`id`) REFERENCES `app_accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `app_accounts_watchlist` ADD CONSTRAINT `app_accounts_watchlist_ibfk_1` FOREIGN KEY (`id`) REFERENCES `app_accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; COMMIT;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO"; START TRANSACTION; SET time_zone = "+00:00"; CREATE TABLE `app_accounts`( `id` int UNSIGNED NOT NULL, `username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `email` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `password` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `role` int UNSIGNED NOT NULL, `registered` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, `lastaction` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; INSERT INTO `app_accounts` (`id`, `username`, `email`, `password`, `token`, `role`, `registered`, `lastaction`) VALUES (1000, 'admin', 'someone@example.com', '$2y$10$mF/1IeSTLohx/J35LYnEoueV50p3g9EOgnfADE0E7seJw127fHzY2', 'deP5E5KznHsLl0TMeLyvbndNg7KEky6W', 8, '2023-11-29 00:00:00', '2023-11-29 00:00:00'); CREATE TABLE `app_accounts_meta` ( `id` int UNSIGNED NOT NULL, `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; CREATE TABLE `app_accounts_log`( `id` int UNSIGNED NOT NULL, `event` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; ALTER TABLE `app_accounts` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `username` (`username`), ADD UNIQUE KEY `email` (`email`); ALTER TABLE `app_accounts_meta` ADD PRIMARY KEY (`id`,`name`); AALTER TABLE `app_accounts_log` ADD PRIMARY KEY(`id`,`event`,`timestamp`); ALTER TABLE `app_accounts` MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1001; ALTER TABLE `app_accounts_meta` ADD CONSTRAINT `app_accounts_meta_ibfk_1` FOREIGN KEY (`id`) REFERENCES `app_accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `app_accounts_log` ADD CONSTRAINT `app_accounts_log_ibfk_1` FOREIGN KEY(`id`) REFERENCES `app_accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; COMMIT;
 ```
 
 
@@ -74,10 +76,11 @@ MVC\App::init([
     #"APP_AUTHOR"       => "",                      // [OPTIONAL] author of your app
     #"APP_DESCRIPTION"  => "",                      // [OPTIONAL] description of your app
     #"APP_LANGUAGE"     => "en_EN.utf8",            // [OPTIONAL] your prefered (server-)language
-    #"APP_DEBUG"        => false,                   // [OPTIONAL] de/activates debug mode
+    #"APP_LANGUAGES"    => [],                      // [OPTIONAL] available (server-)languages
+    #"APP_DEBUG"        => false,                   // [OPTIONAL] de/activates debug mode (displays errors)
+    #"APP_CRON"         => false,                   // [OPTIONAL] de/activates cronjob
     #"APP_LOGIN"        => true,                    // [OPTIONAL] de/activates login (except admins)
     #"APP_SIGNUP"       => true,                    // [OPTIONAL] de/activates signup
-    #"APP_CRON"         => false,                   // [OPTIONAL] de/activates cronjob
     #"APP_MAINTENANCE"  => false,                   // [OPTIONAL] de/activates maintenance mode (except admins)
     #"APP_BADWORDS"     => [],                      // [OPTIONAL] forbidden words for usernames or messages
     #"APP_PAGES"        => [[...], [...]],          // [OPTIONAL] custom pages

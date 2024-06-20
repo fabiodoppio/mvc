@@ -46,6 +46,11 @@ class Ajax {
      */
     public const PREPEND = 'prepend';
 
+    /**
+     *  @var    string  PREPLACE    Constant representing the jquery .replaceWith() command
+     */
+    public const REPLACE = 'replace';
+
 
     /**
      * 

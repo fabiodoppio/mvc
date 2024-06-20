@@ -35,15 +35,15 @@ class Fairplay {
      * 
      */
     public static function username(string $value) {
-        if (strlen($value) > 18 || strlen($value) < 4)
-            throw new Exception(_("The username must be between 3 and 18 characters long."), 1015);
+        if (strlen($value) > 18 || strlen($value) < 3)
+            throw new Exception(_("The username must be between 3 and 18 characters long."), 1007);
         elseif (preg_match('/[^A-Za-z0-9]+/', $value, $res))
-            throw new Exception(_("The username cannot contain any special characters."), 1016);
+            throw new Exception(_("The username cannot contain any special characters."), 1008);
         
         $check = preg_replace("/[^A-Za-z0-9üÜöÖäÄ]/", "", strtolower($value));
         foreach(App::get("APP_BADWORDS") as $badword)
             if (!empty($badword) && strstr($check, strtolower($badword)) !== false)
-                throw new Exception(_("This username is not allowed."), 1017);
+                throw new Exception(_("This username is not allowed."), 1009);
 
         return $value;
     }
@@ -60,9 +60,9 @@ class Fairplay {
      */
     public static function password(string $value1, ?string $value2 = null) {
         if ($value1 != $value2)
-            throw new Exception(_("The passwords do not match."), 1018);
+            throw new Exception(_("The passwords do not match."), 1010);
         elseif (strlen($value1) < 8)
-            throw new Exception(sprintf(_("Your password must be at least %s characters long."), 8), 1019);
+            throw new Exception(sprintf(_("Your password must be at least %s characters long."), 8), 1011);
         return $value1;
     }
 
@@ -78,7 +78,7 @@ class Fairplay {
     public static function email(string $value) {
         $value = filter_var($value, FILTER_VALIDATE_EMAIL);
 		if ($value === false) 
-            throw new Exception(_("Invalid email address."), 1020);
+            throw new Exception(_("Invalid email address."), 1012);
         return $value;
     }
     
@@ -94,7 +94,7 @@ class Fairplay {
 	public static function integer(int|string $value) {
 		$value = filter_var($value, FILTER_VALIDATE_INT);
 		if ($value === false) 
-            throw new Exception(_("Invalid integer."), 1021);
+            throw new Exception(_("Invalid integer."), 1013);
 		return $value;
 	}
     
@@ -109,7 +109,7 @@ class Fairplay {
      */
     public static function number(float|string $value) {
         if(!is_numeric($value))
-            throw new Exception(_("Invalid number."), 1022);
+            throw new Exception(_("Invalid number."), 1014);
         return $value;
     }
 
@@ -124,7 +124,7 @@ class Fairplay {
      */
 	public static function array(array $value) {
 		if (!is_array($value))
-            throw new Exception(_("Invalid array."), 1023);
+            throw new Exception(_("Invalid array."), 1015);
 
 		return $value;
 	}
@@ -140,7 +140,7 @@ class Fairplay {
      */
 	public static function string(string $value) {
 		if (!is_string($value))
-            throw new Exception(_("Invalid string."), 1024);
+            throw new Exception(_("Invalid string."), 1016);
 		return $value;
 	}
 
@@ -156,7 +156,7 @@ class Fairplay {
 	public static function boolean(bool|string $value) {
 		$value = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         if ($value === null)
-            throw new Exception(_("Invalid boolean."), 1025);
+            throw new Exception(_("Invalid boolean."), 1017);
 		return $value;
 	}
 
@@ -172,7 +172,7 @@ class Fairplay {
 	public static function url(string $value) {
 		$value = filter_var($value, FILTER_VALIDATE_URL);
 		if ($value === false)
-            throw new Exception(_("Invalid url."), 1026);
+            throw new Exception(_("Invalid url."), 1018);
         return $value;
 	}
 
@@ -187,7 +187,7 @@ class Fairplay {
      */
 	public static function datetime(string $value) {
 		if (!strtotime($value))
-            throw new Exception(_("Invalid datetime."), 1027);
+            throw new Exception(_("Invalid datetime."), 1019);
         return $value;
 	}
 
@@ -202,12 +202,12 @@ class Fairplay {
      */
     public static function message(string $value) {
         if (strlen($value) > 2 || strlen($value) < 250)
-            throw new Exception(sprintf(_("The message must be between %1\$s and %2\$s characters long."), 2, 250), 1028);
+            throw new Exception(sprintf(_("The message must be between %1\$s and %2\$s characters long."), 2, 250), 1020);
         
         $check = preg_replace("/[^A-Za-z0-9üÜöÖäÄ]/", "", strtolower($value));
         foreach(App::get("APP_BADWORDS") as $badword)
             if (!empty($badword) && strstr($check, strtolower($badword)) !== false)
-                throw new Exception(_("This message is not allowed."), 1029);
+                throw new Exception(_("This message is not allowed."), 1021);
 
         return $value;
     }

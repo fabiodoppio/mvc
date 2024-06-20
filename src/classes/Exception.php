@@ -16,7 +16,6 @@
 namespace MVC;
 
 use MVC\App     as App;
-use MVC\Models  as Model;
 
 /**
  * 
@@ -39,9 +38,9 @@ class Exception extends \Exception {
         switch($this->getCode()) {
             case 403:
 
-                Model\Account::unset_auth_cookie();
+                App::unset_auth_cookie();
                 http_response_code(403);
-                $redirect = (!empty($_GET["redirect"])) ? Fairplay::string($_GET["redirect"]) : strtok($_SERVER["REQUEST_URI"], '?');
+                $redirect = (!empty($_GET["redirect"])) ? Fairplay::string($_GET["redirect"]) : $_SERVER["REQUEST_URI"];
                 header("Location: ".App::get("APP_URL")."/login?redirect=".urlencode($redirect));
                 exit;
 

@@ -23,6 +23,8 @@
         <link rel="canonical" href="{{$page->canonical}}"/>
         <link rel="stylesheet" href="{{$app->url}}{{$app->asset->style->reboot}}"/>
         <link rel="stylesheet" href="{{$app->url}}{{$app->asset->style->icons}}"/>
+        <link rel="stylesheet" href="{{$app->url}}{{$app->asset->style->root}}"/>
+        <link rel="stylesheet" href="{{$app->url}}{{$app->asset->style->effects}}"/>
         <link rel="stylesheet" href="{{$app->url}}{{$app->asset->style->general}}"/>
         <script src="{{$app->url}}{{$app->asset->script->jquery}}"></script>
         <script src="{{$app->url}}{{$app->asset->script->jqueryui}}"></script>
@@ -30,4 +32,4 @@
         <script src="{{$app->url}}{{$app->asset->script->hooks}}"></script>
         <script src="{{$app->url}}{{$app->asset->script->main}}"></script>
     </head>
-    <body data-token="{{$instance->token}}">
+    <body class="{{$page->class}}" data-token="{{$instance->token}}">

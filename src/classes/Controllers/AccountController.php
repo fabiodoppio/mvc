@@ -18,7 +18,6 @@ namespace MVC\Controllers;
 use MVC\Ajax        as Ajax;
 use MVC\App         as App;
 use MVC\Cache       as Cache;
-use MVC\Database    as Database;
 use MVC\Exception   as Exception;
 use MVC\Fairplay    as Fairplay;
 use MVC\Mailer      as Mailer;
@@ -46,17 +45,17 @@ class AccountController extends Controller {
     public function beforeAction() {
         parent::beforeAction();
         if (empty($_POST["token"]))
-            throw new Exception(_("Required input not found."), 1037);
+            throw new Exception(_("Required input not found."), 1029);
 
         App::verify_instance_token(Fairplay::string($_POST["token"]));
 
         if (time() < strtotime($this->account->get("lastaction")) + 2)
-            throw new Exception(_("Too many requests in a short time."), 1038);
+            throw new Exception(_("Too many requests in a short time."), 1030);
 
         $this->account->set("lastaction", date("Y-m-d H:i:s", time()));
 
         if ($this->account->get("role") < Model\Account::GUEST)
-            throw new Exception(_("Your account is suspended or deactivated."), 1039);
+            throw new Exception(_("Your account is suspended or deactivated."), 1031);
     }
 
     /**
@@ -71,26 +70,55 @@ class AccountController extends Controller {
         switch($request) {
             case "account/login":
 
+                if (!App::get("APP_LOGIN"))
+                    throw new Exception(_("Log in not possible at the moment."), 1032);
+
+                if (isset($_SESSION["tmp_post"])) {
+                    $_POST = array_merge($_POST, $_SESSION["tmp_post"]);
+                    unset($_SESSION["tmp_post"]);
+                    session_regenerate_id();
+                }
+
                 if (empty($_POST["credential"]) || empty($_POST["pw"]))
-                    throw new Exception(_("Required input not found."), 1040);
+                    throw new Exception(_("Required input not found."), 1033);
 
-                $redirect = (!empty($_POST["redirect"])) ? Fairplay::string(urldecode($_POST["redirect"])) : "";
+                $credential = Fairplay::string($_POST["credential"]);
+                $password   = Fairplay::string($_POST["pw"]);
+                $account    = App::get_account_by_credential($credential);
+                $remember   = (!empty($_POST["remember"])) ? Fairplay::integer($_POST["remember"]) : null;
+                $redirect   = (!empty($_POST["redirect"])) ? Fairplay::string($_POST["redirect"]) : "";
+                
+                $account->attempt_login($password);
 
-                if ((!App::get("APP_LOGIN") || App::get("APP_MAINTENANCE")) && !str_contains($redirect, "admin"))
-                    throw new Exception(_("Log in not possible at the moment."), 1041);
+                if ($account->get("2fa"))
+                    if (empty($_POST["code"])) {
 
-                Model\Account::login(
-                    Fairplay::string($_POST["credential"]),
-                    Fairplay::string($_POST["pw"]),
-                    (!empty($_POST["stay"])) ? Fairplay::integer($_POST["stay"]) : false
-                );
+                        $_SESSION["tmp_post"] = [
+                            "credential" => $credential, 
+                            "pw"         => $password,
+                            "remember"   => $remember,
+                            "redirect"   => $redirect
+                        ];
 
-                Ajax::add('form[data-request="account/login"]', '<div class="success">'._("Please wait while redirecting..").'</div>');
-                Ajax::redirect(App::get("APP_URL").($redirect?:"/account"));
+                        $account->request_2fa_code();
+                        $account->log("2fa_code_requested");
+                        Ajax::add('form[data-request="account/login"', Cache::get("/_forms/2fa.tpl"), Ajax::REPLACE);
+    
+                        return;
+                    }
+                    else 
+                        $account->attempt_2fa_login(Fairplay::string($_POST["code"]));
+
+                $account->set("remember_me", $remember);
+
+                App::set_auth_cookie($account->get("id"), $account->get("token"), $remember);
+                App::set_locale_cookie($account->get("language")??App::get("APP_LANGUAGE"));
+                Ajax::add('form[data-request="account/login"]', '<div class="alert is--success">'._("Please wait while redirecting..").'</div>');
+                Ajax::redirect(App::get("APP_URL").($redirect ? urldecode($redirect) : "/"));
                 
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), $request), 1042);
+                throw new Exception(sprintf(_("Action %s not found."), $request), 1034);
         }
     }
 
@@ -107,23 +135,21 @@ class AccountController extends Controller {
             case "account/signup":
 
                 if (!App::get("APP_SIGNUP") || App::get("APP_MAINTENANCE") || !empty($_POST["firstname"]))
-                    throw new Exception(_("Sign up not possible at the moment."), 1043);
+                    throw new Exception(_("Sign up not possible at the moment."), 1035);
+
+                if ($this->account->get("role") != Model\Account::GUEST)
+                    throw new Exception(_("Your account does not have the required role."), 1036);
 
                 if (empty($_POST["username"]) || empty($_POST["email"]) || empty($_POST["pw1"]) || empty($_POST["pw2"])) 
-                    throw new Exception(_("Required input not found."), 1044);
+                    throw new Exception(_("Required input not found."), 1037);
 
-                Model\Account::create(
-                    Fairplay::username($_POST["username"]), 
-                    Fairplay::email($_POST["email"]), 
-                    Fairplay::password($_POST["pw1"], $_POST["pw2"])
-                );
-
-                Ajax::add('form[data-request="account/signup"]', '<div class="success">'._("Please wait while redirecting..").'</div>');
-                Ajax::redirect(App::get("APP_URL").(!empty($_POST["redirect"]) ? Fairplay::string(urldecode($_POST["redirect"])) : "/account/email"));
+                $this->account->signup(Fairplay::username($_POST["username"]), Fairplay::email($_POST["email"]), Fairplay::password($_POST["pw1"], $_POST["pw2"]));
+                Ajax::add('form[data-request="account/signup"]', '<div class="alert is--success">'._("Please wait while redirecting..").'</div>');
+                Ajax::redirect(App::get("APP_URL").(!empty($_POST["redirect"]) ? Fairplay::string(urldecode($_POST["redirect"])) : "/"));
 
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), $request), 1045);
+                throw new Exception(sprintf(_("Action %s not found."), $request), 1038);
         }
     }
 
@@ -137,67 +163,40 @@ class AccountController extends Controller {
      */
     public function recoveryAction(string $request) {
         switch($request) {
-            case "account/recovery/request":
+            case "account/recovery":
+
+                if (isset($_SESSION["tmp_post"])) {
+                    $_POST = array_merge($_POST, $_SESSION["tmp_post"]);
+                    unset($_SESSION["tmp_post"]);
+                    session_regenerate_id();
+                }
 
                 if (empty($_POST["credential"]))
-                    throw new Exception(_("Required input not found."), 1046);
+                    throw new Exception(_("Required input not found."), 1039);
 
                 $credential = Fairplay::string($_POST["credential"]);
+                $account    = App::get_account_by_credential($credential);
 
-                if (empty($account = Database::query("SELECT * FROM app_accounts WHERE email LIKE ? OR username = ?", [$credential, $credential])))
-                    throw new Exception(_("There is no account with this username or email address."), 1047);
+                if (empty($_POST["code"])) {
+                    $_SESSION["tmp_post"] = [
+                        "credential" => $credential
+                    ];
+
+                    $account->request_recovery_code();
+                    $account->log("recovery_code_requested");
+                    Ajax::add('form[data-request="account/recovery"]', Cache::get("/_forms/recovery.tpl", ["credential" => $credential]), Ajax::REPLACE);
+                }
+                else {
+                    if (empty($_POST["pw1"]) || empty($_POST["pw2"]))
+                        throw new Exception(_("Required input not found."), 1040);
+
+                    $account->recover(Fairplay::string($_POST["code"]), Fairplay::password($_POST["pw1"], $_POST["pw2"]));
+                    Ajax::add('form[data-request="account/recovery"]', '<div class="alert is--success">'._("Account successfully restored. You can now log in as usual.").'</div>');
+                }
             
-                $account = new Model\Account($account[0]["id"]);
-            
-                $code = Model\Account::get_confirmcode($credential);
-                $link = App::get("APP_URL")."/recovery?code=".str_replace('=', '', base64_encode($credential."/".$code));
-
-                Mailer::send(sprintf(_("Account Recovery | %s"), App::get("APP_NAME")), $account->get("email"), Cache::get("/_emails/recovery.tpl", [
-                    "var" => (object) [
-                        "code" => $code,
-                        "link" => $link
-                    ],
-                    "app" => (object) [
-                        "url" => App::get("APP_URL"),
-                        "name" => App::get("APP_NAME"),
-                    ],
-                    "account" => (object) [
-                        "username" => $this->account->get("username"),
-                        "meta" => (object) [
-                            "displayname" => $account->get("displayname")
-                        ]
-                    ]
-                ]));
-
-                Ajax::redirect(App::get("APP_URL")."/recovery?code=".str_replace('=', '', base64_encode($credential)));
-                Ajax::add('form[data-request="account/recovery/request"] .response', '<div class="success">'._("Please wait while redirecting..").'</div>');
-
-                break;
-            case "account/recovery/submit":
-    
-                if (empty($_POST["credential"]) || empty($_POST["pw1"]) || empty($_POST["pw2"]) || empty($_POST["code"]))
-                    throw new Exception(_("Required input not found."), 1048);
-
-                $credential = Fairplay::string($_POST["credential"]);
-
-                if (empty($account = Database::query("SELECT * FROM app_accounts WHERE email LIKE ? OR username = ?", [$credential, $credential])))
-                    throw new Exception(_("There is no account with this username or email address."), 1049);
-            
-                $account = new Model\Account($account[0]["id"]);
-
-                Model\Account::verify_confirmcode($credential, str_replace(' ', '', Fairplay::string($_POST["code"])));
-                if ($account->get("role") < Model\Account::DEACTIVATED)
-                    throw new Exception(_("Your account cannot be restored."), 1050);
-                
-                $account->set("password", password_hash(Fairplay::password($_POST["pw1"], $_POST["pw2"]), PASSWORD_DEFAULT));
-                $account->set("role", ($account->get("role") == Model\Account::DEACTIVATED) ? Model\Account::VERIFIED : $account->get("role"));
-                $account->set("token", App::get_instance_token());
-
-                Ajax::add('form[data-request="account/recovery/submit"]', '<div class="success">'._("Account successfully restored. You can now log in as usual.").'</div>');
-
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), $request), 1051);
+                throw new Exception(sprintf(_("Action %s not found."), $request), 1041);
         }
     }
 
@@ -211,10 +210,10 @@ class AccountController extends Controller {
      */
     public function personalAction(string $request) {
         if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
-            throw new Exception(_("App currently offline. Please try again later."), 1052);
+            throw new Exception(_("App currently offline. Please try again later."), 1042);
 
         if ($this->account->get("role") < Model\Account::USER)
-            throw new Exception(_("Your account does not have the required role."), 1053);
+            throw new Exception(_("Your account does not have the required role."), 1043);
 
         switch($request) {
             case "account/personal/edit":
@@ -263,33 +262,31 @@ class AccountController extends Controller {
                 if (isset($_POST["country"]) && $_POST["country"] != $this->account->get("country"))
                     $this->account->set("country", Fairplay::string($_POST["country"]));
 
-                Ajax::add('form[data-request="account/personal/edit"] .response', '<div class="success">'._("Changes successfully saved.").'</div>');
+                Ajax::add('form[data-request="account/personal/edit"] .response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
                 
                 break;
             case "account/personal/avatar/upload":
 
                 if (!isset($_FILES["avatar"]))
-                    throw new Exception(_("Required input not found."), 1054);
+                    throw new Exception(_("Required input not found."), 1044);
 
                 if ($this->account->get("role") < Model\Account::VERIFIED)
-                    throw new Exception(_("You have to verify your email address before you can upload an avatar."), 1055);
+                    throw new Exception(_("You have to verify your email address before you can upload an avatar."), 1045);
 
                 $this->account->set("avatar", Uploader::upload($_FILES["avatar"], Uploader::AVATAR));
-
-                Ajax::add('.account .avatar', '<img src="'.App::get("APP_URL").App::get("DIR_MEDIA")."/avatars/".$this->account->get("avatar").'"/>');
-                Ajax::add('form[data-request="account/personal/avatar/upload"] .response', '<div class="success">'._("Avatar successfully uploaded.").'</div>');
+                Ajax::add('.avatar', '<img src="'.App::get("APP_URL").App::get("DIR_MEDIA")."/avatars/".$this->account->get("avatar").'"/>');
+                Ajax::add('form[data-request="account/personal/avatar/upload"] .response', '<div class="alert is--success">'._("Avatar successfully uploaded.").'</div>');
 
                 break;
             case "account/personal/avatar/delete":
 
-               $this->account->set("avatar", null);
-
-                Ajax::remove('.account .avatar img');
-                Ajax::add('form[data-request="account/personal/avatar/delete"] .response', '<div class="success">'._("Avatar successfully deleted.").'</div>');
+                $this->account->set("avatar", null);
+                Ajax::remove('.avatar img');
+                Ajax::add('form[data-request="account/personal/avatar/upload"] .response', '<div class="alert is--success">'._("Avatar successfully deleted.").'</div>');
 
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), $request), 1056);
+                throw new Exception(sprintf(_("Action %s not found."), $request), 1046);
         }
     }
 
@@ -303,59 +300,64 @@ class AccountController extends Controller {
      */
     public function securityAction(string $request) {
         if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
-            throw new Exception(_("App currently offline. Please try again later."), 1057);
+            throw new Exception(_("App currently offline. Please try again later."), 1047);
 
         if ($this->account->get("role") < Model\Account::USER)
-            throw new Exception(_("Your account does not have the required role."), 1058);
+            throw new Exception(_("Your account does not have the required role."), 1048);
 
         switch($request) {
             case "account/security/edit":
 
                 if (!empty($_POST["pw"]) && !empty($_POST["pw1"]) && !empty($_POST["pw2"])) {
                     if (!password_verify($_POST["pw"], $this->account->get("password"))) 
-                        throw new Exception(_("Your current password does not match."), 1059);
+                        throw new Exception(_("Your current password does not match."), 1049);
                 
                     $this->account->set("password", password_hash(Fairplay::password($_POST["pw1"], $_POST["pw2"]), PASSWORD_DEFAULT));
                     $this->account->set("token", App::get_instance_token());
-                    Model\Account::set_auth_cookie($this->account->get("id"), App::get_instance_token(), 0);
+                    App::set_auth_cookie($this->account->get("id"), App::get_instance_token(), 0);
                 }
 
-                Ajax::add('form[data-request="account/security/edit"] .response', '<div class="success">'._("Changes successfully saved.").'</div>');
+                Ajax::add('form[data-request="account/security/edit"] .response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
                 
+                break;
+            case "account/security/2fa":
+
+                if ($this->account->get("role") < Model\Account::VERIFIED)
+                    throw new Exception(_("You have to verify your email address before you can acitvate the 2-Factor Authentication."), 1050);
+
+                $this->account->set("2fa", $this->account->get("2fa") ? null : 1);
+
+                if ($this->account->get("2fa")) {
+                    $this->account->set("token", App::get_instance_token());
+                    App::set_auth_cookie($this->account->get("id"), App::get_instance_token(), $this->account->get("remember_me"));
+                    Ajax::add('form[data-request="account/security/2fa"] .btn.is--primary', _("Deactivate"));
+                    Ajax::add('form[data-request="account/security/2fa"] .alert.is--error', '<div class="alert is--success"><i class="fas fa-shield-heart"></i> '._("Your account is protected by the 2-Factor Authentication.").'</div>', Ajax::REPLACE);
+                }
+                else {
+                    Ajax::add('form[data-request="account/security/2fa"] .btn.is--primary', _("Activate"));
+                    Ajax::add('form[data-request="account/security/2fa"] .alert.is--success', '<div class="alert is--error"><i class="fas fa-shield-halved"></i> '._("Your account is <b>not</b> protected by the 2-Factor Authentication.").'</div>', Ajax::REPLACE);
+                }
+
                 break;
             case "account/security/logout":
     
                 $this->account->set("token", App::get_instance_token());
-                Model\Account::set_auth_cookie($this->account->get("id"), App::get_instance_token(), 0);
-                Ajax::add('form[data-request="account/security/logout"] .response', '<div class="success">'._("Sessions successfully logged out."));
+                App::set_auth_cookie($this->account->get("id"), App::get_instance_token(), $this->account->get("remember_me"));
+                Ajax::add('form[data-request="account/security/logout"] .response', '<div class="alert is--success">'._("Sessions successfully logged out."));
         
                 break;
             case "account/security/deactivate":
 
                 if ($this->account->get("role") == Model\Account::ADMINISTRATOR)
-                    throw new Exception(_("You can not deactivate your account."), 1060);
+                    throw new Exception(_("You can not deactivate your account."), 1051);
 
-                $this->account->set("role", Model\Account::DEACTIVATED);
-
-                Mailer::send(sprintf(_("Account Deactivated | %s"), App::get("APP_NAME")), $this->account->get("email"), Cache::get("/_emails/deactivated.tpl", [
-                    "app" => (object) [
-                        "url" => App::get("APP_URL"),
-                        "name" => App::get("APP_NAME"),
-                    ],
-                    "account" => (object) [
-                        "username" => $this->account->get("username"),
-                        "meta" => (object) [
-                            "displayname" => $this->account->get("displayname")
-                        ]
-                    ]
-                ]));
-
-                Ajax::add('form[data-request="account/security/deactivate"]', '<div class="success">'._("Please wait while redirecting..").'</div>');
+                $this->account->deactivate();
+                Ajax::add('form[data-request="account/security/deactivate"]', '<div class="alert is--success">'._("Please wait while redirecting..").'</div>');
                 Ajax::redirect(App::get("APP_URL")."/goodbye");
 
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), $request), 1061);
+                throw new Exception(sprintf(_("Action %s not found."), $request), 1052);
         }
     }
 
@@ -369,62 +371,49 @@ class AccountController extends Controller {
      */
     public function emailAction(string $request) {
         if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
-            throw new Exception(_("App currently offline. Please try again later."), 1062);
+            throw new Exception(_("App currently offline. Please try again later."), 1053);
 
         if ($this->account->get("role") < Model\Account::USER)
-            throw new Exception(_("Your account does not have the required role."), 1063);
+            throw new Exception(_("Your account does not have the required role."), 1054);
 
         switch($request) {
             case "account/email/edit":
 
                 if (!empty($_POST["email"]) && $_POST["email"] != $this->account->get("email")) {
                     $this->account->set("email", strtolower(Fairplay::email($_POST["email"])));
+                    $this->account->set("2fa", ($this->account->get("role") <= Model\Account::VERIFIED) ? null : $this->account->get("2fa"));
                     $this->account->set("role", ($this->account->get("role") == Model\Account::VERIFIED) ? Model\Account::USER : $this->account->get("role"));
+                    $this->account->set("token", App::get_instance_token());
+
+                    App::set_auth_cookie($this->account->get("id"), App::get_instance_token(), $this->account->get("remember_me"));
+
+                    if ($this->account->get("role") < Model\Account::VERIFIED)
+                        Ajax::add('form[data-request="account/email/verify"]', '<div class="alert is--error"><i class="fas fa-circle-xmark"></i> '._("Your email adress is <b>not</b> verified.").'</div><div class="response"></div> <button class="btn is--primary is--submit">'._("Request").'</button>');
                 }
 
                 if (isset($_POST["newsletter"]) && $_POST["newsletter"] != $this->account->get("newsletter"))
                     $this->account->set("newsletter", Fairplay::integer($_POST["newsletter"]));
 
-                Ajax::add('form[data-request="account/email/edit"] .response', '<div class="success">'._("Changes successfully saved.").'</div>');
+                Ajax::add('form[data-request="account/email/edit"] .response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
                 
                 break;
             case "account/email/verify":
 
                 if ($this->account->get("role") > Model\Account::USER)
-                    throw new Exception(_("Your account does not have the required role."), 1064);
+                    throw new Exception(_("Your account does not have the required role."), 1055);
 
                 if (empty($_POST["code"])) {
-                    $code = Model\Account::get_confirmcode($this->account->get("email"));
-                    $link = App::get("APP_URL")."/account/email?code=".str_replace('=', '', base64_encode($code));
-
-                    Mailer::send(sprintf(_("Email Address Verification | %s"), App::get("APP_NAME")), $this->account->get("email"), Cache::get("/_emails/verify.tpl", [
-                        "var" => (object) [
-                            "code" => $code,
-                            "link" => $link
-                        ],
-                        "app" => (object) [
-                            "url" => App::get("APP_URL"),
-                            "name" => App::get("APP_NAME"),
-                        ],
-                        "account" => (object) [
-                            "username" => $this->account->get("username"),
-                            "meta" => (object) [
-                                "displayname" => $this->account->get("displayname")
-                            ]
-                        ]
-                    ]));
-
-                    Ajax::add('form[data-request="account/email/verify"]', Cache::get("/_includes/verify.tpl", ["request" => (object) ["code" => "", "ajax" => true]]));
+                    $this->account->request_verification_code();
+                    Ajax::add('form[data-request="account/email/verify"]', Cache::get("/_forms/verify.tpl"), Ajax::REPLACE);
                 }
                 else {
-                    Model\Account::verify_confirmcode($this->account->get("email"), str_replace(' ', '', Fairplay::string($_POST["code"])));
-                    $this->account->set("role", ($this->account->get("role") == Model\Account::USER) ? Model\Account::VERIFIED : $this->account->get("role"));
-                    Ajax::add('form[data-request="account/email/verify"]', '<div class="success">'._("Email address successfully verified.").'</div>');
+                    $this->account->verify(Fairplay::string($_POST["code"]));
+                    Ajax::add('form[data-request="account/email/verify"]', '<div class="alert is--success">'._("Email address successfully verified.").'</div>');
                 }
 
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), $request), 1066);
+                throw new Exception(sprintf(_("Action %s not found."), $request), 1056);
         }
     }
 
@@ -441,17 +430,17 @@ class AccountController extends Controller {
             case "account/locale":
 
                 if (empty($_POST["value"]))
-                    throw new Exception(_("Required input not found."), 1067);
+                    throw new Exception(_("Required input not found."), 1057);
 
                 $this->account->set("language", Fairplay::string($_POST["value"]));
-                Model\Account::set_locale_cookie($this->account->get("language"), time()+(60*60*24*90));
 
-                Ajax::add('form[data-request="account/locale"]', '<div class="success">'._("Please wait while redirecting..").'</div>');
+                App::set_locale_cookie($this->account->get("language"));
+                Ajax::add('form[data-request="account/locale"]', '<div class="alert is--success">'._("Please wait while redirecting..").'</div>');
                 Ajax::reload();
     
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), $request), 1068);
+                throw new Exception(sprintf(_("Action %s not found."), $request), 1058);
         }   
     }
 
@@ -469,12 +458,16 @@ class AccountController extends Controller {
             case "account/contact":
             case "account/feedback":
 
+                if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
+                    throw new Exception(_("App currently offline. Please try again later."), 1059);
+
                 if (empty($_POST["name"]) || empty($_POST["email"]) || empty($_POST["message"]) || !empty($_POST["firstname"]))
-                    throw new Exception(_("Required input not found."), 1069);
+                    throw new Exception(_("Required input not found."), 1060);
 
                 if (isset($_FILES["attachment"]) && $this->account->get("role") < Model\Account::VERIFIED)
-                    throw new Exception(_("You have to verify your email address before you can send a message with an attachment."), 1070);
+                    throw new Exception(_("You have to verify your email address before you can send a message with an attachment."), 1061);
 
+                App::set_locale_runtime(App::get("APP_LANGUAGE"));
                 Mailer::send(sprintf(_("New Message | %s"), App::get("APP_NAME")), App::get("MAIL_RECEIVER"), Cache::get("/_emails/message.tpl", [
                     "var" => (object) [
                         "name"  => Fairplay::string($_POST["name"]),
@@ -492,12 +485,13 @@ class AccountController extends Controller {
                         ]
                     ]
                 ])); 
-    
-                Ajax::add('form[data-request="'.$request.'"]', '<div class="success">'._("Message successfully sent.").'</div>');
+
+                App::set_locale_runtime($_COOKIE["locale"] ?? App::get("APP_LANGUAGE"));
+                Ajax::add('form[data-request="'.$request.'"]', '<div class="alert is--success">'._("Message successfully sent.").'</div>');
 
                 break;
             default: 
-                throw new Exception(sprintf(_("Action %s not found."), $request), 1071);
+                throw new Exception(sprintf(_("Action %s not found."), $request), 1062);
         }   
     }
 

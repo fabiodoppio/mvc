@@ -18,7 +18,6 @@ namespace MVC\Controllers;
 use MVC\App         as App;
 use MVC\Cache       as Cache;
 use MVC\Exception   as Exception;
-use MVC\Fairplay    as Fairplay;
 use MVC\Models      as Model;
 
 /**
@@ -51,6 +50,7 @@ class IndexController extends Controller {
             "framework"     => (object) [
                 "name"          => App::get("SRC_NAME"),
                 "package"       => App::get("SRC_PACKAGE"),
+                "url"           => App::get("SRC_URL"),
                 "description"   => App::get("SRC_DESCRIPTION"),
                 "author"        => App::get("SRC_AUTHOR"),
                 "version"       => App::get("SRC_VERSION")
@@ -62,6 +62,7 @@ class IndexController extends Controller {
                 "author"            => App::get("APP_AUTHOR"),
                 "description"       => App::get("APP_DESCRIPTION"),
                 "language"          => App::get("APP_LANGUAGE"),
+                "languages"         => App::get("APP_LANGUAGES"),
                 "cron"              => App::get("APP_CRON"),
                 "debug"             => App::get("APP_DEBUG"),
                 "login"             => App::get("APP_LOGIN"),
@@ -109,6 +110,12 @@ class IndexController extends Controller {
                         "icons"             => (!file_exists(App::get("DIR_ROOT").App::get("DIR_STYLES")."/icons.css")) 
                                                 ? App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/assets/styles/icons.css" 
                                                 : App::get("DIR_STYLES")."/icons.css",
+                        "root"              => (!file_exists(App::get("DIR_ROOT").App::get("DIR_STYLES")."/root.css")) 
+                                                ? App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/assets/styles/root.css" 
+                                                : App::get("DIR_STYLES")."/root.css",
+                        "effects"           => (!file_exists(App::get("DIR_ROOT").App::get("DIR_STYLES")."/effects.css")) 
+                                                ? App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/assets/styles/effects.css" 
+                                                : App::get("DIR_STYLES")."/effects.css",
                         "general"           => (!file_exists(App::get("DIR_ROOT").App::get("DIR_STYLES")."/general.css")) 
                                                 ? App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/assets/styles/general.css" 
                                                 : App::get("DIR_STYLES")."/general.css"
@@ -163,7 +170,8 @@ class IndexController extends Controller {
                     "title"         => sprintf(_(App::get("APP_TITLE") ?: "Homepage | %s"), App::get("APP_NAME")),
                     "description"   => App::get("APP_DESCRIPTION"),
                     "robots"        => "index, follow",
-                    "canonical"     => App::get("APP_URL")."/"
+                    "canonical"     => App::get("APP_URL")."/",
+                    "class"         => "page home"
                 ];
 
                 echo Cache::get("/home.tpl", $this->env);
@@ -186,14 +194,15 @@ class IndexController extends Controller {
         if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
             throw new Exception(_("App currently offline. Please try again later."), 406);
 
-        if ($i = array_search($request, array_column(App::get("APP_PAGES"), "slug")) === false)
+        if (($i = array_search($request, array_column(App::get("APP_PAGES"), "slug"))) === false)
             throw new Exception(_("Page not found."), 404);
     
         $this->env["page"] = (object) [
             "title"         => sprintf(_((App::get("APP_PAGES")[$i]["title"] ?? App::get("APP_PAGES")[$i]["slug"])." | %s"), App::get("APP_NAME")),
             "description"   => App::get("APP_PAGES")[$i]["description"] ?? App::get("APP_DESCRIPTION"),
             "robots"        => App::get("APP_PAGES")[$i]["robots"] ?? "index, follow",
-            "canonical"     => App::get("APP_URL").App::get("APP_PAGES")[$i]["slug"]
+            "canonical"     => App::get("APP_URL").App::get("APP_PAGES")[$i]["slug"],
+            "class"         => App::get("APP_PAGES")[$i]["class"] ?? "page"
         ];
 
         echo Cache::get($request.".tpl", $this->env);
@@ -208,7 +217,7 @@ class IndexController extends Controller {
      * 
      */
     public function loginAction(string $request) {
-        if (!App::get("APP_LOGIN") && !str_contains($_GET["redirect"], "admin"))
+        if (!App::get("APP_LOGIN"))
             throw new Exception(_("Page not found."), 404);
 
         if ($this->account->get("role") > Model\Account::GUEST)
@@ -221,7 +230,8 @@ class IndexController extends Controller {
                     "title"         => sprintf(_("Log In | %s"), App::get("APP_NAME")),
                     "description"   => App::get("APP_DESCRIPTION"),
                     "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/login"
+                    "canonical"     => App::get("APP_URL")."/login",
+                    "class"         => "account login"
                 ];
 
                 echo Cache::get("/login.tpl", $this->env);
@@ -247,16 +257,15 @@ class IndexController extends Controller {
         switch($request) {
             case "/logout":
     
-                Model\Account::unset_auth_cookie();
-                $this->account = App::get_instance_model();
- 
-                $this->env["account"]->role = $this->account->get("role");
+                App::unset_auth_cookie();
+                $this->env["account"]->role = (new Model\Guest())->get("role");
 
                 $this->env["page"] = (object) [
                     "title"         => sprintf(_("Log Out | %s"), App::get("APP_NAME")),
                     "description"   => App::get("APP_DESCRIPTION"),
                     "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/logout"
+                    "canonical"     => App::get("APP_URL")."/logout",
+                    "class"         => "account logout"
                 ];
 
                 echo Cache::get("/logout.tpl", $this->env);
@@ -282,16 +291,15 @@ class IndexController extends Controller {
         switch($request) {
             case "/goodbye":
     
-                Model\Account::unset_auth_cookie();
-                $this->account = App::get_instance_model();
-
-                $this->env["account"]->role = $this->account->get("role");
+                App::unset_auth_cookie();
+                $this->env["account"]->role = (new Model\Guest())->get("role");
 
                 $this->env["page"] = (object) [
                     "title"         => sprintf(_("Goodbye | %s"), App::get("APP_NAME")),
                     "description"   => App::get("APP_DESCRIPTION"),
                     "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/goodbye"
+                    "canonical"     => App::get("APP_URL")."/goodbye",
+                    "class"         => "account goodbye"
                 ];
 
                 echo Cache::get("/goodbye.tpl", $this->env);
@@ -314,6 +322,9 @@ class IndexController extends Controller {
         if (!App::get("APP_SIGNUP"))
             throw new Exception(_("Page not found."), 404);
 
+        if (App::get("APP_MAINTENANCE"))
+            throw new Exception(_("App currently offline. Please try again later."), 406);
+
         if ($this->account->get("role") > Model\Account::GUEST)
             throw new Exception(_("Your account does not have the required role."), 405);
 
@@ -324,7 +335,8 @@ class IndexController extends Controller {
                     "title"         => sprintf(_("Sign Up | %s"), App::get("APP_NAME")),
                     "description"   => App::get("APP_DESCRIPTION"),
                     "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/signup"
+                    "canonical"     => App::get("APP_URL")."/signup",
+                    "class"         => "account signup"
                 ];
         
                 echo Cache::get("/signup.tpl", $this->env);
@@ -350,18 +362,13 @@ class IndexController extends Controller {
         switch($request) {
             case "/recovery":
 
-                $base = (!empty($_GET["code"])) ? base64_decode(Fairplay::string($_GET["code"])) : "";
-
-                $this->env["request"] = (object) [
-                    "credential" => explode('/',$base)[0] ?? "",
-                    "code" => explode('/',$base)[1] ?? ""
-                ];
-
                 $this->env["page"] = (object) [
                     "title"         => sprintf(_("Account Recovery | %s"), App::get("APP_NAME")),
                     "description"   => App::get("APP_DESCRIPTION"),
                     "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/recovery"
+                    "canonical"     => App::get("APP_URL")."/recovery",
+                    "class"         => "account recovery"
+                    
                 ];
 
                 echo Cache::get("/recovery.tpl", $this->env);
@@ -397,10 +404,11 @@ class IndexController extends Controller {
              case "/account/personal":
 
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_("Personal Information | %s"), App::get("APP_NAME")),
+                    "title"         => sprintf(_("Personal Data | %s"), App::get("APP_NAME")),
                     "description"   => App::get("APP_DESCRIPTION"),
                     "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/account/personal"
+                    "canonical"     => App::get("APP_URL")."/account/personal",
+                    "class"         => "account personal"
                 ];
 
                 echo Cache:: get("/account/personal.tpl", $this->env);
@@ -412,7 +420,8 @@ class IndexController extends Controller {
                     "title"         => sprintf(_("Account & Security | %s"), App::get("APP_NAME")),
                     "description"   => App::get("APP_DESCRIPTION"),
                     "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/account/security"
+                    "canonical"     => App::get("APP_URL")."/account/security",
+                    "class"         => "account security"
                 ];
 
                 echo Cache:: get("/account/security.tpl", $this->env);
@@ -420,16 +429,12 @@ class IndexController extends Controller {
                 break;
             case "/account/email":
 
-                $this->env["request"] = (object) [
-                    "ajax"  => false,
-                    "code"  => (!empty($_GET["code"])) ? base64_decode(Fairplay::string($_GET["code"])) : ""
-                ];
-
                 $this->env["page"] = (object) [
                     "title"         => sprintf(_("Email Settings | %s"), App::get("APP_NAME")),
                     "description"   => App::get("APP_DESCRIPTION"),
                     "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/account/email"
+                    "canonical"     => App::get("APP_URL")."/account/email",
+                    "class"         => "account email"
                 ];
 
                 echo Cache:: get("/account/email.tpl", $this->env);
@@ -442,33 +447,28 @@ class IndexController extends Controller {
 
     /**
      * 
-     *  Displaying the website's help page.
+     *  Displaying the website's contact page.
      *
      *  @since  2.0
      *  @param  string  $request    The requested action.
      * 
      */
-    public function helpAction(string $request) {
+    public function contactAction(string $request) {
         if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
             throw new Exception(_("App currently offline. Please try again later."), 406);
         
         switch($request) {
-            case "/help":
-
-                $this->env["request"] = (object) [
-                    "subject"       => true,
-                    "platform"      => true,
-                    "attachment"    => true
-                ];
+            case "/contact":
 
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_(App::get("APP_TITLE") ?: "Help | %s"), App::get("APP_NAME")),
+                    "title"         => sprintf(_("Contact | %s"), App::get("APP_NAME")),
                     "description"   => App::get("APP_DESCRIPTION"),
                     "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/help"
+                    "canonical"     => App::get("APP_URL")."/contact",
+                    "class"         => "page contact"
                 ];
 
-                echo Cache::get("/help.tpl", $this->env);
+                echo Cache::get("/contact.tpl", $this->env);
 
                 break;
             default:
@@ -508,6 +508,9 @@ class IndexController extends Controller {
      * 
      */
     public function maintenanceAction(string $request) {
+        if (!App::get("APP_MAINTENANCE"))
+            throw new Exception(_("Page not found."), 404);
+
         switch($request) {
             case "/maintenance":
 
@@ -515,7 +518,8 @@ class IndexController extends Controller {
                     "title"         => sprintf(_("Maintenance | %s"), App::get("APP_NAME")),
                     "description"   => App::get("APP_DESCRIPTION"),
                     "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/maintenance"
+                    "canonical"     => App::get("APP_URL")."/maintenance",
+                    "class"         => "page maintenance"
                 ];
 
                 echo Cache::get("/maintenance.tpl", $this->env);
@@ -542,7 +546,8 @@ class IndexController extends Controller {
                     "title"         => sprintf(_("oops! | %s"), App::get("APP_NAME")),
                     "description"   => App::get("APP_DESCRIPTION"),
                     "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/oops"
+                    "canonical"     => App::get("APP_URL")."/oops",
+                    "class"         => "page oops"
                 ];
 
                 echo Cache::get("/oops.tpl", $this->env);

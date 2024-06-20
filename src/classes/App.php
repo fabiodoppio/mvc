@@ -30,13 +30,14 @@ use MVC\Models as Model;
 class App {
 
     /**
-     *  @var    string  $instance      Generated token for current instance
+     *  @var    string  $token                  Generated token for current instance
      */
-    protected static $instance;
+    protected static $token;
 
     /**
      *  @var    string  $SRC_NAME               Name of the framework
      *  @var    string  $SRC_PACKAGE            Package name of the framework
+     *  @var    string  $SRC_URL                URL to the github project
      *  @var    string  $SRC_DESCRIPTION        Description of the framework
      *  @var    string  $SRC_AUTHOR             Author of the framework
      *  @var    string  $SRC_LICENSE            License of the framework
@@ -44,6 +45,7 @@ class App {
      */
     protected static    $SRC_NAME               = "mvc";
     protected static    $SRC_PACKAGE            = "fabiodoppio/mvc";
+    protected static    $SRC_URL                = "https://github.com/fabiodoppio/mvc";
     protected static    $SRC_DESCRIPTION        = "Model View Controller (MVC) design pattern for simple web applications.";
     protected static    $SRC_AUTHOR             = "Fabio Doppio";
     protected static    $SRC_LICENSE            = "MIT";
@@ -56,6 +58,7 @@ class App {
      *  @var    string  $APP_AUTHOR             Author of the app
      *  @var    string  $APP_DESCRIPTION        Description of the app
      *  @var    string  $APP_LANGUAGE           Language of the app
+     *  @var    array   $APP_LANGUAGES          Available languages
      *  @var    bool    $APP_CRON               Cronjobs active
      *  @var    bool    $APP_DEBUG              Testing Env active
      *  @var    bool    $APP_LOGIN              Login active 
@@ -70,8 +73,9 @@ class App {
     protected static    $APP_AUTHOR             = "";
     protected static    $APP_DESCRIPTION        = "";
     protected static    $APP_LANGUAGE           = "en_EN.utf8";
+    protected static    $APP_LANGUAGES          = ["English" => "en_EN.utf8", "Deutsch" => "de_DE.utf8"];
     protected static    $APP_CRON               = true;
-    protected static    $APP_DEBUG              = true;
+    protected static    $APP_DEBUG              = false;
     protected static    $APP_LOGIN              = true;
     protected static    $APP_SIGNUP             = true;
     protected static    $APP_MAINTENANCE        = false;
@@ -154,18 +158,8 @@ class App {
                 if (property_exists(__CLASS__, $name))
                     self::$$name = $value;
 
-            /* Set language for runtime */
-            $language = $_COOKIE["locale"] ?? App::get("APP_LANGUAGE"); 
-            putenv('LANGUAGE='.$language);
-            putenv('LC_ALL='.$language);
-            setlocale(LC_ALL, $language);
-
-            $path = App::get("DIR_ROOT").App::get("DIR_LOCALE");
-            if (!file_exists($path."/".$language."/LC_MESSAGES/app.mo"))
-                $path = App::get("DIR_ROOT").App::get("DIR_VENDOR").'/'.App::get("SRC_PACKAGE")."/src/locale";
-           
-            bindtextdomain("app", $path);
-            textdomain("app");
+            /* Set locale for runtime */
+            App::set_locale_runtime($_COOKIE["locale"] ?? App::get("APP_LANGUAGE"));
 
             /* Set debug mode for runtime */
             if (App::get("APP_DEBUG")) {
@@ -223,16 +217,16 @@ class App {
 
     /**
      * 
-     *  Generate a unique instance token for the application.
+     *  Generates a unique token for the instance.
      *
      *  @since  2.0
      *  @param  bool    $store  Store token in session.
-     *  @return string          The generated instance token.
+     *  @return string          The generated token.
      * 
      */
     public static function get_instance_token($store = false) {
-        if (!is_null(self::$instance))
-            return self::$instance;
+        if (!is_null(self::$token))
+            return self::$token;
 
         $token = "";
         $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -246,32 +240,32 @@ class App {
         if ($store)
             $_SESSION["instance"][$token] = hash_hmac('sha256', $token, hash_hmac('md5', $token, App::get("SALT_TOKEN")));
 
-        self::$instance = $token;
+        self::$token = $token;
         return $token;
     }
 
     /**
      * 
-     *  Verify a instance token for the current session.
+     *  Verify a token for the current instance.
      *
      *  @since  2.0
-     *  @param  string  $token  The instance token to verify.
+     *  @param  string  $token  The token to verify.
      * 
      */
     public static function verify_instance_token(string $token) {
         if (!hash_equals($_SESSION["instance"][$token]??"", hash_hmac('sha256', $token, hash_hmac('md5', $token, App::get("SALT_TOKEN")))))
-            throw new Exception(_("Illegal activity detected."), 1012);
+            throw new Exception(_("Illegal activity detected."), 1003);
     }
 
     /**
      * 
-     *  Get the current instance model based on the cookies and sessions.
+     *  Get the account based on the cookies.
      *
      *  @since  2.0
      *  @return Model\Account|Model\Guest   The current user account or a guest user if not logged in.
      * 
      */
-    public static function get_instance_model() {
+    public static function get_account_by_cookie() {
         if (!isset($_COOKIE["account"]))
             return new Model\Guest();
 
@@ -288,6 +282,81 @@ class App {
             throw new Exception(_("Unauthorized Access."), 403);
 
         return $account;
+    }
+
+    /**
+     * 
+     *  Get the account based on an email or username.
+     *
+     *  @since  2.0
+     *  @return Model\Account   The account with given credential.
+     * 
+     */
+    public static function get_account_by_credential($credential) {
+        if (empty($account = Database::query("SELECT * FROM app_accounts WHERE email LIKE ? OR username = ?", [$credential, $credential])))
+            throw new Exception(_("There is no account with this username or email address."), 1004);
+    
+        return new Model\Account($account[0]["id"]);
+    }
+
+    /**
+     * 
+     *  Set a authentication cookie.
+     *
+     *  @since  2.0
+     *  @param  int         $id         The user account's ID.
+     *  @param  string      $token      The user account's authentication token.
+     *  @param  bool|null   $remember   (optional) Remember cookie for 90 days.
+     * 
+     */
+    public static function set_auth_cookie(int $id, string $token, ?bool $remember = false) {
+        $hash = hash_hmac('sha256', $id.$token, hash_hmac('md5', $id.$token, App::get("SALT_COOKIE")));
+        setcookie("account", $hash."$".$id, ($remember) ? time()+(60*60*24*90) : 0, "/", $_SERVER['SERVER_NAME'], 1);
+        $_COOKIE["account"] =  $hash."$".$id;
+    }
+
+     /**
+     *  Unset the authentication cookie.
+     * 
+     *  @since 2.0
+     */
+    public static function unset_auth_cookie() {
+        setcookie("account", "", -1, "/", $_SERVER['SERVER_NAME'], 1);
+        unset($_COOKIE["account"]);
+    }
+
+    /**
+     * 
+     *  Set a locale cookie and remember for 180 days.
+     *
+     *  @since  2.0
+     *  @param  string      $lang       The user's preferred language.
+     * 
+     */
+    public static function set_locale_cookie(string $lang) {
+        setcookie("locale", $lang, time()+(60*60*24*180), "/", $_SERVER['SERVER_NAME'], 1);
+        $_COOKIE["locale"] = $lang;
+    }
+
+   /**
+     * 
+     *  Set locale for runtime.
+     *
+     *  @since  2.0
+     *  @param  string      $lang       The runtime language.
+     * 
+     */
+    public static function set_locale_runtime(string $lang) {
+        putenv('LANGUAGE='.$lang);
+        putenv('LC_ALL='.$lang);
+        setlocale(LC_ALL, $lang);
+
+        $path = App::get("DIR_ROOT").App::get("DIR_LOCALE");
+        if (!file_exists($path."/".$lang."/LC_MESSAGES/app.mo"))
+            $path = App::get("DIR_ROOT").App::get("DIR_VENDOR").'/'.App::get("SRC_PACKAGE")."/src/locale";
+           
+        bindtextdomain("app", $path);
+        textdomain("app");
     }
 
 }
