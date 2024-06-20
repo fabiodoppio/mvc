@@ -21,6 +21,8 @@ Model View Controller (MVC) design pattern for simple web applications.
 
 - **More Features soon..**
 
+### Preview
+![alt preview](https://github.com/fabiodoppio/mvc/blob/main/preview.jpg?raw=true)
 
 Installation
 ============
