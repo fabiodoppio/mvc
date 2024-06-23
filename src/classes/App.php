@@ -60,7 +60,7 @@ class App {
      *  @var    string  $APP_LANGUAGE           Language of the app
      *  @var    array   $APP_LANGUAGES          Available languages
      *  @var    bool    $APP_CRON               Cronjobs active
-     *  @var    bool    $APP_DEBUG              Testing Env active
+     *  @var    bool    $APP_DEBUG              Debug mode active
      *  @var    bool    $APP_LOGIN              Login active 
      *  @var    bool    $APP_SIGNUP             Signup active
      *  @var    bool    $APP_MAINTENANCE        Maintenance mode active
@@ -145,30 +145,16 @@ class App {
 
     /**
      * 
-     *  Initializes the application based on the provided configuration.
+     *  Initializes the application.
      * 
+     *  @since  2.1     Outsourced app configuration and debug mode in other functions, added exit(); at the end.
      *  @since  2.0
-     *  @param  array   $config     An associative array containing application configuration settings
      * 
      */
-    public static function init(array $config) {
+    public static function init() {
         try {
-            /* Set configuration for runtime */
-            foreach ($config as $name => $value)
-                if (property_exists(__CLASS__, $name))
-                    self::$$name = $value;
-
-            /* Set locale for runtime */
             App::set_locale_runtime($_COOKIE["locale"] ?? App::get("APP_LANGUAGE"));
 
-            /* Set debug mode for runtime */
-            if (App::get("APP_DEBUG")) {
-                ini_set('display_errors', 1);
-                ini_set('display_startup_errors', 1);
-                error_reporting(E_ALL);
-   	        }
-
-            /* Execute requested action */
             $request                   = (!empty($_POST["request"])) ? $_POST["request"] : strtok($_SERVER["REQUEST_URI"], '?');
             $requestParts              = explode('/', $request);
 
@@ -197,6 +183,25 @@ class App {
         catch(Exception $exception) {
             $exception->process();
         }
+        
+        exit();
+    }
+
+    /**
+     * 
+     *  Initializes the application but in debug mode.
+     * 
+     *  @since  2.1
+     * 
+     */
+    public static function debug() {
+        self::$APP_DEBUG = true;
+
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+
+        self::init();
     }
 
     /**
@@ -213,6 +218,32 @@ class App {
             throw new Exception(sprintf(_("Variable %s not set."), $name), 1002);
 
         return self::$$name;
+    }
+
+    /**
+     * 
+     *  Set the value of one or more configuration variables.
+     * 
+     *  @since  2.1
+     *  @param  array   $config         An associative array containing the configuration variables
+     * 
+     */
+    public static function config(array $config) {
+        foreach ($config as $name => $value)
+           if (property_exists(__CLASS__, $name))
+               self::$$name = $value;
+    }
+
+    /**
+     * 
+     *  Add a custom page.
+     *
+     *  @since  2.1
+     *  @param  array      $meta        The custom pages meta
+     * 
+     */
+    public static function page(array $meta) {
+        self::$APP_PAGES[] = $meta;
     }
 
     /**

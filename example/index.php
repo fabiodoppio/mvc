@@ -2,39 +2,9 @@
 
 require_once __DIR__.'/app/vendor/autoload.php';
 
-MVC\App::init([
+MVC\App::config([
     "APP_URL"           => "https://mydomain.com",
     "DIR_ROOT"          => "/var/www",
-
-    "APP_PAGES"         => [
-        [
-            "slug"          => "/imprint",
-            "title"         => "Imprint",
-            "description"   => "This is a custom page",
-            "robots"        => "noindex, nofollow",
-            "canonical"     => "/imprint",
-            "class"         => "page imprint"
-
-        ],
-        [
-            "slug"          => "/privacy",
-            "title"         => "Privacy Policy",
-            "description"   => "This is a custom page",
-            "robots"        => "noindex, nofollow",
-            "canonical"     => "/privacy",
-            "class"         => "page privacy"
-
-        ],
-        [
-            "slug"          => "/terms",
-            "title"         => "Terms of Service",
-            "description"   => "This is a custom page",
-            "robots"        => "noindex, nofollow",
-            "canonical"     => "/terms",
-            "class"         => "page terms"
-
-        ]
-    ],
 
     "APP_LANGUAGES"     => [
         "English"           => "en_EN.utf8",
@@ -57,5 +27,35 @@ MVC\App::init([
     "MAIL_USERNAME"     => "info@mydomain.com",
     "MAIL_PASSWORD"     => "************"
 ]);
+
+MVC\App::page([
+    "slug"          => "/imprint",
+    "title"         => "Imprint",
+    "description"   => "This is a custom page",
+    "robots"        => "noindex, nofollow",
+    "canonical"     => "/imprint",
+    "class"         => "page imprint"
+
+]);
+MVC\App::page([
+    "slug"          => "/privacy",
+    "title"         => "Privacy Policy",
+    "description"   => "This is a custom page",
+    "robots"        => "noindex, nofollow",
+    "canonical"     => "/privacy",
+    "class"         => "page privacy"
+
+]);
+MVC\App::page([
+    "slug"          => "/terms",
+    "title"         => "Terms of Service",
+    "description"   => "This is a custom page",
+    "robots"        => "noindex, nofollow",
+    "canonical"     => "/terms",
+    "class"         => "page terms"
+
+]);
+
+MVC\App::init();
 
 ?>

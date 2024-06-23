@@ -71,21 +71,19 @@ The simplest usage to create an App would be as follows in your _index.php_:
 
 require_once __DIR__.'/app/vendor/autoload.php';
 
-MVC\App::init([
+MVC\App::config([
     "APP_URL"           => "https://",              // [REQUIRED] url to your app, no trailing slash
     #"APP_NAME"         => "My App",                // [OPTIONAL] name of your app
     #"APP_TITLE"        => "",                      // [OPTIONAL] title of your start page
     #"APP_AUTHOR"       => "",                      // [OPTIONAL] author of your app
     #"APP_DESCRIPTION"  => "",                      // [OPTIONAL] description of your app
-    #"APP_LANGUAGE"     => "en_EN.utf8",            // [OPTIONAL] your prefered (server-)language
+    #"APP_LANGUAGE"     => "en_EN.utf8",            // [OPTIONAL] (server-)language of your app
     #"APP_LANGUAGES"    => [],                      // [OPTIONAL] available (server-)languages
-    #"APP_DEBUG"        => false,                   // [OPTIONAL] de/activates debug mode (displays errors)
     #"APP_CRON"         => false,                   // [OPTIONAL] de/activates cronjob
     #"APP_LOGIN"        => true,                    // [OPTIONAL] de/activates login (except admins)
     #"APP_SIGNUP"       => true,                    // [OPTIONAL] de/activates signup
     #"APP_MAINTENANCE"  => false,                   // [OPTIONAL] de/activates maintenance mode (except admins)
     #"APP_BADWORDS"     => [],                      // [OPTIONAL] forbidden words for usernames or messages
-    #"APP_PAGES"        => [[...], [...]],          // [OPTIONAL] custom pages
 
     "SALT_COOKIE"       => "",                      // [REQUIRED] randomized hash for security reasons
     "SALT_TOKEN"        => "",                      // [REQUIRED] randomized hash for security reasons
@@ -115,6 +113,8 @@ MVC\App::init([
     #"DIR_CACHE"        => "/app/cache",            // [OPTIONAL] path to your cache files
     #"DIR_MEDIA"        => "/app/media"             // [OPTIONAL] path to your media files
 ]);
+
+MVC\App::init();
 
 ?>
 ```
