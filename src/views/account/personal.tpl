@@ -85,19 +85,21 @@
                         <div class="response"></div>
                         <button class="btn is--primary is--submit">{{"Save Changes"}}</button>
                     </form>
-                    <h2>{{"Language"}}</h2>
-                    <form data-request="account/locale">
-                        <label for="language">
-                            {{"Preferred Language"}} <span class="is--required" title="{{'Required'}}">*</span>
-                            <select id="language" name="value" autocomplete="language" required>
-                                {% $language = $account->meta->language ?? $app->language; %}
-                                {% foreach($app->languages as $key => $value): %}
-                                    <option value="{{$value}}" {{($language == $value) ? "selected" : ""}}>{{$key}}</option>
-                                {% endforeach; %}
-                            </select>
-                        </label>
-                        <button class="btn is--primary is--submit">{{"Change Language"}}</button>
-                    </form>
+                    {% if (count($app->languages) > 1): %}
+                        <h2>{{"Language"}}</h2>
+                        <form data-request="account/locale">
+                            <label for="language">
+                                {{"Preferred Language"}} <span class="is--required" title="{{'Required'}}">*</span>
+                                <select id="language" name="value" autocomplete="language" required>
+                                    {% $language = $account->meta->language ?? $app->language; %}
+                                    {% foreach($app->languages as $key => $value): %}
+                                        <option value="{{$value}}" {{($language == $value) ? "selected" : ""}}>{{$key}}</option>
+                                    {% endforeach; %}
+                                </select>
+                            </label>
+                            <button class="btn is--primary is--submit">{{"Change Language"}}</button>
+                        </form>
+                    {% endif; %}
                 </div>
             </div>
         </main>
