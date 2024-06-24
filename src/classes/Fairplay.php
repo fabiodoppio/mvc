@@ -118,11 +118,11 @@ class Fairplay {
      *  Validate a array value.
      *
      *  @since  2.0
-     *  @param  array  $value  The array value to validate.
-     *  @return array          The validated array value if it is valid.
+     *  @param  array|string    $value  The array value to validate.
+     *  @return array                   The validated array value if it is valid.
      * 
      */
-	public static function array(array $value) {
+	public static function array(array|string $value) {
 		if (!is_array($value))
             throw new Exception(_("Invalid array."), 1015);
 
