@@ -86,8 +86,8 @@ class Database {
           
                return $rows;
           }
-          catch(\mysqli_sql_exception) {
-               throw new Exception(_("Connection to MySQL database failed."), 1006);
+          catch(\mysqli_sql_exception $exception) {
+               throw new Exception(_("Connection to MySQL database failed: ".$exception->getMessage()), 1006);
           }
      }
 
