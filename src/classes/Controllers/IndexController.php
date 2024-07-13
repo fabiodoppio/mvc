@@ -70,6 +70,7 @@ class IndexController extends Controller {
                 "maintenance"       => App::get("APP_MAINTENANCE"),
                 "directory"         => (object) [
                     "root"              => App::get("DIR_ROOT"),
+                    "assets"            => App::get("DIR_ASSETS"),
                     "fonts"             => App::get("DIR_FONTS"),
                     "scripts"           => App::get("DIR_SCRIPTS"), 
                     "styles"            => App::get("DIR_STYLES"),

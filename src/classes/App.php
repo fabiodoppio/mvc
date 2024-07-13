@@ -85,6 +85,7 @@ class App {
     /**
      *  @var    string  $DIR_ROOT               Root directory of the app
      *  @var    string  $DIR_CLASSES            Directory for classes
+     *  @var    string  $DIR_ASSETS             Directory for assets
      *  @var    string  $DIR_FONTS              Directory for fonts
      *  @var    string  $DIR_SCRIPTS            Directory for scripts
      *  @var    string  $DIR_STYLES             Directory for styles
@@ -95,7 +96,8 @@ class App {
      *  @var    string  $DIR_MEDIA              Directory for media files
      */
     protected static    $DIR_ROOT;
-    protected static    $DIR_CLASSES            = "/app/classes";   
+    protected static    $DIR_CLASSES            = "/app/classes"; 
+    protected static    $DIR_ASSETS             = "/app/assets";  
     protected static    $DIR_FONTS              = "/app/assets/fonts";   
     protected static    $DIR_SCRIPTS            = "/app/assets/scripts";
     protected static    $DIR_STYLES             = "/app/assets/styles";
