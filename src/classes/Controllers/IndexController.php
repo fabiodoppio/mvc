@@ -147,7 +147,8 @@ class IndexController extends Controller {
             ],
             "request" => (object) [
                 "get"           => (object) $_GET,
-                "post"          => (object) $_POST
+                "post"          => (object) $_POST,
+                "uri"           => strtok($_SERVER["REQUEST_URI"], '?')
             ]
         ];
     }
