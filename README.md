@@ -104,6 +104,7 @@ MVC\App::config([
 
     "DIR_ROOT"          => "/var/www"               // [REQUIRED] path to your root directory, no trailing slash
     #"DIR_CLASSES"      => "/app/classes",          // [OPTIONAL] path to your custom or extended classes
+    #"DIR_ASSETS"       => "/app/assets",           // [OPTIONAL] path to your assets
     #"DIR_FONTS"        => "/app/assets/fonts",     // [OPTIONAL] path to your fonts
     #"DIR_SCRIPTS"      => "/app/assets/scripts",   // [OPTIONAL] path to your .js scripts
     #"DIR_STYLES"       => "/app/assets/styles",    // [OPTIONAL] path to your .css styles
