@@ -34,8 +34,8 @@ MVC\App::page([
     "description"   => "This is a custom page",
     "robots"        => "noindex, nofollow",
     "canonical"     => "/imprint",
-    "class"         => "page imprint"
-
+    "class"         => "page imprint",
+    "template"      => "imprint.tpl"
 ]);
 MVC\App::page([
     "slug"          => "/privacy",
@@ -43,8 +43,8 @@ MVC\App::page([
     "description"   => "This is a custom page",
     "robots"        => "noindex, nofollow",
     "canonical"     => "/privacy",
-    "class"         => "page privacy"
-
+    "class"         => "page privacy",
+    "template"      => "privacy.tpl"
 ]);
 MVC\App::page([
     "slug"          => "/terms",
@@ -52,8 +52,8 @@ MVC\App::page([
     "description"   => "This is a custom page",
     "robots"        => "noindex, nofollow",
     "canonical"     => "/terms",
-    "class"         => "page terms"
-
+    "class"         => "page terms",
+    "template"      => "terms.tpl"
 ]);
 
 MVC\App::init();
