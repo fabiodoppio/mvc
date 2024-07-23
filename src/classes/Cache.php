@@ -80,8 +80,8 @@ class Cache {
      * 
      */
     private static function compile_includes(string $file) {
-        if (!file_exists($path = App::get("DIR_ROOT").App::get("DIR_VIEWS").$file))
-            if (!file_exists($path = App::get("DIR_ROOT").App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/views".$file))
+        if (!is_file($path = App::get("DIR_ROOT").App::get("DIR_VIEWS").$file))
+            if (!is_file($path = App::get("DIR_ROOT").App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/views".$file))
                 throw new Exception(sprintf(_("Template %s not found."), $file), 1005);
             
         $template = file_get_contents($path);
