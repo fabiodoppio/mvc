@@ -207,7 +207,7 @@ class IndexController extends Controller {
             "class"         => App::get("APP_PAGES")[$i]["class"] ?? "page"
         ];
 
-        echo Cache::get(App::get("APP_PAGES")[$i]["template"].".tpl", $this->env);
+        echo Cache::get(App::get("APP_PAGES")[$i]["template"], $this->env);
     }
 
     /**
