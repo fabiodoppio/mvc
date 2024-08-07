@@ -2,7 +2,6 @@
 
 namespace MVC\Controllers;
 
-
 use MVC\Ajax as Ajax;
 
 class MyController extends Controller {

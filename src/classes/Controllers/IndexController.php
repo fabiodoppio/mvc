@@ -188,6 +188,7 @@ class IndexController extends Controller {
      * 
      *  Displaying the website's custom page.
      *
+     *  @since  2.2     Added regex detection in slugs.
      *  @since  2.0
      *  @param  string  $request    The requested action.
      * 
@@ -196,18 +197,23 @@ class IndexController extends Controller {
         if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
             throw new Exception(_("App currently offline. Please try again later."), 406);
 
-        if (($i = array_search($request, array_column(App::get("APP_PAGES"), "slug"))) === false)
-            throw new Exception(_("Page not found."), 404);
-    
-        $this->env["page"] = (object) [
-            "title"         => sprintf(_((App::get("APP_PAGES")[$i]["title"] ?? App::get("APP_PAGES")[$i]["slug"])." | %s"), App::get("APP_NAME")),
-            "description"   => App::get("APP_PAGES")[$i]["description"] ?? App::get("APP_DESCRIPTION"),
-            "robots"        => App::get("APP_PAGES")[$i]["robots"] ?? "index, follow",
-            "canonical"     => App::get("APP_URL").App::get("APP_PAGES")[$i]["slug"],
-            "class"         => App::get("APP_PAGES")[$i]["class"] ?? "page"
-        ];
+        $page_found = false;
+        foreach(App::get("APP_PAGES") as $page)
+            if ($page_found = preg_match('#^'.$page['slug'].'$#', $request)) {
+                $this->env["page"] = (object) [
+                    "title"         => sprintf(_(($page["title"] ?? $page["slug"])." | %s"), App::get("APP_NAME")),
+                    "description"   => $page["description"] ?? App::get("APP_DESCRIPTION"),
+                    "robots"        => $page["robots"] ?? "index, follow",
+                    "canonical"     => App::get("APP_URL").$page["slug"],
+                    "class"         => $page["class"] ?? "page"
+                ];
+        
+                echo Cache::get($page["template"] ?? "", $this->env);
+                break;
+            }
 
-        echo Cache::get(App::get("APP_PAGES")[$i]["template"] ?? "", $this->env);
+        if (!$page_found)
+            throw new Exception(_("Page not found."), 404);
     }
 
     /**

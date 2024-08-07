@@ -50,13 +50,11 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO"; START TRANSACTION; SET time_zone = "+00:
 ```
 <IfModule mod_rewrite.c>
     RewriteEngine on
-    RewriteBase /
-    
     RewriteRule ^index\.php$ - [L]
     RewriteRule ^(.*)/$ /$1 [R=301,L]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ /index.php [NC,QSA,L]
+    RewriteRule ^(.*)$ index.php [NC,QSA,L]
 </IfModule>
 ```
 

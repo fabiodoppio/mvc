@@ -39,15 +39,14 @@ class AccountController extends Controller {
      *  Executes actions before the main action, including client verification,
      *  rate limiting, and checking the user account status.
      * 
+     *  @since  2.2     Token is no longer verified via POST but via Header Authorization.
      *  @since  2.0
      *  
      */
     public function beforeAction() {
         parent::beforeAction();
-        if (empty($_POST["token"]))
-            throw new Exception(_("Required input not found."), 1029);
 
-        App::verify_instance_token(Fairplay::string($_POST["token"]));
+        App::verify_instance_token(App::get_bearer_token());
 
         if (time() < strtotime($this->account->get("lastaction")) + 2)
             throw new Exception(_("Too many requests in a short time."), 1030);
@@ -68,7 +67,7 @@ class AccountController extends Controller {
      */
     public function loginAction(string $request) {
         switch($request) {
-            case "account/login":
+            case "/account/login":
 
                 if (!App::get("APP_LOGIN"))
                     throw new Exception(_("Log in not possible at the moment."), 1032);
@@ -132,7 +131,7 @@ class AccountController extends Controller {
      */
     public function signupAction(string $request) {
         switch($request) {
-            case "account/signup":
+            case "/account/signup":
 
                 if (!App::get("APP_SIGNUP") || App::get("APP_MAINTENANCE") || !empty($_POST["firstname"]))
                     throw new Exception(_("Sign up not possible at the moment."), 1035);
@@ -163,7 +162,7 @@ class AccountController extends Controller {
      */
     public function recoveryAction(string $request) {
         switch($request) {
-            case "account/recovery":
+            case "/account/recovery":
 
                 if (isset($_SESSION["tmp_post"])) {
                     $_POST = array_merge($_POST, $_SESSION["tmp_post"]);
@@ -216,7 +215,7 @@ class AccountController extends Controller {
             throw new Exception(_("Your account does not have the required role."), 1043);
 
         switch($request) {
-            case "account/personal/edit":
+            case "/account/personal/edit":
 
                 $current_meta = $this->account->get("meta");
 
@@ -265,7 +264,7 @@ class AccountController extends Controller {
                 Ajax::add('form[data-request="account/personal/edit"] .response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
                 
                 break;
-            case "account/personal/avatar/upload":
+            case "/account/personal/avatar/upload":
 
                 if (!isset($_FILES["avatar"]))
                     throw new Exception(_("Required input not found."), 1044);
@@ -278,7 +277,7 @@ class AccountController extends Controller {
                 Ajax::add('form[data-request="account/personal/avatar/upload"] .response', '<div class="alert is--success">'._("Avatar successfully uploaded.").'</div>');
 
                 break;
-            case "account/personal/avatar/delete":
+            case "/account/personal/avatar/delete":
 
                 $this->account->set("avatar", null);
                 Ajax::remove('.avatar img');
@@ -306,7 +305,7 @@ class AccountController extends Controller {
             throw new Exception(_("Your account does not have the required role."), 1048);
 
         switch($request) {
-            case "account/security/edit":
+            case "/account/security/edit":
 
                 if (!empty($_POST["pw"]) && !empty($_POST["pw1"]) && !empty($_POST["pw2"])) {
                     if (!password_verify($_POST["pw"], $this->account->get("password"))) 
@@ -320,7 +319,7 @@ class AccountController extends Controller {
                 Ajax::add('form[data-request="account/security/edit"] .response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
                 
                 break;
-            case "account/security/2fa":
+            case "/account/security/2fa":
 
                 if ($this->account->get("role") < Model\Account::VERIFIED)
                     throw new Exception(_("You have to verify your email address before you can acitvate the 2-Factor Authentication."), 1050);
@@ -339,14 +338,14 @@ class AccountController extends Controller {
                 }
 
                 break;
-            case "account/security/logout":
+            case "/account/security/logout":
     
                 $this->account->set("token", App::get_instance_token());
                 App::set_auth_cookie($this->account->get("id"), App::get_instance_token(), $this->account->get("remember_me"));
                 Ajax::add('form[data-request="account/security/logout"] .response', '<div class="alert is--success">'._("Sessions successfully logged out."));
         
                 break;
-            case "account/security/deactivate":
+            case "/account/security/deactivate":
 
                 if ($this->account->get("role") == Model\Account::ADMINISTRATOR)
                     throw new Exception(_("You can not deactivate your account."), 1051);
@@ -377,7 +376,7 @@ class AccountController extends Controller {
             throw new Exception(_("Your account does not have the required role."), 1054);
 
         switch($request) {
-            case "account/email/edit":
+            case "/account/email/edit":
 
                 if (!empty($_POST["email"]) && $_POST["email"] != $this->account->get("email")) {
                     $this->account->set("email", strtolower(Fairplay::email($_POST["email"])));
@@ -397,7 +396,7 @@ class AccountController extends Controller {
                 Ajax::add('form[data-request="account/email/edit"] .response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
                 
                 break;
-            case "account/email/verify":
+            case "/account/email/verify":
 
                 if ($this->account->get("role") > Model\Account::USER)
                     throw new Exception(_("Your account does not have the required role."), 1055);
@@ -427,7 +426,7 @@ class AccountController extends Controller {
      */
     public function localeAction(string $request) {
         switch($request) {
-            case "account/locale":
+            case "/account/locale":
 
                 if (empty($_POST["value"]))
                     throw new Exception(_("Required input not found."), 1057);
@@ -454,9 +453,9 @@ class AccountController extends Controller {
      */
     public function helpAction(string $request) {
         switch($request) {
-            case "account/help":
-            case "account/contact":
-            case "account/feedback":
+            case "/account/help":
+            case "/account/contact":
+            case "/account/feedback":
 
                 if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
                     throw new Exception(_("App currently offline. Please try again later."), 1059);

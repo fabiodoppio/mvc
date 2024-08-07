@@ -39,11 +39,11 @@ abstract class Controller {
      * 
      *  Executes actions before the main action.
      * 
+     *  @since  2.2     Removed session_start();
      *  @since  2.0
      * 
      */
     public function beforeAction() {
-        session_start();
         $this->account = App::get_account_by_cookie();
     }
 

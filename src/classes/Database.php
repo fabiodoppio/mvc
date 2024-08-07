@@ -55,6 +55,7 @@ class Database {
       * 
       *  Execute an SQL query on the database.
       *
+      *  @since     2.2            Added specific error message on mysqli_sql_exception
       *  @since     2.0
       *  @param     string         $sql      The SQL query to execute.
       *  @param     array          $params   Parameters to bind the prepared statement.

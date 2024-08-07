@@ -149,35 +149,39 @@ class App {
      * 
      *  Initializes the application.
      * 
+     *  @since  2.2     Added difference between request methods, added session_start(), made exit(); optional.
      *  @since  2.1     Outsourced app configuration and debug mode in other functions, added exit(); at the end.
      *  @since  2.0
+     *  @param  bool    $exit   Terminates all scripts after initialization
      * 
      */
-    public static function init() {
+    public static function init(bool $exit = true) {
         try {
+            session_start();
             App::set_locale_runtime($_COOKIE["locale"] ?? App::get("APP_LANGUAGE"));
 
-            $request                   = (!empty($_POST["request"])) ? $_POST["request"] : strtok($_SERVER["REQUEST_URI"], '?');
-            $requestParts              = explode('/', $request);
+            $request        = str_replace(parse_url(App::get("APP_URL"), PHP_URL_PATH)??"", "", $_SERVER["REQUEST_URI"]);
+            $requestParts   = explode("/", trim($request, "/"));
+    
+            if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                $controllerName         = (!empty($requestParts[0])) ? $requestParts[0] : " ";
+                $controllerClassName    = '\MVC\\Controllers\\'.ucfirst($controllerName).'Controller';
 
-            $controllerName            = $requestParts[0] ?: "index";
-            $controllerClassName       = '\MVC\\Controllers\\'.ucfirst($controllerName).'Controller';
+                if (!class_exists($controllerClassName)) 
+                    throw new Exception(sprintf(_("Controller %s not found."), $controllerName), 1000);
+        
+                $controller         = new $controllerClassName();
+                $actionName         = (!empty($requestParts[1])) ? $requestParts[1] : " ";
+                $actionMethodName   = $actionName."Action";
 
-            $actionName                = $requestParts[1] ?: "home";
-            $actionMethodName          = $actionName."Action";
-
-            if (!class_exists($controllerClassName))
-                throw new Exception(sprintf(_("Controller %s not found."), $controllerName), 1000);
-            
-            $controller = new $controllerClassName();
-                
-            if ($controllerClassName = '\MVC\\Controllers\\IndexController')
                 if (!method_exists($controller, $actionMethodName))
-                    $actionMethodName = "pageAction";
+                    throw new Exception(sprintf(_("Action %s not found."), $actionName), 1001);
+            } else {
+                $controller         = new \MVC\Controllers\IndexController();
+                $actionName         = (!empty($requestParts[0])) ? $requestParts[0] : "home"; 
+                $actionMethodName   = (!method_exists($controller, $actionName."Action")) ? "pageAction" : $actionName."Action";
+            }
 
-            if (!method_exists($controller, $actionMethodName))
-                throw new Exception(sprintf(_("Action %s not found."), $actionName), 1001);
-                
             $controller->beforeAction();
             $controller->$actionMethodName($request);
             $controller->afterAction();
@@ -186,24 +190,27 @@ class App {
             $exception->process();
         }
         
-        exit();
+        if ($exit)
+            exit();
     }
 
     /**
      * 
      *  Initializes the application but in debug mode.
      * 
+     *  @since  2.2     Made exit() optional.
      *  @since  2.1
+     *  @param  bool    $exit   Terminates all scripts after initialization
      * 
      */
-    public static function debug() {
+    public static function debug(bool $exit = true) {
         self::$APP_DEBUG = true;
 
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
 
-        self::init();
+        self::init($exit);
     }
 
     /**
@@ -288,6 +295,20 @@ class App {
     public static function verify_instance_token(string $token) {
         if (!hash_equals($_SESSION["instance"][$token]??"", hash_hmac('sha256', $token, hash_hmac('md5', $token, App::get("SALT_TOKEN")))))
             throw new Exception(_("Illegal activity detected."), 1003);
+    }
+
+    /**
+     * 
+     *  Get the bearer token from the header authorization entry.
+     * 
+     *  @since  2.2
+     *  @return string  The bearer token.
+     * 
+     */
+    public static function get_bearer_token() {
+        $headers = getallheaders();
+        list($type, $token) = explode(" ", $headers["Authorization"]??"", 2) + ["", ""];
+        return (strcasecmp($type, 'Bearer') == 0) ? $token : "";
     }
 
     /**
