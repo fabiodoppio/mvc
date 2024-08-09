@@ -219,7 +219,7 @@ class Account extends Model\Model {
             [$this->get("id"), "failed_2fa_login_attempt", 20])) > 2) 
                 throw new Exception(_("You have entered an invalid PIN code too many times. Please wait 20 minutes and try again."), 1068);
 
-        if ($this->get("code") != trim($code, " ") || $this->get("timestamp") < strtotime('-15 minutes')) {
+        if ($this->get("code") != str_replace(' ', '', $code) || $this->get("timestamp") < strtotime('-15 minutes')) {
             $this->log("failed_2fa_login_attempt");
             throw new Exception(_("This PIN code is invalid."), 1069);
         }
@@ -274,7 +274,7 @@ class Account extends Model\Model {
             [$this->get("id"), "failed_recovery", 60])) > 2) 
                 throw new Exception(_("You have entered an invalid confirmation code too many times. Please wait 60 minutes and try again."), 1071);
 
-        if ($this->get("code") != trim($code, " ") || $this->get("timestamp") < strtotime('-15 minutes')) {
+        if ($this->get("code") != str_replace(' ', '', $code) || $this->get("timestamp") < strtotime('-15 minutes')) {
             $this->log("failed_recovery");
             throw new Exception(_("This confirmation code is invalid."), 1072);
         }
@@ -330,7 +330,7 @@ class Account extends Model\Model {
             [$this->get("id"), "failed_verification", 60])) > 2) 
                 throw new Exception(_("You have entered an invalid confirmation code too many times. Please wait 60 minutes and try again."), 1074);
     
-        if ($this->get("code") != trim($code, " ") || $this->get("timestamp") < strtotime('-15 minutes')) {
+        if ($this->get("code") != str_replace(' ', '', $code) || $this->get("timestamp") < strtotime('-15 minutes')) {
             $this->log("failed_verification");
             throw new Exception(_("This confirmation code is invalid."), 1075);
         }
