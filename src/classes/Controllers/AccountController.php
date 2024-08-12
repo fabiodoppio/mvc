@@ -311,9 +311,10 @@ class AccountController extends Controller {
                     if (!password_verify($_POST["pw"], $this->account->get("password"))) 
                         throw new Exception(_("Your current password does not match."), 1049);
                 
+                    $new_token = App::generate_token();
                     $this->account->set("password", password_hash(Fairplay::password($_POST["pw1"], $_POST["pw2"]), PASSWORD_DEFAULT));
-                    $this->account->set("token", App::get_instance_token());
-                    App::set_auth_cookie($this->account->get("id"), App::get_instance_token(), 0);
+                    $this->account->set("token", $new_token);
+                    App::set_auth_cookie($this->account->get("id"), $new_token, 0);
                 }
 
                 Ajax::add('form[data-request="account/security/edit"] .response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
@@ -327,8 +328,9 @@ class AccountController extends Controller {
                 $this->account->set("2fa", $this->account->get("2fa") ? null : 1);
 
                 if ($this->account->get("2fa")) {
-                    $this->account->set("token", App::get_instance_token());
-                    App::set_auth_cookie($this->account->get("id"), App::get_instance_token(), $this->account->get("remember_me"));
+                    $new_token = App::generate_token();
+                    $this->account->set("token", $new_token);
+                    App::set_auth_cookie($this->account->get("id"), $new_token, $this->account->get("remember_me"));
                     Ajax::add('form[data-request="account/security/2fa"] .btn.is--primary', _("Deactivate"));
                     Ajax::add('form[data-request="account/security/2fa"] .alert.is--error', '<div class="alert is--success"><i class="fas fa-shield-heart"></i> '._("Your account is protected by the 2-Factor Authentication.").'</div>', Ajax::REPLACE);
                 }
@@ -340,8 +342,9 @@ class AccountController extends Controller {
                 break;
             case "/account/security/logout":
     
-                $this->account->set("token", App::get_instance_token());
-                App::set_auth_cookie($this->account->get("id"), App::get_instance_token(), $this->account->get("remember_me"));
+                $new_token = App::generate_token();
+                $this->account->set("token", $new_token);
+                App::set_auth_cookie($this->account->get("id"), $new_token, $this->account->get("remember_me"));
                 Ajax::add('form[data-request="account/security/logout"] .response', '<div class="alert is--success">'._("Sessions successfully logged out."));
         
                 break;
@@ -382,9 +385,10 @@ class AccountController extends Controller {
                     $this->account->set("email", strtolower(Fairplay::email($_POST["email"])));
                     $this->account->set("2fa", ($this->account->get("role") <= Model\Account::VERIFIED) ? null : $this->account->get("2fa"));
                     $this->account->set("role", ($this->account->get("role") == Model\Account::VERIFIED) ? Model\Account::USER : $this->account->get("role"));
-                    $this->account->set("token", App::get_instance_token());
 
-                    App::set_auth_cookie($this->account->get("id"), App::get_instance_token(), $this->account->get("remember_me"));
+                    $new_token = App::generate_token();
+                    $this->account->set("token", $new_token);
+                    App::set_auth_cookie($this->account->get("id"), $new_token, $this->account->get("remember_me"));
 
                     if ($this->account->get("role") < Model\Account::VERIFIED)
                         Ajax::add('form[data-request="account/email/verify"]', '<div class="alert is--error"><i class="fas fa-circle-xmark"></i> '._("Your email adress is <b>not</b> verified.").'</div><div class="response"></div> <button class="btn is--primary is--submit">'._("Request").'</button>');

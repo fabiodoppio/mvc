@@ -143,7 +143,7 @@ class IndexController extends Controller {
                 "meta"          => (object) $this->account->get("meta")
             ],
             "instance" => (object) [
-                "token"         => App::get_instance_token(true)
+                "token"         => App::get_instance_token()
             ],
             "request" => (object) [
                 "get"           => (object) $_GET,

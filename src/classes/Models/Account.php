@@ -284,7 +284,7 @@ class Account extends Model\Model {
     
         $this->set("password", password_hash($password, PASSWORD_DEFAULT));
         $this->set("role", ($this->get("role") == self::DEACTIVATED || $this->get("role") == self::USER) ? self::VERIFIED : $this->get("role"));
-        $this->set("token", App::get_instance_token());
+        $this->set("token", App::generate_token());
         $this->set("code", null);
         $this->set("timestamp", null);
     }

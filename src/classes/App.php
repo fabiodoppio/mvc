@@ -149,6 +149,7 @@ class App {
      * 
      *  Initializes the application.
      * 
+     *  @since  2.3     Store instance token in $_SESSION on GET Request.
      *  @since  2.2     Added difference between request methods, added session_start(), made exit(); optional.
      *  @since  2.1     Outsourced app configuration and debug mode in other functions, added exit(); at the end.
      *  @since  2.0
@@ -257,17 +258,13 @@ class App {
 
     /**
      * 
-     *  Generates a unique token for the instance.
-     *
-     *  @since  2.0
-     *  @param  bool    $store  Store token in session.
-     *  @return string          The generated token.
+     *  Generates a unique token.
+     * 
+     *  @since  2.3
+     *  @return string  The generated token.
      * 
      */
-    public static function get_instance_token($store = false) {
-        if (!is_null(self::$token))
-            return self::$token;
-
+    public static function generate_token() {
         $token = "";
         $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         $codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";
@@ -277,11 +274,25 @@ class App {
         for ($i=0; $i < 32; $i++)
             $token .= $codeAlphabet[random_int(0, $max-1)];
     
-        if ($store)
-            $_SESSION["instance"][$token] = hash_hmac('sha256', $token, hash_hmac('md5', $token, App::get("SALT_TOKEN")));
-
-        self::$token = $token;
         return $token;
+    }
+
+    /**
+     * 
+     *  Get a token for the current instance and store in session.
+     *
+     *  @since  2.3
+     *  @return string  The current instance token
+     * 
+     */
+    public static function get_instance_token() {
+        if (!is_null(self::$token))
+            return self::$token;
+
+        self::$token = self::generate_token();
+        $_SESSION["instance"][self::$token] = hash_hmac('sha256', self::$token, hash_hmac('md5', self::$token, App::get("SALT_TOKEN")));
+
+        return self::$token;
     }
 
     /**

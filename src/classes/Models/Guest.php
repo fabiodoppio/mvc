@@ -45,7 +45,7 @@ class Guest extends Model\Model {
         if (empty($_SESSION["guest"] ?? []))
             $_SESSION["guest"] = [
                 "data" => [
-                    "token" => App::get_instance_token(),
+                    "token" => App::generate_token(),
                     "role" => Model\Account::GUEST,
                     "lastaction" => date('Y-m-d H:i:s', time()),
                     "registered" => date('Y-m-d H:i:s', time()),
@@ -137,13 +137,14 @@ class Guest extends Model\Model {
                 
         if (!empty(Database::query("SELECT * FROM app_accounts WHERE email LIKE ?", [$email])[0]))
             throw new Exception(_("This email address is already taken."), 1077);
-                
-        Database::query("INSERT INTO app_accounts (email, username, password, token, role) VALUES (?, ?, ?, ?, ?)", [strtolower($email), $username, password_hash($password, PASSWORD_DEFAULT), App::get_instance_token(), Model\Account::USER]);
+            
+        $token = App::generate_token();
+        Database::query("INSERT INTO app_accounts (email, username, password, token, role) VALUES (?, ?, ?, ?, ?)", [strtolower($email), $username, password_hash($password, PASSWORD_DEFAULT), $token, Model\Account::USER]);
 
         $account = new Model\Account(Database::$insert_id);
         $account->set("language",  $_COOKIE["locale"] ?? App::get("APP_LANGUAGE"));
 
-        App::set_auth_cookie($account->get("id"), App::get_instance_token());
+        App::set_auth_cookie($account->get("id"), $token);
     }
 
 }
