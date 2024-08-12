@@ -204,7 +204,7 @@ class IndexController extends Controller {
                     "title"         => sprintf(_(($page["title"] ?? $page["slug"])." | %s"), App::get("APP_NAME")),
                     "description"   => $page["description"] ?? App::get("APP_DESCRIPTION"),
                     "robots"        => $page["robots"] ?? "index, follow",
-                    "canonical"     => App::get("APP_URL").$page["slug"],
+                    "canonical"     => $page["canonical"] ?? App::get("APP_URL").$page["slug"],
                     "class"         => $page["class"] ?? "page"
                 ];
         
