@@ -161,7 +161,7 @@ class App {
             session_start();
             App::set_locale_runtime($_COOKIE["locale"] ?? App::get("APP_LANGUAGE"));
 
-            $request        = str_replace(parse_url(App::get("APP_URL"), PHP_URL_PATH)??"", "", $_SERVER["REQUEST_URI"]);
+            $request        = str_replace(parse_url(App::get("APP_URL"), PHP_URL_PATH)??"", "", strtok($_SERVER["REQUEST_URI"], '?'));
             $requestParts   = explode("/", trim($request, "/"));
     
             if ($_SERVER["REQUEST_METHOD"] === "POST") {
