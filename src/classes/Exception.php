@@ -31,44 +31,51 @@ class Exception extends \Exception {
      * 
      *  Process the exception by handling different HTTP response codes and error messages.
      * 
+     *  @since 2.3  Output exception message and code only on POST request method, redirect to 404 as default behaviour.
      *  @since 2.0
      *
      */
     public function process() {
-        switch($this->getCode()) {
-            case 403:
+        if ($_SERVER["REQUEST_METHOD"] === "POST")
+            echo $this->getMessage()." (Code: ".$this->getCode().")";
+        else
+            switch($this->getCode()) {
+                case 403:
 
-                App::unset_auth_cookie();
-                http_response_code(403);
-                $redirect = (!empty($_GET["redirect"])) ? Fairplay::string($_GET["redirect"]) : $_SERVER["REQUEST_URI"];
-                header("Location: ".App::get("APP_URL")."/login?redirect=".urlencode($redirect));
-                exit;
+                    App::unset_auth_cookie();
+                    http_response_code(403);
+                    $redirect = (!empty($_GET["redirect"])) ? Fairplay::string($_GET["redirect"]) : $_SERVER["REQUEST_URI"];
+                    header("Location: ".App::get("APP_URL")."/login?redirect=".urlencode($redirect));
+                    exit;
 
-                break;
-            case 404:
+                    break;
+                case 404:
 
-                http_response_code(404);
-                header("Location: ".App::get("APP_URL")."/oops");
-                exit;
+                    http_response_code(404);
+                    header("Location: ".App::get("APP_URL")."/oops");
+                    exit;
 
-                break;
-            case 405:
+                    break;
+                case 405:
 
-                http_response_code(405);
-                header("Location: ".App::get("APP_URL")."/account");
-                exit;
+                    http_response_code(405);
+                    header("Location: ".App::get("APP_URL")."/account");
+                    exit;
 
-                break;
-            case 406:
+                    break;
+                case 406:
 
-                http_response_code(406);
-                header("Location: ".App::get("APP_URL")."/maintenance");
-                exit;
-                
-                break;
-            default:
-                echo $this->getMessage()." (Code: ".$this->getCode().")";
-        }
+                    http_response_code(406);
+                    header("Location: ".App::get("APP_URL")."/maintenance");
+                    exit;
+                    
+                    break;
+                default:
+
+                    http_response_code(404);
+                    header("Location: ".App::get("APP_URL")."/oops");
+                    exit;  
+            }
     }
 
 }
