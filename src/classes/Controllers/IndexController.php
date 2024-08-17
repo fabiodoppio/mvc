@@ -541,7 +541,7 @@ class IndexController extends Controller {
     /**
      * 
      *  Displaying the website's error page.
-     *
+     *  @since  2.3     Added http response code 404.
      *  @since  2.0
      *  @param  string  $request    The requested action.
      * 
