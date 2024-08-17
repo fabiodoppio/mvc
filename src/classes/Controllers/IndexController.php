@@ -558,6 +558,7 @@ class IndexController extends Controller {
                     "class"         => "page oops"
                 ];
 
+                http_response_code(404);
                 echo Cache::get("/oops.tpl", $this->env);
 
                 break;
