@@ -186,7 +186,7 @@ or
     {{"My %s text", $myvar}}
 ```
     
-(But don't forget to update your language files in your 'locale' directory!)
+(But don't forget to update your language files in your _locale_ directory!)
 
 
 ***Detailed documentation will coming soon..***
