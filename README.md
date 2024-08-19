@@ -124,4 +124,69 @@ Password: **admin123**
 
 Don't forget to change your username and password!
 
+### Debug mode
+
+_index.php_:
+```php
+MVC\App::debug();
+```
+
+### Adding Pages
+_index.php_:
+```php
+MVC\App::page([
+    "slug"          => "/privacy",              // Regular Expression of your page slug
+    "title"         => "Privacy Policy", 
+    "description"   => "This is a custom page",
+    "robots"        => "noindex, nofollow",
+    "canonical"     => "/privacy",
+    "class"         => "page privacy",
+    "template"      => "/privacy.tpl"
+]);
+```
+
+### Working with Templates
+
+You can overwrite templates by simply placing them into your _views_ directory.
+In your template files, you can use simple Smarty code. For example to include a file:
+
+```smarty
+{% include /_includes/mytemplate.tpl %}
+```
+
+..or to display a variable:
+
+```smarty
+{{$myvar}}
+```
+
+It's also allowed to use PHP code like this:
+
+```smarty
+{% myfunction(); %}
+```
+
+..or this:
+
+```smarty
+{% if (Condition): %}
+    My Text
+{% endif; %}
+```
+
+If you want to output a translated text, you can write your texts like this: 
+
+```smarty
+ {{"My text"}}
+```
+
+or
+
+```smarty
+    {{"My %s text", $myvar}}
+```
+    
+(But don't forget to update your language files in your 'locale' directory!)
+
+
 ***Detailed documentation will coming soon..***

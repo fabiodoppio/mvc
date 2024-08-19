@@ -149,7 +149,7 @@ class App {
      * 
      *  Initializes the application.
      * 
-     *  @since  2.3     Store instance token in $_SESSION on GET Request.
+     *  @since  2.3     Store instance token in $_SESSION on GET Request, outsourced request parts.
      *  @since  2.2     Added difference between request methods, added session_start(), made exit(); optional.
      *  @since  2.1     Outsourced app configuration and debug mode in other functions, added exit(); at the end.
      *  @since  2.0
@@ -160,28 +160,22 @@ class App {
         try {
             session_start();
             App::set_locale_runtime($_COOKIE["locale"] ?? App::get("APP_LANGUAGE"));
+            list($controllerName, $actionName, $request) = self::get_request_in_parts();
 
-            $request        = str_replace(parse_url(App::get("APP_URL"), PHP_URL_PATH)??"", "", strtok($_SERVER["REQUEST_URI"], '?'));
-            $requestParts   = explode("/", trim($request, "/"));
-    
-            if ($_SERVER["REQUEST_METHOD"] === "POST") {
-                $controllerName         = (!empty($requestParts[0])) ? $requestParts[0] : " ";
-                $controllerClassName    = '\MVC\\Controllers\\'.ucfirst($controllerName).'Controller';
+            $controllerClassName = '\MVC\\Controllers\\'.ucfirst($controllerName).'Controller';
+            $actionMethodName    = $actionName."Action";
 
-                if (!class_exists($controllerClassName)) 
-                    throw new Exception(sprintf(_("Controller %s not found."), $controllerName), 1000);
-        
-                $controller         = new $controllerClassName();
-                $actionName         = (!empty($requestParts[1])) ? $requestParts[1] : " ";
-                $actionMethodName   = $actionName."Action";
+            if (!class_exists($controllerClassName)) 
+                throw new Exception(sprintf(_("Controller %s not found."), $controllerName), 1000);
 
+            $controller = new $controllerClassName();
+
+            if ($controllerClassName = '\MVC\\Controllers\\IndexController')
                 if (!method_exists($controller, $actionMethodName))
-                    throw new Exception(sprintf(_("Action %s not found."), $actionName), 1001);
-            } else {
-                $controller         = new \MVC\Controllers\IndexController();
-                $actionName         = (!empty($requestParts[0])) ? $requestParts[0] : "home"; 
-                $actionMethodName   = (!method_exists($controller, $actionName."Action")) ? "pageAction" : $actionName."Action";
-            }
+                    $actionMethodName = "pageAction";
+
+            if (!method_exists($controller, $actionMethodName))
+                throw new Exception(sprintf(_("Action %s not found."), $actionName), 1001);
 
             $controller->beforeAction();
             $controller->$actionMethodName($request);
@@ -254,6 +248,35 @@ class App {
      */
     public static function page(array $meta) {
         self::$APP_PAGES[] = $meta;
+    }
+
+    /**
+     * 
+     *  Get the request splitted in needed parts.
+     * 
+     *  @since  2.3
+     *  @return array   The requested splitted in controller, action and cleaned uri.
+     * 
+     */
+    public static function get_request_in_parts() {
+        $request      = str_replace(parse_url(App::get("APP_URL"), PHP_URL_PATH)??"", "", strtok($_SERVER["REQUEST_URI"], '?'));
+        $requestParts = explode("/", trim($request, "/"));
+
+        switch($_SERVER["REQUEST_METHOD"]) {
+            case "POST":
+                $controllerName = !empty($requestParts[0]) ? $requestParts[0] : " ";
+                $actionName     = !empty($requestParts[1]) ? $requestParts[1] : " ";
+                break;
+            case "GET":
+                $controllerName = "index";
+                $actionName     = !empty($requestParts[0]) ? $requestParts[0] : "home";
+                break;
+            default:
+                $controllerName = " ";
+                $actionName     = " ";
+        }
+
+        return [$controllerName, $actionName, $request];
     }
 
     /**

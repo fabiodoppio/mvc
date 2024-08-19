@@ -40,6 +40,7 @@ class IndexController extends Controller {
      * 
      *  Executes actions before the main action, including setting up environment variables.
      * 
+     *  @since  2.3     Removed asset files in env variable for performance reasons.
      *  @since  2.0
      * 
      */
@@ -77,50 +78,6 @@ class IndexController extends Controller {
                     "vendor"            => App::get("DIR_VENDOR"),
                     "views"             => App::get("DIR_VIEWS"),
                     "media"             => App::get("DIR_MEDIA")
-                ],
-                "media"             => (object) [
-                    "logo"              => (!file_exists(App::get("DIR_ROOT").App::get("DIR_MEDIA")."/logo.png")) 
-                                            ? App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/media/logo.png" 
-                                            : App::get("DIR_MEDIA")."/logo.png",
-                    "favicon"           => (!file_exists(App::get("DIR_ROOT").App::get("DIR_MEDIA")."/favicon.png")) 
-                                            ? App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/media/favicon.png" 
-                                            : App::get("DIR_MEDIA")."/favicon.png",
-                ],
-                "asset"             => (object) [
-                    "script"            => (object) [
-                        "jquery"            => (!file_exists(App::get("DIR_ROOT").App::get("DIR_SCRIPTS")."/jquery.js")) 
-                                                ? App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/assets/scripts/jquery.js" 
-                                                : App::get("DIR_SCRIPTS")."/jquery.js",
-                        "jqueryui"          => (!file_exists(App::get("DIR_ROOT").App::get("DIR_SCRIPTS")."/jquery-ui.js")) 
-                                                ? App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/assets/scripts/jquery-ui.js" 
-                                                : App::get("DIR_SCRIPTS")."/jquery-ui.js",
-                        "ajax"              => (!file_exists(App::get("DIR_ROOT").App::get("DIR_SCRIPTS")."/ajax.js")) 
-                                                ? App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/assets/scripts/ajax.js" 
-                                                : App::get("DIR_SCRIPTS")."/ajax.js",
-                        "hooks"             => (!file_exists(App::get("DIR_ROOT").App::get("DIR_SCRIPTS")."/hooks.js")) 
-                                                ? App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/assets/scripts/hooks.js" 
-                                                : App::get("DIR_SCRIPTS")."/hooks.js",
-                        "main"              => (!file_exists(App::get("DIR_ROOT").App::get("DIR_SCRIPTS")."/main.js")) 
-                                                ? App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/assets/scripts/main.js" 
-                                                : App::get("DIR_SCRIPTS")."/main.js"
-                    ],
-                    "style"         => (object) [
-                        "reboot"            => (!file_exists(App::get("DIR_ROOT").App::get("DIR_STYLES")."/reboot.css")) 
-                                                ? App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/assets/styles/reboot.css" 
-                                                : App::get("DIR_STYLES")."/reboot.css",
-                        "icons"             => (!file_exists(App::get("DIR_ROOT").App::get("DIR_STYLES")."/icons.css")) 
-                                                ? App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/assets/styles/icons.css" 
-                                                : App::get("DIR_STYLES")."/icons.css",
-                        "root"              => (!file_exists(App::get("DIR_ROOT").App::get("DIR_STYLES")."/root.css")) 
-                                                ? App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/assets/styles/root.css" 
-                                                : App::get("DIR_STYLES")."/root.css",
-                        "effects"           => (!file_exists(App::get("DIR_ROOT").App::get("DIR_STYLES")."/effects.css")) 
-                                                ? App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/assets/styles/effects.css" 
-                                                : App::get("DIR_STYLES")."/effects.css",
-                        "general"           => (!file_exists(App::get("DIR_ROOT").App::get("DIR_STYLES")."/general.css")) 
-                                                ? App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/src/assets/styles/general.css" 
-                                                : App::get("DIR_STYLES")."/general.css"
-                    ]
                 ]
             ],
             "account" => (object) [
@@ -148,7 +105,7 @@ class IndexController extends Controller {
             "request" => (object) [
                 "get"           => (object) $_GET,
                 "post"          => (object) $_POST,
-                "uri"           => strtok($_SERVER["REQUEST_URI"], '?')
+                "uri"           => App::get_request_in_parts()[2]
             ]
         ];
     }

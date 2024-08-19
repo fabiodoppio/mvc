@@ -19,17 +19,17 @@
         <meta property="og:site_name" content="{{$app->name}}"/>
         <meta property="og:image" content=""/>
         <title>{{$page->title}}</title>
-        <link rel="icon" type="image/png" href="{{$app->url}}{{$app->media->favicon}}"/>
+        <link rel="icon" type="image/png" href="{{$app->url}}{{$app->directory->vendor}}/{{$framework->package}}/src/media/favicon.png"/>
         <link rel="canonical" href="{{$page->canonical}}"/>
-        <link rel="stylesheet" href="{{$app->url}}{{$app->asset->style->reboot}}"/>
-        <link rel="stylesheet" href="{{$app->url}}{{$app->asset->style->icons}}"/>
-        <link rel="stylesheet" href="{{$app->url}}{{$app->asset->style->root}}"/>
-        <link rel="stylesheet" href="{{$app->url}}{{$app->asset->style->effects}}"/>
-        <link rel="stylesheet" href="{{$app->url}}{{$app->asset->style->general}}"/>
-        <script src="{{$app->url}}{{$app->asset->script->jquery}}"></script>
-        <script src="{{$app->url}}{{$app->asset->script->jqueryui}}"></script>
-        <script src="{{$app->url}}{{$app->asset->script->ajax}}"></script>
-        <script src="{{$app->url}}{{$app->asset->script->hooks}}"></script>
-        <script src="{{$app->url}}{{$app->asset->script->main}}"></script>
+        <link rel="stylesheet" href="{{$app->url}}{{$app->directory->vendor}}/{{$framework->package}}/src/assets/styles/reboot.css"/>
+        <link rel="stylesheet" href="{{$app->url}}{{$app->directory->vendor}}/{{$framework->package}}/src/assets/styles/icons.css"/>
+        <link rel="stylesheet" href="{{$app->url}}{{$app->directory->vendor}}/{{$framework->package}}/src/assets/styles/root.css"/>
+        <link rel="stylesheet" href="{{$app->url}}{{$app->directory->vendor}}/{{$framework->package}}/src/assets/styles/effects.css"/>
+        <link rel="stylesheet" href="{{$app->url}}{{$app->directory->vendor}}/{{$framework->package}}/src/assets/styles/general.css"/>
+        <script src="{{$app->url}}{{$app->directory->vendor}}/{{$framework->package}}/src/assets/scripts/jquery.js"></script>
+        <script src="{{$app->url}}{{$app->directory->vendor}}/{{$framework->package}}/src/assets/scripts/jquery-ui.js"></script>
+        <script src="{{$app->url}}{{$app->directory->vendor}}/{{$framework->package}}/src/assets/scripts/ajax.js"></script>
+        <script src="{{$app->url}}{{$app->directory->vendor}}/{{$framework->package}}/src/assets/scripts/hooks.js"></script>
+        <script src="{{$app->url}}{{$app->directory->vendor}}/{{$framework->package}}/src/assets/scripts/main.js"></script>
     </head>
     <body class="{{$page->class}}" data-token="{{$instance->token}}">
