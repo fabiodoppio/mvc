@@ -73,6 +73,7 @@ class Cache {
      * 
      *  Include and process template files recursively.
      *
+     *  @since  2.3             Keep spaces and line breaks if debug mode is active.
      *  @since  2.0
      *  @param  string  $file   The name of the template file to process.
      *  @param  string  $dir    The directory which contains the template file.
@@ -90,20 +91,21 @@ class Cache {
 		foreach ($matches as $value) 
 			$template = str_replace($value[0], self::compile_includes($value[2]), $template);
 
-        return preg_replace(['/\>[^\S ]+/s','/[^\S ]+\</s','/(\s)+/s'], ['>','<','\\1'], $template);
+        return App::get("APP_DEBUG") ? $template : preg_replace(['/\>[^\S ]+/s','/[^\S ]+\</s','/(\s)+/s'], ['>','<','\\1'], $template);
     }
 
     /**
      * 
      *  Remove comments from the template.
      *
+     *  @since  2.3                 Keep comments if debug mode is active. 
      *  @since  2.0
      *  @param  string  $template   The template content to process.
      *  @return string              The template content with comments removed.
      * 
      */
     private static function compile_comments(string $template) {
-        return preg_replace('~\{\*\s*(.+?)\s*\\*}~is', '', $template);
+        return App::get("APP_DEBUG") ? $template : preg_replace('~\{\*\s*(.+?)\s*\\*}~is', '', $template);
     }
 
     /**
