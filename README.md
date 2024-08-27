@@ -135,13 +135,14 @@ MVC\App::debug();
 _index.php_:
 ```php
 MVC\App::page([
-    "slug"          => "/privacy",              // Regular Expression of your page slug
-    "title"         => "Privacy Policy", 
-    "description"   => "This is a custom page",
-    "robots"        => "noindex, nofollow",
-    "canonical"     => "/privacy",
-    "class"         => "page privacy",
-    "template"      => "/privacy.tpl"
+    "slug"               => "/imprint",              // [REQUIRED] regular expression of your page slug
+    "title"              => "Imprint",               // [OPTIONAL] title of your custom page
+    "description"        => "This is a custom page", // [OPTIONAL] description of your custom page
+    "robots"             => "noindex, nofollow",     // [OPTIONAL] robots meta of your custom page
+    "canonical"          => "/imprint",              // [OPTIONAL] canoncial meta of your custom page
+    "class"              => "page imprint",          // [OPTIONAL] body class of your custom page
+    "template"           => "/imprint.tpl",          // [REQUIRED] template file of your custom page
+    "ignore_maintenance" => false                    // [OPTIONAL] ignore maintenance mode if active
 ]);
 ```
 

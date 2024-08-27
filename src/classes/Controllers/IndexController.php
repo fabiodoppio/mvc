@@ -145,15 +145,13 @@ class IndexController extends Controller {
      * 
      *  Displaying the website's custom page.
      *
+     *  @since  2.3     Option for ignoring maintenance mode.
      *  @since  2.2     Added regex detection in slugs.
      *  @since  2.0
      *  @param  string  $request    The requested action.
      * 
      */
     public function pageAction(string $request) {
-        if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
-            throw new Exception(_("App currently offline. Please try again later."), 406);
-
         $page_found = false;
         foreach(App::get("APP_PAGES") as $page)
             if ($page_found = preg_match('#^'.$page['slug'].'$#', $request)) {
@@ -164,7 +162,11 @@ class IndexController extends Controller {
                     "canonical"     => $page["canonical"] ?? App::get("APP_URL").$page["slug"],
                     "class"         => $page["class"] ?? "page"
                 ];
-        
+
+                if (!$page["ignore_maintenance"]??false === true)
+                    if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
+                        throw new Exception(_("App currently offline. Please try again later."), 406);
+
                 echo Cache::get($page["template"] ?? "", $this->env);
                 break;
             }
@@ -414,14 +416,12 @@ class IndexController extends Controller {
      * 
      *  Displaying the website's contact page.
      *
+     *  @since  2.3     Ignoring maintenance mode if active.
      *  @since  2.0
      *  @param  string  $request    The requested action.
      * 
      */
     public function contactAction(string $request) {
-        if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
-            throw new Exception(_("App currently offline. Please try again later."), 406);
-        
         switch($request) {
             case "/contact":
 
