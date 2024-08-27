@@ -163,7 +163,7 @@ class IndexController extends Controller {
                     "class"         => $page["class"] ?? "page"
                 ];
 
-                if (!$page["ignore_maintenance"]??false === true)
+                if ($page["ignore_maintenance"]??false === false)
                     if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
                         throw new Exception(_("App currently offline. Please try again later."), 406);
 
