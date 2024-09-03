@@ -122,10 +122,10 @@ class App {
      *  @var    string  $DB_PASSWORD            MySQL server password
      *  @var    string  $DB_DATABASE            MySQL database name
      */
-    protected static    $DB_HOST                = "";
-    protected static    $DB_USERNAME            = "";
-    protected static    $DB_PASSWORD            = "";
-    protected static    $DB_DATABASE            = "";
+    protected static    $DB_HOST;
+    protected static    $DB_USERNAME;
+    protected static    $DB_PASSWORD;
+    protected static    $DB_DATABASE;
 
     /**
      *  @var    string  $MAIL_HOST              Mail server hostname
@@ -136,11 +136,11 @@ class App {
      *  @var    string  $MAIL_ENCRYPT           Mail server encryption
      *  @var    string  $MAIL_PORT              Mail server port
      */
-    protected static    $MAIL_HOST              = "";
-    protected static    $MAIL_SENDER            = "";
-    protected static    $MAIL_RECEIVER          = "";
-    protected static    $MAIL_USERNAME          = "";
-    protected static    $MAIL_PASSWORD          = "";
+    protected static    $MAIL_HOST;
+    protected static    $MAIL_SENDER;
+    protected static    $MAIL_RECEIVER;
+    protected static    $MAIL_USERNAME;
+    protected static    $MAIL_PASSWORD;
     protected static    $MAIL_ENCRYPT           = "ssl";
     protected static    $MAIL_PORT              = "465";
     
