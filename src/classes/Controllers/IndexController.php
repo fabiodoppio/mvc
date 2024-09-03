@@ -122,23 +122,15 @@ class IndexController extends Controller {
         if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
             throw new Exception(_("App currently offline. Please try again later."), 406);
         
-        switch($request) {
-            case "/":
+        $this->env["page"] = (object) [
+            "title"         => sprintf(_(App::get("APP_TITLE") ?: "Homepage | %s"), App::get("APP_NAME")),
+            "description"   => App::get("APP_DESCRIPTION"),
+            "robots"        => "index, follow",
+            "canonical"     => App::get("APP_URL")."/",
+            "class"         => "page home"
+        ];
 
-                $this->env["page"] = (object) [
-                    "title"         => sprintf(_(App::get("APP_TITLE") ?: "Homepage | %s"), App::get("APP_NAME")),
-                    "description"   => App::get("APP_DESCRIPTION"),
-                    "robots"        => "index, follow",
-                    "canonical"     => App::get("APP_URL")."/",
-                    "class"         => "page home"
-                ];
-
-                echo Cache::get("/home.tpl", $this->env);
-
-                break;
-            default:
-                throw new Exception(_("Page not found."), 404);
-        }
+        echo Cache::get("/home.tpl", $this->env);
     }
 
     /**

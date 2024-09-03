@@ -266,20 +266,17 @@ class App {
             case "POST":
                 $controllerName = !empty($requestParts[0]) ? $requestParts[0] : " ";
                 $actionName     = !empty($requestParts[1]) ? $requestParts[1] : " ";
-                $request        = rtrim($request, "/");
                 break;
             case "GET":
                 $controllerName = "index";
                 $actionName     = !empty($requestParts[0]) ? $requestParts[0] : "home";
-                $request        = rtrim($request, "/");
                 break;
             default:
                 $controllerName = " ";
                 $actionName     = " ";
-                $request        = " ";
         }
 
-        return [$controllerName, $actionName, $request];
+        return [$controllerName, $actionName, rtrim($request, "/")];
     }
 
     /**
