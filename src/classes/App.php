@@ -218,7 +218,7 @@ class App {
      * 
      */
     public static function get(string $name) {
-        if (!property_exists(__CLASS__, $name))
+        if (!property_exists(__CLASS__, $name) || self::$$name === null)
             throw new Exception(sprintf(_("Variable %s not set."), $name), 1002);
 
         return self::$$name;

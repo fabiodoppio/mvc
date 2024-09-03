@@ -72,9 +72,10 @@ class Exception extends \Exception {
                     break;
                 default:
 
-                    http_response_code(404);
-                    header("Location: ".App::get("APP_URL")."/oops");
-                    exit;  
+                    http_response_code(500);
+                    include dirname(__FILE__, 2)."/views/_includes/error.tpl";
+                    exit;
+    
             }
     }
 
