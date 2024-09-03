@@ -113,7 +113,7 @@ class AccountController extends Controller {
                 App::set_auth_cookie($account->get("id"), $account->get("token"), $remember);
                 App::set_locale_cookie($account->get("language")??App::get("APP_LANGUAGE"));
                 Ajax::add('form[data-request="account/login"]', '<div class="alert is--success">'._("Please wait while redirecting..").'</div>');
-                Ajax::redirect(App::get("APP_URL").($redirect ? urldecode($redirect) : "/"));
+                Ajax::redirect(App::get("APP_URL").($redirect ? urldecode($redirect) : "/account"));
                 
                 break;
             default: 
