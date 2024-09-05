@@ -98,14 +98,13 @@ class Cache {
      * 
      *  Remove comments from the template.
      *
-     *  @since  2.3                 Keep comments if debug mode is active. 
      *  @since  2.0
      *  @param  string  $template   The template content to process.
      *  @return string              The template content with comments removed.
      * 
      */
     private static function compile_comments(string $template) {
-        return App::get("APP_DEBUG") ? $template : preg_replace('~\{\*\s*(.+?)\s*\\*}~is', '', $template);
+        return preg_replace('~\{\*\s*(.+?)\s*\\*}~is', '', $template);
     }
 
     /**
