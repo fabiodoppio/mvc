@@ -490,7 +490,9 @@ class AccountController extends Controller {
                 ])); 
 
                 App::set_locale_runtime($_COOKIE["locale"] ?? App::get("APP_LANGUAGE"));
-                Ajax::add('form[data-request="'.$request.'"]', '<div class="alert is--success">'._("Message successfully sent.").'</div>');
+                Ajax::add('form[data-request="account/help"]', '<div class="alert is--success">'._("Message successfully sent.").'</div>');
+                Ajax::add('form[data-request="account/contact"]', '<div class="alert is--success">'._("Message successfully sent.").'</div>');
+                Ajax::add('form[data-request="account/feedback"]', '<div class="alert is--success">'._("Message successfully sent.").'</div>');
 
                 break;
             default: 
