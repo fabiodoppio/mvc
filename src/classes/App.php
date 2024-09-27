@@ -265,7 +265,7 @@ class App {
         switch($_SERVER["REQUEST_METHOD"]) {
             case "POST":
                 $controllerName = !empty($requestParts[0]) ? $requestParts[0] : " ";
-                $actionName     = !empty($requestParts[1]) ? $requestParts[1] : " ";
+                $actionName     = !empty($requestParts[1]) ? $requestParts[1] : "";
                 break;
             case "GET":
                 $controllerName = "index";
