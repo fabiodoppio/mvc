@@ -315,9 +315,9 @@ class AccountController extends Controller {
                     $this->account->set("password", password_hash(Fairplay::password($_POST["pw1"], $_POST["pw2"]), PASSWORD_DEFAULT));
                     $this->account->set("token", $new_token);
                     App::set_auth_cookie($this->account->get("id"), $new_token, 0);
-                }
 
-                Ajax::add('#response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
+                    Ajax::add('#response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
+                }
                 
                 break;
             case "/account/security/2fa":

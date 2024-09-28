@@ -15,18 +15,18 @@
                             <input type="text" id="username" minlength="3" maxlength="18" name="username" value="{{$account->username}}" placeholder="{{'Enter username'}}"  autocomplete="username" required disabled/>
                         </label>
                         <label for="pw">
-                            {{"Current Password"}}
-                            <input type="password" id="pw" name="pw" maxlength="64" placeholder="{{'Enter current password'}}" autocomplete="current-password"/>
+                            {{"Current Password"}} <span class="is--required" title="{{'Required'}}">*</span>
+                            <input type="password" id="pw" name="pw" maxlength="64" placeholder="{{'Enter current password'}}" autocomplete="current-password" required/>
                         </label>
                         <label for="pw1">
-                            {{"New Password"}}
+                            {{"New Password"}} <span class="is--required" title="{{'Required'}}">*</span>
                             <div class="tooltip"><i class="fas fa-circle-info"></i><span>{{"Your password must be at least 8 characters long."}}</span></div>
-                            <input type="password" id="pw1" name="pw1" minlength="8" maxlength="64" placeholder="{{'Enter new password'}}" autocomplete="new-password"/>
+                            <input type="password" id="pw1" name="pw1" minlength="8" maxlength="64" placeholder="{{'Enter new password'}}" autocomplete="new-password" required/>
                         </label>
                         <label for="pw2">
-                            {{"Repeat New Password"}}
+                            {{"Repeat New Password"}} <span class="is--required" title="{{'Required'}}">*</span>
                             <div class="tooltip"><i class="fas fa-circle-info"></i><span>{{"Your password must be at least 8 characters long."}}</span></div>
-                            <input type="password" id="pw2" name="pw2" minlength="8" maxlength="64" placeholder="{{'Repeat new password'}}" autocomplete="new-password"/>
+                            <input type="password" id="pw2" name="pw2" minlength="8" maxlength="64" placeholder="{{'Repeat new password'}}" autocomplete="new-password" required/>
                         </label>
                         <button class="btn is--primary is--submit">{{"Save Changes"}}</button>
                     </form>
