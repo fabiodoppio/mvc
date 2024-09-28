@@ -29,7 +29,7 @@ class Mailer {
      * 
      *  Send an email with the specified subject, recipient, HTML template, and optional attachment.
      * 
-     *  @since  2.4             Removed base64_decode() from password, added timeout, added specific error message
+     *  @since  2.3.1           Removed base64_decode() from password, added timeout, added specific error message
      *  @since  2.0
      *  @param  string          $subject            The subject of the email.
      *  @param  string          $recipient          The recipient's email address.
