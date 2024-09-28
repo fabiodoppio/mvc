@@ -21,7 +21,6 @@
                                     <img src="{{$app->url}}{{$app->directory->media}}/avatars/{{$account->meta->avatar}}" alt="_avatar"/>
                                 {% endif; %}
                             </div>
-                            <div class="response"></div>
                             <input type="file" name="avatar" accept="image/*" hidden/>
                             <button class="btn is--primary is--submit" data-trigger="avatar">{{"Upload Avatar"}}</button>
                             <button class="btn is--secondary is--submit" data-request="account/personal/avatar/delete">{{"Delete Avatar"}}</button>
@@ -82,7 +81,6 @@
                             {{"Country"}}
                             <input type="text" id="country" name="country" maxlength="64" placeholder="{{'Enter country'}}" value="{{$account->meta->country}}" autocomplete="country-name"/>
                         </label>
-                        <div class="response"></div>
                         <button class="btn is--primary is--submit">{{"Save Changes"}}</button>
                     </form>
                     {% if (count($app->languages) > 1): %}

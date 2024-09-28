@@ -13,8 +13,8 @@ class MyController extends Controller {
 
     // Executes the requested action
     public function exampleAction(string $request) {
-        // Adds a simple message to the .response element
-        Ajax::add('.response', 'This method was called because the action '.$request.' was requested.');
+        // Adds a simple message to the #response element
+        Ajax::add('#response', 'This method was called because the action '.$request.' was requested.');
     }
 
     // Executes after the requested action

@@ -261,7 +261,7 @@ class AccountController extends Controller {
                 if (isset($_POST["country"]) && $_POST["country"] != $this->account->get("country"))
                     $this->account->set("country", Fairplay::string($_POST["country"]));
 
-                Ajax::add('form[data-request="account/personal/edit"] .response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
+                Ajax::add('#response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
                 
                 break;
             case "/account/personal/avatar/upload":
@@ -274,14 +274,14 @@ class AccountController extends Controller {
 
                 $this->account->set("avatar", Uploader::upload($_FILES["avatar"], Uploader::AVATAR));
                 Ajax::add('.avatar', '<img src="'.App::get("APP_URL").App::get("DIR_MEDIA")."/avatars/".$this->account->get("avatar").'"/>');
-                Ajax::add('form[data-request="account/personal/avatar/upload"] .response', '<div class="alert is--success">'._("Avatar successfully uploaded.").'</div>');
+                Ajax::add('#response', '<div class="alert is--success">'._("Avatar successfully uploaded.").'</div>');
 
                 break;
             case "/account/personal/avatar/delete":
 
                 $this->account->set("avatar", null);
                 Ajax::remove('.avatar img');
-                Ajax::add('form[data-request="account/personal/avatar/upload"] .response', '<div class="alert is--success">'._("Avatar successfully deleted.").'</div>');
+                Ajax::add('#response', '<div class="alert is--success">'._("Avatar successfully deleted.").'</div>');
 
                 break;
             default: 
@@ -317,7 +317,7 @@ class AccountController extends Controller {
                     App::set_auth_cookie($this->account->get("id"), $new_token, 0);
                 }
 
-                Ajax::add('form[data-request="account/security/edit"] .response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
+                Ajax::add('#response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
                 
                 break;
             case "/account/security/2fa":
@@ -345,7 +345,7 @@ class AccountController extends Controller {
                 $new_token = App::generate_token();
                 $this->account->set("token", $new_token);
                 App::set_auth_cookie($this->account->get("id"), $new_token, $this->account->get("remember_me"));
-                Ajax::add('form[data-request="account/security/logout"] .response', '<div class="alert is--success">'._("Sessions successfully logged out."));
+                Ajax::add('#response', '<div class="alert is--success">'._("Sessions successfully logged out."));
         
                 break;
             case "/account/security/deactivate":
@@ -354,7 +354,7 @@ class AccountController extends Controller {
                     throw new Exception(_("You can not deactivate your account."), 1051);
 
                 $this->account->deactivate();
-                Ajax::add('form[data-request="account/security/deactivate"]', '<div class="alert is--success">'._("Please wait while redirecting..").'</div>');
+                Ajax::add('#response', '<div class="alert is--success">'._("Please wait while redirecting..").'</div>');
                 Ajax::redirect(App::get("APP_URL")."/goodbye");
 
                 break;
@@ -391,13 +391,13 @@ class AccountController extends Controller {
                     App::set_auth_cookie($this->account->get("id"), $new_token, $this->account->get("remember_me"));
 
                     if ($this->account->get("role") < Model\Account::VERIFIED)
-                        Ajax::add('form[data-request="account/email/verify"]', '<div class="alert is--error"><i class="fas fa-circle-xmark"></i> '._("Your email adress is <b>not</b> verified.").'</div><div class="response"></div> <button class="btn is--primary is--submit">'._("Request").'</button>');
+                        Ajax::add('form[data-request="account/email/verify"]', '<div class="alert is--error"><i class="fas fa-circle-xmark"></i> '._("Your email adress is <b>not</b> verified.").'</div><button class="btn is--primary is--submit">'._("Request").'</button>');
                 }
 
                 if (isset($_POST["newsletter"]) && $_POST["newsletter"] != $this->account->get("newsletter"))
                     $this->account->set("newsletter", Fairplay::integer($_POST["newsletter"]));
 
-                Ajax::add('form[data-request="account/email/edit"] .response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
+                Ajax::add('#response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
                 
                 break;
             case "/account/email/verify":
@@ -438,7 +438,7 @@ class AccountController extends Controller {
                 $this->account->set("language", Fairplay::string($_POST["value"]));
 
                 App::set_locale_cookie($this->account->get("language"));
-                Ajax::add('form[data-request="account/locale"]', '<div class="alert is--success">'._("Please wait while redirecting..").'</div>');
+                Ajax::add('#response', '<div class="alert is--success">'._("Please wait while redirecting..").'</div>');
                 Ajax::reload();
     
                 break;

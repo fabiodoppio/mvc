@@ -34,7 +34,6 @@
                         <label for="confirm">
                             <input type="checkbox" name="confirm" id="confirm" value="1" required>{{"I agree to the Terms of Service and Privacy Policy."}} <span class="is--required" title="{{'Required'}}">*</span>
                         </label>
-                        <div class="response"></div>
                         <button class="btn is--primary is--submit">{{"Sign Up"}}</button>
                         {% if ($app->login): %}
                             {% if ($request->get->redirect??""): %}

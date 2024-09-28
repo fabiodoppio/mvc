@@ -26,5 +26,6 @@
                 </div>
             </nav>
         </footer>
+        <div id="response"></div>
     </body>
 </html>

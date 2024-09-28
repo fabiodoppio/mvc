@@ -72,6 +72,5 @@
         {% endif; %}
     {% endif; %}
     <p>{{"By sending your message, you agree to the processing of personal data. Don't worry, we will only use your email address to contact you."}}</p>
-    <div class="response"></div>
     <button class="btn is--primary is--submit">{{"Send Message"}}</button>
 </form>

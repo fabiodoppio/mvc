@@ -75,7 +75,7 @@ class Ajax {
      * 
      */
     public static function remove(string $target) {
-        @self::$output["remove"][$target] = true;
+        @self::$output["remove"][$target] = null;
     }
 
     /**

@@ -21,7 +21,6 @@
                         {% if (!empty($request->get->redirect)): %}
                             <input type="hidden" name="redirect" value="{{$request->get->redirect}}"/>
                         {% endif; %}
-                        <div class="response"></div>
                         <button class="btn is--primary is--submit">{{"Log In"}}</button>
                         {% if ($app->signup): %}
                             {% if (!empty($request->get->redirect)): %}

@@ -19,7 +19,6 @@
                             <input type="checkbox" id="newsletter" name="newsletter" value="1" {{(($account->meta->newsletter??"1")?"checked":"")}}/>
                             {{"I would like to be informed about news by email."}}
                         </label>
-                        <div class="response"></div>
                         <button class="btn is--primary is--submit">{{"Save Changes"}}</button>
                     </form>
                     <h2>{{"Verification"}}</h2>
@@ -29,7 +28,6 @@
                             <div class="alert is--success"><i class="fas fa-circle-check"></i> {{"Your email adress is verified."}}</div>
                         {% else: %}  
                             <div class="alert is--error"><i class="fas fa-circle-xmark"></i> {{"Your email adress is <b>not</b> verified."}}</div>
-                            <div class="response"></div>
                             <button class="btn is--primary is--submit">{{"Request"}}</button>
                         {% endif; %}
                     </form>

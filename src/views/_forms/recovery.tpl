@@ -16,7 +16,6 @@
         <div class="tooltip"><i class="fas fa-circle-info"></i><span>{{"Your password must be at least 8 characters long."}}</span></div>
         <input type="password" id="pw2" name="pw2" minlength="8" maxlength="64" placeholder="{{'Repeat new password'}}" autocomplete="new-password" required/>
     </label>
-    <div class="response"></div>
     <button class="btn is--primary is--submit">{{"Recover Account"}}</button>
     <a href="{{$app->url}}/login" class="btn is--secondary">{{"Abort"}}</a>
 </form>

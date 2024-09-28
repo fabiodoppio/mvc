@@ -44,7 +44,6 @@
                             <form data-request="my/example">
                                 <input type="text" name="value" value="xyz"/>
                                 <input type="submit" value="Call my/example"/>
-                                <div class="response"></div>
                             </form>
 
                             ..or by clicking any link with the appropriate attributes:

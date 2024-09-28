@@ -28,7 +28,6 @@
                             <div class="tooltip"><i class="fas fa-circle-info"></i><span>{{"Your password must be at least 8 characters long."}}</span></div>
                             <input type="password" id="pw2" name="pw2" minlength="8" maxlength="64" placeholder="{{'Repeat new password'}}" autocomplete="new-password"/>
                         </label>
-                        <div class="response"></div>
                         <button class="btn is--primary is--submit">{{"Save Changes"}}</button>
                     </form>
                     <h2>{{"2-Factor Authentication"}}</h2>
@@ -50,12 +49,10 @@
                     <h2>{{"Sign Out Everywhere"}}</h2>
                     <form data-request="account/security/logout">
                         <p>{{"Sign out from all other sessions where your account is used, including all other browsers, phones, and devices."}}</p>
-                        <div class="response"></div>
                         <button class="btn is--primary is--submit">{{"Sign Out Other Sessions"}}</button>
                     </form>
                     <h2>{{"Deactivate Account"}}</h2>
                     <p>{{"When you deactivate your account you have 90 days to recover your account before it will be permanently deleted from our servers."}}</p>
-                    <div class="response"></div>
                     <button class="btn is--warning is--submit" data-trigger="modalbox">{{"Deactivate Account"}}</button>
                     <div class="modalbox">
                         <div>
