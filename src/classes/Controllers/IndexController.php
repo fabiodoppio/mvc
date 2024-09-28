@@ -516,6 +516,17 @@ class IndexController extends Controller {
         }
     }
 
+    /**
+     * 
+     *  Executes actions after the main action.
+     * 
+     *  @since  2.3
+     * 
+     */
+    public function afterAction() {
+        return;
+    }
+
 }
 
 ?>

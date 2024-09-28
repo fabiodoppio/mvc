@@ -105,12 +105,12 @@ class Ajax {
      * 
      *  Push the accumulated AJAX response to the client as a JSON object.
      * 
+     *  @since 2.3  Echo json object in any case.
      *  @since 2.0
      * 
      */
     public static function push() {
-        if (!empty(self::$output))
-            echo json_encode(self::$output, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_PRETTY_PRINT);
+        echo json_encode(self::$output, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_PRETTY_PRINT);
     }
 
 }

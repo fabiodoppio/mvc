@@ -36,8 +36,10 @@ class Exception extends \Exception {
      *
      */
     public function process() {
-        if ($_SERVER["REQUEST_METHOD"] === "POST")
-            echo $this->getMessage()." (Code: ".$this->getCode().")";
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            Ajax::add(".response", '<div class="alert is--error">'.$this->getMessage().' (Code: '.$this->getCode().')</div>');
+            Ajax::push();
+        }
         else
             switch($this->getCode()) {
                 case 403:

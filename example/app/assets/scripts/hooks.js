@@ -1,19 +1,19 @@
-function ajax_send_before(data, context) {
+function ajax_send_before(data) {
     return true;
 }
 
-function ajax_send_done(res, context) {
+function ajax_send_done(res) {
     return true;
 }
 
-function ajax_send_fail(res, context) {
+function ajax_send_fail(res) {
     return true;
 }
 
-function ajax_send_always(context) {
+function ajax_send_always() {
     return true;
 }
 
-function ajax_send_after(context) {
+function ajax_send_after() {
     return true;
 }

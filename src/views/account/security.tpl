@@ -54,19 +54,17 @@
                         <button class="btn is--primary is--submit">{{"Sign Out Other Sessions"}}</button>
                     </form>
                     <h2>{{"Deactivate Account"}}</h2>
-                    <form data-request="account/security/deactivate">
-                        <p>{{"When you deactivate your account you have 90 days to recover your account before it will be permanently deleted from our servers."}}</p>
-                        <div class="response"></div>
-                        <button class="btn is--warning is--submit" data-trigger="modalbox">{{"Deactivate Account"}}</button>
-                        <div class="modalbox">
-                            <div>
-                                <h3>{{"Are you sure?"}}</h3>
-                                <p>{{"You will be logged out immediately and will no longer have access to your account."}}</p>
-                                <button class="btn is--warning is--submit">{{"Deactivate Account"}}</button>
-                                <a class="btn is--secondary">{{"Abort"}}</a>
-                            </div>
+                    <p>{{"When you deactivate your account you have 90 days to recover your account before it will be permanently deleted from our servers."}}</p>
+                    <div class="response"></div>
+                    <button class="btn is--warning is--submit" data-trigger="modalbox">{{"Deactivate Account"}}</button>
+                    <div class="modalbox">
+                        <div>
+                            <h3>{{"Are you sure?"}}</h3>
+                            <p>{{"You will be logged out immediately and will no longer have access to your account."}}</p>
+                            <button class="btn is--warning is--submit" data-request="account/security/deactivate">{{"Deactivate Account"}}</button>
+                            <button class="btn is--secondary">{{"Abort"}}</button>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </main>
