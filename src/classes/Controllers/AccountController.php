@@ -461,9 +461,6 @@ class AccountController extends Controller {
             case "/account/contact":
             case "/account/feedback":
 
-                if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
-                    throw new Exception(_("App currently offline. Please try again later."), 1059);
-
                 if (empty($_POST["name"]) || empty($_POST["email"]) || empty($_POST["message"]) || !empty($_POST["firstname"]))
                     throw new Exception(_("Required input not found."), 1060);
 
