@@ -28,7 +28,8 @@ class Mailer {
     /**
      * 
      *  Send an email with the specified subject, recipient, HTML template, and optional attachment.
-     *
+     * 
+     *  @since  2.4             Removed base64_decode() from password, added timeout, added specific error message
      *  @since  2.0
      *  @param  string          $subject            The subject of the email.
      *  @param  string          $recipient          The recipient's email address.
@@ -38,28 +39,33 @@ class Mailer {
      * 
      */
 	public static function send(string $subject, string $recipient, string $template, ?string $attachment = null, ?string $attachment_name = null) {
-        $mail = new \PHPMailer\PHPMailer\PHPMailer();
+        try {
+            $mail = new \PHPMailer\PHPMailer\PHPMailer();
 
-        $mail->isSMTP();
-        $mail->isHTML(true);
-        $mail->CharSet    = 'UTF-8';
-        $mail->Encoding   = 'base64';
-        $mail->Host       = App::get("MAIL_HOST");
-        $mail->SMTPAuth   = true;
-        $mail->Username   = App::get("MAIL_USERNAME");
-        $mail->Password   = base64_decode(App::get("MAIL_PASSWORD"));
-        $mail->SMTPSecure = App::get("MAIL_ENCRYPT");
-        $mail->Port       = App::get("MAIL_PORT");
-        $mail->setFrom(App::get("MAIL_SENDER"), App::get("APP_NAME"));
-        $mail->addAddress($recipient);
-        $mail->Subject    = $subject;
-        $mail->Body       = $template;
+            $mail->isSMTP();
+            $mail->isHTML(true);
+            $mail->CharSet    = 'UTF-8';
+            $mail->Encoding   = 'base64';
+            $mail->Host       = App::get("MAIL_HOST");
+            $mail->SMTPAuth   = true;
+            $mail->Username   = App::get("MAIL_USERNAME");
+            $mail->Password   = App::get("MAIL_PASSWORD");
+            $mail->SMTPSecure = App::get("MAIL_ENCRYPT");
+            $mail->Port       = App::get("MAIL_PORT");
+            $mail->Timeout    = 120;
+            $mail->setFrom(App::get("MAIL_SENDER"), App::get("APP_NAME"));
+            $mail->addAddress($recipient);
+            $mail->Subject    = $subject;
+            $mail->Body       = $template;
 
-        if ($attachment && $attachment_name)
-            $mail->addStringAttachment($attachment, $attachment_name);
+            if ($attachment && $attachment_name)
+                $mail->addStringAttachment($attachment, $attachment_name);
 
-        if(!$mail->send())
-           throw new Exception(_("Email could not be sent."), 1022);
+            $mail->send();
+        }
+        catch(\PHPMailer\PHPMailer\Exception $exception) {
+            throw new Exception(_("Email could not be sent: ".$exception->getMessage()), 1022);
+        }
 	}
 
 }
