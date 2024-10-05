@@ -53,6 +53,7 @@ class Mailer {
             $mail->SMTPSecure = App::get("MAIL_ENCRYPT");
             $mail->Port       = App::get("MAIL_PORT");
             $mail->Timeout    = 120;
+            $mail->XMailer    = ' ';
             $mail->setFrom(App::get("MAIL_SENDER"), App::get("APP_NAME"));
             $mail->addAddress($recipient);
             $mail->Subject    = $subject;
