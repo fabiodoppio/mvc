@@ -69,7 +69,8 @@ class Fairplay {
     /**
      * 
      *  Validate an email address.
-     *
+     * 
+     *  @since  2.4             Added badword filter.
      *  @since  2.0
      *  @param  string  $value  The email address to validate.
      *  @return string          The validated email address if it is valid.
@@ -79,6 +80,12 @@ class Fairplay {
         $value = filter_var($value, FILTER_VALIDATE_EMAIL);
 		if ($value === false) 
             throw new Exception(_("Invalid email address."), 1012);
+
+        $check = preg_replace("/[^A-Za-z0-9üÜöÖäÄ]/", "", strtolower($value));
+        foreach(App::get("APP_BADWORDS") as $badword)
+            if (!empty($badword) && strstr($check, strtolower($badword)) !== false)
+                throw new Exception(_("Invalid email address."), 1012);
+
         return $value;
     }
     
