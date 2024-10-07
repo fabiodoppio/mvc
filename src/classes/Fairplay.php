@@ -81,7 +81,7 @@ class Fairplay {
 		if ($value === false) 
             throw new Exception(_("Invalid email address."), 1012);
 
-        $check = preg_replace("/[^A-Za-z0-9üÜöÖäÄ]/", "", strtolower($value));
+        $check = preg_replace("/[^A-Za-z0-9üÜöÖäÄ@]/", "", strtolower($value));
         foreach(App::get("APP_BADWORDS") as $badword)
             if (!empty($badword) && strstr($check, strtolower($badword)) !== false)
                 throw new Exception(_("Invalid email address."), 1012);
