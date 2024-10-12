@@ -4,9 +4,7 @@
         <main class="page terms">
             <section>
                 <div class="container">
-                    <div class="main-content">
-                        <h1 class="title">{{"Terms of Service"}}</h1>
-                    </div>
+                    <h1 class="title">{{"Terms of Service"}}</h1>
                 </div>
             </section>
         </main>

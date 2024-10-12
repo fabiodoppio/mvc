@@ -3,10 +3,8 @@
 
         <main class="is--fading">
             <div class="container">
-                <div class="main-content">
-                    <h1 class="title">{{"oops! Page not found."}}</h1>
-                    <div class="alert is--info">{{"This content has either been removed, is not visible to you or simply does not exist."}}</div>
-                </div>
+                <h1 class="title">{{"oops! Page not found."}}</h1>
+                <div class="alert is--info">{{"This content has either been removed, is not visible to you or simply does not exist."}}</div>
             </div>
         </main>
 

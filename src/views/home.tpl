@@ -4,9 +4,7 @@
         <main class="is--fading">
             <section>
                 <div class="container">
-                    <div class="main-content">
-                        <h1 class="title">{{"Homepage"}}</h1>
-                    </div>
+                    <h1 class="title">{{"Homepage"}}</h1>
                 </div>
             </section>
         </main>
