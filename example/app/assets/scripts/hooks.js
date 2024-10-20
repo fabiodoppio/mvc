@@ -10,10 +10,10 @@ function ajax_send_fail(res) {
     return true;
 }
 
-function ajax_send_always() {
+function ajax_send_always(data) {
     return true;
 }
 
-function ajax_send_after() {
+function ajax_send_after(data) {
     return true;
 }
