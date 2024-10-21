@@ -77,23 +77,20 @@ class Uploader {
                     throw new Exception(sprintf(_("File exceeds the maximum allowed file size of %s KB."), 3072), 1026);
 
                 if ($imagesize[0] != $imagesize[1])
-                    throw new Exception(_("Avatar has to be squared."), 1027); 
+                    throw new Exception(_("Avatar has to be squared."), 1027);
 
-                if (in_array($filetype, ["image/jpeg", "image/jpg"])) {
+                if (in_array($filetype, ["image/jpeg", "image/jpg"])) 
                     $img = imagecreatefromjpeg($file["tmp_name"]);
-                    $new_img = imagecreatetruecolor(150, 150);
-                    imagecopyresampled($new_img, $img, 0, 0, 0, 0, 150, 150, $imagesize[0], $imagesize[1]);
-                    imagejpeg($new_img, $file["tmp_name"], 100);
-                }
-                elseif (in_array($filetype, ["image/png"])) {
+                elseif (in_array($filetype, ["image/png"]))
                     $img = imagecreatefrompng($file["tmp_name"]);
-                    $new_img = imagecreatetruecolor(150, 150);
-                    imagecopyresampled($new_img, $img, 0, 0, 0, 0, 150, 150, $imagesize[0], $imagesize[1]);
-                    imagepng($new_img, $file["tmp_name"]);
-                }
 
-                $dirname = $dirname."/avatars";
-                $basename = "avatar_".bin2hex(random_bytes(9));
+                $new_img = imagecreatetruecolor(150, 150);
+                imagecopyresampled($new_img, $img, 0, 0, 0, 0, 150, 150, $imagesize[0], $imagesize[1]);
+                imagewebp($new_img, $file["tmp_name"], 100);
+                
+                $dirname   = $dirname."/avatars";
+                $basename  = "avatar_".bin2hex(random_bytes(9));
+                $extension = "webp";
                 break;
         }
 
