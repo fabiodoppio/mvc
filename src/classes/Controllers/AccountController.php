@@ -108,6 +108,11 @@ class AccountController extends Controller {
                     else 
                         $account->attempt_2fa_login(Fairplay::string($_POST["code"]));
 
+                if (isset($_SESSION["tmp_post"])) {
+                    unset($_SESSION["tmp_post"]);
+                    session_regenerate_id();
+                }
+
                 $account->set("remember_me", $remember);
 
                 App::set_auth_cookie($account->get("id"), $account->get("token"), $remember);
@@ -164,11 +169,8 @@ class AccountController extends Controller {
         switch($request) {
             case "/account/recovery":
 
-                if (isset($_SESSION["tmp_post"])) {
+                if (isset($_SESSION["tmp_post"]))
                     $_POST = array_merge($_POST, $_SESSION["tmp_post"]);
-                    unset($_SESSION["tmp_post"]);
-                    session_regenerate_id();
-                }
 
                 if (empty($_POST["credential"]))
                     throw new Exception(_("Required input not found."), 1039);
@@ -188,6 +190,11 @@ class AccountController extends Controller {
                 else {
                     if (empty($_POST["pw1"]) || empty($_POST["pw2"]))
                         throw new Exception(_("Required input not found."), 1040);
+
+                    if (isset($_SESSION["tmp_post"])) {
+                        unset($_SESSION["tmp_post"]);
+                        session_regenerate_id();
+                    }
 
                     $account->recover(Fairplay::string($_POST["code"]), Fairplay::password($_POST["pw1"], $_POST["pw2"]));
                     Ajax::add('form[data-request="account/recovery"]', '<div class="alert is--success">'._("Account successfully restored. You can now log in as usual.").'</div>');
