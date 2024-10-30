@@ -65,7 +65,7 @@ class Database {
      public static function query(string $sql, array $params = []) {
           try {
                $mysqli = self::connect();
-               $mysqli->set_charset("UTF8");
+               $mysqli->set_charset("utf8mb4");
                $stmt = $mysqli->prepare($sql);
           
                if (!empty($params)) {
