@@ -208,7 +208,7 @@ class Fairplay {
      * 
      */
     public static function message(string $value) {
-        if (strlen($value) > 2 || strlen($value) < 250)
+        if (strlen($value) > 250 || strlen($value) < 2)
             throw new Exception(sprintf(_("The message must be between %1\$s and %2\$s characters long."), 2, 250), 1020);
         
         $check = preg_replace("/[^A-Za-z0-9üÜöÖäÄ]/", "", strtolower($value));
