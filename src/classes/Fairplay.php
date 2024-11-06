@@ -188,8 +188,8 @@ class Fairplay {
      *  Validate a datetime.
      *
      *  @since  2.0
-     *  @param  string  $value  The URL to validate.
-     *  @return string          The validated URL if it is valid.
+     *  @param  string  $value  The datetime to validate.
+     *  @return string          The validated datetime if it is valid.
      * 
      */
 	public static function datetime(string $value) {
