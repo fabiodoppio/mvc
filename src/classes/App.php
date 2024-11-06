@@ -252,6 +252,19 @@ class App {
 
     /**
      * 
+     *  Check if the request is an ajax call.
+     * 
+     *  @since  2.4
+     *  @return bool   True or false if the request is an ajax call.
+     * 
+     */
+    public static function is_ajax_call() {
+        return ($_SERVER["REQUEST_METHOD"] == "POST" && !empty(App::get_bearer_token()) && 
+            (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'));
+    }
+
+    /**
+     * 
      *  Get the request splitted in needed parts.
      * 
      *  @since  2.3
@@ -262,13 +275,12 @@ class App {
         $request      = str_replace(parse_url(App::get("APP_URL"), PHP_URL_PATH)??"", "", strtok($_SERVER["REQUEST_URI"], '?'));
         $requestParts = explode("/", trim($request, "/"));
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty(App::get_bearer_token())) {
+        $controllerName = "index";
+        $actionName     = !empty($requestParts[0]) ? $requestParts[0] : "home";
+
+        if (App::is_ajax_call()) {
             $controllerName = !empty($requestParts[0]) ? $requestParts[0] : " ";
             $actionName     = !empty($requestParts[1]) ? $requestParts[1] : "";
-        }
-        else {
-            $controllerName = "index";
-            $actionName     = !empty($requestParts[0]) ? $requestParts[0] : "home";
         }
 
         return [$controllerName, $actionName, rtrim($request, "/")];
