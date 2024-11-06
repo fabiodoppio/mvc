@@ -36,7 +36,7 @@ class Exception extends \Exception {
      *
      */
     public function process() {
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty(App::get_bearer_token())) {
             Ajax::add("#response", '<div class="alert is--error">'.$this->getMessage().' (Code: '.$this->getCode().')</div>');
             Ajax::push();
         }

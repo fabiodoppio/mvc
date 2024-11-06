@@ -262,18 +262,13 @@ class App {
         $request      = str_replace(parse_url(App::get("APP_URL"), PHP_URL_PATH)??"", "", strtok($_SERVER["REQUEST_URI"], '?'));
         $requestParts = explode("/", trim($request, "/"));
 
-        switch($_SERVER["REQUEST_METHOD"]) {
-            case "POST":
-                $controllerName = !empty($requestParts[0]) ? $requestParts[0] : " ";
-                $actionName     = !empty($requestParts[1]) ? $requestParts[1] : "";
-                break;
-            case "GET":
-                $controllerName = "index";
-                $actionName     = !empty($requestParts[0]) ? $requestParts[0] : "home";
-                break;
-            default:
-                $controllerName = " ";
-                $actionName     = " ";
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty(App::get_bearer_token())) {
+            $controllerName = !empty($requestParts[0]) ? $requestParts[0] : " ";
+            $actionName     = !empty($requestParts[1]) ? $requestParts[1] : "";
+        }
+        else {
+            $controllerName = "index";
+            $actionName     = !empty($requestParts[0]) ? $requestParts[0] : "home";
         }
 
         return [$controllerName, $actionName, rtrim($request, "/")];
