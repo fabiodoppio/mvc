@@ -137,7 +137,6 @@ class IndexController extends Controller {
      * 
      *  Displaying the website's custom page.
      *
-     *  @since  2.3     Option for ignoring maintenance mode.
      *  @since  2.2     Added regex detection in slugs.
      *  @since  2.0
      *  @param  string  $request    The requested action.
@@ -154,10 +153,6 @@ class IndexController extends Controller {
                     "canonical"     => $page["canonical"] ?? App::get("APP_URL").$page["slug"],
                     "class"         => $page["class"] ?? "page"
                 ];
-
-                if (!isset($page["ignore_maintenance"]) || $page["ignore_maintenance"] === false)
-                    if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
-                        throw new Exception(_("App currently offline. Please try again later."), 406);
 
                 echo Cache::get($page["template"] ?? "", $this->env);
                 break;

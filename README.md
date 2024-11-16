@@ -142,7 +142,6 @@ MVC\App::page([
     "canonical"          => "/imprint",              // [OPTIONAL] canoncial meta of your custom page
     "class"              => "page imprint",          // [OPTIONAL] body class of your custom page
     "template"           => "/imprint.tpl",          // [REQUIRED] template file of your custom page
-    "ignore_maintenance" => false                    // [OPTIONAL] ignore maintenance mode if active
 ]);
 ```
 
