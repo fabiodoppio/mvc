@@ -29,6 +29,7 @@ class Mailer {
      * 
      *  Send an email with the specified subject, recipient, HTML template, and optional attachment.
      * 
+     *  @since  2.4             Added optional reply-to parameter.
      *  @since  2.3.1           Removed base64_decode() from password, added timeout, added specific error message
      *  @since  2.0
      *  @param  string          $subject            The subject of the email.
@@ -36,9 +37,10 @@ class Mailer {
      *  @param  string          $template           The HTML content of the email.
      *  @param  string|null     $attachment         (Optional) The attachment content as a string.
      *  @param  string|null     $attachment_name    (Optional) The name of the attachment file.
+     *  @param  string|null     $replyTo            (Optional) Reply-To address.
      * 
      */
-	public static function send(string $subject, string $recipient, string $template, ?string $attachment = null, ?string $attachment_name = null) {
+	public static function send(string $subject, string $recipient, string $template, ?string $attachment = null, ?string $attachment_name = null, ?string $replyTo = null) {
         try {
             $mail = new \PHPMailer\PHPMailer\PHPMailer();
 
@@ -54,6 +56,10 @@ class Mailer {
             $mail->Port       = App::get("MAIL_PORT");
             $mail->Timeout    = 120;
             $mail->XMailer    = ' ';
+
+            if ($replyTo)
+                $mail->addReplyTo($replyTo);
+
             $mail->setFrom(App::get("MAIL_SENDER"), App::get("APP_NAME"));
             $mail->addAddress($recipient);
             $mail->Subject    = $subject;
