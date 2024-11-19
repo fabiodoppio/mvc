@@ -492,8 +492,18 @@ class AccountController extends Controller {
                         ]
                     ]
                 ])); 
-
                 App::set_locale_runtime($_COOKIE["locale"] ?? App::get("APP_LANGUAGE"));
+
+                Mailer::send(sprintf(_("We received your message | %s"), App::get("APP_NAME")), $_POST["email"] , Cache::get("/_emails/guestMessage.tpl", [
+                    "var" => (object) [
+                        "name"  => Fairplay::string($_POST["name"]),
+                    ],
+                    "app" => (object) [
+                        "url" => App::get("APP_URL"),
+                        "name" => App::get("APP_NAME")
+                    ]
+                ]), null, null, App::get("MAIL_RECEIVER")); 
+
                 Ajax::add('form[data-request="account/help"]', '<div class="alert is--success">'._("Message successfully sent.").'</div>');
                 Ajax::add('form[data-request="account/contact"]', '<div class="alert is--success">'._("Message successfully sent.").'</div>');
                 Ajax::add('form[data-request="account/feedback"]', '<div class="alert is--success">'._("Message successfully sent.").'</div>');

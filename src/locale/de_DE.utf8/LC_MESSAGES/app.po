@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MVC 2.0\n"
 "POT-Creation-Date: 2024-05-05 14:00+0200\n"
-"PO-Revision-Date: 2024-11-19 10:49+0100\n"
+"PO-Revision-Date: 2024-11-19 14:58+0100\n"
 "Last-Translator: Fabio Doppio <hallo@fabiodoppio.de>\n"
 "Language-Team: Fabio Doppio\n"
 "Language: de_DE\n"
@@ -741,3 +741,12 @@ msgstr "Wir hoffen, dass dir alle Funktionen gefallen, die dir diese App zu biet
 
 msgid "an account has been deactivated on %s:"
 msgstr "ein Account wurde auf %s deaktiviert:"
+
+msgid "We received your message"
+msgstr "Wir haben deine Nachricht erhalten"
+
+msgid "we received your message! We will deal with your request as soon as possible and then get back to you."
+msgstr "wir haben deine Nachricht erhalten! Wir werden uns so schnell wie möglich um dein Anliegen kümmern und uns dann bei dir melden."
+
+msgid "If you would like to add something to your message, you can simply reply to the Reply-To address of this email."
+msgstr "Wenn du deiner Nachricht noch etwas hinzufügen möchtest, kannst du einfach auf die Reply-To-Adresse dieser E-Mail antworten."
