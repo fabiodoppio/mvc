@@ -16,8 +16,10 @@
 namespace MVC\Models;
 
 use MVC\App         as App;
+use MVC\Cache       as Cache;
 use MVC\Database    as Database;
 use MVC\Exception   as Exception;
+use MVC\Mailer      as Mailer;
 use MVC\Models      as Model;
 
 /**
@@ -124,7 +126,8 @@ class Guest extends Model\Model {
     /**
      * 
      *  Sign up a new account.
-     *
+     * 
+     *  @since  2.4     Added welcome mail.
      *  @since  2.0
      *  @param  string  $username   Username for the new account
      *  @param  string  $email      Email address for the new account
@@ -143,6 +146,30 @@ class Guest extends Model\Model {
 
         $account = new Model\Account(Database::$insert_id);
         $account->set("language",  $_COOKIE["locale"] ?? App::get("APP_LANGUAGE"));
+
+        if (App::get("APP_WELCOME")) {
+            Mailer::send(sprintf(_("Welcome %1\$s! | %2\$s"), $account->get("username"), App::get("APP_NAME")), $account->get("email"), Cache::get("/_emails/welcome.tpl", [
+                "app" => (object) [
+                    "url" => App::get("APP_URL"),
+                    "name" => App::get("APP_NAME"),
+                ],
+                "account" => (object) [
+                    "username" => $account->get("username")
+                ]
+            ]));
+
+            App::set_locale_runtime(App::get("APP_LANGUAGE"));
+            Mailer::send(sprintf(_("New Account | %s"), App::get("APP_NAME")), App::get("MAIL_RECEIVER"), Cache::get("/_emails/newaccount.tpl", [
+                "var" => (object) [
+                    "username"  => $account->get("username")
+                ],
+                "app" => (object) [
+                    "url" => App::get("APP_URL"),
+                    "name" => App::get("APP_NAME")
+                ]
+            ])); 
+            App::set_locale_runtime($_COOKIE["locale"] ?? App::get("APP_LANGUAGE"));
+        }
 
         App::set_auth_cookie($account->get("id"), $token);
     }

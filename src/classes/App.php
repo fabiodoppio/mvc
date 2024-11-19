@@ -63,6 +63,7 @@ class App {
      *  @var    bool    $APP_DEBUG              Debug mode active
      *  @var    bool    $APP_LOGIN              Login active 
      *  @var    bool    $APP_SIGNUP             Signup active
+     *  @var    bool    $APP_WELCOME            Welcome mail for new accounts active
      *  @var    bool    $APP_MAINTENANCE        Maintenance mode active
      *  @var    string  $APP_BADWORDS           JSON-encoded array of banned words
      *  @var    array   $APP_PAGES              Custom pages of the app
@@ -78,6 +79,7 @@ class App {
     protected static    $APP_DEBUG              = false;
     protected static    $APP_LOGIN              = true;
     protected static    $APP_SIGNUP             = true;
+    protected static    $APP_WELCOME            = false;
     protected static    $APP_MAINTENANCE        = false;
     protected static    $APP_BADWORDS           = [];
     protected static    $APP_PAGES              = [];

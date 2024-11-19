@@ -80,6 +80,7 @@ MVC\App::config([
     #"APP_CRON"         => false,                   // [OPTIONAL] de/activates cronjob
     #"APP_LOGIN"        => true,                    // [OPTIONAL] de/activates login (except admins)
     #"APP_SIGNUP"       => true,                    // [OPTIONAL] de/activates signup
+    #"APP_WELCOME"      => false,                   // [OPTIONAL] de/activates welcome mail for new accounts
     #"APP_MAINTENANCE"  => false,                   // [OPTIONAL] de/activates maintenance mode (except admins)
     #"APP_BADWORDS"     => [],                      // [OPTIONAL] forbidden words for usernames or messages
 

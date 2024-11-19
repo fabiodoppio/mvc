@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MVC 2.0\n"
 "POT-Creation-Date: 2024-05-05 14:00+0200\n"
-"PO-Revision-Date: 2024-06-27 13:38+0200\n"
+"PO-Revision-Date: 2024-11-19 10:14+0100\n"
 "Last-Translator: Fabio Doppio <hallo@fabiodoppio.de>\n"
 "Language-Team: Fabio Doppio\n"
 "Language: de_DE\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -720,3 +720,21 @@ msgstr "Von"
 
 msgid "We've sent you a <b>confirmation code</b> to reset your password to the registered <b>email address</b>."
 msgstr "Wir haben dir einen <b>Bestätigungscode</b> zum Zurücksetzen deines Passwortes an die registrierte <b>E-Mail Adresse</b> gesendet."
+
+msgid "Welcome %1$s! | %2$s"
+msgstr "Willkommen %1$s! | %2$s"
+
+msgid "New Account | %s"
+msgstr "Neuer Account | %s"
+
+msgid "a new account was registered on %s:"
+msgstr "ein neuer Account wurde auf %s registriert:"
+
+msgid "Welcome %s,"
+msgstr "Willkommen %s,"
+
+msgid "many thanks for your registration on %s."
+msgstr "vielen Dank für deine Registrierung auf %s."
+
+msgid "We hope you enjoy all the features our app has to offer."
+msgstr "Wir hoffen, dass dir alle Funktionen gefallen, die dir diese App zu bieten hat."
