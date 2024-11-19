@@ -148,7 +148,7 @@ class Guest extends Model\Model {
         $account->set("language",  $_COOKIE["locale"] ?? App::get("APP_LANGUAGE"));
 
         if (App::get("APP_WELCOME")) {
-            Mailer::send(sprintf(_("Welcome %1\$s! | %2\$s"), $account->get("username"), App::get("APP_NAME")), $account->get("email"), Cache::get("/_emails/welcome.tpl", [
+            Mailer::send(sprintf(_("Welcome %1\$s! | %2\$s"), $account->get("username"), App::get("APP_NAME")), $account->get("email"), Cache::get("/_emails/accountWelcome.tpl", [
                 "app" => (object) [
                     "url" => App::get("APP_URL"),
                     "name" => App::get("APP_NAME"),
@@ -159,7 +159,7 @@ class Guest extends Model\Model {
             ]));
 
             App::set_locale_runtime(App::get("APP_LANGUAGE"));
-            Mailer::send(sprintf(_("New Account | %s"), App::get("APP_NAME")), App::get("MAIL_RECEIVER"), Cache::get("/_emails/newaccount.tpl", [
+            Mailer::send(sprintf(_("New Account | %s"), App::get("APP_NAME")), App::get("MAIL_RECEIVER"), Cache::get("/_emails/adminWelcome.tpl", [
                 "var" => (object) [
                     "username"  => $account->get("username")
                 ],

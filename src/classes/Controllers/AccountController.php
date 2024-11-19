@@ -475,7 +475,7 @@ class AccountController extends Controller {
                     throw new Exception(_("You have to verify your email address before you can send a message with an attachment."), 1061);
 
                 App::set_locale_runtime(App::get("APP_LANGUAGE"));
-                Mailer::send(sprintf(_("New Message | %s"), App::get("APP_NAME")), App::get("MAIL_RECEIVER"), Cache::get("/_emails/message.tpl", [
+                Mailer::send(sprintf(_("New Message | %s"), App::get("APP_NAME")), App::get("MAIL_RECEIVER"), Cache::get("/_emails/adminMessage.tpl", [
                     "var" => (object) [
                         "name"  => Fairplay::string($_POST["name"]),
                         "email" => Fairplay::email($_POST["email"]),

@@ -189,7 +189,7 @@ class Account extends Model\Model {
         $this->set("code", rand(100000, 999999));
         $this->set("timestamp", strtotime('now'));
                       
-        Mailer::send(sprintf(_("2-Factor Authentication | %s"), App::get("APP_NAME")), $this->get("email"), Cache::get("/_emails/2fa.tpl", [
+        Mailer::send(sprintf(_("2-Factor Authentication | %s"), App::get("APP_NAME")), $this->get("email"), Cache::get("/_emails/account2fa.tpl", [
             "var" => (object) [
                 "code" => substr_replace($this->get("code"), " ", 3, 0)
             ],
@@ -243,7 +243,7 @@ class Account extends Model\Model {
         $this->set("code", rand(100000, 999999));
         $this->set("timestamp", strtotime('now'));
 
-        Mailer::send(sprintf(_("Account Recovery | %s"), App::get("APP_NAME")), $this->get("email"), Cache::get("/_emails/recovery.tpl", [
+        Mailer::send(sprintf(_("Account Recovery | %s"), App::get("APP_NAME")), $this->get("email"), Cache::get("/_emails/accountRecovery.tpl", [
             "var" => (object) [
                 "code" => substr_replace($this->get("code"), " ", 3, 0)
             ],
@@ -300,7 +300,7 @@ class Account extends Model\Model {
         $this->set("code", rand(100000, 999999));
         $this->set("timestamp", strtotime('now'));
 
-        Mailer::send(sprintf(_("Email Address Verification | %s"), App::get("APP_NAME")), $this->get("email"), Cache::get("/_emails/verify.tpl", [
+        Mailer::send(sprintf(_("Email Address Verification | %s"), App::get("APP_NAME")), $this->get("email"), Cache::get("/_emails/accountVerify.tpl", [
             "var" => (object) [
                 "code" => substr_replace($this->get("code"), " ", 3, 0)
             ],
@@ -351,7 +351,7 @@ class Account extends Model\Model {
     public function deactivate() {
         $this->set("role", self::DEACTIVATED);
 
-        Mailer::send(sprintf(_("Account Deactivated | %s"), App::get("APP_NAME")), $this->get("email"), Cache::get("/_emails/deactivated.tpl", [
+        Mailer::send(sprintf(_("Account Deactivated | %s"), App::get("APP_NAME")), $this->get("email"), Cache::get("/_emails/accountDeactivated.tpl", [
             "app" => (object) [
                 "url" => App::get("APP_URL"),
                 "name" => App::get("APP_NAME"),
@@ -365,7 +365,7 @@ class Account extends Model\Model {
         ]));
 
         App::set_locale_runtime(App::get("APP_LANGUAGE"));
-        Mailer::send(sprintf(_("Account Deactivated | %s"), App::get("APP_NAME")), App::get("MAIL_RECEIVER"), Cache::get("/_emails/newdeactivated.tpl", [
+        Mailer::send(sprintf(_("Account Deactivated | %s"), App::get("APP_NAME")), App::get("MAIL_RECEIVER"), Cache::get("/_emails/adminDeactivated.tpl", [
             "var" => (object) [
                 "username"  => $this->get("username")
             ],
