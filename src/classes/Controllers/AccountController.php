@@ -496,7 +496,7 @@ class AccountController extends Controller {
 
                 Mailer::send(sprintf(_("We received your message | %s"), App::get("APP_NAME")), $_POST["email"] , Cache::get("/_emails/guestMessage.tpl", [
                     "var" => (object) [
-                        "name"  => Fairplay::string($_POST["name"]),
+                        "name"  => $_POST["name"],
                     ],
                     "app" => (object) [
                         "url" => App::get("APP_URL"),
