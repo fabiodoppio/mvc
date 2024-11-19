@@ -2,9 +2,9 @@
     <label for="firstname">
         <input type="text" id="firstname" name="firstname" autocomplete="off" tabindex="-1"/>
     </label>
-    <label for="name">
+    <label for="displayname">
         {{"Name"}} <span class="is--required" title="{{'Required'}}">*</span>
-        <input type="text" id="name" minlength="3" maxlength="18" name="name" value="{{$account->meta->displayname??$account->username}}" autocomplete="username name" placeholder="{{'Enter name'}}" required/>
+        <input type="text" id="displayname" minlength="3" maxlength="18" name="displayname" value="{{$account->meta->displayname??$account->username}}" autocomplete="username name" placeholder="{{'Enter name'}}" required/>
     </label>
     <label for="email">
         {{"Email Address"}} <span class="is--required" title="{{'Required'}}">*</span>

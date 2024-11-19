@@ -1,4 +1,4 @@
-{{"Hello %s,", $var->name}}
+{{"Hello %s,", $var->displayname}}
 <br/><br/>
 {{"we received your message! We will deal with your request as soon as possible and then get back to you."}}
 <br/><br/>

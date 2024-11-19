@@ -468,7 +468,7 @@ class AccountController extends Controller {
             case "/account/contact":
             case "/account/feedback":
 
-                if (empty($_POST["name"]) || empty($_POST["email"]) || empty($_POST["message"]) || !empty($_POST["firstname"]))
+                if (empty($_POST["displayname"]) || empty($_POST["email"]) || empty($_POST["message"]) || !empty($_POST["firstname"]))
                     throw new Exception(_("Required input not found."), 1060);
 
                 if (isset($_FILES["attachment"]) && $this->account->get("role") < Model\Account::VERIFIED)
@@ -477,7 +477,7 @@ class AccountController extends Controller {
                 App::set_locale_runtime(App::get("APP_LANGUAGE"));
                 Mailer::send(sprintf(_("New Message | %s"), App::get("APP_NAME")), App::get("MAIL_RECEIVER"), Cache::get("/_emails/adminMessage.tpl", [
                     "var" => (object) [
-                        "name"  => Fairplay::string($_POST["name"]),
+                        "displayname"  => Fairplay::string($_POST["displayname"]),
                         "email" => Fairplay::email($_POST["email"]),
                         "subject" => Fairplay::string($_POST["subject"] ?? ""),
                         "platform" => Fairplay::string($_POST["platform"] ?? ""),
@@ -496,7 +496,7 @@ class AccountController extends Controller {
 
                 Mailer::send(sprintf(_("We received your message | %s"), App::get("APP_NAME")), $_POST["email"] , Cache::get("/_emails/guestMessage.tpl", [
                     "var" => (object) [
-                        "name"  => $_POST["name"],
+                        "displayname"  => $_POST["displayname"],
                     ],
                     "app" => (object) [
                         "url" => App::get("APP_URL"),

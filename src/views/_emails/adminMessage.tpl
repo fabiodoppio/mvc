@@ -2,7 +2,7 @@
 <br/><br/>
 {{"you received a new message via the contact form:"}}
 <br/><br/>
-<b>{{"From"}}:</b> {{$var->name}} <<a href="mailto:{{$var->email}}">{{$var->email}}</a>><br/>
+<b>{{"From"}}:</b> {{$var->displayname}} <<a href="mailto:{{$var->email}}">{{$var->email}}</a>><br/>
 {% if ($var->subject != ""): %} <b>{{"Subject"}}:</b> {{$var->subject}}<br/>{% endif; %}
 {% if ($var->platform != ""): %} <b>{{"Platform"}}:</b> {{$var->platform}}<br/>{% endif; %}
 <br/>
