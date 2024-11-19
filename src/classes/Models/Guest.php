@@ -47,7 +47,7 @@ class Guest extends Model\Model {
                 "data" => [
                     "token" => App::generate_token(),
                     "role" => Model\Account::GUEST,
-                    "lastaction" => date('Y-m-d H:i:s', time()),
+                    "lastaction" => "",
                     "registered" => date('Y-m-d H:i:s', time()),
                     "meta" => [
                         "language" => $_COOKIE["locale"] ?? App::get("APP_LANGUAGE")
