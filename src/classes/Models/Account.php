@@ -344,6 +344,7 @@ class Account extends Model\Model {
      * 
      *  Deactivate the account.
      *
+     *  @since  2.4   Added noitification mail for admins.
      *  @since  2.0
      * 
      */
@@ -362,6 +363,18 @@ class Account extends Model\Model {
                 ]
             ]
         ]));
+
+        App::set_locale_runtime(App::get("APP_LANGUAGE"));
+        Mailer::send(sprintf(_("Account Deactivated | %s"), App::get("APP_NAME")), App::get("MAIL_RECEIVER"), Cache::get("/_emails/newdeactivated.tpl", [
+            "var" => (object) [
+                "username"  => $this->get("username")
+            ],
+            "app" => (object) [
+                "url" => App::get("APP_URL"),
+                "name" => App::get("APP_NAME")
+            ]
+        ])); 
+        App::set_locale_runtime($_COOKIE["locale"] ?? App::get("APP_LANGUAGE"));
     }
 
     /**
