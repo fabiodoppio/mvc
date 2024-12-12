@@ -19,7 +19,7 @@ use MVC\Ajax        as Ajax;
 use MVC\App         as App;
 use MVC\Cache       as Cache;
 use MVC\Exception   as Exception;
-use MVC\Fairplay    as Fairplay;
+use MVC\Validator   as Validator;
 use MVC\Mailer      as Mailer;
 use MVC\Models      as Model;
 use MVC\Uploader    as Uploader;
@@ -81,11 +81,11 @@ class AccountController extends Controller {
                 if (empty($_POST["credential"]) || empty($_POST["pw"]))
                     throw new Exception(_("Required input not found."), 1033);
 
-                $credential = Fairplay::string($_POST["credential"]);
-                $password   = Fairplay::string($_POST["pw"]);
+                $credential = Validator::string($_POST["credential"]);
+                $password   = Validator::string($_POST["pw"]);
                 $account    = App::get_account_by_credential($credential);
-                $remember   = (!empty($_POST["remember"])) ? Fairplay::integer($_POST["remember"]) : null;
-                $redirect   = (!empty($_POST["redirect"])) ? Fairplay::string($_POST["redirect"]) : "";
+                $remember   = (!empty($_POST["remember"])) ? Validator::integer($_POST["remember"]) : null;
+                $redirect   = (!empty($_POST["redirect"])) ? Validator::string($_POST["redirect"]) : "";
                 
                 $account->attempt_login($password);
 
@@ -106,7 +106,7 @@ class AccountController extends Controller {
                         return;
                     }
                     else 
-                        $account->attempt_2fa_login(Fairplay::string($_POST["code"]));
+                        $account->attempt_2fa_login(Validator::string($_POST["code"]));
 
                 if (isset($_SESSION["tmp_post"])) {
                     unset($_SESSION["tmp_post"]);
@@ -147,9 +147,9 @@ class AccountController extends Controller {
                 if (empty($_POST["username"]) || empty($_POST["email"]) || empty($_POST["pw1"]) || empty($_POST["pw2"])) 
                     throw new Exception(_("Required input not found."), 1037);
 
-                $this->account->signup(Fairplay::username($_POST["username"]), Fairplay::email($_POST["email"]), Fairplay::password($_POST["pw1"], $_POST["pw2"]));
+                $this->account->signup(Validator::username($_POST["username"]), Validator::email($_POST["email"]), Validator::password($_POST["pw1"], $_POST["pw2"]));
                 Ajax::add('form[data-request="account/signup"]', '<div class="alert is--success">'._("Please wait while redirecting..").'</div>');
-                Ajax::redirect(App::get("APP_URL").(!empty($_POST["redirect"]) ? Fairplay::string(urldecode($_POST["redirect"])) : "/"));
+                Ajax::redirect(App::get("APP_URL").(!empty($_POST["redirect"]) ? Validator::string(urldecode($_POST["redirect"])) : "/"));
 
                 break;
             default: 
@@ -175,7 +175,7 @@ class AccountController extends Controller {
                 if (empty($_POST["credential"]))
                     throw new Exception(_("Required input not found."), 1039);
 
-                $credential = Fairplay::string($_POST["credential"]);
+                $credential = Validator::string($_POST["credential"]);
                 $account    = App::get_account_by_credential($credential);
 
                 if (empty($_POST["code"])) {
@@ -196,7 +196,7 @@ class AccountController extends Controller {
                         session_regenerate_id();
                     }
 
-                    $account->recover(Fairplay::string($_POST["code"]), Fairplay::password($_POST["pw1"], $_POST["pw2"]));
+                    $account->recover(Validator::string($_POST["code"]), Validator::password($_POST["pw1"], $_POST["pw2"]));
                     Ajax::add('form[data-request="account/recovery"]', '<div class="alert is--success">'._("Account successfully restored. You can now log in as usual.").'</div>');
                 }
             
@@ -227,16 +227,16 @@ class AccountController extends Controller {
                 $current_meta = $this->account->get("meta");
 
                 if (isset($_POST["displayname"]) && $_POST["displayname"] != $this->account->get("displayname"))
-                    $this->account->set("displayname", Fairplay::string($_POST["displayname"]));
+                    $this->account->set("displayname", Validator::string($_POST["displayname"]));
 
                 if (isset($_POST["company"]) && $_POST["company"] != $this->account->get("company"))
-                    $this->account->set("company", Fairplay::string($_POST["company"]));
+                    $this->account->set("company", Validator::string($_POST["company"]));
 
                 if (isset($_POST["firstname"]) && $_POST["firstname"] != $this->account->get("firstname"))
-                    $this->account->set("firstname", Fairplay::string($_POST["firstname"]));
+                    $this->account->set("firstname", Validator::string($_POST["firstname"]));
 
                 if (isset($_POST["lastname"]) && $_POST["lastname"] != $this->account->get("lastname"))
-                    $this->account->set("lastname", Fairplay::string($_POST["lastname"]));
+                    $this->account->set("lastname", Validator::string($_POST["lastname"]));
 
                 switch($this->account->get("displayname")) {
                     case $current_meta["company"]??"":
@@ -257,16 +257,16 @@ class AccountController extends Controller {
                 }
 
                 if (isset($_POST["street"]) && $_POST["street"] != $this->account->get("street"))
-                    $this->account->set("street", Fairplay::string($_POST["street"]));
+                    $this->account->set("street", Validator::string($_POST["street"]));
 
                 if (isset($_POST["postal"]) && $_POST["postal"] != $this->account->get("postal"))
-                    $this->account->set("postal", Fairplay::string($_POST["postal"]));
+                    $this->account->set("postal", Validator::string($_POST["postal"]));
 
                 if (isset($_POST["city"]) && $_POST["city"] != $this->account->get("city"))
-                    $this->account->set("city", Fairplay::string($_POST["city"]));
+                    $this->account->set("city", Validator::string($_POST["city"]));
 
                 if (isset($_POST["country"]) && $_POST["country"] != $this->account->get("country"))
-                    $this->account->set("country", Fairplay::string($_POST["country"]));
+                    $this->account->set("country", Validator::string($_POST["country"]));
 
                 Ajax::add('#response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
                 
@@ -319,7 +319,7 @@ class AccountController extends Controller {
                         throw new Exception(_("Your current password does not match."), 1049);
                 
                     $new_token = App::generate_token();
-                    $this->account->set("password", password_hash(Fairplay::password($_POST["pw1"], $_POST["pw2"]), PASSWORD_DEFAULT));
+                    $this->account->set("password", password_hash(Validator::password($_POST["pw1"], $_POST["pw2"]), PASSWORD_DEFAULT));
                     $this->account->set("token", $new_token);
                     App::set_auth_cookie($this->account->get("id"), $new_token, 0);
 
@@ -389,7 +389,7 @@ class AccountController extends Controller {
             case "/account/email/edit":
 
                 if (!empty($_POST["email"]) && $_POST["email"] != $this->account->get("email")) {
-                    $this->account->set("email", strtolower(Fairplay::email($_POST["email"])));
+                    $this->account->set("email", strtolower(Validator::email($_POST["email"])));
                     $this->account->set("2fa", ($this->account->get("role") <= Model\Account::VERIFIED) ? null : $this->account->get("2fa"));
                     $this->account->set("role", ($this->account->get("role") == Model\Account::VERIFIED) ? Model\Account::USER : $this->account->get("role"));
 
@@ -402,7 +402,7 @@ class AccountController extends Controller {
                 }
 
                 if (isset($_POST["newsletter"]) && $_POST["newsletter"] != $this->account->get("newsletter"))
-                    $this->account->set("newsletter", Fairplay::integer($_POST["newsletter"]));
+                    $this->account->set("newsletter", Validator::integer($_POST["newsletter"]));
 
                 Ajax::add('#response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
                 
@@ -417,7 +417,7 @@ class AccountController extends Controller {
                     Ajax::add('form[data-request="account/email/verify"]', Cache::get("/_forms/verify.tpl"), Ajax::REPLACE);
                 }
                 else {
-                    $this->account->verify(Fairplay::string($_POST["code"]));
+                    $this->account->verify(Validator::string($_POST["code"]));
                     Ajax::add('form[data-request="account/email/verify"]', '<div class="alert is--success">'._("Email address successfully verified.").'</div>');
                 }
 
@@ -442,7 +442,7 @@ class AccountController extends Controller {
                 if (empty($_POST["value"]))
                     throw new Exception(_("Required input not found."), 1057);
 
-                $this->account->set("language", Fairplay::string($_POST["value"]));
+                $this->account->set("language", Validator::string($_POST["value"]));
 
                 App::set_locale_cookie($this->account->get("language"));
                 Ajax::add('#response', '<div class="alert is--success">'._("Please wait while redirecting..").'</div>');
@@ -477,11 +477,11 @@ class AccountController extends Controller {
                 App::set_locale_runtime(App::get("APP_LANGUAGE"));
                 Mailer::send(sprintf(_("New Message | %s"), App::get("APP_NAME")), App::get("MAIL_RECEIVER"), Cache::get("/_emails/adminMessage.tpl", [
                     "var" => (object) [
-                        "displayname"  => Fairplay::string($_POST["displayname"]),
-                        "email" => Fairplay::email($_POST["email"]),
-                        "subject" => Fairplay::string($_POST["subject"] ?? ""),
-                        "platform" => Fairplay::string($_POST["platform"] ?? ""),
-                        "message" => Fairplay::string($_POST["message"]),
+                        "displayname"  => Validator::string($_POST["displayname"]),
+                        "email" => Validator::email($_POST["email"]),
+                        "subject" => Validator::string($_POST["subject"] ?? ""),
+                        "platform" => Validator::string($_POST["platform"] ?? ""),
+                        "message" => Validator::string($_POST["message"]),
                         "attachment" => (isset($_FILES["attachment"])) ? Uploader::upload($_FILES["attachment"], Uploader::ATTACHMENT) : ""
                     ],
                     "app" => (object) [

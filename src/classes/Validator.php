@@ -17,13 +17,13 @@ namespace MVC;
 
 /**
  * 
- *  Fairplay Class
+ *  Validator Class
  *
- *  The Fairplay class provides validation methods for various user inputs, such as usernames, passwords, emails, integers,
+ *  The Validator class provides validation methods for various user inputs, such as usernames, passwords, emails, integers,
  *  numbers, strings, arrays, booleans, urls and messages to ensure fair and secure usage in the entire web application.
  * 
  */
-class Fairplay {
+class Validator {
 
     /**
      * 

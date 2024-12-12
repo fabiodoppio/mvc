@@ -15,7 +15,8 @@
 
 namespace MVC;
 
-use MVC\App     as App;
+use MVC\App       as App;
+use MVC\Validator as Validator;
 
 /**
  * 
@@ -46,7 +47,7 @@ class Exception extends \Exception {
 
                     App::unset_auth_cookie();
                     http_response_code(403);
-                    $redirect = (!empty($_GET["redirect"])) ? Fairplay::string($_GET["redirect"]) : $_SERVER["REQUEST_URI"];
+                    $redirect = (!empty($_GET["redirect"])) ? Validator::string($_GET["redirect"]) : $_SERVER["REQUEST_URI"];
                     header("Location: ".App::get("APP_URL")."/login?redirect=".urlencode($redirect));
                     exit;
 
