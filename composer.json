@@ -19,7 +19,7 @@
     },
     "autoload": {
     	"psr-4": {
-            "MVC\\": "src/classes"
+            "MVC\\": "src"
     	}
     }
 } 
