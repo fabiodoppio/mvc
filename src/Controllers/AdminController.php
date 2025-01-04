@@ -331,6 +331,31 @@ class AdminController extends AccountController {
 
     /**
      * 
+     * Handles filter actions, including adding and remvoving filter options like badwords.
+     *
+     *  @since  3.0
+     *  @param  string  $request    The requested action.
+     * 
+     */
+    public function filterAction(string $request) {
+        switch($request) {
+            case "/admin/filter/add":
+
+               
+
+                break;
+            case "/admin/filter/remove":
+
+            
+
+                break;
+            default: 
+                throw new Exception(sprintf(_("Action %s not found."), $request), 1086);
+        }
+    }
+
+    /**
+     * 
      * Handles newsletter actions, including sending newsletter to all accounts.
      *
      *  @since  3.0

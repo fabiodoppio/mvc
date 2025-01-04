@@ -29,19 +29,19 @@ class Mailer {
      * 
      *  Send an email with the specified subject, recipient, HTML template, and optional attachment.
      * 
-     *  @since  3.0             Adjusted timeout from 120 to 60 seconds.
+     *  @since  3.0             Adjusted timeout from 120 to 60 seconds, added multiple attachments.
      *  @since  2.4             Added optional reply-to parameter.
      *  @since  2.3.1           Removed base64_decode() from password, added timeout, added specific error message
      *  @since  2.0
      *  @param  string          $subject            The subject of the email.
      *  @param  string          $recipient          The recipient's email address.
      *  @param  string          $template           The HTML content of the email.
-     *  @param  string|null     $attachment         (Optional) The attachment content as a string.
-     *  @param  string|null     $attachment_name    (Optional) The name of the attachment file.
      *  @param  string|null     $replyTo            (Optional) Reply-To address.
+     *  @param  array|null      $attachments        (Optional) Attachment content.
+
      * 
      */
-	public static function send(string $subject, string $recipient, string $template, ?string $attachment = null, ?string $attachment_name = null, ?string $replyTo = null) {
+	public static function send(string $subject, string $recipient, string $template, ?string $replyTo = null, ?array $attachments = null) {
         try {
             $mail = new \PHPMailer\PHPMailer\PHPMailer();
 
@@ -66,8 +66,11 @@ class Mailer {
             $mail->Subject    = $subject;
             $mail->Body       = $template;
 
-            if ($attachment && $attachment_name)
-                $mail->addStringAttachment($attachment, $attachment_name);
+            if ($attachments)
+                foreach($attachments as $attachment) {
+                    [$name, $content] = $attachment;
+                    $mail->addStringAttachment($content, $name);
+                }
 
             $mail->send();
         }

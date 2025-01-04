@@ -90,7 +90,7 @@ class Template {
 		foreach ($matches as $value) 
 			$template = str_replace($value[0], self::compile_includes($value[2]), $template);
 
-        return App::get("APP_DEBUG") ? $template : preg_replace(['/\>[^\S ]+/s','/[^\S ]+\</s','/(\s)+/s'], ['>','<','\\1'], $template);
+        return preg_replace(['/\>[^\S ]+/s','/[^\S ]+\</s','/(\s)+/s'], ['>','<','\\1'], $template);
     }
 
     /**

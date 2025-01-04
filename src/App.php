@@ -74,7 +74,7 @@ class App {
     protected static    $APP_DESCRIPTION        = "";
     protected static    $APP_TIMEZONE           = "Europe/Berlin";
     protected static    $APP_LANGUAGE           = "en_EN.utf8";
-    protected static    $APP_LANGUAGES          = ["en_EN.utf8, de_DE.utf8"];
+    protected static    $APP_LANGUAGES          = ["en_EN.utf8", "de_DE.utf8"];
     protected static    $APP_DEBUG              = false;
     protected static    $APP_MAINTENANCE        = false;
     protected static    $APP_CRON               = true;
@@ -89,9 +89,6 @@ class App {
      *  @var    string  $DIR_LOCALE             Directory for localization files
      *  @var    string  $DIR_VENDOR             Directory for third-party libraries
      *  @var    string  $DIR_VIEWS              Directory for templates
-     *  @var    string  $DIR_FONTS              Directory for fonts
-     *  @var    string  $DIR_SCRIPTS            Directory for scripts
-     *  @var    string  $DIR_STYLES             Directory for styles
      *  @var    string  $DIR_MEDIA              Directory for media files
      */
     protected static    $DIR_ROOT;
@@ -100,9 +97,6 @@ class App {
     protected static    $DIR_LOCALE             = "/app/locale"; 
     protected static    $DIR_VENDOR             = "/app/vendor";
     protected static    $DIR_VIEWS              = "/app/views";
-    protected static    $DIR_FONTS              = "/public/assets/fonts";   
-    protected static    $DIR_SCRIPTS            = "/public/assets/scripts";
-    protected static    $DIR_STYLES             = "/public/assets/styles";
     protected static    $DIR_MEDIA              = "/public/media";
 
     /**
@@ -176,9 +170,9 @@ class App {
             session_start();
             self::set_config($config); 
             self::set_locale_runtime($_COOKIE["locale"] ?? self::get("APP_LANGUAGE"));
-            list($controllerName, $actionName, $request) = self::get_request_in_parts();
             date_default_timezone_set(self::get("APP_TIMEZONE"));
-
+            
+            [$controllerName, $actionName, $request] = self::get_request_in_parts();
             $controllerClassName = '\MVC\\Controllers\\'.ucfirst($controllerName).'Controller';
             $actionMethodName    = $actionName."Action";
 
@@ -235,6 +229,8 @@ class App {
         foreach ($config as $name => $value)
             if (property_exists(__CLASS__, $name))
                 switch($name) {
+                    case "APP_URL":
+                        self::$$name = Validator::url($value);
                     case "APP_DEBUG":
                     case "APP_MAINTENANCE":
                     case "APP_CRON":
@@ -369,7 +365,7 @@ class App {
      */
     public static function get_bearer_token() {
         $headers = getallheaders();
-        list($type, $token) = explode(" ", $headers["Authorization"]??"", 2) + ["", ""];
+        [$type, $token] = explode(" ", $headers["Authorization"]??"", 2) + ["", ""];
         return (strcasecmp($type, 'Bearer') == 0) ? $token : "";
     }
 

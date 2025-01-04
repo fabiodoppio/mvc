@@ -38,7 +38,7 @@ class Validator {
     public static function username(string $value) {
         if (strlen($value) > App::get("RULE_UN_LENGTH") || strlen($value) < 3)
             throw new Exception(_("The username must be between 3 and 18 characters long."), 1014);
-        elseif (preg_match(App::get("RULE_USERNAMES"), $value, $res))
+        elseif (preg_match(App::get("RULE_UN_REGEX"), $value, $res))
             throw new Exception(_("The username cannot contain any special characters."), 1015);
         
         $check = preg_replace("/[^A-Za-z0-9üÜöÖäÄ]/", "", strtolower($value));

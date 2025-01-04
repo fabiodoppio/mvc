@@ -105,8 +105,8 @@ APP_AUTHOR = ""                                 # author of your app
 APP_DESCRIPTION = ""                            # description of your app
 APP_TIMEZONE = "Europe/Berlin"                  # timezone for the app
 APP_LANGUAGE = "en_EN.utf8"                     # (server-)language of your app
-APP_LANGUAGES[] = "en_EN.utf8"                  # available (server-)languages
-APP_LANGUAGES[] = "de_DE.utf8"                  # available (server-)languages
+APP_LANGUAGES[] = "en_EN.utf8"                  # english as an selectable (server-)language
+APP_LANGUAGES[] = "de_DE.utf8"                  # german as an selectable (server-)language
 APP_MAINTENANCE = "false"                       # de/activates maintenance mode (except admins)
 APP_CRON = "true"                               # de/activates cronjob
 APP_LOGIN = "true"                              # de/activates login (except admins)
@@ -115,15 +115,12 @@ APP_WELCOME = "true"                            # de/activates welcome mail for 
 
 [Directories]
 DIR_ROOT = "/var/www"                           # path to your root directory, no trailing slash
-DIR_CACHE = "/app/cache"                        # path to your cache files
-DIR_CLASSES = "/app/classes"                    # path to your custom or extended classes
-DIR_LOCALE = "/app/locale"                      # path to your locale .mo/.po files
-DIR_VENDOR = "/app/vendor"                      # path to your third-party libraries
-DIR_VIEWS = "/app/views"                        # path to your template files
-DIR_FONTS = "/public/assets/fonts"              # path to your public fonts
-DIR_SCRIPTS = "/public/assets/scripts"          # path to your public .js scripts
-DIR_STYLES = "/public/assets/styles"            # path to your public .css styles
-DIR_MEDIA = "/public/media"                     # path to your public media files
+DIR_CACHE = "/app/cache"                        # path to your cache files, no trailing slash
+DIR_CLASSES = "/app/classes"                    # path to your custom or extended classes, no trailing slash
+DIR_LOCALE = "/app/locale"                      # path to your locale .mo/.po files, no trailing slash
+DIR_VENDOR = "/app/vendor"                      # path to your third-party libraries, no trailing slash
+DIR_VIEWS = "/app/views"                        # path to your template files, no trailing slash
+DIR_MEDIA = "/public/media"                     # path to your public media files, no trailing slash
 
 [Security]
 SALT_COOKIE = "USE A SALT OR HASH GENERATOR!"   # randomized hash for security reasons

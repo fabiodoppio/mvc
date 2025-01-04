@@ -20,6 +20,7 @@ use MVC\Database    as Database;
 use MVC\Exception   as Exception;
 use MVC\Models      as Model;
 use MVC\Template    as Template;
+use MVC\Validator   as Validator;
 
 /**
  * 
@@ -70,12 +71,6 @@ class IndexController extends Controller {
                 "cron"              => App::get("APP_CRON"),
                 "login"             => App::get("APP_LOGIN"),
                 "signup"            => App::get("APP_SIGNUP"),
-                "directory"         => (object) [
-                    "fonts"             => App::get("DIR_FONTS"),
-                    "scripts"           => App::get("DIR_SCRIPTS"), 
-                    "styles"            => App::get("DIR_STYLES"),
-                    "media"             => App::get("DIR_MEDIA")
-                ]
             ],
             "account" => (object) [
                 "id"            => $this->account->get("id"),
@@ -419,6 +414,41 @@ class IndexController extends Controller {
                 break;
              case "/admin/accounts":
 
+                $query = "";
+                $filter = " WHERE role > ?";
+                $params[] = Model\Account::BLOCKED;
+            
+                if (!empty($role = Validator::integer($_GET["role"]))) {
+                    $query .= "&role=".$role;
+                    $filter = " WHERE role = ?";
+                    $params[0] = $role;
+                }
+
+                if (!empty($search = Validator::string($_GET["search"]))) {
+                    $query .= "&search=".$search;
+                    $filter .= " AND (id = ? OR username LIKE ? OR email LIKE ?)";
+                    $params[] = $search;
+                    $params[] = "%".$search."%";
+                    $params[] = "%".$search."%";
+                }
+
+                $result = Database::query("SELECT * FROM app_accounts".$filter, $params);
+                $count  = count($result);
+                $pages  = ceil(count($result) / 20);
+                $page   = Validator::integer($_GET["page"]) ?? 1;
+                $page   = ($page > $pages || $page < 1) ? 1 : $page;
+                $result = array_slice($result, ($page - 1) * 20, 20);
+
+                $this->env["var"] = (object) [
+                    "count"    => $count,
+                    "query"    => $query,
+                    "accounts" => $result,
+                    "pagination" => (object) [
+                        "page"  => $page,
+                        "pages" => $pages  
+                    ] 
+                ];
+
                 $this->env["page"] = (object) [
                     "title"         => sprintf(_("All Accounts | %s"), App::get("APP_NAME")),
                     "description"   => App::get("APP_DESCRIPTION"),
@@ -432,6 +462,36 @@ class IndexController extends Controller {
                 break;
             case "/admin/pages":
 
+                $query = "";
+                $filter = "";
+                $params = [];
+            
+                if (!empty($search = Validator::string($_GET["search"]))) {
+                    $query .= "&search=".$search;
+                    $filter .= " WHERE id = ? OR slug LIKE ? OR title LIKE ? OR description LIKE ?";
+                    $params[] = $search;
+                    $params[] = "%".$search."%";
+                    $params[] = "%".$search."%";
+                    $params[] = "%".$search."%";
+                }
+
+                $result = Database::query("SELECT * FROM app_pages".$filter, $params);
+                $count  = count($result);
+                $pages  = ceil(count($result) / 20);
+                $page   = Validator::integer($_GET["page"]) ?? 1;
+                $page   = ($page > $pages || $page < 1) ? 1 : $page;
+                $result = array_slice($result, ($page - 1) * 20, 20);
+
+                $this->env["var"] = (object) [
+                    "count"  => $count,
+                    "query"  => $query,
+                    "result" => $result,
+                    "pagination" => (object) [
+                        "page"  => $page,
+                        "pages" => $pages  
+                    ] 
+                ];
+
                 $this->env["page"] = (object) [
                     "title"         => sprintf(_("Custom Pages | %s"), App::get("APP_NAME")),
                     "description"   => App::get("APP_DESCRIPTION"),
@@ -441,6 +501,26 @@ class IndexController extends Controller {
                 ];
 
                 echo Template:: get("/admin/pages.tpl", $this->env);
+
+                break;
+            case "/admin/filter":
+
+                $result = Database::query("SELECT * FROM app_badwords");
+                $count = count($result);
+                
+                $this->env["var"] = (object) [
+                    "count" => $count,
+                ];
+
+                $this->env["page"] = (object) [
+                    "title"         => sprintf(_("Filter Settings | %s"), App::get("APP_NAME")),
+                    "description"   => App::get("APP_DESCRIPTION"),
+                    "robots"        => "noindex, nofollow",
+                    "canonical"     => App::get("APP_URL")."/admin/filter",
+                    "class"         => "admin account filter"
+                ];
+
+                echo Template:: get("/admin/filter.tpl", $this->env);
 
                 break;
             case "/admin/newsletter":
@@ -453,7 +533,7 @@ class IndexController extends Controller {
                     "class"         => "admin account newsletter"
                 ];
 
-                echo Template:: get("/admin/enewsletter.tpl", $this->env);
+                echo Template:: get("/admin/newsletter.tpl", $this->env);
 
                 break;
             default:
