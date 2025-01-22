@@ -50,13 +50,17 @@ class Template {
      *
      *  Cache a template file or retrieve it from the cache.
      *
+     *  @since  3.01            Create cache directory if not exists.
      *  @since  2.0
      *  @param  string  $file   The name of the template file to cache.
      *  @return string          The path to the cached template file.
      *
      */
     private static function compile(string $file) {
-        $cache = App::get("DIR_ROOT").App::get("DIR_CACHE").'/_'.hash_hmac('sha256', $file, hash_hmac('md5', $file, App::get("SALT_CACHE"))).'.php';
+        if (!is_dir($dir = App::get("DIR_ROOT").App::get("DIR_CACHE")))
+            mkdir($dir, 0777, true);
+
+        $cache = $dir.'/_'.hash_hmac('sha256', $file, hash_hmac('md5', $file, App::get("SALT_CACHE"))).'.php';
 
         if (App::get("APP_DEBUG") || !file_exists($cache)) {
             $template = self::compile_includes($file);
