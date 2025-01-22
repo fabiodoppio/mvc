@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: MVC 2.0\n"
-"POT-Creation-Date: 2024-05-05 14:00+0200\n"
-"PO-Revision-Date: 2024-11-19 16:13+0100\n"
+"Project-Id-Version: MVC 3.0\n"
+"POT-Creation-Date: 2025-01-22 08:55+0100\n"
+"PO-Revision-Date: 2025-01-22 08:55+0100\n"
 "Last-Translator: Fabio Doppio <hallo@fabiodoppio.de>\n"
 "Language-Team: Fabio Doppio\n"
 "Language: de_DE\n"
@@ -19,272 +19,41 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-msgid "Controller %s not found."
-msgstr "Controller %s nicht gefunden."
-
-msgid "Action %s not found."
-msgstr "Action %s nicht gefunden."
-
-msgid "Variable %s not set."
-msgstr "Variable %s nicht gesetzt."
-
-msgid "Illegal activity detected."
-msgstr "Illegale Aktivität erkannt."
-
-msgid "Unauthorized Access."
-msgstr "Nicht autorisierter Zugriff."
-
-msgid "There is no account with this username or email address."
-msgstr "Es gibt keinen Account mit diesem Benutzernamen oder dieser E-Mail Adresse."
-
-msgid "Template %s not found."
-msgstr "Template %s nicht gefunden."
-
-msgid "Required input not found."
-msgstr "Erforderliche Eingabe nicht gefunden."
-
-msgid "Too many requests in a short time."
-msgstr "Zu viele Anfragen in kurzer Zeit."
-
-msgid "Your account is suspended or deactivated."
-msgstr "Dein Account wurde gesperrt oder deaktiviert."
-
-msgid "Log in not possible at the moment."
-msgstr "Anmelden zurzeit nicht möglich."
-
-msgid "Please wait while redirecting.."
-msgstr "Bitte warte, du wirst weitergeleitet.."
-
-msgid "Sign up not possible at the moment."
-msgstr "Registrieren zurzeit nicht möglich."
-
-msgid "Your account does not have the required role."
-msgstr "Dein Account hat nicht die erforderlichen Rechte."
-
-msgid "Account successfully restored. You can now log in as usual."
-msgstr "Account erfolgreich wiederhergestellt. Du kannst dich nun wie gewohnt anmelden."
-
-msgid "App currently offline. Please try again later."
-msgstr "App zurzeit offline. Bitte versuche es später erneut."
-
-msgid "Changes successfully saved."
-msgstr "Änderungen erfolgreich gespeichert."
-
-msgid "You have to verify your email address before you can upload an avatar."
-msgstr "Du musst deine E-Mail Adresse verifizieren, bevor du ein Profilbild hochladen kannst."
-
-msgid "Avatar successfully uploaded."
-msgstr "Profilbild erfolgreich hochgeladen."
-
-msgid "Delete Avatar"
-msgstr "Profilbild löschen"
-
-msgid "Avatar successfully deleted."
-msgstr "Profilbild erfolgreich gelöscht."
-
-msgid "Your current password does not match."
-msgstr "Dein aktuelles Passwort stimmt nicht."
-
-msgid "You have to verify your email address before you can acitvate the 2-Factor Authentication."
-msgstr "Du musst deine E-Mail Adresse verifizieren, bevor du die 2-Faktor Authentifizierung aktivieren kannst."
-
-msgid "Deactivate"
-msgstr "Deaktivieren"
-
-msgid "Your account is protected by the 2-Factor Authentication."
-msgstr "Dein Account ist durch die 2-Faktor Authentifizierung geschützt."
-
-msgid "Activate"
-msgstr "Aktivieren"
-
-msgid "Your account is <b>not</b> protected by the 2-Factor Authentication."
-msgstr "Dein Account ist <b>nicht</b> durch die 2-Faktor Authentifizierung geschützt."
-
-msgid "Sessions successfully logged out."
-msgstr "Sessions erfolgreich abgemeldet."
-
-msgid "You can not deactivate your account."
-msgstr "Du kannst deinen Account nicht deaktivieren."
-
-msgid "Your email adress is <b>not</b> verified."
-msgstr "Deine E-Mail Adresse ist <b>nicht</b> verifiziert."
-
-msgid "Request"
-msgstr "Anfordern"
-
-msgid "Email address successfully verified."
-msgstr "E-Mail Adresse erfolgreich verifiziert."
-
-msgid "You have to verify your email address before you can send a message with an attachment."
-msgstr "Du musst deine E-Mail Adresse verifizieren, bevor du eine Nachricht mit einem Anhang senden kannst."
-
-msgid "New Message | %s"
-msgstr "Neue Nachricht | %s"
-
-msgid "Message successfully sent."
-msgstr "Nachricht erfolgreich gesendet."
-
-msgid "Homepage | %s"
-msgstr "Startseite | %s"
-
-msgid "Page not found."
-msgstr "Seite nicht gefunden."
-
-msgid " | %s"
-msgstr " | %s"
-
-msgid "Log In | %s"
-msgstr "Anmelden | %s"
-
-msgid "Log Out | %s"
-msgstr "Abmelden | %s"
-
-msgid "Goodbye | %s"
-msgstr "Auf Wiedersehen | %s"
-
-msgid "Sign Up | %s"
-msgstr "Registrieren | %s"
-
-msgid "Account Recovery | %s"
-msgstr "Account wiederherstellen | %s"
-
-msgid "Personal Data | %s"
-msgstr "Persönliche Daten | %s"
-
-msgid "Account & Security | %s"
-msgstr "Account & Sicherheit | %s"
-
-msgid "Email Settings | %s"
-msgstr "E-Mail Einstellungen | %s"
-
-msgid "Contact | %s"
-msgstr "Kontakt | %s"
-
-msgid "Maintenance | %s"
-msgstr "Wartungsmodus | %s"
-
-msgid "oops! | %s"
-msgstr "oops! | %s"
-
-msgid "Connection to MySQL database failed: "
-msgstr "Verbindung zur MySQL-Datenbank fehlgeschlagen: "
-
-msgid "The username must be between 3 and 18 characters long."
-msgstr "Der Benutzername muss zwischen 3 und 18 Zeichen lang sein."
-
-msgid "The username cannot contain any special characters."
-msgstr "Der Benutzername darf keine Sonderzeichen enthalten."
-
-msgid "This username is not allowed."
-msgstr "Dieser Benutzername ist nicht erlaubt."
-
-msgid "The passwords do not match."
-msgstr "Die Passwörter stimmen nicht überein."
-
-msgid "Your password must be at least %s characters long."
-msgstr "Dein Passwort muss mindestens %s Zeichen lang sein."
-
-msgid "Invalid email address."
-msgstr "Ungültige E-Mail Adresse."
-
-msgid "Invalid integer."
-msgstr "Ungültiger Zahlenwert."
-
-msgid "Invalid number."
-msgstr "Ungültige Nummer."
-
-msgid "Invalid array."
-msgstr "Ungültiges Array."
-
-msgid "Invalid string."
-msgstr "Ungültige Zeichenkette."
-
-msgid "Invalid boolean."
-msgstr "Ungültiger Wahrheitswert."
-
-msgid "Invalid url."
-msgstr "Ungültige URL."
-
-msgid "Invalid datetime."
-msgstr "Ungültiges Datum."
-
-msgid "The message must be between %1$s and %2$s characters long."
-msgstr "Die Nachricht muss zwischen %1$s und %2$s Zeichen lang sein."
-
-msgid "This message is not allowed."
-msgstr "Diese Nachricht ist nicht erlaubt."
-
-msgid "Email could not be sent."
-msgstr "E-Mail konnte nicht gesendet werden."
-
-msgid "This username is already taken."
-msgstr "Dieser Benutzername ist bereits vergeben."
-
-msgid "This email address is already taken."
-msgstr "Diese E-Mail Adresse ist bereits vergeben."
-
-msgid "You have entered the password incorrectly too many times. Please wait 20 minutes and try again."
-msgstr "Du hast zu oft ein falsches das Passwort eingegeben. Bitte warte 20 Minuten und versuche es dann erneut."
-
-msgid "You have entered an incorrect password."
-msgstr "Du hast ein falsches Passwort eingegeben."
-
-msgid "2-Factor Authentication | %s"
-msgstr "2-Faktor Authentifizierung | %s"
-
-msgid "You have entered an invalid PIN code too many times. Please wait 20 minutes and try again."
-msgstr "Du hast zu oft einen ungültigen PIN Code eingegeben. Bitte warte 20 Minunten und versuche es dann erneut."
-
-msgid "This PIN code is invalid."
-msgstr "Dieser PIN Code ist ungültig."
-
-msgid "You have tried to request a confirmation code too many times. Please wait 60 minutes and try again."
-msgstr "Du hast zu oft versucht einen Bestätigungscode anzufordern. Bitte warte 60 Minuten und versuche es dann erneut."
-
-msgid "You have entered an invalid confirmation code too many times. Please wait 60 minutes and try again."
-msgstr "Du hast zu oft einen ungültigen Bestätigungscode eingegeben. Bitte warte 60 Minuten und versuche es dann erneut."
-
-msgid "This confirmation code is invalid."
-msgstr "Dieser Bestätigungscode ist ungültig."
-
-msgid "Your account cannot be restored."
-msgstr "Dein Account kann nicht wiederhergestellt werden."
-
-msgid "Email Address Verification | %s"
-msgstr "E-Mail Adresse verifizieren | %s"
-
-msgid "Account Deactivated | %s"
-msgstr "Account deaktiviert | %s"
-
-msgid "Model %1$s:%2$s not found."
-msgstr "Model %1$s:%2$s nicht gefunden."
-
-msgid "File has to be a jpeg, jpg, png, pdf or txt."
-msgstr "Datei muss jpeg, jpg, png, pdf oder txt sein."
-
-msgid "File exceeds the maximum allowed file size of %s KB."
-msgstr "Datei überschreitet die maximal erlaubte Dateigröße von %s KB."
-
-msgid "File has to be a jpeg, jpg or png."
-msgstr "Datei muss jpeg, jpg oder png sein."
-
-msgid "Avatar has to be squared."
-msgstr "Profilbild muss quadratisch sein."
-
-msgid "File could not be uploaded."
-msgstr "Datei konnte nicht hochgeladen werden."
-
 msgid "en"
 msgstr "de"
 
-msgid "en-EN"
+msgid "en-GB"
 msgstr "de-DE"
+
+msgid "de_DE.utf8"
+msgstr "Deutsch"
+
+msgid "en_GB.utf8"
+msgstr "English"
 
 msgid "Main Menu"
 msgstr "Hauptmenü"
 
+msgid "Homepage"
+msgstr "Startseite"
+
 msgid "Contact"
 msgstr "Kontakt"
+
+msgid "Administration"
+msgstr "Administration"
+
+msgid "All Accounts"
+msgstr "Alle Accounts"
+
+msgid "Custom Pages"
+msgstr "Eigene Seiten"
+
+msgid "Filter Settings"
+msgstr "Filter-Einstellungen"
+
+msgid "Newsletter"
+msgstr "Newsletter"
 
 msgid "My Account"
 msgstr "Mein Account"
@@ -307,14 +76,14 @@ msgstr "Anmelden"
 msgid "Sign Up"
 msgstr "Registrieren"
 
+msgid "oops! Page not found."
+msgstr "oops! Seite nicht gefunden."
+
+msgid "This content has either been removed, is not visible to you or simply does not exist."
+msgstr "Dieser Inhalt wurde entweder entfernt, ist nicht für dich sichtbar oder existiert einfach nicht."
+
 msgid "Imprint"
 msgstr "Impressum"
-
-msgid "Select Language"
-msgstr "Sprache auswählen"
-
-msgid "Language"
-msgstr "Sprache"
 
 msgid "Terms"
 msgstr "AGB"
@@ -322,110 +91,266 @@ msgstr "AGB"
 msgid "Privacy"
 msgstr "Datenschutz"
 
-msgid "We've sent you a <b>confirmation code</b> to verify to the registered <b>email address</b>."
-msgstr "Wir haben dir einen <b>Bestätigungscode</b> zum Verifizieren an die registrierte <b>E-Mail Adresse</b> gesendet."
+msgid "Select Language"
+msgstr "Sprache auswählen"
 
-msgid "Confirmation Code"
-msgstr "Bestätigungscode"
+msgid "Language"
+msgstr "Sprache"
+
+msgid "Account Deactivated"
+msgstr "Account deaktiviert"
+
+msgid "Hello,"
+msgstr "Hallo,"
+
+msgid "an account has been deactivated on %s:"
+msgstr "ein Account wurde auf %s deaktiviert:"
+
+msgid "Best regards"
+msgstr "Liebe Grüße"
+
+msgid "This is an automatically generated email, please do not reply."
+msgstr "Dies ist eine automatisch generierte E-Mail, bitte antworte nicht darauf."
+
+msgid "Manage all custom pages or create a new one. Using these search filters, <b>%s</b> custom pages were found."
+msgstr "Verwalte alle von dir angelegten Seiten oder erstelle eine neue Seite. Mit diesen Sucheinstellungen wurden <b>%s</b> eigene Seiten gefunden."
+
+msgid "Search"
+msgstr "Suche"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "URL Slug"
+msgstr "URL-Slug"
+
+msgid "Settings"
+msgstr "Einstellungen"
+
+msgid "Edit Page"
+msgstr "Seite bearbeiten"
+
+msgid "Page"
+msgstr "Seite"
+
+msgid "Page Title"
+msgstr "Seitentitel"
 
 msgid "Required"
 msgstr "Erforderlich"
 
-msgid "You can find the 6-digit confirmation code in the email we sent you."
-msgstr "Du kannst den 6 Zeichen langen Bestätgungscode in der E-Mail finden, die wir dir gesendet haben."
+msgid "Enter page title"
+msgstr "Seitentitel eingeben"
 
-msgid "Enter confirmation code"
-msgstr "Bestätigungscode eingeben"
+msgid "Your URL slug must start with a slash (/) and<br/>can be either simple or a regular expression."
+msgstr "Dein URL-Slug muss mit einem Schrägstich (/) beginnen und<br/>kann entweder einfach oder ein regulärer Ausdruck sein."
 
-msgid "Verify Email Address"
-msgstr "E-Mail Adresse verifizieren"
+msgid "Enter URL slug"
+msgstr "URL-Slug eingeben"
 
-msgid "Abort"
-msgstr "Abbrechen"
+msgid "Template File"
+msgstr "Template-Datei"
 
-msgid "Cronjob executed."
-msgstr "Cronjob ausgeführt."
+msgid "The path to your template file (.tpl) must be within<br/>your views directory and must start with a slash (/)."
+msgstr "Der Pfad zu deiner Template-Datei (.tpl) muss sich<br/>innerhalb deines views Ordners befinden und mit einem Schrägstrich (/) beginnen."
 
-msgid "Manage your email address and newsletter preference. Your email address will <b>not</b> be shown to other users on this platform and will only be used to contact you."
-msgstr "Verwalte deine E-Mail Adresse und Newsletter Präferenzen. Deine E-Mail Adresse wird anderen Nutzer:innen auf dieser Plattform <b>nicht</b> angezeigt und dient ausschließlich zur Kontaktaufnahme."
+msgid "Enter template file"
+msgstr "Template-Datei eingeben"
 
-msgid "Email Address"
-msgstr "E-Mail Adresse"
+msgid "Description"
+msgstr "Beschreibung"
 
-msgid "You will have to verify your email address again."
-msgstr "Du wirst deine E-Mail Adresse erneut verifizieren müssen."
+msgid "Enter description"
+msgstr "Beschreibung eingeben"
 
-msgid "Enter email address"
-msgstr "E-Mail Adresse eingeben"
+msgid "Robots"
+msgstr "Robots"
 
-msgid "I would like to be informed about news by email."
-msgstr "Ich würde gerne per E-Mail über Neuigkeiten informiert werden."
+msgid "Enter robots"
+msgstr "Robots eingeben"
 
-msgid "Save Changes"
-msgstr "Änderungen speichern"
+msgid "Classes"
+msgstr "Klassen"
 
-msgid "Verification"
-msgstr "Verifizierung"
+msgid "All classes added to the body tag."
+msgstr "Alle Klassen, die dem body-Tag hinzugefügt werden."
 
-msgid "Some functions of this app require a verified email address. For example, if you want to use the 2-Factor authentication for a secure login."
-msgstr "Einige Funktionen dieser App benötigen eine verifizierte E-Mail Adresse. Zum Beispiel, wenn du die 2-Faktor Authentifizierung für ein gesichertes Anmelden verwenden möchtest."
+msgid "Enter classes"
+msgstr "Klassen eingeben"
 
-msgid "Your email adress is verified."
-msgstr "Deine E-Mail Adresse ist verifiziert."
+msgid "Requirements"
+msgstr "Anforderungen"
 
-msgid "You are trying to log in from a new device or browser. We've sent you a <b>PIN code</b> to the registered <b>email address</b>."
-msgstr "Du versucht dich gerade von einem neuen Gerät oder Browser anzumelden. Wir haben dir einen <b>PIN code</b> an die registrierte <b>E-Mail Adresse</b> gesendet."
+msgid "Minimum Role"
+msgstr "Minimale Rolle"
 
-msgid "PIN Code"
-msgstr "PIN Code"
+msgid "The minimum role a visitor must have to access the page."
+msgstr "Die Rolle, die ein:e Besucher:in mindestens haben muss, um die Seite betreten zu können."
 
-msgid "You can find the 6-digit PIN code in the email we sent you."
-msgstr "Du kannst den 6 Zeichen langen PIN Code in der E-Mail finden, die wir dir gesendet haben."
+msgid "No Specific"
+msgstr "Nicht spezifisch"
 
-msgid "Enter PIN code"
-msgstr "PIN Code eingeben"
+msgid "Blocked"
+msgstr "Blockiert"
 
-msgid "Authenticate"
-msgstr "Authentifizieren"
+msgid "Deactivated"
+msgstr "Deaktiviert"
 
-msgid "Back"
-msgstr "Zurück"
+msgid "Guest"
+msgstr "Gast"
 
-msgid "oops! Page not found."
-msgstr "oops! Seite nicht gefunden."
+msgid "Not Verified"
+msgstr "Nicht verifiziert"
 
-msgid "This content has either been removed, is not visible to you or simply does not exist."
-msgstr "Dieser Inhalt wurde entweder entfernt, ist nicht für dich sichtbar oder existiert einfach nicht."
+msgid "User"
+msgstr "Benutzer:in"
 
-msgid "Terms of Service"
-msgstr "Allgemeine Geschäftsbedingungen"
+msgid "Supporter"
+msgstr "Supporter:in"
 
-msgid "See You Soon!"
-msgstr "Bis später!"
+msgid "Moderator"
+msgstr "Moderator:in"
 
-msgid "You successfully logged out."
-msgstr "Du hast dich erfolgreich abgemeldet."
+msgid "Administrator"
+msgstr "Administrator:in"
 
-msgid "It's a pity you're leaving.. :("
-msgstr "Schade, dass du uns verlässt.. :("
-
-msgid "..but we understand. We wish you all the best and hope to see you again very soon!"
-msgstr "..aber wir verstehen schon. Wir wünschen dir alles Gute und hoffen, dich bald wiederzusehen!"
-
-msgid "Your account has been successfully deactivated."
-msgstr "Dein Account wurde erfolgreich deaktiviert."
-
-msgid "If this was a mistake, you have 90 days to recover your account before it will be permanently deleted from our servers. You can click on this link to start the recovery:"
-msgstr "Falls das ein Fehler war, hast du nun 90 Tage Zeit, um deinen Account wiederherzustellen, bevor dieser permanent von unseren Servern gelöscht wird. Du kannst auf diesen Link klicken, um die Wiederherstellung zu starten:"
-
-msgid "Recover Account"
-msgstr "Account wiederherstellen"
+msgid "Custom Fields"
+msgstr "Benutzerdefinierte Felder"
 
 msgid "Name"
 msgstr "Name"
 
+msgid "Value"
+msgstr "Wert"
+
+msgid "Enter value"
+msgstr "Wert eingeben"
+
 msgid "Enter name"
 msgstr "Name eingeben"
+
+msgid "Add Field"
+msgstr "Feld hinzufügen"
+
+msgid "Additional Settings"
+msgstr "Zusätzliche Einstellungen"
+
+msgid "Enable maintenance mode if enabled globally."
+msgstr "Aktiviere den Wartungsmodus, wenn dieser global aktiv ist."
+
+msgid "Save Changes"
+msgstr "Änderungen speichern"
+
+msgid "Abort"
+msgstr "Abbrechen"
+
+msgid "Deactivate Page"
+msgstr "Seite deaktivieren"
+
+msgid "Activate Page"
+msgstr "Seite aktivieren"
+
+msgid "Delete Page"
+msgstr "Seite löschen"
+
+msgid "Are you sure?"
+msgstr "Bist du dir sicher?"
+
+msgid "This page will be deleted immediately and permanently. The template file will remain unchanged in its folder."
+msgstr "Diese Seite wird umgehend und permanent gelöscht. Die Template-Datei verbleibt in dem Ordner."
+
+msgid "of"
+msgstr "von"
+
+msgid "Create New Page"
+msgstr "Neue Seite erstellen"
+
+msgid "Create Page"
+msgstr "Seite erstellen"
+
+msgid "Manage your login credentials and security settings. These data are extremely sensitive and will <b>never</b> be shown to other users on this platform. An employee will never ask for your password!"
+msgstr "Verwalte deine Anmeldedaten und Sicherheitseinstellungen. Diese Daten sind extrem sensibel und werden anderen Nutzer:innen auf dieser Plattform <b>niemals</b> angezeigt. Ein:e Mitarbeiter:in wird dich niemals nach deinem Passwort fragen!"
+
+msgid "Login Credentials"
+msgstr "Anmeldedaten"
+
+msgid "Username"
+msgstr "Benutzername"
+
+msgid "You can not change your username."
+msgstr "Du kannst deinen Benutzernamen nicht ändern."
+
+msgid "Enter username"
+msgstr "Benutzername eingeben"
+
+msgid "Current Password"
+msgstr "Aktuelles Passwort"
+
+msgid "Enter current password"
+msgstr "Aktuelles Passwort eingeben"
+
+msgid "New Password"
+msgstr "Neues Passwort"
+
+msgid "Your password must be at least 8 characters long."
+msgstr "Dein Passwort muss mindestens 8 Zeichen lang sein."
+
+msgid "Enter new password"
+msgstr "Neues Passwort eingeben"
+
+msgid "Repeat New Password"
+msgstr "Neues Passwort wiederholen"
+
+msgid "Repeat new password"
+msgstr "Neues Passwort wiederholen"
+
+msgid "2-Factor Authentication"
+msgstr "2-Faktor Authentifizierung"
+
+msgid "The 2-Factor authentication is a security function for your account. If you use this, a PIN code will be sent to your email address everytime you log in from a new device or browser."
+msgstr "Die 2-Faktor Authentifizierung ist eine Sicherheitsfunktion für deinen Account. Falls du dies nutzen möchtest, senden wir dir jedes Mal, wenn du dich von einem neuen Gerät oder Browser anmeldest, einen PIN Code an deine E-Mail Adresse."
+
+msgid "Your account is <b>not</b> protected by the 2-Factor Authentication."
+msgstr "Dein Account ist <b>nicht</b> durch die 2-Faktor Authentifizierung geschützt."
+
+msgid "You have to verify your email address before you can acitvate the 2-Factor Authentication."
+msgstr "Du musst deine E-Mail Adresse verifizieren, bevor du die 2-Faktor Authentifizierung aktivieren kannst."
+
+msgid "<a href=\"%s/account/email\">Verify now</a> to gain full access to all features of this app."
+msgstr "<a href=\"%s/account/email\">Jetzt verifizieren</a> um vollen Zugang zu allen Funktionen dieser App zu erhalten."
+
+msgid "Your account is protected by the 2-Factor Authentication."
+msgstr "Dein Account ist durch die 2-Faktor Authentifizierung geschützt."
+
+msgid "Deactivate"
+msgstr "Deaktivieren"
+
+msgid "Activate"
+msgstr "Aktivieren"
+
+msgid "Sign Out Everywhere"
+msgstr "Überall abmelden"
+
+msgid "Sign out from all other sessions where your account is used, including all other browsers, phones, and devices."
+msgstr "Melde dich überall ab, wo dein Account sonst noch verwendet wird, einschließlich aller anderen Browser, Telefone und sonstigen Geräte."
+
+msgid "Sign Out Other Sessions"
+msgstr "Andere Sessions abmelden"
+
+msgid "Deactivate Account"
+msgstr "Account deaktivieren"
+
+msgid "When you deactivate your account you have 90 days to recover your account before it will be permanently deleted from our servers."
+msgstr "Wenn du deinen Account deaktivierst, hast du 90 Tage Zeit, um deinen Account wiederherzustellen, bevor dieser permanent von unseren Servern gelöscht wird."
+
+msgid "You will be logged out immediately and will no longer have access to your account."
+msgstr "Du wirst umgehend abgemeldet und keinen Zugriff mehr auf deinen Account besitzen."
+
+msgid "Email Address"
+msgstr "E-Mail Adresse"
+
+msgid "Enter email address"
+msgstr "E-Mail Adresse eingeben"
 
 msgid "Subject"
 msgstr "Betreff"
@@ -475,6 +400,9 @@ msgstr "auf"
 msgid "Not listed"
 msgstr "Nicht gelistet"
 
+msgid "This is an emergency!"
+msgstr "Dies ist ein Notfall!"
+
 msgid "Message"
 msgstr "Nachricht"
 
@@ -484,14 +412,14 @@ msgstr "Nachricht eingeben"
 msgid "Attachment"
 msgstr "Anhang"
 
-msgid "Your attachment must not exceed the maximum allowed file size of %s KB."
-msgstr "Dein Anhang darf die maximal erlaubte Dateigröße von %s KB nicht überschreiten."
+msgid "Your attachment must not exceed the maximum allowed file size of %s MB."
+msgstr "Dein Anhang darf die maximal erlaubte Dateigröße von %s MB nicht überschreiten."
 
 msgid "Upload Attachment"
 msgstr "Anhang hochladen"
 
-msgid "<a href=\"%s/account/email\">Verify now</a> to gain full access to all features of this app."
-msgstr "<a href=\"%s/account/email\">Jetzt verifizieren</a> um vollen Zugang zu allen Funktionen dieser App zu erhalten."
+msgid "You have to verify your email address before you can send a message with an attachment."
+msgstr "Du musst deine E-Mail Adresse verifizieren, bevor du eine Nachricht mit einem Anhang senden kannst."
 
 msgid "By sending your message, you agree to the processing of personal data. Don't worry, we will only use your email address to contact you."
 msgstr "Mit dem Absenden deiner Nachricht, stimmst du der Verarbeitung personenbezogener Daten zu. Keine Sorge, wir nutzen deine E-Mail Adresse ausschließlich zur Kontaktaufnahme."
@@ -499,62 +427,35 @@ msgstr "Mit dem Absenden deiner Nachricht, stimmst du der Verarbeitung personenb
 msgid "Send Message"
 msgstr "Nachricht absenden"
 
-msgid "Hello %s,"
-msgstr "Hallo %s,"
+msgid "Manage all registered accounts or create a new one. Using these search filters, <b>%s</b> accounts were found."
+msgstr "Verwalte alle registrierten Accounts oder erstelle einen neuen Account. Mit diesen Sucheinstellungen wurden <b>%s</b> Accounts gefunden."
 
-msgid "you are receiving this email because your account on %s has been deactivated."
-msgstr "du erhälst diese E-Mail, weil dein Account auf %s deaktiviert wurde."
+msgid "Blocked and deactivated accounts are hidden."
+msgstr "Blockierte oder deaktivierte Accounts sind ausgeblendet."
 
-msgid "Best regards"
-msgstr "Liebe Grüße"
+msgid "Select Role"
+msgstr "Rolle auswählen"
 
-msgid "This is an automatically generated email, please do not reply."
-msgstr "Dies ist eine automatisch generierte E-Mail, bitte antworte nicht darauf."
+msgid "Role"
+msgstr "Rolle"
 
-msgid "Username or Email Address"
-msgstr "Benutzername oder E-Mail Adresse"
+msgid "Registered Since"
+msgstr "Registriert seit"
 
-msgid "Enter username or email address"
-msgstr "Benutzername oder E-Mail Adresse eingeben"
+msgid "Send Email"
+msgstr "E-Mail senden"
 
-msgid "Password"
-msgstr "Passwort"
+msgid "Edit Account"
+msgstr "Account bearbeiten"
 
-msgid "Enter password"
-msgstr "Passwort eingeben"
+msgid "Account"
+msgstr "Account"
 
-msgid "Recover account"
-msgstr "Account wiederherstellen"
-
-msgid "Forgot your password?"
-msgstr "Passwort vergessen?"
-
-msgid "Remember me!"
-msgstr "Angemeldet bleiben"
-
-msgid "Hey %s!"
-msgstr "Hey %s!"
-
-msgid "Manage your appearance and the information you want to share with us. Keep in mind that some of these data may be visible to other users on this platform."
-msgstr "Verwalte dein Erscheinungsbild und die Informationen, die du mit uns teilen möchtest. Bitte beachte, dass einige dieser Daten möglicherweise anderen Nutzer:innen auf dieser Plattform angezeigt werden könnten."
-
-msgid "Avatar"
-msgstr "Profilbild"
-
-msgid "Your image must be squared and not exceed the maximum allowed file size of %s KB."
-msgstr "Dein Bild muss quadratisch sein und darf die maximal erlaubte Dateigröße von %s KB nicht überschreiten."
-
-msgid "Upload Avatar"
-msgstr "Profilbild hochladen"
+msgid "Permissions"
+msgstr "Berechtigungen"
 
 msgid "Display Name"
 msgstr "Anzeigename"
-
-msgid "Company"
-msgstr "Firma"
-
-msgid "Enter company"
-msgstr "Firma eingeben"
 
 msgid "First Name"
 msgstr "Vorname"
@@ -592,113 +493,62 @@ msgstr "Land"
 msgid "Enter country"
 msgstr "Land eingeben"
 
-msgid "Preferred Language"
-msgstr "Bevorzugte Sprache"
+msgid "Business Data"
+msgstr "Geschäftliche Daten"
 
-msgid "Change Language"
-msgstr "Sprache ändern"
+msgid "Company"
+msgstr "Firma"
 
-msgid "Manage your login credentials and security settings. These data are extremely sensitive and will <b>never</b> be shown to other users on this platform. An employee will never ask for your password!"
-msgstr "Verwalte deine Anmeldedaten und Sicherheitseinstellungen. Diese Daten sind extrem sensibel und werden anderen Nutzer:innen auf dieser Plattform <b>niemals</b> angezeigt. Ein:e Mitarbeiter:in wird dich niemals nach deinem Passwort fragen!"
+msgid "Enter company"
+msgstr "Firma eingeben"
 
-msgid "Login Credentials"
-msgstr "Anmeldedaten"
+msgid "VAT Number"
+msgstr "Umsatzsteuer-ID"
 
-msgid "Username"
-msgstr "Benutzername"
+msgid "Enter VAT number"
+msgstr "Umsatzsteuer-ID eingeben"
 
 msgid "Your username must be between 3 and 18 characters long<br/>and cannot contain any special characters."
 msgstr "Dein Benutzername muss zwischen 3 und 18 Zeichen lang sein<br/>und darf keine Sonderzeichen enthalten."
 
-msgid "Enter username"
-msgstr "Benutzername eingeben"
+msgid "Statistics"
+msgstr "Statistiken"
 
-msgid "Current Password"
-msgstr "Aktuelles Passwort"
+msgid "Last Action"
+msgstr "Letzte Aktion"
 
-msgid "Enter current password"
-msgstr "Aktuelles Passwort eingeben"
+msgid "Delete Avatar"
+msgstr "Profilbild löschen"
 
-msgid "New Password"
-msgstr "Neues Passwort"
+msgid "Block Account"
+msgstr "Account blockieren"
 
-msgid "Your password must be at least 8 characters long."
-msgstr "Dein Passwort muss mindestens 8 Zeichen lang sein."
+msgid "The account owner has no longer access to his account and cannot create a new account with these login credentials. The account owner can not restore his account."
+msgstr "Der oder die Account Inhaber:in hat keinen Zugriff mehr zu seinem oder ihrem Account und kann keinen neuen Account mit denselben Anmeldedaten erstellen. Der oder die Account Inhaber:in kann seinen oder ihren Account nicht selbst wiederherstellen."
 
-msgid "Enter new password"
-msgstr "Neues Passwort eingeben"
-
-msgid "Repeat New Password"
-msgstr "Neues Passwort wiederholen"
-
-msgid "Repeat new password"
-msgstr "Neues Passwort wiederholen"
-
-msgid "2-Factor Authentication"
-msgstr "2-Faktor Authentifizierung"
-
-msgid "The 2-Factor authentication is a security function for your account. If you use this, a PIN code will be sent to your email address everytime you log in from a new device or browser."
-msgstr "Die 2-Faktor Authentifizierung ist eine Sicherheitsfunktion für deinen Account. Falls du dies nutzen möchtest, senden wir dir jedes Mal, wenn du dich von einem neuen Gerät oder Browser anmeldest, einen PIN Code an deine E-Mail Adresse."
-
-msgid "Sign Out Everywhere"
-msgstr "Überall abmelden"
-
-msgid "Sign out from all other sessions where your account is used, including all other browsers, phones, and devices."
-msgstr "Melde dich überall ab, wo dein Account sonst noch verwendet wird, einschließlich aller anderen Browser, Telefone und sonstigen Geräte."
-
-msgid "Sign Out Other Sessions"
-msgstr "Andere Sessions abmelden"
-
-msgid "Deactivate Account"
-msgstr "Account deaktivieren"
-
-msgid "When you deactivate your account you have 90 days to recover your account before it will be permanently deleted from our servers."
-msgstr "Wenn du deinen Account deaktivierst, hast du 90 Tage Zeit, um deinen Account wiederherzustellen, bevor dieser permanent von unseren Servern gelöscht wird."
-
-msgid "Are you sure?"
-msgstr "Bist du dir sicher?"
-
-msgid "You will be logged out immediately and will no longer have access to your account."
-msgstr "Du wirst umgehend abgemeldet und keinen Zugriff mehr auf deinen Account besitzen."
-
-msgid "you are receiving this email because you are trying to log in from a new device or browser on %s."
-msgstr "du erhälst diese E-Mail, weil du versuchst, dich von einem neuen Gerät oder Browser auf %s anzumelden."
-
-msgid "Please enter the following code to complete the authentication:"
-msgstr "Bitte gib den folgenden Code ein, um die Authentifizierung abzuschließen:"
-
-msgid "The code expires <b>15 minutes</b> after receiving this email."
-msgstr "Dieser Code läuft <b>15 Minuten</b> nach Erhalt dieser E-Mail ab."
-
-msgid "you are receiving this email because someone is trying to recover your account on %s. If this wasn't you, you can simply ignore this email."
-msgstr "du erhälst diese E-Mail, weil jemand deinen Account auf %s wiederherstellen möchte. Wenn du das nicht warst, kannst du diese E-Mail einfach ignorieren."
-
-msgid "Please enter the following code to complete the recovery:"
-msgstr "Bitte gib den folgenden Code ein, um die Wiederherstellung abzuschließen:"
-
-msgid "you are receiving this email because you are trying to verify your email address on %s."
-msgstr "du erhälst diese E-Mail, weil du deine E-Mail Adresse auf %s verifizieren möchtest."
-
-msgid "Please enter the following code to complete the verification:"
-msgstr "Bitte gib den folgenden Code ein, um die Verifizierung abzuschließen:"
-
-msgid "Account Recovery"
+msgid "Restore Account"
 msgstr "Account wiederherstellen"
 
-msgid "Privacy Policy"
-msgstr "Datenschutzerklärung"
+msgid "The account owner has no longer access to his account and cannot create a new account with these login credentials. If cronjobs are activated, the account will be automatically and permanently deleted after 90 days. The account owner can restore his account during this time."
+msgstr "Der oder die Account Inhaber:in hat keinen Zugriff mehr zu seinem oder ihrem Account und kann keinen neuen Account mit denselben Anmeldedaten erstellen. Falls Cronjobs aktiviert sind, wird der Account automatisch und permanent nach 90 Tagen gelöscht. Der oder die Account Inhaber:in kann seinen oder ihren Account in dieser Zeit selbst wiederherstellen."
 
-msgid "Homepage"
-msgstr "Startseite"
+msgid "Delete Account"
+msgstr "Account löschen"
 
-msgid "The app is currently in maintenance mode."
-msgstr "Diese App befindet sich zurzeit im Wartungsmodus."
+msgid "This account will be deleted immediately and permanently with all personal data."
+msgstr "Dieser Account wird umgehend und permanent mit allen persönlichen Daten gelöscht."
 
-msgid "We are currently working to get the app back online as quickly as possible. Please check again later - Thank you!"
-msgstr "Wir arbeiten gerade daran, die App so schnell wie möglich wieder online zu bringen. Bitte schaue zu einem späteren Zeitpunkt nochmal vorbei - Vielen Dank!"
+msgid "Create New Account"
+msgstr "Neuen Account erstellen"
 
 msgid "You will have to verify your email address to<br/>gain full access to all features of this app."
 msgstr "Du wirst deine E-Mail Adresse verifizieren müssen, um<br/>vollen Zugang zu allen Funktionen dieser App zu erhalten."
+
+msgid "Password"
+msgstr "Passwort"
+
+msgid "Enter password"
+msgstr "Passwort eingeben"
 
 msgid "Repeat Password"
 msgstr "Passwort wiederholen"
@@ -706,11 +556,11 @@ msgstr "Passwort wiederholen"
 msgid "Repeat password"
 msgstr "Passwort wiederholen"
 
-msgid "I agree to the Terms of Service and Privacy Policy."
-msgstr "Ich stimme den allgemeinen Geschäftsbedingungen und der Datenschutzerklärung zu."
+msgid "Create Account"
+msgstr "Account erstellen"
 
-msgid "Hello,"
-msgstr "Hallo,"
+msgid "New Message"
+msgstr "Neue Nachricht"
 
 msgid "you received a new message via the contact form:"
 msgstr "du hast eine neue Nachricht über das Kontaktformular erhalten:"
@@ -718,20 +568,179 @@ msgstr "du hast eine neue Nachricht über das Kontaktformular erhalten:"
 msgid "From"
 msgstr "Von"
 
+msgid "Email Address Verification"
+msgstr "E-Mail Adresse verifizieren"
+
+msgid "Hello %s,"
+msgstr "Hallo %s,"
+
+msgid "you are receiving this email because you are trying to verify your email address on %s."
+msgstr "du erhälst diese E-Mail, weil du deine E-Mail Adresse auf %s verifizieren möchtest."
+
+msgid "Please enter the following code to complete the verification:"
+msgstr "Bitte gib den folgenden Code ein, um die Verifizierung abzuschließen:"
+
+msgid "The code expires <b>15 minutes</b> after receiving this email."
+msgstr "Dieser Code läuft <b>15 Minuten</b> nach Erhalt dieser E-Mail ab."
+
+msgid "You are trying to log in from a new device or browser. We've sent you a <b>PIN code</b> to the registered <b>email address</b>."
+msgstr "Du versucht dich gerade von einem neuen Gerät oder Browser anzumelden. Wir haben dir einen <b>PIN code</b> an die registrierte <b>E-Mail Adresse</b> gesendet."
+
+msgid "PIN Code"
+msgstr "PIN Code"
+
+msgid "You can find the 6-digit PIN code in the email we sent you."
+msgstr "Du kannst den 6 Zeichen langen PIN Code in der E-Mail finden, die wir dir gesendet haben."
+
+msgid "Enter PIN code"
+msgstr "PIN Code eingeben"
+
+msgid "Authenticate"
+msgstr "Authentifizieren"
+
+msgid "Back"
+msgstr "Zurück"
+
+msgid "Account Recovery"
+msgstr "Account wiederherstellen"
+
+msgid "you are receiving this email because someone is trying to recover your account on %s. If this wasn't you, you can simply ignore this email."
+msgstr "du erhälst diese E-Mail, weil jemand deinen Account auf %s wiederherstellen möchte. Wenn du das nicht warst, kannst du diese E-Mail einfach ignorieren."
+
+msgid "Please enter the following code to complete the recovery:"
+msgstr "Bitte gib den folgenden Code ein, um die Wiederherstellung abzuschließen:"
+
+msgid "The app is currently in maintenance mode."
+msgstr "Diese App befindet sich zurzeit im Wartungsmodus."
+
+msgid "We are currently working to get the app back online as quickly as possible. Please check again later - Thank you!"
+msgstr "Wir arbeiten gerade daran, die App so schnell wie möglich wieder online zu bringen. Bitte schaue zu einem späteren Zeitpunkt nochmal vorbei - Vielen Dank!"
+
+msgid "We received your message"
+msgstr "Wir haben deine Nachricht erhalten"
+
+msgid "we received your message! We will deal with your request as soon as possible and then get back to you."
+msgstr "wir haben deine Nachricht erhalten! Wir werden uns so schnell wie möglich um dein Anliegen kümmern und uns dann bei dir melden."
+
+msgid "If you would like to add something to your message, you can simply reply to the Reply-To address of this email."
+msgstr "Wenn du deiner Nachricht noch etwas hinzufügen möchtest, kannst du einfach auf die Reply-To-Adresse dieser E-Mail antworten."
+
+msgid "you are receiving this email because your account on %s has been deactivated."
+msgstr "du erhälst diese E-Mail, weil dein Account auf %s deaktiviert wurde."
+
+msgid "If this was a mistake, you have 90 days to recover your account before it will be permanently deleted from our servers. You can click on this link to start the recovery:"
+msgstr "Falls das ein Fehler war, hast du nun 90 Tage Zeit, um deinen Account wiederherzustellen, bevor dieser permanent von unseren Servern gelöscht wird. Du kannst auf diesen Link klicken, um die Wiederherstellung zu starten:"
+
+msgid "See You Soon!"
+msgstr "Bis später!"
+
+msgid "You successfully logged out."
+msgstr "Du hast dich erfolgreich abgemeldet."
+
+msgid "On this page you can set specific filters for user input fields like usernames, email addresses or short messages."
+msgstr "Auf dieser Seite kannst du spezifische Filter für Eingabefelder wie Benutzername, E-Mail Adresse und Kurznachrichten erstellen."
+
+msgid "Add Filter"
+msgstr "Filter hinzufügen"
+
+msgid "One or more forbidden words"
+msgstr "Ein oder mehrere unerlaubte Wörter"
+
+msgid "You can enter multiple forbidden words separated by commas."
+msgstr "Du kannst mehrere unerlaubte Wörter kommasepariert eingeben."
+
+msgid "Enter forbidden words"
+msgstr "Unerlaubte Wörter eingeben"
+
+msgid "One or more forbidden email providers"
+msgstr "Ein oder mehrere unerlaubte E-Mail Provider"
+
+msgid "You can enter multiple forbidden email providers separated by commas."
+msgstr "Du kannst mehrere unerlaubte E-Mail Provider kommasepariert eingeben."
+
+msgid "Enter forbidden email providers"
+msgstr "Unerlaubte E-Mail Provider eingeben"
+
+msgid "Remove Filter"
+msgstr "Filter entfernen"
+
+msgid "Check Filters"
+msgstr "Filter überprüfen"
+
+msgid "Validate your previously defined filters with a randomly selected text or a comma separated list of email adresses to avoid false positives."
+msgstr "Überprüfe deine zuvor definierten Filter mit einem zufällig gewählten Text oder einer kommaseparierten Liste aus E-Mail Adressen, um einen False Positive zu vermeiden."
+
+msgid "Text to check"
+msgstr "Text zum Überprüfen"
+
+msgid "Enter text"
+msgstr "Text eingeben"
+
+msgid "you are receiving this email because you are trying to log in from a new device or browser on %s."
+msgstr "du erhälst diese E-Mail, weil du versuchst, dich von einem neuen Gerät oder Browser auf %s anzumelden."
+
+msgid "Please enter the following code to complete the authentication:"
+msgstr "Bitte gib den folgenden Code ein, um die Authentifizierung abzuschließen:"
+
+msgid "Manage your email address and newsletter preference. Your email address will <b>not</b> be shown to other users on this platform and will only be used to contact you."
+msgstr "Verwalte deine E-Mail Adresse und Newsletter Präferenzen. Deine E-Mail Adresse wird anderen Nutzer:innen auf dieser Plattform <b>nicht</b> angezeigt und dient ausschließlich zur Kontaktaufnahme."
+
+msgid "You will have to verify your email address again."
+msgstr "Du wirst deine E-Mail Adresse erneut verifizieren müssen."
+
+msgid "I would like to be informed about news by email."
+msgstr "Ich würde gerne per E-Mail über Neuigkeiten informiert werden."
+
+msgid "Verification"
+msgstr "Verifizierung"
+
+msgid "Some functions of this app require a verified email address. For example, if you want to use the 2-Factor authentication for a secure login."
+msgstr "Einige Funktionen dieser App benötigen eine verifizierte E-Mail Adresse. Zum Beispiel, wenn du die 2-Faktor Authentifizierung für ein gesichertes Anmelden verwenden möchtest."
+
+msgid "Your email adress is verified."
+msgstr "Deine E-Mail Adresse ist verifiziert."
+
+msgid "Your email adress is <b>not</b> verified."
+msgstr "Deine E-Mail Adresse ist <b>nicht</b> verifiziert."
+
+msgid "Request"
+msgstr "Anfordern"
+
+msgid "Keep everyone up to date with this simple newsletter tool. Please note that the process cannot be cancelled once you have pressed the button, emails will be sent immediately."
+msgstr "Halte jeden mit diesem einfachen Newsletter-Tool auf dem Laufenden. Bitte beachte, dass der Prozess nicht abgebrochen werden kann, sobald du das Formular einmal abgeschickt hast. Die E-Mails werden umgehend versendet."
+
+msgid "New Email"
+msgstr "Neue E-Mail"
+
+msgid "Enter subject"
+msgstr "Betreff eingeben"
+
+msgid "You can use HTML to format your text."
+msgstr "Du kannst HTML verwenden, um deinen Text zu formatieren."
+
+msgid "Ignore accounts newsletter setting (not recommended)"
+msgstr "Ignoriere die Newsletter-Einstellung der Accounts (Nicht empfohlen)"
+
+msgid "Send Newsletter"
+msgstr "Newsletter senden"
+
 msgid "We've sent you a <b>confirmation code</b> to reset your password to the registered <b>email address</b>."
 msgstr "Wir haben dir einen <b>Bestätigungscode</b> zum Zurücksetzen deines Passwortes an die registrierte <b>E-Mail Adresse</b> gesendet."
 
-msgid "Welcome %1$s! | %2$s"
-msgstr "Willkommen %1$s! | %2$s"
+msgid "Confirmation Code"
+msgstr "Bestätigungscode"
 
-msgid "New Account | %s"
-msgstr "Neuer Account | %s"
+msgid "You can find the 6-digit confirmation code in the email we sent you."
+msgstr "Du kannst den 6 Zeichen langen Bestätgungscode in der E-Mail finden, die wir dir gesendet haben."
 
-msgid "a new account was registered on %s:"
-msgstr "ein neuer Account wurde auf %s registriert:"
+msgid "Enter confirmation code"
+msgstr "Bestätigungscode eingeben"
 
-msgid "Welcome %s,"
-msgstr "Willkommen %s,"
+msgid "Recover Account"
+msgstr "Account wiederherstellen"
+
+msgid "Welcome to %s"
+msgstr "Willkommen auf %s"
 
 msgid "many thanks for your registration on %s."
 msgstr "vielen Dank für deine Registrierung auf %s."
@@ -739,14 +748,413 @@ msgstr "vielen Dank für deine Registrierung auf %s."
 msgid "We hope you enjoy all the features our app has to offer."
 msgstr "Wir hoffen, dass dir alle Funktionen gefallen, die dir diese App zu bieten hat."
 
-msgid "an account has been deactivated on %s:"
-msgstr "ein Account wurde auf %s deaktiviert:"
+msgid "<a href=\"%s/account/email\" style=\"color:#76747e;\">Unsubscribe</a> from newsletter"
+msgstr "Newsletter <a href=\"%s/account/email\" style=\"color:#76747e;\">abbestellen</a>"
+
+msgid "We've sent you a <b>confirmation code</b> to verify to the registered <b>email address</b>."
+msgstr "Wir haben dir einen <b>Bestätigungscode</b> zum Verifizieren an die registrierte <b>E-Mail Adresse</b> gesendet."
+
+msgid "Verify Email Address"
+msgstr "E-Mail Adresse verifizieren"
+
+msgid "I agree to the Terms of Service and Privacy Policy."
+msgstr "Ich stimme den allgemeinen Geschäftsbedingungen und der Datenschutzerklärung zu."
+
+msgid "Hey %s!"
+msgstr "Hey %s!"
+
+msgid "Manage your appearance and the information you want to share with us. Keep in mind that some of these data may be visible to other users on this platform."
+msgstr "Verwalte dein Erscheinungsbild und die Informationen, die du mit uns teilen möchtest. Bitte beachte, dass einige dieser Daten möglicherweise anderen Nutzer:innen auf dieser Plattform angezeigt werden könnten."
+
+msgid "Avatar"
+msgstr "Profilbild"
+
+msgid "You have to verify your email address before you can upload an avatar."
+msgstr "Du musst deine E-Mail Adresse verifizieren, bevor du ein Profilbild hochladen kannst."
+
+msgid "Your image must be squared and not exceed the maximum allowed file size of %s MB."
+msgstr "Dein Bild muss quadratisch sein und darf die maximal erlaubte Dateigröße von %s MB nicht überschreiten."
+
+msgid "Upload Avatar"
+msgstr "Profilbild hochladen"
+
+msgid "Preferred Language"
+msgstr "Bevorzugte Sprache"
+
+msgid "Change Language"
+msgstr "Sprache ändern"
+
+msgid "New Account"
+msgstr "Neuer Account"
+
+msgid "a new account was registered on %s:"
+msgstr "ein neuer Account wurde auf %s registriert:"
+
+msgid "Privacy Policy"
+msgstr "Datenschutzerklärung"
+
+msgid "Username or Email Address"
+msgstr "Benutzername oder E-Mail Adresse"
+
+msgid "Enter username or email address"
+msgstr "Benutzername oder E-Mail Adresse eingeben"
+
+msgid "It's a pity you're leaving.. :("
+msgstr "Schade, dass du uns verlässt.. :("
+
+msgid "..but we understand. We wish you all the best and hope to see you again very soon!"
+msgstr "..aber wir verstehen schon. Wir wünschen dir alles Gute und hoffen, dich bald wiederzusehen!"
+
+msgid "Your account has been successfully deactivated."
+msgstr "Dein Account wurde erfolgreich deaktiviert."
+
+msgid "Terms of Service"
+msgstr "Allgemeine Geschäftsbedingungen"
+
+msgid "Account Blocked"
+msgstr "Account blockiert"
+
+msgid "you are receiving this email because your account on %s has been blocked."
+msgstr "du erhälst diese E-Mail, weil dein Account auf %s blockiert wurde."
+
+msgid "If you think this was a mistake, please contact our support team:"
+msgstr "Wenn du der Meinung bist, dass dies ein Fehler war, kontaktiere bitte unser Support-Team:"
+
+msgid "Cronjob executed."
+msgstr "Cronjob ausgeführt."
+
+msgid "Recover account"
+msgstr "Account wiederherstellen"
+
+msgid "Forgot your password?"
+msgstr "Passwort vergessen?"
+
+msgid "Remember me!"
+msgstr "Angemeldet bleiben"
+
+msgid "Controller %s not found."
+msgstr "Controller %s nicht gefunden."
+
+msgid "Action %s not found."
+msgstr "Action %s nicht gefunden."
+
+msgid "Variable %s not set."
+msgstr "Variable %s nicht gesetzt."
+
+msgid "Illegal activity detected."
+msgstr "Illegale Aktivität erkannt."
+
+msgid "Unauthorized Access."
+msgstr "Nicht autorisierter Zugriff."
+
+msgid "There is no account with this username or email address."
+msgstr "Es gibt keinen Account mit diesem Benutzernamen oder dieser E-Mail Adresse."
+
+msgid "Too many requests in a short time."
+msgstr "Zu viele Anfragen in kurzer Zeit."
+
+msgid "Your account is suspended or deactivated."
+msgstr "Dein Account wurde gesperrt oder deaktiviert."
+
+msgid "Log in not possible at the moment."
+msgstr "Anmelden zurzeit nicht möglich."
+
+msgid "Required input not found."
+msgstr "Erforderliche Eingabe nicht gefunden."
+
+msgid "Please wait while redirecting.."
+msgstr "Bitte warte, du wirst weitergeleitet.."
+
+msgid "Sign up not possible at the moment."
+msgstr "Registrieren zurzeit nicht möglich."
+
+msgid "Your account does not have the required role."
+msgstr "Dein Account hat nicht die erforderlichen Rechte."
+
+msgid "Account successfully restored. You can now <a href=\"%s/login\">log in</a> as usual."
+msgstr "Account erfolgreich wiederhergestellt. Du kannst dich nun wie gewohnt <a href=\"%s/login\">anmelden</a>."
+
+msgid "App currently offline. Please try again later."
+msgstr "App zurzeit offline. Bitte versuche es später erneut."
+
+msgid "Changes successfully saved."
+msgstr "Änderungen erfolgreich gespeichert."
+
+msgid "Avatar successfully uploaded."
+msgstr "Profilbild erfolgreich hochgeladen."
+
+msgid "Avatar successfully deleted."
+msgstr "Profilbild erfolgreich gelöscht."
+
+msgid "Your current password does not match."
+msgstr "Dein aktuelles Passwort stimmt nicht."
+
+msgid "Sessions successfully logged out."
+msgstr "Sessions erfolgreich abgemeldet."
+
+msgid "You can not deactivate your account."
+msgstr "Du kannst deinen Account nicht deaktivieren."
+
+msgid "Email address successfully verified."
+msgstr "E-Mail Adresse erfolgreich verifiziert."
+
+msgid "URGENT"
+msgstr "DRINGEND"
+
+msgid "New Message | %s"
+msgstr "Neue Nachricht | %s"
 
 msgid "We received your message | %s"
 msgstr "Wir haben deine Nachricht erhalten | %s"
 
-msgid "we received your message! We will deal with your request as soon as possible and then get back to you."
-msgstr "wir haben deine Nachricht erhalten! Wir werden uns so schnell wie möglich um dein Anliegen kümmern und uns dann bei dir melden."
+msgid "Message successfully sent."
+msgstr "Nachricht erfolgreich gesendet."
 
-msgid "If you would like to add something to your message, you can simply reply to the Reply-To address of this email."
-msgstr "Wenn du deiner Nachricht noch etwas hinzufügen möchtest, kannst du einfach auf die Reply-To-Adresse dieser E-Mail antworten."
+msgid "This username is already taken."
+msgstr "Dieser Benutzername ist bereits vergeben."
+
+msgid "This email address is already taken."
+msgstr "Diese E-Mail Adresse ist bereits vergeben."
+
+msgid "Account successfully created."
+msgstr "Account erfolgreich erstellt."
+
+msgid "You can not change your role."
+msgstr "Du kannst nicht deine eigene Rolle ändern."
+
+msgid "You can not change to requested role."
+msgstr "Du kannst nicht zu der angegebenen Rolle wechseln."
+
+msgid "Account already blocked."
+msgstr "Account bereits blockiert."
+
+msgid "You can not block your account."
+msgstr "Du kannst deinen Account nicht blockieren."
+
+msgid "Account successfully blocked."
+msgstr "Account erfolgreich blockiert."
+
+msgid "Account successfully restored."
+msgstr "Account erfolgreich wiederhergestellt."
+
+msgid "Account already deactivated."
+msgstr "Account bereits deaktiviert."
+
+msgid "Account successfully deactivated."
+msgstr "Account wurde erfolgreich deaktiviert."
+
+msgid "Account must be deactivated or blocked first."
+msgstr "Account muss zunächst deaktiviert oder blockiert werden."
+
+msgid "Account successfully deleted."
+msgstr "Account erfolgreich gelöscht."
+
+msgid "This slug is already taken."
+msgstr "Dieser URL-Slug ist bereits vorhanden."
+
+msgid "Page successfully created."
+msgstr "Seite erfolgreich erstellt."
+
+msgid "You can not change to requested requirement."
+msgstr "Du kannst nicht zu der angegebenen Anforderung wechseln."
+
+msgid "Page successfully activated."
+msgstr "Seite erfolgreich aktiviert."
+
+msgid "Page successfully deactivated."
+msgstr "Seite erfolgreich deaktiviert."
+
+msgid "Page successfully deleted."
+msgstr "Seite erfolgreich gelöscht."
+
+msgid "Filter successfully added."
+msgstr "Filter erfolgreich hinzugefügt."
+
+msgid "Filter successfully removed."
+msgstr "Filter erfolgreich entfernt."
+
+msgid "Check, no filter had to be applied."
+msgstr "Check, es musste kein Filter angewendet werden."
+
+msgid " | %s"
+msgstr " | %s"
+
+msgid "Newsletter successfully sent."
+msgstr "Newsletter erfolgreich verschickt."
+
+msgid "Homepage | %s"
+msgstr "Startseite | %s"
+
+msgid "Page not found."
+msgstr "Seite nicht gefunden."
+
+msgid "Log In | %s"
+msgstr "Anmelden | %s"
+
+msgid "Log Out | %s"
+msgstr "Abmelden | %s"
+
+msgid "Goodbye | %s"
+msgstr "Auf Wiedersehen | %s"
+
+msgid "Sign Up | %s"
+msgstr "Registrieren | %s"
+
+msgid "Account Recovery | %s"
+msgstr "Account wiederherstellen | %s"
+
+msgid "Personal Data | %s"
+msgstr "Persönliche Daten | %s"
+
+msgid "Account & Security | %s"
+msgstr "Account & Sicherheit | %s"
+
+msgid "Email Settings | %s"
+msgstr "E-Mail Einstellungen | %s"
+
+msgid "All Accounts | %s"
+msgstr "Alle Accounts | %s"
+
+msgid "Custom Pages | %s"
+msgstr "Eigene Seiten | %s"
+
+msgid "Filter Settings | %s"
+msgstr "Filter-Einstellungen | %s"
+
+msgid "Newsletter | %s"
+msgstr "Newsletter | %s"
+
+msgid "Contact | %s"
+msgstr "Kontakt | %s"
+
+msgid "Maintenance | %s"
+msgstr "Wartungsmodus | %s"
+
+msgid "oops! | %s"
+msgstr "oops! | %s"
+
+msgid "Connection to MySQL database failed: "
+msgstr "Verbindung zur MySQL-Datenbank fehlgeschlagen: "
+
+msgid "Email could not be sent: "
+msgstr "E-Mail konnte nicht gesendet werden: "
+
+msgid "You have entered the password incorrectly too many times. Please wait 20 minutes and try again."
+msgstr "Du hast zu oft ein falsches das Passwort eingegeben. Bitte warte 20 Minuten und versuche es dann erneut."
+
+msgid "You have entered an incorrect password."
+msgstr "Du hast ein falsches Passwort eingegeben."
+
+msgid "2-Factor Authentication | %s"
+msgstr "2-Faktor Authentifizierung | %s"
+
+msgid "You have entered an invalid PIN code too many times. Please wait 20 minutes and try again."
+msgstr "Du hast zu oft einen ungültigen PIN Code eingegeben. Bitte warte 20 Minunten und versuche es dann erneut."
+
+msgid "This PIN code is invalid."
+msgstr "Dieser PIN Code ist ungültig."
+
+msgid "You have tried to request a confirmation code too many times. Please wait 60 minutes and try again."
+msgstr "Du hast zu oft versucht einen Bestätigungscode anzufordern. Bitte warte 60 Minuten und versuche es dann erneut."
+
+msgid "You have entered an invalid confirmation code too many times. Please wait 60 minutes and try again."
+msgstr "Du hast zu oft einen ungültigen Bestätigungscode eingegeben. Bitte warte 60 Minuten und versuche es dann erneut."
+
+msgid "This confirmation code is invalid."
+msgstr "Dieser Bestätigungscode ist ungültig."
+
+msgid "Your account cannot be restored."
+msgstr "Dein Account kann nicht wiederhergestellt werden."
+
+msgid "Email Address Verification | %s"
+msgstr "E-Mail Adresse verifizieren | %s"
+
+msgid "Account Deactivated | %s"
+msgstr "Account deaktiviert | %s"
+
+msgid "Account Blocked | %s"
+msgstr "Account blockiert | %s"
+
+msgid "Undefined"
+msgstr "Nicht definiert"
+
+msgid "Welcome %1$s | %2$s"
+msgstr "Willkommen %1$s | %2$s"
+
+msgid "New Account | %s"
+msgstr "Neuer Account | %s"
+
+msgid "Model %1$s:%2$s not found."
+msgstr "Model %1$s:%2$s nicht gefunden."
+
+msgid "Template %s not found."
+msgstr "Template %s nicht gefunden."
+
+msgid "File has to be a jpeg, jpg, png, pdf or txt."
+msgstr "Datei muss jpeg, jpg, png, pdf oder txt sein."
+
+msgid "File exceeds the maximum allowed file size of %s MB."
+msgstr "Datei überschreitet die maximal erlaubte Dateigröße von %s MB."
+
+msgid "File has to be a jpeg, jpg or png."
+msgstr "Datei muss jpeg, jpg oder png sein."
+
+msgid "Avatar has to be squared."
+msgstr "Profilbild muss quadratisch sein."
+
+msgid "File could not be uploaded."
+msgstr "Datei konnte nicht hochgeladen werden."
+
+msgid "The username must be between 3 and 18 characters long."
+msgstr "Der Benutzername muss zwischen 3 und 18 Zeichen lang sein."
+
+msgid "The username cannot contain any special characters."
+msgstr "Der Benutzername darf keine Sonderzeichen enthalten."
+
+msgid "The passwords do not match."
+msgstr "Die Passwörter stimmen nicht überein."
+
+msgid "Your password must be at least %s characters long."
+msgstr "Dein Passwort muss mindestens %s Zeichen lang sein."
+
+msgid "Invalid email address."
+msgstr "Ungültige E-Mail Adresse."
+
+msgid "You have used a forbidden email provider."
+msgstr "Du hast einen unerlaubten E-Mail Anbieter verwendet."
+
+msgid "Invalid integer."
+msgstr "Ungültiger Zahlenwert."
+
+msgid "Invalid number."
+msgstr "Ungültige Nummer."
+
+msgid "Invalid float."
+msgstr "Ungültige Gleitkommazahl."
+
+msgid "Invalid array."
+msgstr "Ungültiges Array."
+
+msgid "Invalid string."
+msgstr "Ungültige Zeichenkette."
+
+msgid "You have used a forbidden word."
+msgstr "Du hast ein unerlaubtes Wort verwendet."
+
+msgid "Invalid boolean."
+msgstr "Ungültiger Wahrheitswert."
+
+msgid "Invalid url."
+msgstr "Ungültige URL."
+
+msgid "Invalid datetime."
+msgstr "Ungültiges Datum."
+
+msgid "Invalid regex."
+msgstr "Ungültiger regulärer Ausdruck."
+
+msgid "Invalid json."
+msgstr "Ungültiges Json."
+
+msgid "The message must be between %1$s and %2$s characters long."
+msgstr "Die Nachricht muss zwischen %1$s und %2$s Zeichen lang sein."

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  *  MVC
  *  Model View Controller (MVC) design pattern for simple web applications.
  *
@@ -7,7 +7,7 @@
  *
  *  @author  Fabio Doppio (Developer) <hallo@fabiodoppio.de>
  *  @license https://opensource.org/license/mit/ MIT License
- * 
+ *
  */
 
- :root{--color-primary-100:#3f49f7;--color-primary-200:#625cf9;--color-primary-300:#7c6ffa;--color-primary-400:#9282fc;--color-primary-500:#a796fd;--color-primary-600:#baabfe;--color-secondary-100:#1a1825;--color-secondary-200:#2f2d3a;--color-secondary-300:#46444f;--color-secondary-400:#5d5b66;--color-secondary-500:#76747e;--color-secondary-600:#908f96;--color-secondary-700:#ebebeb;--color-secondary-800:#ffffff;--color-info-100:#0dcaf0;--color-info-200:#9eeaf9;--color-info-300:#cff4fc;--color-success-100:#0f5132;--color-success-200:#badbcc;--color-success-300:#d1e7dd;--color-warning-100:#664d03;--color-warning-200:#ffe69c;--color-warning-300:#fff3cd;--color-error-100:#dc3545;--color-error-200:#f1aeb5;--color-error-300:#f8d7da;--page-max-width:1280px;--page-min-width:480px;--font-size:16px;--font-family:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";--box-shadow:rgba(0, 0, 0, 0.15) 2px 2px 3px}
+:root{--color-primary-100:#3f49f7;--color-primary-200:#625cf9;--color-primary-300:#7c6ffa;--color-primary-400:#9282fc;--color-primary-500:#a796fd;--color-primary-600:#baabfe;--color-secondary-100:#1a1825;--color-secondary-200:#2f2d3a;--color-secondary-300:#46444f;--color-secondary-400:#5d5b66;--color-secondary-500:#76747e;--color-secondary-600:#908f96;--color-secondary-700:#ebebeb;--color-secondary-800:#ffffff;--color-border:#e3e3e3;--color-info-100:#0dcaf0;--color-info-200:#9eeaf9;--color-info-300:#cff4fc;--color-success-100:#0f5132;--color-success-200:#badbcc;--color-success-300:#d1e7dd;--color-warning-100:#664d03;--color-warning-200:#ffe69c;--color-warning-300:#fff3cd;--color-error-100:#dc3545;--color-error-200:#f1aeb5;--color-error-300:#f8d7da;--page-max-width:1280px;--page-min-width:480px;--font-size:16px;--font-family:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";--box-shadow:rgba(0, 0, 0, 0.15) 2px 2px 3px}

@@ -18,10 +18,21 @@
             <li>
                 <div class="avatar" data-trigger="dropdown" title="{{$account->meta->displayname ?? $account->username}}">
                     {% if ($account->role >= $account->roles->user && !empty($account->meta->avatar)): %}
-                        <img src="{{$app->url}}{{$app->directory->media}}/avatars/{{$account->meta->avatar}}" alt="_avatar"/>
+                        <img src="{{$app->url}}/media/avatars/{{$account->meta->avatar}}" alt="_avatar"/>
                     {% endif; %}
                 </div>
                 <div class="dropdown">
+                    {% if ($account->role == $account->roles->administrator): %}
+                        <div class="dropdown-header">
+                            {{"Administration"}}
+                        </div>
+                        <ul>
+                            <li><a href="{{$app->url}}/admin/accounts"><i class="fas fa-users"></i> {{"All Accounts"}}</a></li>
+                            <li><a href="{{$app->url}}/admin/pages"><i class="fas fa-file"></i> {{"Custom Pages"}}</a></li>
+                            <li><a href="{{$app->url}}/admin/filters"><i class="fas fa-filter"></i> {{"Filter Settings"}}</a></li>
+                            <li><a href="{{$app->url}}/admin/newsletter"><i class="fas fa-newspaper"></i> {{"Newsletter"}}</a></li>
+                        </ul>
+                    {% endif; %}
                     <div class="dropdown-header">
                         {{"My Account"}}
                     </div>
@@ -44,5 +55,5 @@
                 </div>
             </li>
         </ul>
-    </nav> 
+    </nav>
 </header>

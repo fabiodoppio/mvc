@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 
+ *
  *  MVC
  *  Model View Controller (MVC) design pattern for simple web applications.
  *
@@ -9,7 +9,7 @@
  *
  *  @author  Fabio Doppio (Developer) <hallo@fabiodoppio.de>
  *  @license https://opensource.org/license/mit/ MIT License
- * 
+ *
  */
 
 
@@ -19,19 +19,19 @@ use MVC\App       as App;
 use MVC\Validator as Validator;
 
 /**
- * 
+ *
  *  Exception Class
  *
- *  The Exception class extends the standard PHP Exception class and provides 
+ *  The Exception class extends the standard PHP Exception class and provides
  *  custom exception handling for different HTTP response codes and error messages.
- * 
+ *
  */
 class Exception extends \Exception {
 
     /**
-     * 
+     *
      *  Process the exception by handling different HTTP response codes and error messages.
-     * 
+     *
      *  @since 2.3  Output exception message and code only on POST request method, redirect to 404 as default behaviour.
      *  @since 2.0
      *
@@ -72,13 +72,13 @@ class Exception extends \Exception {
                 http_response_code(406);
                 header("Location: ".App::get("APP_URL")."/maintenance");
                 exit();
-                
+
                 break;
             default:
 
                 http_response_code(500);
-                include App::get("DIR_ROOT").App::get("DIR_VIEWS")."/_includes/error.tpl"; 
-                exit();   
+                include App::get("DIR_ROOT").App::get("DIR_VIEWS")."/_includes/error.tpl";
+                exit();
         }
     }
 

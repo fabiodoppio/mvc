@@ -1,5 +1,5 @@
-{% include /_includes/header.tpl %} 
-        {% include /_includes/topbar.tpl %} 
+{% include /_includes/header.tpl %}
+        {% include /_includes/topbar.tpl %}
 
         <main class="is--fading">
             <div class="container">
@@ -7,5 +7,5 @@
                 {% include /_forms/contact.tpl %}
             </div>
         </main>
-    
-{% include /_includes/footer.tpl %} 
+
+{% include /_includes/footer.tpl %}

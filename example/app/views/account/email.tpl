@@ -1,9 +1,9 @@
-{% include /_includes/header.tpl %} 
-        {% include /_includes/topbar.tpl %} 
+{% include /_includes/header.tpl %}
+        {% include /_includes/topbar.tpl %}
 
         <main>
             <div class="container">
-                {% include /_includes/sidebar.tpl %}
+                {% include /account/_includes/sidebar.tpl %}
                 <div class="main-content is--fading">
                     <h1 class="title">{{"Email Settings"}}</h1>
                     <p>{{"Manage your email address and newsletter preference. Your email address will <b>not</b> be shown to other users on this platform and will only be used to contact you."}}</p>
@@ -26,7 +26,7 @@
                     <form data-request="account/email/verify">
                         {% if ($account->role >= $account->roles->verified): %}
                             <div class="alert is--success"><i class="fas fa-circle-check"></i> {{"Your email adress is verified."}}</div>
-                        {% else: %}  
+                        {% else: %}
                             <div class="alert is--error"><i class="fas fa-circle-xmark"></i> {{"Your email adress is <b>not</b> verified."}}</div>
                             <button class="btn is--primary is--submit">{{"Request"}}</button>
                         {% endif; %}
@@ -35,4 +35,4 @@
             </div>
         </main>
 
-{% include /_includes/footer.tpl %} 
+{% include /_includes/footer.tpl %}

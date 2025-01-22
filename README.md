@@ -1,4 +1,4 @@
-# MVC 
+# MVC
 Model View Controller (MVC) design pattern for simple web applications.
 
 ### Features
@@ -47,7 +47,7 @@ Create the tables in your database with the SQL statements below, add your crede
 ### SQL-Statements for your Database:
 
 ```sql
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO"; START TRANSACTION; SET time_zone = "+00:00"; CREATE TABLE `app_accounts`( `id` int(10) UNSIGNED NOT NULL, `username` varchar(64) NOT NULL, `email` varchar(64) NOT NULL, `password` varchar(64) NOT NULL, `token` varchar(64) NOT NULL, `role` int(10) UNSIGNED NOT NULL, `registered` datetime NOT NULL DEFAULT current_timestamp(), `lastaction` datetime NOT NULL DEFAULT current_timestamp()) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; INSERT INTO `app_accounts` (`id`, `username`, `email`, `password`, `token`, `role`, `registered`, `lastaction`) VALUES (1000, 'admin', 'someone@example.com', '$2y$10$mF/1IeSTLohx/J35LYnEoueV50p3g9EOgnfADE0E7seJw127fHzY2', 'deP5E5KznHsLl0TMeLyvbndNg7KEky6W', 8, '2023-11-29 00:00:00', '2023-11-29 00:00:00'); CREATE TABLE `app_accounts_log` ( `id` int(10) UNSIGNED NOT NULL, `event` varchar(64) NOT NULL, `timestamp` datetime NOT NULL DEFAULT current_timestamp() ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; CREATE TABLE `app_accounts_meta` ( `id` int(10) UNSIGNED NOT NULL, `name` varchar(64) NOT NULL, `value` text NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; CREATE TABLE `app_badwords` ( `id` int(10) UNSIGNED NOT NULL, `badword` varchar(64) NOT NULL, `timestamp` datetime NOT NULL DEFAULT current_timestamp() ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; CREATE TABLE `app_pages` ( `id` int(10) UNSIGNED NOT NULL, `slug` varchar(64) NOT NULL, `title` varchar(256) DEFAULT NULL, `description` varchar(512) DEFAULT NULL, `robots` varchar(64) DEFAULT 'index, follow', `canonical` varchar(64) DEFAULT NULL, `class` varchar(64) DEFAULT 'page', `template` varchar(128) DEFAULT NULL, `active` tinyint(1) NOT NULL DEFAULT 1 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; INSERT INTO `app_pages` (`id`, `slug`, `title`, `description`, `robots`, `canonical`, `class`, `template`, `active`) VALUES (1, '/imprint', 'Impressum', 'This is a custom page', 'noindex, nofollow', '/imprint', 'page imprint', '/imprint.tpl', 1), (2, '/privacy', 'Privacy Policy', 'This is a custom page', 'noindex, nofollow', '/privacy', 'page privacy', '/privacy.tpl', 1), (3, '/terms', 'Terms of Service', 'This is a custom page', 'noindex, nofollow', '/terms', 'page terms', '/terms.tpl', 1); ALTER TABLE `app_accounts` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `username` (`username`), ADD UNIQUE KEY `email` (`email`); ALTER TABLE `app_accounts_log` ADD PRIMARY KEY (`id`,`event`,`timestamp`); ALTER TABLE `app_accounts_meta` ADD PRIMARY KEY (`id`,`name`); ALTER TABLE `app_badwords` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `badword` (`badword`); ALTER TABLE `app_pages` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `slug` (`slug`); ALTER TABLE `app_accounts` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1001; ALTER TABLE `app_badwords` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT; ALTER TABLE `app_pages` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4; ALTER TABLE `app_accounts_log` ADD CONSTRAINT `app_accounts_log_ibfk_1` FOREIGN KEY (`id`) REFERENCES `app_accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `app_accounts_meta` ADD CONSTRAINT `app_accounts_meta_ibfk_1` FOREIGN KEY (`id`) REFERENCES `app_accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; COMMIT;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO"; START TRANSACTION; SET time_zone = "+00:00"; CREATE TABLE `app_accounts` ( `id` int UNSIGNED NOT NULL, `username` varchar(64) COLLATE utf8mb4_general_ci NOT NULL, `email` varchar(64) COLLATE utf8mb4_general_ci NOT NULL, `password` varchar(64) COLLATE utf8mb4_general_ci NOT NULL, `token` varchar(64) COLLATE utf8mb4_general_ci NOT NULL, `role` int UNSIGNED NOT NULL, `registered` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, `lastaction` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; INSERT INTO `app_accounts` (`id`, `username`, `email`, `password`, `token`, `role`, `registered`, `lastaction`) VALUES (1000, 'admin', 'someone@example.com', '$2y$10$mF/1IeSTLohx/J35LYnEoueV50p3g9EOgnfADE0E7seJw127fHzY2', 'deP5E5KznHsLl0TMeLyvbndNg7KEky6W', 8, '2023-11-29 00:00:00', '2023-11-29 00:00:00'); CREATE TABLE `app_accounts_log` ( `id` int UNSIGNED NOT NULL, `event` varchar(64) COLLATE utf8mb4_general_ci NOT NULL, `timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; CREATE TABLE `app_accounts_meta` ( `id` int UNSIGNED NOT NULL, `name` varchar(64) COLLATE utf8mb4_general_ci NOT NULL, `value` text COLLATE utf8mb4_general_ci NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; CREATE TABLE `app_filters_badwords` ( `id` int UNSIGNED NOT NULL, `badword` varchar(64) COLLATE utf8mb4_general_ci NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; CREATE TABLE `app_filters_providers` ( `id` int UNSIGNED NOT NULL, `provider` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; CREATE TABLE `app_pages` ( `id` int UNSIGNED NOT NULL, `slug` varchar(64) COLLATE utf8mb4_general_ci NOT NULL, `template` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL, `requirement` tinyint(1) NOT NULL DEFAULT '0', `maintenance` tinyint(1) NOT NULL DEFAULT '1', `active` tinyint(1) NOT NULL DEFAULT '1' ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; INSERT INTO `app_pages` (`id`, `slug`, `template`, `requirement`, `maintenance`, `active`) VALUES (1, '/imprint', '/imprint.tpl', 0, 0, 1), (2, '/privacy', '/privacy.tpl', 0, 0, 1), (3, '/terms', '/terms.tpl', 0, 0, 1); CREATE TABLE `app_pages_meta` ( `id` int UNSIGNED NOT NULL, `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; INSERT INTO `app_pages_meta` (`id`, `name`, `value`) VALUES (1, 'class', 'page imprint'), (1, 'description', 'This is a custom page'), (1, 'robots', 'noindex, nofollow'), (1, 'title', 'Imprint'), (2, 'class', 'page privacy'), (2, 'description', 'This is a custom page'), (2, 'robots', 'noindex, nofollow'), (2, 'title', 'Privacy Policy'), (3, 'class', 'page terms'), (3, 'description', 'This is a custom page'), (3, 'robots', 'noindex, nofollow'), (3, 'title', 'Terms of Service'); ALTER TABLE `app_accounts` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `username` (`username`), ADD UNIQUE KEY `email` (`email`); ALTER TABLE `app_accounts_log` ADD PRIMARY KEY (`id`,`event`,`timestamp`); ALTER TABLE `app_accounts_meta` ADD PRIMARY KEY (`id`,`name`); ALTER TABLE `app_filters_badwords` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `badword` (`badword`); ALTER TABLE `app_filters_providers` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `provider` (`provider`); ALTER TABLE `app_pages` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `slug` (`slug`); ALTER TABLE `app_pages_meta` ADD PRIMARY KEY (`id`,`name`); ALTER TABLE `app_accounts` MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1001; ALTER TABLE `app_filters_badwords` MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1; ALTER TABLE `app_filters_providers` MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1; ALTER TABLE `app_pages` MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4; ALTER TABLE `app_accounts_log` ADD CONSTRAINT `app_accounts_log_ibfk_1` FOREIGN KEY (`id`) REFERENCES `app_accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `app_accounts_meta` ADD CONSTRAINT `app_accounts_meta_ibfk_1` FOREIGN KEY (`id`) REFERENCES `app_accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `app_pages_meta` ADD CONSTRAINT `app_pages_meta_ibfk_1` FOREIGN KEY (`id`) REFERENCES `app_pages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; COMMIT;
 ```
 
 ### Minimum Configuration
@@ -55,11 +55,11 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO"; START TRANSACTION; SET time_zone = "+00:
 In your _.env_ file you have to configure the following settings:
 
 ```
-[General]
-APP_URL = "https://"                            # url to your app, no trailing slash
-
 [Directories]
 DIR_ROOT = "/var/www"                           # path to your root directory, no trailing slash
+
+[General]
+APP_URL = "https://"                            # url to your app, no trailing slash
 
 [Security]
 SALT_COOKIE = "USE A SALT OR HASH GENERATOR!"   # randomized hash for security reasons
@@ -97,22 +97,6 @@ In your _.env_ file you can configure the following settings:
 [Debug]
 APP_DEBUG = "false"                             # de/activates error reporting and caching
 
-[General]
-APP_URL = "https://"                            # url to your app, no trailing slash
-APP_NAME = "My App"                             # name of your app
-APP_TITLE = ""                                  # title of your start page
-APP_AUTHOR = ""                                 # author of your app
-APP_DESCRIPTION = ""                            # description of your app
-APP_TIMEZONE = "Europe/Berlin"                  # timezone for the app
-APP_LANGUAGE = "en_EN.utf8"                     # (server-)language of your app
-APP_LANGUAGES[] = "en_EN.utf8"                  # english as an selectable (server-)language
-APP_LANGUAGES[] = "de_DE.utf8"                  # german as an selectable (server-)language
-APP_MAINTENANCE = "false"                       # de/activates maintenance mode (except admins)
-APP_CRON = "true"                               # de/activates cronjob
-APP_LOGIN = "true"                              # de/activates login (except admins)
-APP_SIGNUP = "true"                             # de/activates signup
-APP_WELCOME = "true"                            # de/activates welcome mail for new accounts
-
 [Directories]
 DIR_ROOT = "/var/www"                           # path to your root directory, no trailing slash
 DIR_CACHE = "/app/cache"                        # path to your cache files, no trailing slash
@@ -121,6 +105,21 @@ DIR_LOCALE = "/app/locale"                      # path to your locale .mo/.po fi
 DIR_VENDOR = "/app/vendor"                      # path to your third-party libraries, no trailing slash
 DIR_VIEWS = "/app/views"                        # path to your template files, no trailing slash
 DIR_MEDIA = "/public/media"                     # path to your public media files, no trailing slash
+
+[General]
+APP_URL = "https://"                            # url to your app, no trailing slash
+APP_NAME = "My App"                             # name of your app
+APP_TITLE = ""                                  # title of your start page
+APP_AUTHOR = ""                                 # author of your app
+APP_DESCRIPTION = ""                            # description of your app
+APP_TIMEZONE = "Europe/Berlin"                  # timezone for the app
+APP_LANGUAGE = "en_GB.utf8"                     # (server-)language of your app
+APP_LANGUAGES[] = "en_GB.utf8"                  # english as an selectable (server-)language
+APP_LANGUAGES[] = "de_DE.utf8"                  # german as an selectable (server-)language
+APP_MAINTENANCE = "false"                       # de/activates maintenance mode (except admins)
+APP_CRON = "true"                               # de/activates cronjob
+APP_LOGIN = "true"                              # de/activates login (except admins)
+APP_SIGNUP = "true"                             # de/activates signup
 
 [Security]
 SALT_COOKIE = "USE A SALT OR HASH GENERATOR!"   # randomized hash for security reasons
@@ -142,16 +141,14 @@ MAIL_PASSWORD = "********"                      # password to your mail server
 MAIL_ENCRYPT = "ssl"                            # ssl or tsl for encryption
 MAIL_PORT = "465"                               # port to your mail server
 
-[Rules]
-RULE_UN_REGEX = "/[^A-Za-z0-9]+/";              # regex for allowed characters in usernames
-RULE_UN_LENGTH = "18";                          # max length of characters in usernames
-RULE_MSG_LENGTH = "250";                        # max length of characters in messages (not in use)
-RULE_PWD_LENGTH = "8";                          # min length of characters in passwords
-RULE_ATT_FILESIZE = "12582912";                 # max filesize in bytes for mail attachments
-RULE_AVA_FILESIZE = "3145728";                  # max filesize in bytes for account avatars
+[Notifications]
+NOTIFY_RECEIVED = "true"                        # de/activates notification email for a received contact request
+NOTIFY_WELCOME = "true"                         # de/activates welcome email for a newly created account
+NOTIFY_NEWACCOUNT = "true"                      # de/activates notification email about a new account
+NOTIFY_DEACTIVATED = "true"                     # de/activates notification email about a deactivated account
 ```
 
-### Working with Templates
+### Quick Start: Working with Templates
 
 You can add templates by simply placing them into your _views_ directory.
 In your template files, you can use simple Smarty code. For example to include a file:
@@ -180,19 +177,39 @@ It's also allowed to use PHP code like this:
 {% endif; %}
 ```
 
-If you want to output a translated text, you can write your texts like this: 
+If you want to output a translated text, you can write your texts like this:
 
 ```smarty
- {{"My text"}}
+{{"My text"}}
 ```
 
 or
 
 ```smarty
-    {{"My %s text", $myvar}}
+{{"My %s text", $myvar}}
 ```
-    
+
 (But don't forget to update your language files in your _locale_ directory!)
+
+
+### Quick Start: Processing Requests
+
+You can execute any method from any controller by submitting a form with the _data-request_ attribute:
+
+```html
+<form data-request="my/example">
+    <input type="text" name="value" value="xyz"/>
+    <input type="submit" value="Call my/example"/>
+</form>
+```
+..or by clicking any link with the appropriate attributes:
+
+```html
+<a href="#" data-request="my/example" data-value="xyz">Call my/example</a>
+```
+
+The scheme for your _data-request_ attribute is always the same: Name of your Controller / Name of your Action, e.g. _my/example_
+You can find the controller and action of this specific example in your _classes/Controllers_ directory.
 
 
 ### Detailed documentation will coming soon..

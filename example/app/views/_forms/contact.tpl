@@ -50,22 +50,29 @@
             </select>
         </label>
     {% endif; %}
+    {% if (isset($request->emergency)): %}
+        <label for="emergency">
+            <input type="hidden" name="emergency" value="0"/>
+            <input type="checkbox" id="emergency" name="emergency" value="1"/>
+            <i class="fa-solid fa-triangle-exclamation" style="color:#F00;"></i> {{"This is an emergency!"}}
+        </label>
+    {% endif; %}
     <label for="message">
         {{"Message"}} <span class="is--required" title="{{'Required'}}">*</span>
         <textarea id="message" name="message" placeholder="{{'Enter message'}}" rows="5" autocomplete="off" required></textarea>
     </label>
     {% if (isset($request->attachment)): %}
-        {% if ($account->role >= $account->roles->verified): %}  
+        {% if ($account->role >= $account->roles->verified): %}
             <label>
                 {{"Attachment"}}
-                <div class="tooltip"><i class="fas fa-circle-info"></i><span>{{"Your attachment must not exceed the maximum allowed file size of %s KB.", 12288}}</span></div>
+                <div class="tooltip"><i class="fas fa-circle-info"></i><span>{{"Your attachment must not exceed the maximum allowed file size of %s MB.", 12}}</span></div>
             </label>
             <span class="attachment-info"></span>
             <button class="btn is--secondary is--submit" data-trigger="attachment">{{"Upload Attachment"}}</button>
             <input type="file" name="attachment" accept="image/jpeg, image/jpg, image/png, application/pdf, text/plain" hidden/>
             <br/><br/>
         {% else: %}
-            <label> 
+            <label>
                 {{"Attachment"}}
             </label>
             <div class="alert is--info">{{"You have to verify your email address before you can send a message with an attachment."}}<br/>{{"<a href=\"%s/account/email\">Verify now</a> to gain full access to all features of this app.", $app->url}}</div>

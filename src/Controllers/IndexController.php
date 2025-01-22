@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 
+ *
  *  MVC
  *  Model View Controller (MVC) design pattern for simple web applications.
  *
@@ -9,7 +9,7 @@
  *
  *  @author  Fabio Doppio (Developer) <hallo@fabiodoppio.de>
  *  @license https://opensource.org/license/mit/ MIT License
- * 
+ *
  */
 
 
@@ -23,12 +23,12 @@ use MVC\Template    as Template;
 use MVC\Validator   as Validator;
 
 /**
- * 
+ *
  *  IndexController Class
  *
- *  The IndexController displays the requested page, including the home, login, logout, 
+ *  The IndexController displays the requested page, including the home, login, logout,
  *  signup, recovery, account, admin, maintenance, cron, error and custom page
- * 
+ *
  */
 class IndexController extends Controller {
 
@@ -39,12 +39,12 @@ class IndexController extends Controller {
 
 
     /**
-     * 
+     *
      *  Executes actions before the main action, including setting up environment variables.
-     * 
+     *
      *  @since  2.3     Removed asset files in env variable for performance reasons.
      *  @since  2.0
-     * 
+     *
      */
     public function beforeAction() {
         parent::beforeAction();
@@ -103,66 +103,71 @@ class IndexController extends Controller {
     }
 
     /**
-     * 
+     *
      *  Displaying the website's home page.
      *
      *  @since  2.0
      *  @param  string  $request    The requested action.
-     * 
+     *
      */
     public function homeAction(string $request) {
         if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
             throw new Exception(_("App currently offline. Please try again later."), 406);
-        
+
         $this->env["page"] = (object) [
-            "title"         => sprintf(_(App::get("APP_TITLE") ?: "Homepage | %s"), App::get("APP_NAME")),
-            "description"   => App::get("APP_DESCRIPTION"),
-            "robots"        => "index, follow",
-            "canonical"     => App::get("APP_URL")."/",
-            "class"         => "page home"
+            "meta" => (object) [
+                "title"         => sprintf(_(App::get("APP_TITLE") ?: "Homepage | %s"), App::get("APP_NAME")),
+                "description"   => App::get("APP_DESCRIPTION"),
+                "robots"        => "index, follow",
+                "class"         => "page home"
+            ]
         ];
 
         echo Template::get("/home.tpl", $this->env);
     }
 
     /**
-     * 
+     *
      *  Displaying the website's custom page.
      *
      *  @since  3.0     Get page data from database.
      *  @since  2.2     Added regex detection in slugs.
      *  @since  2.0
      *  @param  string  $request    The requested action.
-     * 
+     *
      */
     public function pageAction(string $request) {
-        $page_found = false;
-        foreach(Database::query("SELECT * FROM app_pages WHERE active = ?", [1]) as $page)
-            if ($page_found = preg_match('#^'.$page['slug'].'$#', $request)) {
+        $pageFound = false;
+        foreach(Database::query("SELECT id, slug FROM app_pages WHERE active = ?", [1]) as $page)
+            if ($pageFound = preg_match('#^'.$page['slug'].'$#', $request)) {
                 $page = new Model\Page($page["id"]);
+
+                if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
+                    if ($page->get("maintenance") == 1)
+                        throw new Exception(_("App currently offline. Please try again later."), 406);
+
+                if ($this->account->get("role") < $page->get("requirement") ?? 0)
+                    throw new Exception(_("Your account does not have the required role."), 403);
+
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_(($page->get("title") ?? $page->get("slug"))." | %s"), App::get("APP_NAME")),
-                    "description"   => $page->get("description") ?? App::get("APP_DESCRIPTION"),
-                    "robots"        => $page->get("robots") ?? "index, follow",
-                    "canonical"     => $page->get("canonical") ?? App::get("APP_URL").$page->get("slug"),
-                    "class"         => $page->get("class") ?? "page"
+                    "meta" => (object) $page->get("meta")
                 ];
 
                 echo Template::get($page->get("template") ?? "", $this->env);
                 break;
             }
 
-        if (!$page_found)
+        if (!$pageFound)
             throw new Exception(_("Page not found."), 404);
     }
 
     /**
-     * 
+     *
      *  Displaying the website's login page.
      *
      *  @since  2.0
      *  @param  string  $request    The requested action.
-     * 
+     *
      */
     public function loginAction(string $request) {
         if (!App::get("APP_LOGIN"))
@@ -175,11 +180,12 @@ class IndexController extends Controller {
             case "/login":
 
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_("Log In | %s"), App::get("APP_NAME")),
-                    "description"   => App::get("APP_DESCRIPTION"),
-                    "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/login",
-                    "class"         => "account login"
+                    "meta" => (object) [
+                        "title"         => sprintf(_("Log In | %s"), App::get("APP_NAME")),
+                        "description"   => App::get("APP_DESCRIPTION"),
+                        "robots"        => "noindex, nofollow",
+                        "class"         => "account login"
+                    ]
                 ];
 
                 echo Template::get("/login.tpl", $this->env);
@@ -191,12 +197,12 @@ class IndexController extends Controller {
     }
 
     /**
-     * 
+     *
      *  Displaying the website's logout page.
      *
      *  @since  2.0
      *  @param  string  $request    The requested action.
-     * 
+     *
      */
     public function logoutAction(string $request) {
         if ($this->account->get("role") < Model\Account::USER)
@@ -204,20 +210,21 @@ class IndexController extends Controller {
 
         switch($request) {
             case "/logout":
-    
+
                 App::unset_auth_cookie();
                 $this->env["account"]->role = (new Model\Guest())->get("role");
 
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_("Log Out | %s"), App::get("APP_NAME")),
-                    "description"   => App::get("APP_DESCRIPTION"),
-                    "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/logout",
-                    "class"         => "account logout"
+                    "meta" => (object) [
+                        "title"         => sprintf(_("Log Out | %s"), App::get("APP_NAME")),
+                        "description"   => App::get("APP_DESCRIPTION"),
+                        "robots"        => "noindex, nofollow",
+                        "class"         => "account logout"
+                    ]
                 ];
 
                 echo Template::get("/logout.tpl", $this->env);
-    
+
                 break;
             default:
                 throw new Exception(_("Page not found."), 404);
@@ -225,12 +232,12 @@ class IndexController extends Controller {
     }
 
     /**
-     * 
+     *
      *  Displaying the website's goodbye page.
      *
      *  @since  2.0
      *  @param  string  $request    The requested action.
-     * 
+     *
      */
     public function goodbyeAction(string $request) {
         if ($this->account->get("role") != Model\Account::DEACTIVATED)
@@ -238,20 +245,21 @@ class IndexController extends Controller {
 
         switch($request) {
             case "/goodbye":
-    
+
                 App::unset_auth_cookie();
                 $this->env["account"]->role = (new Model\Guest())->get("role");
 
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_("Goodbye | %s"), App::get("APP_NAME")),
-                    "description"   => App::get("APP_DESCRIPTION"),
-                    "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/goodbye",
-                    "class"         => "account goodbye"
+                    "meta" => (object) [
+                        "title"         => sprintf(_("Goodbye | %s"), App::get("APP_NAME")),
+                        "description"   => App::get("APP_DESCRIPTION"),
+                        "robots"        => "noindex, nofollow",
+                        "class"         => "account goodbye"
+                    ]
                 ];
 
                 echo Template::get("/goodbye.tpl", $this->env);
-    
+
                 break;
             default:
                 throw new Exception(_("Page not found."), 404);
@@ -259,12 +267,12 @@ class IndexController extends Controller {
     }
 
     /**
-     * 
+     *
      *  Displaying the website's signup page.
      *
      *  @since  2.0
      *  @param  string  $request    The requested action.
-     * 
+     *
      */
     public function signupAction(string $request) {
         if (!App::get("APP_SIGNUP"))
@@ -280,15 +288,16 @@ class IndexController extends Controller {
             case "/signup":
 
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_("Sign Up | %s"), App::get("APP_NAME")),
-                    "description"   => App::get("APP_DESCRIPTION"),
-                    "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/signup",
-                    "class"         => "account signup"
+                    "meta" => (object) [
+                        "title"         => sprintf(_("Sign Up | %s"), App::get("APP_NAME")),
+                        "description"   => App::get("APP_DESCRIPTION"),
+                        "robots"        => "noindex, nofollow",
+                        "class"         => "account signup"
+                    ]
                 ];
-        
+
                 echo Template::get("/signup.tpl", $this->env);
-    
+
                 break;
             default:
                 throw new Exception(_("Page not found."), 404);
@@ -296,12 +305,12 @@ class IndexController extends Controller {
     }
 
     /**
-     * 
+     *
      *  Displaying the website's recovery page.
      *
      *  @since  2.0
      *  @param  string  $request    The requested action.
-     * 
+     *
      */
     public function recoveryAction(string $request) {
         if ($this->account->get("role") > Model\Account::GUEST)
@@ -311,16 +320,16 @@ class IndexController extends Controller {
             case "/recovery":
 
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_("Account Recovery | %s"), App::get("APP_NAME")),
-                    "description"   => App::get("APP_DESCRIPTION"),
-                    "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/recovery",
-                    "class"         => "account recovery"
-                    
+                    "meta" => (object) [
+                        "title"         => sprintf(_("Account Recovery | %s"), App::get("APP_NAME")),
+                        "description"   => App::get("APP_DESCRIPTION"),
+                        "robots"        => "noindex, nofollow",
+                        "class"         => "account recovery"
+                    ]
                 ];
 
                 echo Template::get("/recovery.tpl", $this->env);
-    
+
                 break;
             default:
                 throw new Exception(_("Page not found."), 404);
@@ -328,12 +337,12 @@ class IndexController extends Controller {
     }
 
     /**
-     * 
+     *
      *  Displaying the website's account page.
      *
      *  @since  2.0
      *  @param  string  $request    The requested action.
-     * 
+     *
      */
     public function accountAction(string $request) {
         if (App::get("APP_MAINTENANCE") && $this->account->get("role") != Model\Account::ADMINISTRATOR)
@@ -341,22 +350,23 @@ class IndexController extends Controller {
 
         if ($this->account->get("role") < Model\Account::USER)
             throw new Exception(_("Your account does not have the required role."), 403);
-        
+
         switch($request) {
             case "/account":
 
                 header("Location: ".App::get("APP_URL")."/account/personal");
                 exit;
-    
+
                 break;
              case "/account/personal":
 
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_("Personal Data | %s"), App::get("APP_NAME")),
-                    "description"   => App::get("APP_DESCRIPTION"),
-                    "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/account/personal",
-                    "class"         => "account personal"
+                    "meta" => (object) [
+                        "title"         => sprintf(_("Personal Data | %s"), App::get("APP_NAME")),
+                        "description"   => App::get("APP_DESCRIPTION"),
+                        "robots"        => "noindex, nofollow",
+                        "class"         => "account personal"
+                    ]
                 ];
 
                 echo Template:: get("/account/personal.tpl", $this->env);
@@ -365,11 +375,12 @@ class IndexController extends Controller {
             case "/account/security":
 
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_("Account & Security | %s"), App::get("APP_NAME")),
-                    "description"   => App::get("APP_DESCRIPTION"),
-                    "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/account/security",
-                    "class"         => "account security"
+                    "meta" => (object) [
+                        "title"         => sprintf(_("Account & Security | %s"), App::get("APP_NAME")),
+                        "description"   => App::get("APP_DESCRIPTION"),
+                        "robots"        => "noindex, nofollow",
+                        "class"         => "account security"
+                    ]
                 ];
 
                 echo Template:: get("/account/security.tpl", $this->env);
@@ -378,11 +389,12 @@ class IndexController extends Controller {
             case "/account/email":
 
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_("Email Settings | %s"), App::get("APP_NAME")),
-                    "description"   => App::get("APP_DESCRIPTION"),
-                    "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/account/email",
-                    "class"         => "account email"
+                    "meta" => (object) [
+                        "title"         => sprintf(_("Email Settings | %s"), App::get("APP_NAME")),
+                        "description"   => App::get("APP_DESCRIPTION"),
+                        "robots"        => "noindex, nofollow",
+                        "class"         => "account email"
+                    ]
                 ];
 
                 echo Template:: get("/account/email.tpl", $this->env);
@@ -394,67 +406,74 @@ class IndexController extends Controller {
     }
 
     /**
-     * 
+     *
      *  Displaying the website's admin page.
      *
      *  @since  3.0
      *  @param  string  $request    The requested action.
-     * 
+     *
      */
     public function adminAction(string $request) {
         if ($this->account->get("role") < Model\Account::ADMINISTRATOR)
             throw new Exception(_("Your account does not have the required role."), 403);
-        
+
         switch($request) {
             case "/admin":
 
                 header("Location: ".App::get("APP_URL")."/admin/accounts");
                 exit;
-    
+
                 break;
              case "/admin/accounts":
 
-                $query = "";
-                $filter = " WHERE role > ?";
-                $params[] = Model\Account::BLOCKED;
-            
-                if (!empty($role = Validator::integer($_GET["role"]))) {
-                    $query .= "&role=".$role;
-                    $filter = " WHERE role = ?";
-                    $params[0] = $role;
-                }
+                $role   = Validator::string($_GET["role"] ?? "");
+                $query  = (!empty($role)) ? "&role=".$role : "";
+                $filter = (!empty($role)) ? " WHERE role = ? ORDER BY username" : " WHERE role >= ? ORDER BY id DESC";
+                $params = (!empty($role)) ? [$role] : [Model\Account::USER];
 
-                if (!empty($search = Validator::string($_GET["search"]))) {
+                $result = Database::query("SELECT id FROM app_accounts".$filter, $params);
+
+                if (!empty($search = Validator::string($_GET["search"]??""))) {
                     $query .= "&search=".$search;
-                    $filter .= " AND (id = ? OR username LIKE ? OR email LIKE ?)";
-                    $params[] = $search;
-                    $params[] = "%".$search."%";
-                    $params[] = "%".$search."%";
+                    foreach($result as $key => $value) {
+                        $matchFound = false;
+                        $account = new Model\Account($value["id"]);
+                        foreach (["id", "username", "firstname", "lastname", "displayname", "email"] as $meta)
+                            if (strcasecmp($account->get($meta), $search) == 0) {
+                                $matchFound = true;
+                                break;
+                            }
+
+                        if (!$matchFound)
+                            $result[$key] = null;
+                    }
+                    $result = array_filter($result);
                 }
 
-                $result = Database::query("SELECT * FROM app_accounts".$filter, $params);
                 $count  = count($result);
                 $pages  = ceil(count($result) / 20);
-                $page   = Validator::integer($_GET["page"]) ?? 1;
+                $page   = Validator::integer($_GET["page"] ?? 1);
                 $page   = ($page > $pages || $page < 1) ? 1 : $page;
                 $result = array_slice($result, ($page - 1) * 20, 20);
 
                 $this->env["var"] = (object) [
-                    "count"    => $count,
-                    "query"    => $query,
-                    "accounts" => $result,
+                    "count"  => $count,
+                    "query"  => $query,
+                    "result" => array_map(fn($entry) => new Model\Account($entry["id"]), $result),
+                    "protected" => Model\Account::get_protected_names(),
                     "pagination" => (object) [
                         "page"  => $page,
-                        "pages" => $pages  
-                    ] 
+                        "pages" => $pages
+                    ]
                 ];
 
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_("All Accounts | %s"), App::get("APP_NAME")),
-                    "description"   => App::get("APP_DESCRIPTION"),
-                    "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/admin/accounts",
-                    "class"         => "admin account accounts"
+                    "meta" => (object) [
+                        "title"         => sprintf(_("All Accounts | %s"), App::get("APP_NAME")),
+                        "description"   => App::get("APP_DESCRIPTION"),
+                        "robots"        => "noindex, nofollow",
+                        "class"         => "admin account accounts"
+                    ]
                 ];
 
                 echo Template:: get("/admin/accounts.tpl", $this->env);
@@ -462,75 +481,85 @@ class IndexController extends Controller {
                 break;
             case "/admin/pages":
 
-                $query = "";
-                $filter = "";
-                $params = [];
-            
-                if (!empty($search = Validator::string($_GET["search"]))) {
+                $query  = "";
+                $result = Database::query("SELECT id FROM app_pages ORDER BY slug");
+
+                if (!empty($search = Validator::string($_GET["search"]??""))) {
                     $query .= "&search=".$search;
-                    $filter .= " WHERE id = ? OR slug LIKE ? OR title LIKE ? OR description LIKE ?";
-                    $params[] = $search;
-                    $params[] = "%".$search."%";
-                    $params[] = "%".$search."%";
-                    $params[] = "%".$search."%";
+                    foreach($result as $key => $value) {
+                        $matchFound = false;
+                        $page = new Model\Page($value["id"]);
+                        foreach (["id", "slug", "template", "title", "description"] as $meta)
+                            if (strcasecmp($page->get($meta), $search) == 0) {
+                                $matchFound = true;
+                                break;
+                            }
+
+                        if (!$matchFound)
+                            $result[$key] = null;
+                    }
+                    $result = array_filter($result);
                 }
 
-                $result = Database::query("SELECT * FROM app_pages".$filter, $params);
                 $count  = count($result);
                 $pages  = ceil(count($result) / 20);
-                $page   = Validator::integer($_GET["page"]) ?? 1;
+                $page   = Validator::integer($_GET["page"] ?? 1);
                 $page   = ($page > $pages || $page < 1) ? 1 : $page;
                 $result = array_slice($result, ($page - 1) * 20, 20);
 
                 $this->env["var"] = (object) [
                     "count"  => $count,
                     "query"  => $query,
-                    "result" => $result,
+                    "result" => array_map(fn($entry) => new Model\Page($entry["id"]), $result),
+                    "protected" => Model\Page::get_protected_names(),
                     "pagination" => (object) [
                         "page"  => $page,
-                        "pages" => $pages  
-                    ] 
+                        "pages" => $pages
+                    ]
                 ];
 
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_("Custom Pages | %s"), App::get("APP_NAME")),
-                    "description"   => App::get("APP_DESCRIPTION"),
-                    "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/admin/pages",
-                    "class"         => "admin account pages"
+                    "meta" => (object) [
+                        "title"         => sprintf(_("Custom Pages | %s"), App::get("APP_NAME")),
+                        "description"   => App::get("APP_DESCRIPTION"),
+                        "robots"        => "noindex, nofollow",
+                        "class"         => "admin account pages"
+                    ]
                 ];
 
                 echo Template:: get("/admin/pages.tpl", $this->env);
 
                 break;
-            case "/admin/filter":
-
-                $result = Database::query("SELECT * FROM app_badwords");
-                $count = count($result);
-                
-                $this->env["var"] = (object) [
-                    "count" => $count,
-                ];
+            case "/admin/filters":
 
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_("Filter Settings | %s"), App::get("APP_NAME")),
-                    "description"   => App::get("APP_DESCRIPTION"),
-                    "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/admin/filter",
-                    "class"         => "admin account filter"
+                    "meta" => (object) [
+                        "title"         => sprintf(_("Filter Settings | %s"), App::get("APP_NAME")),
+                        "description"   => App::get("APP_DESCRIPTION"),
+                        "robots"        => "noindex, nofollow",
+                        "class"         => "admin account filters"
+                    ]
                 ];
 
-                echo Template:: get("/admin/filter.tpl", $this->env);
+                echo Template:: get("/admin/filters.tpl", $this->env);
 
                 break;
             case "/admin/newsletter":
 
+                $accounts = array_column(Database::query("SELECT id FROM app_accounts WHERE role >= ?", [Model\Account::USER]), 'id');
+
+                $this->env["var"] = (object) [
+                    "accounts" => implode(',', $accounts),
+                    "counter"  => count($accounts)
+                ];
+
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_("Newsletter | %s"), App::get("APP_NAME")),
-                    "description"   => App::get("APP_DESCRIPTION"),
-                    "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/admin/newsletter",
-                    "class"         => "admin account newsletter"
+                    "meta" => (object) [
+                        "title"         => sprintf(_("Newsletter | %s"), App::get("APP_NAME")),
+                        "description"   => App::get("APP_DESCRIPTION"),
+                        "robots"        => "noindex, nofollow",
+                        "class"         => "admin account newsletter"
+                    ]
                 ];
 
                 echo Template:: get("/admin/newsletter.tpl", $this->env);
@@ -542,24 +571,25 @@ class IndexController extends Controller {
     }
 
     /**
-     * 
+     *
      *  Displaying the website's contact page.
      *
      *  @since  2.3     Ignoring maintenance mode if active.
      *  @since  2.0
      *  @param  string  $request    The requested action.
-     * 
+     *
      */
     public function contactAction(string $request) {
         switch($request) {
             case "/contact":
 
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_("Contact | %s"), App::get("APP_NAME")),
-                    "description"   => App::get("APP_DESCRIPTION"),
-                    "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/contact",
-                    "class"         => "page contact"
+                    "meta" => (object) [
+                        "title"         => sprintf(_("Contact | %s"), App::get("APP_NAME")),
+                        "description"   => App::get("APP_DESCRIPTION"),
+                        "robots"        => "noindex, nofollow",
+                        "class"         => "page contact"
+                    ]
                 ];
 
                 echo Template::get("/contact.tpl", $this->env);
@@ -571,12 +601,12 @@ class IndexController extends Controller {
     }
 
     /**
-     * 
+     *
      *  Displaying the website's cron page.
      *
      *  @since  2.0
      *  @param  string  $request    The requested action.
-     * 
+     *
      */
     public function cronAction(string $request) {
         if (!App::get("APP_CRON"))
@@ -584,7 +614,7 @@ class IndexController extends Controller {
 
         switch($request) {
             case "/cron":
-    
+
                 echo Template::get("/cron.tpl", $this->env);
 
                 break;
@@ -594,12 +624,12 @@ class IndexController extends Controller {
     }
 
     /**
-     * 
+     *
      *  Displaying the website's maintenance page.
      *
      *  @since  2.0
      *  @param  string  $request    The requested action.
-     * 
+     *
      */
     public function maintenanceAction(string $request) {
         if (!App::get("APP_MAINTENANCE"))
@@ -609,11 +639,12 @@ class IndexController extends Controller {
             case "/maintenance":
 
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_("Maintenance | %s"), App::get("APP_NAME")),
-                    "description"   => App::get("APP_DESCRIPTION"),
-                    "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/maintenance",
-                    "class"         => "page maintenance"
+                    "meta" => (object) [
+                        "title"         => sprintf(_("Maintenance | %s"), App::get("APP_NAME")),
+                        "description"   => App::get("APP_DESCRIPTION"),
+                        "robots"        => "noindex, nofollow",
+                        "class"         => "page maintenance"
+                    ]
                 ];
 
                 echo Template::get("/maintenance.tpl", $this->env);
@@ -625,23 +656,24 @@ class IndexController extends Controller {
     }
 
     /**
-     * 
+     *
      *  Displaying the website's error page.
      *  @since  2.3     Added http response code 404.
      *  @since  2.0
      *  @param  string  $request    The requested action.
-     * 
+     *
      */
     public function oopsAction(string $request) {
         switch($request) {
             case "/oops":
 
                 $this->env["page"] = (object) [
-                    "title"         => sprintf(_("oops! | %s"), App::get("APP_NAME")),
-                    "description"   => App::get("APP_DESCRIPTION"),
-                    "robots"        => "noindex, nofollow",
-                    "canonical"     => App::get("APP_URL")."/oops",
-                    "class"         => "page oops"
+                    "meta" => (object) [
+                        "title"         => sprintf(_("oops! | %s"), App::get("APP_NAME")),
+                        "description"   => App::get("APP_DESCRIPTION"),
+                        "robots"        => "noindex, nofollow",
+                        "class"         => "page oops"
+                    ]
                 ];
 
                 http_response_code(404);
@@ -654,11 +686,11 @@ class IndexController extends Controller {
     }
 
     /**
-     * 
+     *
      *  Executes actions after the main action.
-     * 
+     *
      *  @since  2.3
-     * 
+     *
      */
     public function afterAction() {
         return;

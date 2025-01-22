@@ -1,5 +1,5 @@
 /**
- * 
+ *
  *  MVC
  *  Model View Controller (MVC) design pattern for simple web applications.
  *
@@ -7,7 +7,7 @@
  *
  *  @author  Fabio Doppio (Developer) <hallo@fabiodoppio.de>
  *  @license https://opensource.org/license/mit/ MIT License
- * 
+ *
  */
 
 @-webkit-keyframes fadein{from{opacity:0}to{opacity:1}}@keyframes fadein{from{opacity:0}to{opacity:1}}@-webkit-keyframes fadeout{from{opacity:1}to{opacity:0}}@keyframes fadeout{from{opacity:1}to{opacity:0}}@-webkit-keyframes fadeslidein{from{bottom:-30px;opacity:0}to{bottom:0;opacity:1}}@keyframes fadeslidein{from{bottom:-30px;opacity:0}to{bottom:0;opacity:1}}@-webkit-keyframes fadeslideout{from{bottom:0;opacity:1}to{bottom:-30px;opacity:0}}@keyframes fadeslideout{from{bottom:0;opacity:1}to{bottom:-30px;opacity:0}}@-webkit-keyframes slidein{from{top:-300px;opacity:0}to{top:0;opacity:1}}@keyframes slidein{from{top:-300px;opacity:0}to{top:0;opacity:1}}@-webkit-keyframes slideout{from{top:0;opacity:1}to{top:300px;opacity:0}}@keyframes slideout{from{top:0;opacity:1}to{top:300px;opacity:0}}@-webkit-keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}

@@ -6,18 +6,14 @@
                 <img src="{{$app->url}}/media/logo.png" alt="_logo" style="width:60px;height:auto;display:block;margin:0 auto;"/>
             </div>
             <div style="text-align:center;font-size:28px;font-weight:bold;margin:10px 0 30px;">
-                {{"2-Factor Authentication"}}
+                {{"Account Blocked"}}
             </div>
             <div style="font-size:16px;line-height:22px;text-align:left;">
                 {{"Hello %s,", $account->meta->displayname ?? $account->username}}
                 <br/><br/>
-                {{"you are receiving this email because you are trying to log in from a new device or browser on %s.", $app->name}}
+                {{"you are receiving this email because your account on %s has been blocked.", $app->name}}
                 <br/><br/>
-                {{"Please enter the following code to complete the authentication:"}}
-                <br/><br/>
-                <div style="background:#ebebeb;font-size:24px;font-weight:bold;letter-spacing:.15em;text-align:center;width:50%;margin:0 auto;padding:20px;">{{$var->code}}</div>
-                <br/>
-                {{"The code expires <b>15 minutes</b> after receiving this email."}}
+                {{"If you think this was a mistake, please contact our support team:"}} <a href="{{$app->url}}/contact">{{$app->url}}/contact</a>
                 <br/><br/><br/>
                 {{"Best regards"}}<br/>
                 {{$app->name}}

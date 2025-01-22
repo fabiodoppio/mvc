@@ -1,4 +1,4 @@
-{% include /_includes/header.tpl %} 
+{% include /_includes/header.tpl %}
         {% include /_includes/topbar.tpl %}
 
         <main>
@@ -34,4 +34,4 @@
             </div>
         </main>
 
-{% include /_includes/footer.tpl %} 
+{% include /_includes/footer.tpl %}

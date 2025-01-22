@@ -1,24 +1,24 @@
-{% include /_includes/header.tpl %} 
-        {% include /_includes/topbar.tpl %} 
+{% include /_includes/header.tpl %}
+        {% include /_includes/topbar.tpl %}
 
         <main>
             <div class="container">
-                {% include /_includes/sidebar.tpl %}
+                {% include /account/_includes/sidebar.tpl %}
                 <div class="main-content is--fading">
                     <h1 class="title">{{"Hey %s!", $account->meta->displayname ?? $account->username}}</h1>
-                    <p>{{"Manage your appearance and the information you want to share with us. Keep in mind that some of these data may be visible to other users on this platform."}}</p> 
+                    <p>{{"Manage your appearance and the information you want to share with us. Keep in mind that some of these data may be visible to other users on this platform."}}</p>
                     <h2>{{"Avatar"}}</h2>
-                    {% if ($account->role < $account->roles->verified): %}  
+                    {% if ($account->role < $account->roles->verified): %}
                         <br/>
-                        <div class="alert is--info">{{"You have to verify your email address before you can upload an avatar."}} {{"<a href=\"%s/account/email\">Verify now</a> to gain full access to all features of this app.", $app->url}}</div> 
+                        <div class="alert is--info">{{"You have to verify your email address before you can upload an avatar."}} {{"<a href=\"%s/account/email\">Verify now</a> to gain full access to all features of this app.", $app->url}}</div>
                     {% else: %}
                         <form data-request="account/personal/avatar/upload">
-                            <label> 
-                                <div class="tooltip"><i class="fas fa-circle-info"></i><span>{{"Your image must be squared and not exceed the maximum allowed file size of %s KB.", "3072"}}</span></div>
+                            <label>
+                                <div class="tooltip"><i class="fas fa-circle-info"></i><span>{{"Your image must be squared and not exceed the maximum allowed file size of %s MB.", 3}}</span></div>
                             </label>
                             <div class="avatar">
                                 {% if (isset($account->meta->avatar)): %}
-                                    <img src="{{$app->url}}{{$app->directory->media}}/avatars/{{$account->meta->avatar}}" alt="_avatar"/>
+                                    <img src="{{$app->url}}/media/avatars/{{$account->meta->avatar}}" alt="_avatar"/>
                                 {% endif; %}
                             </div>
                             <input type="file" name="avatar" accept="image/*" hidden/>
@@ -53,10 +53,6 @@
                                 {% endif; %}
                             </select>
                         </label>
-                        <label for="company">
-                            {{"Company"}}
-                            <input type="text" id="company" name="company" maxlength="64" placeholder="{{'Enter company'}}" value="{{$account->meta->company}}" autocomplete="organization"/>
-                        </label>
                         <label for="firstname">
                             {{"First Name"}}
                             <input type="text" id="firstname" name="firstname" maxlength="64" placeholder="{{'Enter first name'}}" value="{{$account->meta->firstname}}" autocomplete="given-name additional-name"/>
@@ -83,6 +79,18 @@
                         </label>
                         <button class="btn is--primary is--submit">{{"Save Changes"}}</button>
                     </form>
+                    <h2>{{"Business Data"}}</h2>
+                    <form data-request="account/personal/edit">
+                        <label for="company">
+                            {{"Company"}}
+                            <input type="text" id="company" name="company" maxlength="64" placeholder="{{'Enter company'}}" value="{{$account->meta->company}}" autocomplete="organization"/>
+                        </label>
+                        <label for="vat">
+                            {{"VAT Number"}}
+                            <input type="text" id="vat" name="vat" maxlength="64" placeholder="{{'Enter VAT number'}}" value="{{$account->meta->vat}}" autocomplete="off"/>
+                        </label>
+                        <button class="btn is--primary is--submit">{{"Save Changes"}}</button>
+                    </form>
                     {% if (count($app->languages) > 1): %}
                         <h2>{{"Language"}}</h2>
                         <form data-request="account/locale">
@@ -90,8 +98,8 @@
                                 {{"Preferred Language"}} <span class="is--required" title="{{'Required'}}">*</span>
                                 <select id="language" name="value" autocomplete="language" required>
                                     {% $language = $account->meta->language ?? $app->language; %}
-                                    {% foreach($app->languages as $key => $value): %}
-                                        <option value="{{$value}}" {{($language == $value) ? "selected" : ""}}>{{$key}}</option>
+                                    {% foreach($app->languages as $value): %}
+                                        <option value="{{$value}}" {{($language == $value) ? "selected" : ""}}>{% echo _($value); %}</option>
                                     {% endforeach; %}
                                 </select>
                             </label>
@@ -102,4 +110,4 @@
             </div>
         </main>
 
-{% include /_includes/footer.tpl %} 
+{% include /_includes/footer.tpl %}

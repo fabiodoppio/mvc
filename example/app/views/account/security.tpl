@@ -1,9 +1,9 @@
-{% include /_includes/header.tpl %} 
-        {% include /_includes/topbar.tpl %} 
+{% include /_includes/header.tpl %}
+        {% include /_includes/topbar.tpl %}
 
         <main>
             <div class="container">
-                {% include /_includes/sidebar.tpl %}
+                {% include /account/_includes/sidebar.tpl %}
                 <div class="main-content is--fading">
                     <h1 class="title">{{"Account & Security"}}</h1>
                     <p>{{"Manage your login credentials and security settings. These data are extremely sensitive and will <b>never</b> be shown to other users on this platform. An employee will never ask for your password!"}}</p>
@@ -11,7 +11,7 @@
                         <h2>{{"Login Credentials"}}</h2>
                         <label for="username">
                             {{"Username"}} <span class="is--required" title="{{'Required'}}">*</span>
-                            <div class="tooltip"><i class="fas fa-circle-info"></i><span>{{"Your username must be between 3 and 18 characters long<br/>and cannot contain any special characters."}}</span></div>
+                            <div class="tooltip"><i class="fas fa-circle-info"></i><span>{{"You can not change your username."}}</span></div>
                             <input type="text" id="username" minlength="3" maxlength="18" name="username" value="{{$account->username}}" placeholder="{{'Enter username'}}"  autocomplete="username" required disabled/>
                         </label>
                         <label for="pw">
@@ -35,8 +35,8 @@
                     <form data-request="account/security/2fa">
                         {% if ($account->role < $account->roles->verified): %}
                             <div class="alert is--error"><i class="fas fa-shield-halved"></i> {{"Your account is <b>not</b> protected by the 2-Factor Authentication."}}</div><br/>
-                            <div class="alert is--info">{{"You have to verify your email address before you can acitvate the 2-Factor Authentication."}} {{"<a href=\"%s/account/email\">Verify now</a> to gain full access to all features of this app.", $app->url}}</div>                    
-                        {% else: %}  
+                            <div class="alert is--info">{{"You have to verify your email address before you can acitvate the 2-Factor Authentication."}} {{"<a href=\"%s/account/email\">Verify now</a> to gain full access to all features of this app.", $app->url}}</div>
+                        {% else: %}
                             {% if (!empty($account->meta->{'2fa'})): %}
                                 <div class="alert is--success"><i class="fas fa-shield-heart"></i> {{"Your account is protected by the 2-Factor Authentication."}}</div>
                                 <button class="btn is--primary is--submit">{{"Deactivate"}}</button>
@@ -59,7 +59,7 @@
                             <h3>{{"Are you sure?"}}</h3>
                             <p>{{"You will be logged out immediately and will no longer have access to your account."}}</p>
                             <button class="btn is--warning is--submit" data-request="account/security/deactivate">{{"Deactivate Account"}}</button>
-                            <button class="btn is--secondary">{{"Abort"}}</button>
+                            <button class="btn is--secondary" data-trigger="close">{{"Abort"}}</button>
                         </div>
                     </div>
                 </div>
