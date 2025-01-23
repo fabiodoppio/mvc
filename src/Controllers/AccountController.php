@@ -191,12 +191,13 @@ class AccountController extends Controller {
                     if (empty($_POST["pw1"]) || empty($_POST["pw2"]))
                         throw new Exception(_("Required input not found."), 1610);
 
+                    $account->recover(Validator::string($_POST["code"]), Validator::password($_POST["pw1"], $_POST["pw2"]));
+
                     if (isset($_SESSION["tmp_post"])) {
                         unset($_SESSION["tmp_post"]);
                         session_regenerate_id();
                     }
 
-                    $account->recover(Validator::string($_POST["code"]), Validator::password($_POST["pw1"], $_POST["pw2"]));
                     Ajax::add('form[data-request="account/recovery"]', '<div class="alert is--success">'.sprintf(_("Account successfully restored. You can now <a href=\"%s/login\">log in</a> as usual."), App::get("APP_URL")).'</div>');
                 }
 
