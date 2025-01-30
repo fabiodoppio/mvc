@@ -166,6 +166,7 @@ class App {
         try {
             session_start();
             self::set_config($config);
+            self::set_error_reporting(App::get("APP_DEBUG"));
             self::set_locale_runtime($_COOKIE["locale"] ?? self::get("APP_LANGUAGE"));
             date_default_timezone_set(self::get("APP_TIMEZONE"));
 
