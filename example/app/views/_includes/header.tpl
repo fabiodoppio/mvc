@@ -8,13 +8,13 @@
         <meta http-equiv="expires" content="3600"/>
 		<meta name="viewport" content="width=device-width, shrink-to-fit=yes"/>
 		<meta name="author" content="{{$app->author}}"/>
-	    <meta name="robots" content="{{$page->meta->robots}}"/>
-        <meta name="description" content="{{$page->meta->description}}"/>
-        <meta name="keywords" content="{{$page->meta->keywords}}"/>
+	    <meta name="robots" content="{{$page->meta->robots??''}}"/>
+        <meta name="description" content="{{$page->meta->description??''}}"/>
+        <meta name="keywords" content="{{$page->meta->keywords??''}}"/>
         <meta name="revisit-after" content="14 days"/>
         <meta property="og:title" content="{{$page->meta->title}}"/>
         <meta property="og:locale" content="{{'en-GB'}}"/>
-        <meta property="og:description" content="{{$page->meta->description}}"/>
+        <meta property="og:description" content="{{$page->meta->description??''}}"/>
         <meta property="og:url" content="{{$app->url}}{{$request->uri}}"/>
         <meta property="og:site_name" content="{{$app->name}}"/>
         <meta property="og:image" content=""/>
