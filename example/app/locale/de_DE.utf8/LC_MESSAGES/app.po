@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MVC 3.0\n"
 "POT-Creation-Date: 2025-01-22 08:55+0100\n"
-"PO-Revision-Date: 2025-01-22 08:55+0100\n"
+"PO-Revision-Date: 2025-09-24 13:59+0200\n"
 "Last-Translator: Fabio Doppio <hallo@fabiodoppio.de>\n"
 "Language-Team: Fabio Doppio\n"
 "Language: de_DE\n"
@@ -575,7 +575,7 @@ msgid "Hello %s,"
 msgstr "Hallo %s,"
 
 msgid "you are receiving this email because you are trying to verify your email address on %s."
-msgstr "du erhälst diese E-Mail, weil du deine E-Mail Adresse auf %s verifizieren möchtest."
+msgstr "du erhältst diese E-Mail, weil du deine E-Mail Adresse auf %s verifizieren möchtest."
 
 msgid "Please enter the following code to complete the verification:"
 msgstr "Bitte gib den folgenden Code ein, um die Verifizierung abzuschließen:"
@@ -605,7 +605,7 @@ msgid "Account Recovery"
 msgstr "Account wiederherstellen"
 
 msgid "you are receiving this email because someone is trying to recover your account on %s. If this wasn't you, you can simply ignore this email."
-msgstr "du erhälst diese E-Mail, weil jemand deinen Account auf %s wiederherstellen möchte. Wenn du das nicht warst, kannst du diese E-Mail einfach ignorieren."
+msgstr "du erhältst diese E-Mail, weil jemand deinen Account auf %s wiederherstellen möchte. Wenn du das nicht warst, kannst du diese E-Mail einfach ignorieren."
 
 msgid "Please enter the following code to complete the recovery:"
 msgstr "Bitte gib den folgenden Code ein, um die Wiederherstellung abzuschließen:"
@@ -626,7 +626,7 @@ msgid "If you would like to add something to your message, you can simply reply 
 msgstr "Wenn du deiner Nachricht noch etwas hinzufügen möchtest, kannst du einfach auf die Reply-To-Adresse dieser E-Mail antworten."
 
 msgid "you are receiving this email because your account on %s has been deactivated."
-msgstr "du erhälst diese E-Mail, weil dein Account auf %s deaktiviert wurde."
+msgstr "du erhältst diese E-Mail, weil dein Account auf %s deaktiviert wurde."
 
 msgid "If this was a mistake, you have 90 days to recover your account before it will be permanently deleted from our servers. You can click on this link to start the recovery:"
 msgstr "Falls das ein Fehler war, hast du nun 90 Tage Zeit, um deinen Account wiederherzustellen, bevor dieser permanent von unseren Servern gelöscht wird. Du kannst auf diesen Link klicken, um die Wiederherstellung zu starten:"
@@ -677,7 +677,7 @@ msgid "Enter text"
 msgstr "Text eingeben"
 
 msgid "you are receiving this email because you are trying to log in from a new device or browser on %s."
-msgstr "du erhälst diese E-Mail, weil du versuchst, dich von einem neuen Gerät oder Browser auf %s anzumelden."
+msgstr "du erhältst diese E-Mail, weil du versuchst, dich von einem neuen Gerät oder Browser auf %s anzumelden."
 
 msgid "Please enter the following code to complete the authentication:"
 msgstr "Bitte gib den folgenden Code ein, um die Authentifizierung abzuschließen:"
@@ -731,7 +731,7 @@ msgid "Confirmation Code"
 msgstr "Bestätigungscode"
 
 msgid "You can find the 6-digit confirmation code in the email we sent you."
-msgstr "Du kannst den 6 Zeichen langen Bestätgungscode in der E-Mail finden, die wir dir gesendet haben."
+msgstr "Du kannst den 6 Zeichen langen Bestätigungscode in der E-Mail finden, die wir dir gesendet haben."
 
 msgid "Enter confirmation code"
 msgstr "Bestätigungscode eingeben"
@@ -815,7 +815,7 @@ msgid "Account Blocked"
 msgstr "Account blockiert"
 
 msgid "you are receiving this email because your account on %s has been blocked."
-msgstr "du erhälst diese E-Mail, weil dein Account auf %s blockiert wurde."
+msgstr "du erhältst diese E-Mail, weil dein Account auf %s blockiert wurde."
 
 msgid "If you think this was a mistake, please contact our support team:"
 msgstr "Wenn du der Meinung bist, dass dies ein Fehler war, kontaktiere bitte unser Support-Team:"
@@ -1049,7 +1049,7 @@ msgid "2-Factor Authentication | %s"
 msgstr "2-Faktor Authentifizierung | %s"
 
 msgid "You have entered an invalid PIN code too many times. Please wait 20 minutes and try again."
-msgstr "Du hast zu oft einen ungültigen PIN Code eingegeben. Bitte warte 20 Minunten und versuche es dann erneut."
+msgstr "Du hast zu oft einen ungültigen PIN Code eingegeben. Bitte warte 20 Minuten und versuche es dann erneut."
 
 msgid "This PIN code is invalid."
 msgstr "Dieser PIN Code ist ungültig."
