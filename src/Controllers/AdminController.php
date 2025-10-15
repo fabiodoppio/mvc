@@ -304,7 +304,7 @@ class AdminController extends Controller {
                     $page->set("template", Validator::string($_POST["template"]));
 
                 if (isset($_POST["requirement"]) && $_POST["requirement"] != $page->get("requirement")) {
-                    if ($_POST["requirement"] == "" || $_POST["requirement"] < 0 || $_POST["role"] > Model\Account::ADMINISTRATOR)
+                    if ($_POST["requirement"] == "" || $_POST["requirement"] < 0 || $_POST["requirement"] > Model\Account::ADMINISTRATOR)
                         throw new Exception(_("You can not change to requested requirement."), 1721);
 
                     $page->set("requirement", Validator::integer($_POST["requirement"]));
