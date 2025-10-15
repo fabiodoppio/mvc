@@ -218,6 +218,7 @@ class App {
      *
      *  Set the value of one or more configuration variables.
      *
+     *  @since  3.04    Replaced switch with match.
      *  @since  3.0     Added config validation.
      *  @since  2.1
      *  @param  array   $config         An associative array containing the configuration variables
@@ -226,32 +227,31 @@ class App {
     public static function set_config(array $config) {
         foreach ($config as $name => $value)
             if (property_exists(__CLASS__, $name))
-                switch($name) {
-                    case "APP_URL":
-                        self::$$name = Validator::url($value);
-                        break;
-                    case "APP_DEBUG":
-                    case "APP_MAINTENANCE":
-                    case "APP_CRON":
-                    case "APP_LOGIN":
-                    case "APP_SIGNUP":
-                    case "NOTIFY_RECEIVED":
-                    case "NOTIFY_WELCOME":
-                    case "NOTIFY_NEWACCOUNT":
-                    case "NOTIFY_DEACTIVATED":
-                        self::$$name = Validator::boolean($value);
-                        break;
-                    case "MAIL_PORT":
-                        self::$$name = Validator::integer($value);
-                        break;
-                    case "APP_LANGUAGES":
-                        self::$$name = Validator::array($value);
-                        break;
-                    default:
-                        self::$$name = Validator::string($value);
-                }
+                self::$$name = match($name) {
+                    "APP_URL" => Validator::url($value),
+                    "APP_DEBUG",
+                    "APP_MAINTENANCE",
+                    "APP_CRON",
+                    "APP_LOGIN",
+                    "APP_SIGNUP",
+                    "NOTIFY_RECEIVED",
+                    "NOTIFY_WELCOME",
+                    "NOTIFY_NEWACCOUNT",
+                    "NOTIFY_DEACTIVATED" => Validator::boolean($value),
+                    "MAIL_PORT" => Validator::integer($value),
+                    "APP_LANGUAGES" => Validator::array($value),
+                    default => Validator::string($value)
+                };
     }
 
+    /**
+     *
+     *  Set error reporting.
+     *
+     *  @since  2.1
+     *  @param  bool   $enable      True (on) or false (off).
+     *
+     */
     public static function set_error_reporting(bool $enable = true) {
         if ($enable !== true)
             return;

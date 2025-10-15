@@ -31,45 +31,64 @@ class Database {
      public static $insert_id = 0;
 
      /**
-      *  @var  array     $connections   Property to manage a pool of reusable database connections.
+      *  @var  \mysqli   $connection    Property to manage reusable database connections.
       */
-     private static $connections = [];
+     private static $connection = null;
 
 
      /**
       *
       *  Establish a connection to the MySQL database using the application's configuration.
       *
+      *  @since     3.04                Changed way to connect to database for performance reasons.
       *  @since     2.0
       *  @return    \mysqli|false       A MySQLi object representing the database connection or false if the connection fails.
       *
       */
-	public static function connect() {
-          if (!empty(self::$connections))
-               return array_pop(self::$connections);
+	private static function connect() {
+          if (self::$connection instanceof \mysqli)
+               return self::$connection;
 
-		return mysqli_connect(App::get("DB_HOST") , App::get("DB_USERNAME"), App::get("DB_PASSWORD"), App::get("DB_DATABASE"));
+          $mysqli = new \mysqli(
+               App::get("DB_HOST"),
+               App::get("DB_USERNAME"),
+               App::get("DB_PASSWORD"),
+               App::get("DB_DATABASE")
+          );
+
+          $mysqli->set_charset("utf8mb4");
+          self::$connection = $mysqli;
+
+		return $mysqli;
 	}
 
 	/**
       *
       *  Execute an SQL query on the database.
       *
-      *  @since     2.2            Added specific error message on mysqli_sql_exception
+      *  @since     3.04           Added different types for bind_params, performance tweaks.
+      *  @since     2.2            Added specific error message on mysqli_sql_exception.
       *  @since     2.0
       *  @param     string         $sql      The SQL query to execute.
       *  @param     array          $params   Parameters to bind the prepared statement.
-      *  @return    array|null               An array of query results or null if no results are found.
+      *  @return    array                    An array of query results.
       *
       */
      public static function query(string $sql, array $params = []) {
           try {
                $mysqli = self::connect();
-               $mysqli->set_charset("utf8mb4");
                $stmt = $mysqli->prepare($sql);
 
                if (!empty($params)) {
-                    $types = str_repeat('s', count($params));
+                    $types = '';
+                    foreach($params as $p)
+                         $types .= match(gettype($p)) {
+                              'integer' => 'i',
+                              'double'  => 'd',
+                              'string'  => 's',
+                              'NULL'    => 's',
+                              default   => 'b',
+                         };
                     $stmt->bind_param($types, ...$params);
                }
 
@@ -82,13 +101,12 @@ class Database {
                     while ($row = $result->fetch_assoc())
                          $rows[] = $row;
 
+               $result->free();
                $stmt->close();
-               self::$connections[] = $mysqli;
-
                return $rows;
           }
-          catch(\mysqli_sql_exception $exception) {
-               throw new Exception(_("Connection to MySQL database failed: ".$exception->getMessage()), 1100);
+          catch(\mysqli_sql_exception $e) {
+               throw new Exception(_("Connection to MySQL database failed: ".$e->getMessage()), 1100);
           }
      }
 

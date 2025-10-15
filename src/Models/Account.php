@@ -411,36 +411,22 @@ class Account extends Model\Model {
      *
      *  Get the accounts role name.
      *
+     *  @since  3.04        Replaced switch with match.
      *  @since  3.0
      *  @return string      The accounts role name.
      *
      */
     public function get_role_name() {
-        switch($this->get("role")) {
-            case self::BLOCKED:
-                return _("Blocked");
-                break;
-            case self::DEACTIVATED:
-                return _("Deactivated");
-                break;
-            case self::USER:
-                return _("Not Verified");
-                break;
-            case self::VERIFIED;
-                return _("User");
-                break;
-            case self::SUPPORTER;
-                return _("Supporter");
-                break;
-            case self::MODERATOR;
-                return _("Moderator");
-                break;
-            case self::ADMINISTRATOR;
-                return _("Administrator");
-                break;
-            default:
-                return _("Undefined");
-        }
+        return match($this->get("role")) {
+            self::BLOCKED => _("Blocked"),
+            self::DEACTIVATED => _("Deactivated"),
+            self::USER => _("Not Verified"),
+            self::VERIFIED => _("User"),
+            self::SUPPORTER => _("Supporter"),
+            self::MODERATOR => _("Moderator"),
+            self::ADMINISTRATOR => _("Administrator"),
+            default => _("Undefined")
+        };
     }
 
     /**
