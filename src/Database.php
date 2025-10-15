@@ -97,11 +97,12 @@ class Database {
                self::$insert_id = $mysqli->insert_id;
 
                $rows = [];
-               if ($result !== false)
+               if ($result !== false) {
                     while ($row = $result->fetch_assoc())
                          $rows[] = $row;
+                    $result->free();
+               }
 
-               $result->free();
                $stmt->close();
                return $rows;
           }
