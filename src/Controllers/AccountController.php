@@ -17,6 +17,7 @@ namespace MVC\Controllers;
 
 use MVC\Ajax        as Ajax;
 use MVC\App         as App;
+use MVC\Database    as Database;
 use MVC\Exception   as Exception;
 use MVC\Mailer      as Mailer;
 use MVC\Models      as Model;
@@ -491,6 +492,11 @@ class AccountController extends Controller {
                 if (isset($_FILES["attachment"]) && $this->account->get("role") < Model\Account::VERIFIED)
                     throw new Exception(_("You have to verify your email address before you can send a message with an attachment."), 1630);
 
+                $rateLimit = ($this->account->get("role") < Model\Account::USER) ? 3 : 10;
+                if (count(Database::query("SELECT id FROM app_accounts_log WHERE id = ? AND event = ? AND timestamp BETWEEN (NOW() - INTERVAL ? MINUTE) AND NOW()", 
+                    [$this->account->get("id"), "email_sent", 60])) > $rateLimit)
+                        throw new Exception(_("Too many requests in a short time."), 1600);
+
                 $prefix = (!empty($_POST["emergency"]) && $_POST["emergency"] == 1) ? "["._("URGENT")."] " : "";
 
                 App::set_locale_runtime(App::get("APP_LANGUAGE"));
@@ -522,9 +528,9 @@ class AccountController extends Controller {
                         ]
                     ]), App::get("MAIL_RECEIVER"));
 
-                Ajax::add('form[data-request="account/help"]', '<div class="alert is--success">'._("Message successfully sent.").'</div>');
-                Ajax::add('form[data-request="account/contact"]', '<div class="alert is--success">'._("Message successfully sent.").'</div>');
-                Ajax::add('form[data-request="account/feedback"]', '<div class="alert is--success">'._("Message successfully sent.").'</div>');
+                $this->account->log("email_sent");
+
+                Ajax::add('form[data-request="account/help"], form[data-request="account/contact"], form[data-request="account/feedback"]', '<div class="alert is--success">'._("Message successfully sent.").'</div>');
 
                 break;
             default:

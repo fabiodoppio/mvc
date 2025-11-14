@@ -30,7 +30,7 @@ use MVC\Template    as Template;
  *  It provides methods for accessing and managing guest account data stored in the session.
  *
  */
-class Guest extends Model\Model {
+class Guest extends Model\Account {
 
     /**
      *
@@ -47,6 +47,7 @@ class Guest extends Model\Model {
         if (empty($_SESSION["guest"] ?? []))
             $_SESSION["guest"] = [
                 "data" => [
+                    "id" => uniqid("guest"),
                     "token" => App::generate_token(),
                     "role" => Model\Account::GUEST,
                     "lastaction" => "",
@@ -85,18 +86,6 @@ class Guest extends Model\Model {
             $_SESSION["guest"]["data"][$name] = $value;
         else
             $_SESSION["guest"]["data"]["meta"][$name] = $value;
-    }
-
-    /**
-     *
-     *  Add an event to the guests log.
-     *
-     *  @since  2.0
-     *  @param  string      $event      The event to be added to the log
-     *
-     */
-    public function log(string $event) {
-        $_SESSION["guest"]["log"][] = $event;
     }
 
     /**
