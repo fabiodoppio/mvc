@@ -493,9 +493,12 @@ class AccountController extends Controller {
                 if (isset($_FILES["attachment"]) && $this->account->get("role") < Model\Account::VERIFIED)
                     throw new Exception(_("You have to verify your email address before you can send a message with an attachment."), 1630);
 
-                $rateLimit = ($this->account->get("role") < Model\Account::USER) ? 3 : 10;
-                if (count(Database::query("SELECT id FROM app_accounts_log WHERE id = ? AND event = ? AND timestamp BETWEEN (NOW() - INTERVAL ? MINUTE) AND NOW()", 
-                    [$this->account->get("id"), "email_sent", 60])) > $rateLimit)
+                if (count(Database::query("SELECT id FROM app_accounts_log WHERE event = ? AND timestamp BETWEEN (NOW() - INTERVAL ? MINUTE) AND NOW()",
+                    ["email_sent", 60])) > 50)
+                        throw new Exception(_("Too many requests in a short time."), 1600);
+
+                if (count(Database::query("SELECT id FROM app_accounts_log WHERE id = ? AND event = ? AND timestamp BETWEEN (NOW() - INTERVAL ? MINUTE) AND NOW()",
+                    [$this->account->get("id"), "email_sent", 60])) > 5)
                         throw new Exception(_("Too many requests in a short time."), 1600);
 
                 $prefix = (!empty($_POST["emergency"]) && $_POST["emergency"] == 1) ? "["._("URGENT")."] " : "";
