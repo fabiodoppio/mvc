@@ -117,6 +117,7 @@ class AccountController extends Controller {
 
                 $account->set("remember_me", $remember);
                 $account->set("lastaction", date("Y-m-d H:i:s", time()));
+                $account->log("login");
 
                 App::set_auth_cookie($account->get("id"), $account->get("token"), $remember);
                 App::set_locale_cookie($account->get("language")??App::get("APP_LANGUAGE"));
@@ -195,6 +196,7 @@ class AccountController extends Controller {
                         throw new Exception(_("Required input not found."), 1610);
 
                     $account->recover(Validator::string($_POST["code"]), Validator::password($_POST["pw1"], $_POST["pw2"]));
+                    $account->log("recovered");
 
                     if (isset($_SESSION["tmp_post"])) {
                         unset($_SESSION["tmp_post"]);
