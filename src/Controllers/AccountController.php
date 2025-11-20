@@ -62,6 +62,7 @@ class AccountController extends Controller {
      *
      *  Handles the login action, including account authentication.
      *
+     *  @since  3.1     Add account lastaction.
      *  @since  2.0
      *  @param  string  $request    The requested action
      *
