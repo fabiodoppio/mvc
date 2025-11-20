@@ -136,10 +136,10 @@ class Guest extends Model\Account {
      *
      */
     public function signup(string $username, string $email, string $password) {
-        if (!empty(Database::query("SELECT id FROM app_accounts WHERE username LIKE ?",[$username])[0]))
+        if (!empty(Database::query("SELECT id FROM app_accounts WHERE username LIKE ? LIMIT 1",[$username])[0]))
             throw new Exception(_("This username is already taken."), 2000);
 
-        if (!empty(Database::query("SELECT id FROM app_accounts WHERE email LIKE ?", [$email])[0]))
+        if (!empty(Database::query("SELECT id FROM app_accounts WHERE email LIKE ? LIMIT 1", [$email])[0]))
             throw new Exception(_("This email address is already taken."), 2001);
 
         $token = App::generate_token();

@@ -378,7 +378,7 @@ class App {
         if (empty($cookie = explode('$', $_COOKIE["account"])))
             throw new Exception(_("Unauthorized Access."), 403);
 
-        if (empty($account = Database::query("SELECT id FROM app_accounts WHERE id = ?", [$cookie[1]])))
+        if (empty($account = Database::query("SELECT id FROM app_accounts WHERE id = ? LIMIT 1", [$cookie[1]])))
             throw new Exception(_("Unauthorized Access."), 403);
 
         $account = new Model\Account($account[0]["id"]);
@@ -399,7 +399,7 @@ class App {
      *
      */
     public static function get_account_by_credential($credential) {
-        if (empty($account = Database::query("SELECT id FROM app_accounts WHERE email LIKE ? OR username = ?", [$credential, $credential])))
+        if (empty($account = Database::query("SELECT id FROM app_accounts WHERE email LIKE ? OR username = ? LIMIT 1", [$credential, $credential])))
             throw new Exception(_("There is no account with this username or email address."), 1003);
 
         return new Model\Account($account[0]["id"]);

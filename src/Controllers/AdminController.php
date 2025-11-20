@@ -69,10 +69,10 @@ class AdminController extends Controller {
                 $username = Validator::username($_POST["username"]);
                 $password = Validator::password($_POST["pw1"], $_POST["pw2"]);
 
-                if (!empty(Database::query("SELECT id FROM app_accounts WHERE username LIKE ?",[$username])[0]))
+                if (!empty(Database::query("SELECT id FROM app_accounts WHERE username LIKE ? LIMIT 1",[$username])[0]))
                     throw new Exception(_("This username is already taken."), 1702);
 
-                if (!empty(Database::query("SELECT id FROM app_accounts WHERE email LIKE ?", [$email])[0]))
+                if (!empty(Database::query("SELECT id FROM app_accounts WHERE email LIKE ? LIMIT 1", [$email])[0]))
                     throw new Exception(_("This email address is already taken."), 1703);
 
                 $token = App::generate_token();
@@ -271,7 +271,7 @@ class AdminController extends Controller {
                 if (empty($_POST["title"]) || empty($_POST["slug"]) || empty($_POST["template"]))
                     throw new Exception(_("Required input not found."), 1718);
 
-                if (!empty(Database::query("SELECT id FROM app_pages WHERE slug LIKE ?",[$_POST["slug"]])[0]))
+                if (!empty(Database::query("SELECT id FROM app_pages WHERE slug LIKE ? LIMIT 1",[$_POST["slug"]])[0]))
                     throw new Exception(_("This slug is already taken."), 1719);
 
                 $title = Validator::string($_POST["title"]);
@@ -384,13 +384,13 @@ class AdminController extends Controller {
 
                 if (!empty($_POST["badwords"]))
                     foreach(array_map('trim', explode(',', Validator::string($_POST["badwords"]))) as $badword)
-                        if (empty(Database::query("SELECT id FROM app_filters_badwords WHERE badword LIKE ?", [$badword])[0]))
+                        if (empty(Database::query("SELECT id FROM app_filters_badwords WHERE badword LIKE ? LIMIT 1", [$badword])[0]))
                             if ($badword !== "" && $badword !== null)
                                 Database::query("INSERT INTO app_filters_badwords (badword) VALUES (?)", [$badword]);
 
                 if (!empty($_POST["providers"]))
                     foreach(array_map('trim', explode(',', Validator::string($_POST["providers"]))) as $provider)
-                        if (empty(Database::query("SELECT id FROM app_filters_providers WHERE provider LIKE ?", [$provider])[0]))
+                        if (empty(Database::query("SELECT id FROM app_filters_providers WHERE provider LIKE ? LIMIT 1", [$provider])[0]))
                             if ($provider !== "" && $provider !== null)
                                 Database::query("INSERT INTO app_filters_providers (provider) VALUES (?)", [$provider]);
 

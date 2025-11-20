@@ -103,11 +103,11 @@ class Account extends Model\Model {
     public function set(string $name, mixed $value) {
         if (isset($this->data[0][$name])) {
             if ($name == "username")
-                if (!empty(Database::query("SELECT id FROM ".$this->table." WHERE username LIKE ?",[$value])[0]))
+                if (!empty(Database::query("SELECT id FROM ".$this->table." WHERE username LIKE ? LIMIT 1",[$value])[0]))
                     throw new Exception(_("This username is already taken."), 1900);
 
             if ($name == "email")
-                if (!empty(Database::query("SELECT id FROM ".$this->table." WHERE email LIKE ?", [$value])[0]))
+                if (!empty(Database::query("SELECT id FROM ".$this->table." WHERE email LIKE ? LIMIT 1", [$value])[0]))
                     throw new Exception(_("This email address is already taken."), 1901);
 
             parent::set($name, $value);
