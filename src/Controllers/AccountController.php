@@ -115,6 +115,7 @@ class AccountController extends Controller {
                 }
 
                 $account->set("remember_me", $remember);
+                $account->set("lastaction", date("Y-m-d H:i:s", time()));
 
                 App::set_auth_cookie($account->get("id"), $account->get("token"), $remember);
                 App::set_locale_cookie($account->get("language")??App::get("APP_LANGUAGE"));
