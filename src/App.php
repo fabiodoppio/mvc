@@ -83,7 +83,7 @@ class App {
      *  @var    string  $APP_LANGUAGE           Language of the app
      *  @var    array   $APP_LANGUAGES          Available languages
      *  @var    bool    $APP_MAINTENANCE        Maintenance mode active
-     *  @var    bool    $APP_CRON               Cronjobs active
+     *  @var    bool    $APP_CRON               Cron jobs active
      *  @var    bool    $APP_LOGIN              Login active
      *  @var    bool    $APP_SIGNUP             Signup active
      */

@@ -15,7 +15,7 @@
                         <tr>
                             <th>{{"Title"}}</th>
                             <th>{{"URL Slug"}}</th>
-                            <th><i class="fas fa-eye"></i></th>
+                            <th><i class="fas fa-square-check"></i></th>
                             <th><i class="fas fa-cog"></i></th>
                         </tr>
                         {% foreach($var->result as $item): %}
@@ -47,7 +47,6 @@
                                                         <form data-request="admin/page/edit">
                                                             <h3>{{"Page"}} #{{$item->get('id')}}</h3>
                                                             <input type="hidden" name="id" value="{{$item->get('id')}}"/>
-                                                            <h4>Page Data</h4>
                                                             <label for="title-{{$item->get('id')}}">
                                                                 {{"Page Title"}} <span class="is--required" title="{{'Required'}}">*</span>
                                                                 <input type="text" id="title-{{$item->get('id')}}" name="title" value="{{$item->get('title')}}" placeholder="{{'Enter page title'}}" autocomplete="off" required/>
@@ -131,11 +130,11 @@
                                             </li>
                                             {% if ($item->get("active") == 1): %}
                                                 <li>
-                                                    <a href="#" data-request="admin/page/deactivate" data-id="{{$item->get('id')}}" style="color:#F00;"><i class="fas fa-eye-slash"></i> {{'Deactivate Page'}}</a>
+                                                    <a href="#" data-request="admin/page/deactivate" data-id="{{$item->get('id')}}" style="color:#F00;"><i class="fas fa-square-xmark"></i> {{'Deactivate Page'}}</a>
                                                 </li>
                                             {% else: %}
                                                 <li>
-                                                    <a href="#" data-request="admin/page/activate" data-id="{{$item->get('id')}}"><i class="fas fa-eye"></i> {{'Activate Page'}}</a>
+                                                    <a href="#" data-request="admin/page/activate" data-id="{{$item->get('id')}}"><i class="fas fa-square-check"></i> {{'Activate Page'}}</a>
                                                 </li>
                                             {% endif; %}
                                             <li>

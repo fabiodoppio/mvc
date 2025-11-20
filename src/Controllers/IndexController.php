@@ -409,6 +409,7 @@ class IndexController extends Controller {
      *
      *  Displaying the website's admin page.
      *
+     *  @since  3.1     Added cron job page.
      *  @since  3.0
      *  @param  string  $request    The requested action.
      *
@@ -544,6 +545,36 @@ class IndexController extends Controller {
                 echo Template:: get("/admin/filters.tpl", $this->env);
 
                 break;
+            case "/admin/cronjobs":
+
+                $result = Database::query("SELECT id FROM app_cronjobs ORDER BY name");
+                $count  = count($result);
+                $pages  = ceil(count($result) / 20);
+                $page   = Validator::integer($_GET["page"] ?? 1);
+                $page   = ($page > $pages || $page < 1) ? 1 : $page;
+                $result = array_slice($result, ($page - 1) * 20, 20);
+
+                $this->env["var"] = (object) [
+                    "count"  => $count,
+                    "result" => array_map(fn($entry) => new Model\Cronjob($entry["id"]), $result),
+                    "pagination" => (object) [
+                        "page"  => $page,
+                        "pages" => $pages
+                    ]
+                ];
+
+                $this->env["page"] = (object) [
+                    "meta" => (object) [
+                        "title"         => sprintf(_("Scheduled Tasks | %s"), App::get("APP_NAME")),
+                        "description"   => App::get("APP_DESCRIPTION"),
+                        "robots"        => "noindex, nofollow",
+                        "class"         => "admin account cronjobs"
+                    ]
+                ];
+
+                echo Template:: get("/admin/cronjobs.tpl", $this->env);
+
+                break;
             case "/admin/newsletter":
 
                 $accounts = array_column(Database::query("SELECT id FROM app_accounts WHERE role >= ?", [Model\Account::USER]), 'id');
@@ -604,6 +635,7 @@ class IndexController extends Controller {
      *
      *  Displaying the website's cron page.
      *
+     *  @since  3.1     Removed cron.tpl from views, added Cronjob class.
      *  @since  2.0
      *  @param  string  $request    The requested action.
      *
@@ -615,7 +647,13 @@ class IndexController extends Controller {
         switch($request) {
             case "/cron":
 
-                echo Template::get("/cron.tpl", $this->env);
+                foreach(Database::query("SELECT id FROM app_cronjobs WHERE active = 1") as $cron) {
+                    $cron = new Model\Cronjob($cron["id"]);
+                    if ($cron->should_run())
+                            $cron->exec();
+                }
+
+                echo _("Cron jobs executed.");
 
                 break;
             default:

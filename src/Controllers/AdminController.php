@@ -431,6 +431,113 @@ class AdminController extends Controller {
 
     /**
      *
+     * Handles cron job related actions, including updating scheduled task details, creating or deleting a scheduled task.
+     *
+     *  @since  3.1
+     *  @param  string  $request    The requested action.
+     *
+     */
+    public function cronjobAction(string $request) {
+        switch($request) {
+            case "/admin/cronjob/create":
+
+                if (empty($_POST["name"]) || empty($_POST["action"]) || empty($_POST["period"]))
+                    throw new Exception(_("Required input not found."), 1728);
+
+                if (!str_contains($_POST["action"], '/'))
+                    throw new Exception(_("This action has an incorrect format."), 1729);
+
+                $next = (new \DateTime())->modify("+".Validator::integer($_POST["period"])." minutes")->format("Y-m-d H:i:s");
+                Database::query("INSERT INTO app_cronjobs (name, action, period, next) VALUES (?, ?, ?, ?)", [Validator::string($_POST["name"]), Validator::string($_POST["action"]), $_POST["period"], $next]);
+
+                Ajax::add('#response', '<div class="alert is--success">'._("Task successfully created.")." "._("Please wait while redirecting..").'</div>');
+                Ajax::reload();
+
+                break;
+            case "/admin/cronjob/edit":
+
+                if (empty($_POST["id"]) || empty($_POST["name"]) || empty($_POST["action"]) || empty($_POST["period"]) || empty($_POST["next"]))
+                    throw new Exception(_("Required input not found."), 1730);
+
+                if (!str_contains($_POST["action"], '/'))
+                    throw new Exception(_("This action has an incorrect format."), 1731);
+
+                $cron = new Model\Cronjob(Validator::integer($_POST["id"]));
+
+                if (isset($_POST["name"]) && $_POST["name"] != $cron->get("name")) {
+                    $cron->set("name", Validator::string($_POST["name"]));
+                    Ajax::add('.cronjobs table tr[data-id="'.$_POST["id"].'"] td:nth-child(1)', $_POST["name"]);
+                }
+
+                if (isset($_POST["action"]) && $_POST["action"] != $cron->get("action"))
+                    $cron->set("action", Validator::string($_POST["action"]));
+
+                if (isset($_POST["period"]) && $_POST["period"] != $cron->get("period"))
+                    $cron->set("period", Validator::integer($_POST["period"]));
+
+                if (isset($_POST["next"]) && $_POST["next"] != $cron->get("next")) {
+                    $cron->set("next", Validator::datetime($_POST["next"]));
+                    Ajax::add('.cronjobs table tr[data-id="'.$_POST["id"].'"] td:nth-child(2)', (new \DateTime($_POST["next"]))->format("d.m.Y - H:i:s"));
+                }
+
+                Ajax::add('#response', '<div class="alert is--success">'._("Changes successfully saved.").'</div>');
+                Ajax::trigger('[data-trigger="close"]', "click");
+
+                break;
+            case "/admin/cronjob/execute":
+
+                if (empty($_POST["id"]))
+                    throw new Exception(_("Required input not found."), 1732);
+
+                $cron = new Model\Cronjob(Validator::integer($_POST["id"]));
+                $cron->exec();
+
+                Ajax::add('.cronjobs table tr[data-id="'.$_POST["id"].'"] td:nth-child(2)', (new \DateTime($cron->get("next")))->format('d.m.Y - H:i:s'));
+                Ajax::add('.cronjobs table tr[data-id="'.$_POST["id"].'"] td:nth-child(3)', (new \DateTime($cron->get("last")))->format('d.m.Y - H:i:s'));
+                Ajax::add('#response', '<div class="alert is--success">'._("Task successfully executed.").'</div>');
+
+                break;
+            case "/admin/cronjob/activate":
+
+                if (empty($_POST["id"]))
+                    throw new Exception(_("Required input not found."), 1733);
+
+                (new Model\Cronjob(Validator::integer($_POST["id"])))->set("active", 1);
+
+                Ajax::add('#response', '<div class="alert is--success">'._("Task successfully activated.")." "._("Please wait while redirecting..").'</div>');
+                Ajax::reload();
+
+                break;
+            case "/admin/cronjob/deactivate":
+
+                if (empty($_POST["id"]))
+                    throw new Exception(_("Required input not found."), 1734);
+
+                (new Model\Cronjob(Validator::integer($_POST["id"])))->set("active", 0);
+
+                Ajax::add('#response', '<div class="alert is--success">'._("Task successfully deactivated.")." "._("Please wait while redirecting..").'</div>');
+                Ajax::reload();
+
+                break;
+            case "/admin/cronjob/delete":
+
+                if (empty($_POST["id"]))
+                    throw new Exception(_("Required input not found."), 1735);
+
+                (new Model\Cronjob(Validator::integer($_POST["id"])))->delete();
+
+                Ajax::remove('.cronjobs table tr[data-id="'.$_POST["id"].'"]');
+                Ajax::add('#response', '<div class="alert is--success">'._("Task successfully deleted.").'</div>');
+                Ajax::trigger('[data-trigger="close"]', "click");
+
+                break;
+            default:
+                throw new Exception(sprintf(_("Action %s not found."), $request), 1736);
+        }
+    }
+
+    /**
+     *
      *  Handles newsletter actions, including sending newsletter to all accounts.
      *
      *  @since  3.0
@@ -442,7 +549,7 @@ class AdminController extends Controller {
             case "/admin/newsletter/send":
 
                 if (empty($_POST["subject"]) || empty($_POST["message"]) || empty($_POST["queue"]))
-                    throw new Exception(_("Required input not found."), 1728);
+                    throw new Exception(_("Required input not found."), 1737);
 
                 $subject = Validator::string($_POST["subject"]);
                 $message = Validator::string($_POST["message"]);
@@ -484,7 +591,7 @@ class AdminController extends Controller {
 
                 break;
             default:
-                throw new Exception(sprintf(_("Action %s not found."), $request), 1729);
+                throw new Exception(sprintf(_("Action %s not found."), $request), 1738);
         }
     }
 

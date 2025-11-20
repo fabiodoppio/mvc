@@ -244,7 +244,7 @@
                                                     <div class="modalbox">
                                                         <div>
                                                             <h3>{{"Are you sure?"}}</h3>
-                                                            <p>{{"The account owner has no longer access to his account and cannot create a new account with these login credentials. If cronjobs are activated, the account will be automatically and permanently deleted after 90 days. The account owner can restore his account during this time."}}</p>
+                                                            <p>{{"The account owner has no longer access to his account and cannot create a new account with these login credentials. If cron jobs are activated, the account will be automatically and permanently deleted after 90 days. The account owner can restore his account during this time."}}</p>
                                                             <button data-request="admin/account/deactivate" data-id="{{$item->get('id')}}" class="btn is--warning is--submit">{{"Deactivate Account"}}</button>
                                                             <button class="btn is--secondary" data-trigger="close">{{"Abort"}}</button>
                                                         </div>

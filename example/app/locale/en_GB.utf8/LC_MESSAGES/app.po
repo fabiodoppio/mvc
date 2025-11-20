@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MVC 3.0\n"
 "POT-Creation-Date: 2025-01-22 08:55+0100\n"
-"PO-Revision-Date: 2025-01-22 08:55+0100\n"
+"PO-Revision-Date: 2025-11-20 16:46+0100\n"
 "Last-Translator: Fabio Doppio <hallo@fabiodoppio.de>\n"
 "Language-Team: Fabio Doppio\n"
 "Language: en_GB\n"
@@ -529,8 +529,8 @@ msgstr "The account owner has no longer access to his account and cannot create 
 msgid "Restore Account"
 msgstr "Restore Account"
 
-msgid "The account owner has no longer access to his account and cannot create a new account with these login credentials. If cronjobs are activated, the account will be automatically and permanently deleted after 90 days. The account owner can restore his account during this time."
-msgstr "The account owner has no longer access to his account and cannot create a new account with these login credentials. If cronjobs are activated, the account will be automatically and permanently deleted after 90 days. The account owner can restore his account during this time."
+msgid "The account owner has no longer access to his account and cannot create a new account with these login credentials. If cron jobs are activated, the account will be automatically and permanently deleted after 90 days. The account owner can restore his account during this time."
+msgstr "The account owner has no longer access to his account and cannot create a new account with these login credentials. If cron jobs are activated, the account will be automatically and permanently deleted after 90 days. The account owner can restore his account during this time."
 
 msgid "Delete Account"
 msgstr "Delete Account"
@@ -820,8 +820,8 @@ msgstr "you are receiving this email because your account on %s has been blocked
 msgid "If you think this was a mistake, please contact our support team:"
 msgstr "If you think this was a mistake, please contact our support team:"
 
-msgid "Cronjob executed."
-msgstr "Cronjob executed."
+msgid "Cron jobs executed."
+msgstr "Cron jobs executed."
 
 msgid "Recover account"
 msgstr "Recover account"
@@ -1158,3 +1158,93 @@ msgstr "Invalid json."
 
 msgid "The message must be between %1$s and %2$s characters long."
 msgstr "The message must be between %1$s and %2$s characters long."
+
+msgid "Scheduled Tasks"
+msgstr "Scheduled Tasks"
+
+msgid "This action has an incorrect format."
+msgstr "Scheduled Tasks"
+
+msgid "Task successfully created."
+msgstr "Task successfully created."
+
+msgid "Task successfully executed."
+msgstr "Task successfully executed."
+
+msgid "Task successfully activated."
+msgstr "Task successfully activated."
+
+msgid "Task successfully deactivated."
+msgstr "Task successfully deactivated."
+
+msgid "Task successfully deleted."
+msgstr "Task successfully deleted."
+
+msgid "Class %s not found."
+msgstr "Class %s not found."
+
+msgid "Scheduled tasks ensure that a specific function is executed at a specific time. To use this feature, please set up a cron job to call the URL <b>%s/cron</b> regularly."
+msgstr "Scheduled tasks ensure that a specific function is executed at a specific time. To use this feature, please set up a cron job to call the URL <b>%s/cron</b> regularly."
+
+msgid "Scheduled Tasks are <b>not</b> activated. Please set APP_CRON in your .env file."
+msgstr "Scheduled Tasks are <b>not</b> activated. Please set APP_CRON in your .env file."
+
+msgid "One or more scheduled tasks are delayed. Please check your cron job setup."
+msgstr "One or more scheduled tasks are delayed. Please check your cron job setup."
+
+msgid "Task"
+msgstr "Task"
+
+msgid "Next Run"
+msgstr "Next Run"
+
+msgid "Last Run"
+msgstr "Last Run"
+
+msgid "Delayed"
+msgstr "Delayed"
+
+msgid "Never"
+msgstr "Never"
+
+msgid "Edit Task"
+msgstr "Edit Task"
+
+msgid "Enter task name"
+msgstr "Enter task name"
+
+msgid "Action"
+msgstr "Action"
+
+msgid "Enter task action"
+msgstr "Enter task action"
+
+msgid "The scheme for your action has to be:<br/>Name of the controller slash (/) Name of the function<br/>within the controller, e.g. <i>my/example</i>"
+msgstr "The scheme for your action has to be:<br/>Name of the controller slash (/) Name of the function<br/>within the controller, e.g. <i>my/example</i>"
+
+msgid "Interval"
+msgstr "Interval"
+
+msgid "Enter interval in minutes"
+msgstr "Enter interval in minutes"
+
+msgid "Execute Task"
+msgstr "Execute Task"
+
+msgid "Deactivate Task"
+msgstr "Deactivate Task"
+
+msgid "Activate Task"
+msgstr "Activate Task"
+
+msgid "Delete Task"
+msgstr "Delete Task"
+
+msgid "This task will be deleted immediately and permanently."
+msgstr "This task will be deleted immediately and permanently."
+
+msgid "Create New Task"
+msgstr "Create New Task"
+
+msgid "Create Task"
+msgstr "Create Task"
