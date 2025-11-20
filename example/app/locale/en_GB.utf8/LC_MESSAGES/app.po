@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MVC 3.0\n"
 "POT-Creation-Date: 2025-01-22 08:55+0100\n"
-"PO-Revision-Date: 2025-11-20 16:46+0100\n"
+"PO-Revision-Date: 2025-11-20 17:31+0100\n"
 "Last-Translator: Fabio Doppio <hallo@fabiodoppio.de>\n"
 "Language-Team: Fabio Doppio\n"
 "Language: en_GB\n"
@@ -1158,6 +1158,9 @@ msgstr "Invalid json."
 
 msgid "The message must be between %1$s and %2$s characters long."
 msgstr "The message must be between %1$s and %2$s characters long."
+
+msgid "Scheduled Tasks | %s"
+msgstr "Scheduled Tasks | %s"
 
 msgid "Scheduled Tasks"
 msgstr "Scheduled Tasks"
