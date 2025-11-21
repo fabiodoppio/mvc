@@ -480,7 +480,7 @@ class AccountController extends Controller {
      *
      *  Handles requests from any contact form.
      *
-     *  @since  3.05    Added ratelimit for contact forms to prevent spam.
+     *  @since  3.1     Added ratelimit for contact forms to prevent spam.
      *  @since  2.0
      *  @param  string  $request    The requested action
      *
