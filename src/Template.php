@@ -77,6 +77,7 @@ class Template {
      *
      *  Include and process template files recursively.
      *
+     *  @since  3.11            Load example file if given file does not exists.
      *  @since  2.3             Keep spaces and line breaks if debug mode is active.
      *  @since  2.0
      *  @param  string  $file   The name of the template file to process.
@@ -86,7 +87,8 @@ class Template {
      */
     private static function compile_includes(string $file) {
         if (!is_file($path = App::get("DIR_ROOT").App::get("DIR_VIEWS").$file))
-            throw new Exception(sprintf(_("Template %s not found."), $file), 1300);
+            if (!is_file($path = App::get("DIR_ROOT").App::get("DIR_VENDOR")."/".App::get("SRC_PACKAGE")."/example/app/views/".$file))
+                throw new Exception(sprintf(_("Template %s not found."), $file), 1300);
 
         $template = file_get_contents($path);
 
